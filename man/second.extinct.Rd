@@ -9,7 +9,7 @@ Calculates the consequences of removing a species from a bipartite network. With
 }
 
 \usage{
-second.extinct(web, participant = "high", method = "abun", nrep = 10,
+second.extinct(web, participant = "higher", method = "abun", nrep = 10,
   details = FALSE)
 }
 

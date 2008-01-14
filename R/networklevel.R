@@ -1,29 +1,19 @@
 `networklevel` <-
 function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctmethod="r",
-    nrep=100, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn"){
+    nrep=100, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn",
+    normalise=TRUE){
     ##
     ## web         interaction matrix, with lower trophic level in rows, higher in columns
-    ## ISAmethod    method to use for calculating interaction strength (=dependence) asymmetry; original by "Bascompte"
-    ##             is biased for singletons and few interactions (range 0 to infty);
-    ##             "Bluethgen" (default) excludes singletons and corrects for low
-    ##             number of interactions (range -1 to 1)
-    ## SAmethod    which method to use to calculate the specification asymmetry:
-    ##             mean of log-transformed dependences ("log") or Blüthgen's
-    ##             abundance-weighted mean ("Bluethgen": default)
-    ## extinctmethod  specifies how species are removed from matrix: "random" or "abundance"
-    ##                (partial matching), where abundance removes species in the order
-    ##                of increasing abundance (i.e. rarest first); literature: Memmott 1999
-    ## nrep        how many random species extinctions should be averaged?
-    ## plot.it.extinction     logical: should extinction sequence be plotted?
-    ## plot.it.dd   logical: should degree distribution fits be plotted?
     ##
     web <- empty(web)
     if (nrow(web) < 2 | ncol(web) <2) stop("Web is too small to calculate any reasonable index.")
 
-    if (any(index %in% "ALL")) index <- c("number of species", "number of links", "linkage density", "web asymmetry",
+    if (any(index %in% "ALL")) index <- c("number of species", "links per species",
+          "connectance", "linkage density", "web asymmetry",
           "number of compartments", "generality", "vulnerability", "interaction evenness",
           "compartment diversity", "cluster coefficient", "H2", "ISA", "SA",
-          "extinction slope", "degreedistribution", "niche overlap")
+          "extinction slope", "degreedistribution", "niche overlap", "mean number of shared hosts", 
+          "C-score", "togetherness", "V-ratio", "nestedness")
     out <- list()
 
     # set up enough panals for plotting:
@@ -37,15 +27,15 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
       out$"number of lower trophic species"=NROW(web)
     }
 
-
     #-------------------
     # mean number of links (= links/species)
-    if (any(c("number of links", "interaction evenness", "linkage density", "vulnerability", "generality") %in% index)){
+    if (any(c("links per species", "interaction evenness", "linkage density", "vulnerability", "generality") %in% index)){
 
         L <- sum(web>0)/sum(dim(web))
-        if ("number of links" %in% index) out$"number of links"=L
-
-        #################
+        if ("links per species" %in% index) out$"links per species"=L
+        
+        
+                #################
         # calculates linkage density for quantitative web
         # for formula see Tylianakis et al. (2006), supplement.
         # N refers to prey, P to predators
@@ -75,7 +65,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
         if ("vulnerability" %in% index) out$"vulnerability"=V
         # linkage density
         LD_q <- 0.5*(V+G)
-        if ("linkage density" %in% index) out$"vulnerability"=V
+        if ("linkage density" %in% index) out$"linkage density"=LD_q
         #LD_qs <- LD_q/(NROW(web)+NCOL(web)) # according to Jason's text
         # interaction evenness
         p_i.mat <- web/sum(web)
@@ -96,67 +86,40 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
             out$"Alatalo interaction evenness"=E
         }
     }
+    if ("connectance" %in% index){
+        # connectance: "the fraction of all possible links that are realized in a network", 
+        # p. 12917 in Dunne et al. 2002
+        out$connectance <- sum(web>0)/prod(dim(web))
+    }
 
     if (any(c("number of compartments", "compartment diversity") %in% index)){
-        compart <- function(web){
-          #recursive crossing out of horizontal and vertical neighbours
-          # can be simplified using vegan's distconnected on cca output ...
-          cross = function(web, start, comp)
-          {
-            n.r=nrow(web)
-            n.c=ncol(web)
-            r=start[1]
-            c=start[2]
-            web[r,c]=-comp     #assign a negative compartment number to interaction
-
-            for (i in 1:n.r) #schaue senkrecht
-            {
-            if (web[i,c]>0)  web<-cross(web,c(i,c),comp)
-            }
-
-            for (i in 1:n.c)    #schaue waagrecht
-            {
-             if (web[r,i]>0) web<-cross(web,c(r,i),comp)
-            }
-            return (web)
-          }
-
-          comp=1     #start with the first compartment
-          while (max(web)>0)  #any interactions left?
-          {
-            start=which(web==max(web),arr.ind=TRUE)[1,]  #start at the highest number of interactions (arbitrary)
-            web <- cross(web,start,comp) #start recursion until no more neighbours in one compartment are found
-            comp <- comp+1   #go to the next compartment
-          }
-          return(list(cweb=web, n.compart=max(abs(web))))
-        }
-
-        CD <- function(web){
-          co <- compart(web)
-          if (co$n.compart>1)
-          {
+        CD <- function(co){
+          if (co$n.compart>1){
             no <- NA
-            for (i in 1:co$n.compart)
-            {
-              comp <- which(co$cweb==-i, arr.ind=TRUE)
-              no[i] <- length(unique(comp[,1])) + length(unique(comp[,2]))
+            for (i in 1:co$n.compart){
+              comp <- which(co$cweb==i, arr.ind=TRUE) # who is in a compartment?
+              no[i] <- length(unique(comp[,1])) + length(unique(comp[,2])) # how many species
             }
             no <- no/sum(dim(web)) # standardise for number of species in the web
             CD <- exp(-sum(no*log(no)))
-          }
-          else {CD <- NA; warning("only one compartment")}
+          }  else {CD <- NA; warning("only one compartment")}
           CD
         }
-        options(expressions=10000) # sets recursion depth, so that also kato1990 can be calculated
-        compdiv <- try(CD(web))
-        ncompart <- try(compart(web)$n.compart) # not elegant: now compart(web) needs to be calculated twice: once by CD and once for $n.compart!
+       
+        comps <- compart(web)
+        if (class(comps)=="try-error") {
+            ncompart <- compdiv <- NA
+        } else  {
+            ncompart <- comps$n.compart
+            compdiv <- CD(comps)
+        }
         out$"number of compartments"=ncompart
         out$"compartment diversity"=compdiv
     }
     
     #----------------------------------------------------------------------------
     if ("cluster coefficient" %in% index){
-        cluster.coef <- function(web, full=FALSE, FUN=median){
+        cluster.coef <- function(web, full=FALSE, FUN=mean){
         # calculate cluster coefficient
         #
         # web   a bipartite web
@@ -282,10 +245,35 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
       out$"lower trophic level niche overlap" <- NOlower
     }
 
+    #-------------------
+    # The Stone & Roberts's indices: S, T and C score:
+    #-------------------
+    if ("mean number of shared hosts" %in% index) {
+      out$"mean number of shared hosts" <- 
+            mean(designdist(web>0, method="J", terms="minimum"))
+#      out$"mean number of shared mutualists lower trophic level" <- 
+#            mean(designdist(t(web)>0, method="J", terms="minimum"))
+    } 
+    #-------------------
+    if ("togetherness" %in% index){
+      out$togetherness <- togetherness(web, normalise=normalise, na.rm=TRUE)
+    }
+    #-------------------
+    if ("C-score" %in% index){
+      out$"C-score" <- C.score(web, normalise=normalise, na.rm=TRUE)
+    }
+
+    #-------------------
+    if ("V-ratio" %in% index){
+      out$"V-ratio" <- V.ratio(web)
+    }
+
+    #-------------------
+    if ("nestedness" %in% index){
+      out$nestedness <- nestedness(web, null.models=FALSE)$temperature
+    }
 
     return(out)
 }
 #networklevel(Safariland, index="H2")
 #networklevel(Safariland, plot.it.dd=TRUE, plot.it.extinction=TRUE)
-
-

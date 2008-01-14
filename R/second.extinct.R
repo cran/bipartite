@@ -1,5 +1,5 @@
 `second.extinct` <-
-function(web, participant="high", method="abun", nrep=10, details=FALSE){
+function(web, participant="higher", method="abun", nrep=10, details=FALSE){
     # returns a matrix quantifying secondary extinctions following the deletion of
     # a species from the web
     # web           an interaction web

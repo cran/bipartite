@@ -41,7 +41,7 @@ The \code{abundances} vector allows to incorporate independent estimates of the 
 }
 
 \references{ 
-Blüthgen, N., Menzel, F. \& Blüthgen, N. 2006 Measuring specialization in species interaction networks. \emph{BMC Ecology} \bold{6}, 12
+Blüthgen, N., Menzel, F. and Blüthgen, N. 2006 Measuring specialization in species interaction networks. \emph{BMC Ecology} \bold{6}, 12
  }
 
 \author{Carsten F. Dormann and Jochen Fründ}

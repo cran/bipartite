@@ -1,0 +1,31 @@
+!! Error !!
+library(bipartite)
+data(vazarr)
+nestedness(vazarr)
+detach(package:bipartite)
+Error in .Last.lib(libpath) : 
+  unused argument(s) ("C:/Programme/R/R-2.6.0/library/bipartite")
+
+
+!! Error !!
+bolger <- read.csv("bolger4.csv") #nachher wieder löschen.
+commat <- bolger[,-c(1:4)]
+plotweb(commat)
+Error in `[.data.frame`(cumsum(web), (j - 1) * nrow(web) + (i - 1)) : 
+  undefined columns selected
+
+
+
+* suggestions from Gotelli & Graves (1996):
+	- nestedness per species: holes and outliers
+
+* visweb: option to abbreviate labels to 3 or 4 letters
+
+* compartments (implement more lax definition: Dicks/Corbet/Fryxell 2002? Set threshold to 1-5% of observations and ignore those?); 	compartment-test, including comparison to null-model?
+
+* modularity (Ecology paper by Oleson?); visualise modularity in plotweb
+
+* second.extinct: allow for an index-vector to be passed to specify extinction sequence
+* slope.bipartite: put who is killed into axis labels, not main! (higher/lower trophic level); change "plants" to "pollinators"! wrong orientation at the moment? check with sw <- matrix(1:6, ncol=3, byrow=T); slope.bipartite(second.extinct(sw, "plant"))
+* slope.bipartite: same example: no secondary extinction after killing 1 or 2 plants! why so in graph?
+

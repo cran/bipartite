@@ -10,13 +10,14 @@ function(object, plot.it=TRUE, ...){
     N <- colSums(object)
 
     if (all(object[,2]==1)) y <- -object[,3] else y <- -object[,2] #selects the correct column
-    y <- 100 - (sum(y)-cumsum(y))/sum(y) * 100 #ranged between 0 and 100
+    #y <- 100 - (sum(y)-cumsum(y))/sum(y) * 100 #ranged between 0 and 100
 
     y <- (sum(y)-cumsum(y))/sum(y)  #ranged between 0 and 1
     x <- (object[,"no"] / max(object[,"no"]))  #ranges x between 0 and 1
 
 #    fit<- nls( y ~ 1 - b*x^a, start=list(a=2, b=1), lower=c(-1, 0.001), upper=c(500, 500), algorithm="port")
-    fit<- nls( y ~ 1 - x^a, start=list(a=2))
+    fit <- try(nls(y ~ 1 - x^a, start=list(a=1)))
+    if (class(fit)=="try-error") fit <- nls( (y+rnorm(length(y), s=0.01)) ~ 1 - x^a, start=list(a=1))
 
     if(plot.it)
     {
