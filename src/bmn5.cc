@@ -3,12 +3,16 @@
 #include <iostream>
 #include <fstream>
 #include <time.h>
-//#include <string.h>
+#include <string>
+using namespace std;
 
-//#include "Tstring.h"
+extern "C" {
 //#include "IOfiles.h"
 
-/*	Input andput files */
+
+
+/*	Input and output files */
+
 
 /* caracter LF:fin de linea, CE:cero y UN:uno */
 #define LF 10
@@ -40,10 +44,6 @@
 //	El valor más alto de U econtrado es:
 const double UMAX = 0.04145;
 
-extern "C" {
-
-	
-
 //	para el algoritmo genetico:
 unsigned long NBRS;
 int POPSIZE;	// Must be at least 15
@@ -52,17 +52,22 @@ int NBGENER;
 int OVER;
 int *toc;
 int *tor;
+int bmo;
 
+
+string INFILE;
+string OUTFILE;
+FILE *out;
 
 /*
  ***************************************************************** 
  */
 
-void matrixSize(char inputFile, int& nrows, int& ncols, int& skip);
+void matrixSize(string inputFile, int& nrows, int& ncols, int& skip);
 
 void endnote(FILE *f);
 
-void readMatrix(char inputFile, int nrows, int ncols, int skip, int **m);
+void readMatrix(string inputFile, int nrows, int ncols, int skip, int **m);
 
 double matrixTemperature(bool &success,int sp, int **mat, int *c_ord, int *r_ord, int nr, int nc, long& idum);
 
@@ -100,7 +105,11 @@ void mutate(long& idum, int n, int index[]);
 
 void choosePlayers(long& idum, int n,int m,int arr[]);
 
-void crossOver(long& idum, int nr, int nc, int pr[], int pc[], int or1[], int oc[] );
+void crossOver(long& idum, int nr, int nc, int pr[],
+              int pc[],
+              int or_new[],
+              int oc[])
+              ;
 
 void indexx(int n, int arr[], int indx[]);
 
@@ -130,14 +139,14 @@ double **matrix(long nrl, long nrh, long ncl, long nch);
 
 void free_matrix(double **m, long nrl, long nrh, long ncl, long nch);
 
-void nrerror();
+void nrerror(char error_text[]);
 
 /*
  ***************************************************************** 
  */
 
-int bmn(int *matrix, int *n_rows, int *n_cols,double *temperature,
-        int *n_nullmodels, int *p_size, int *n_individuals,
+int bmn5(int *matrix, int *n_rows, int *n_cols,double *temperature,
+        int *n_nullmodels, int *p_size, int *n_individuals, int *binmatout,
         int *n_generations, int *nullmodels,
         double *p_null1, double *avt_null1, double 	*avv_null1,
         double *p_null2, double *avt_null2, double 	*avv_null2,
@@ -145,13 +154,8 @@ int bmn(int *matrix, int *n_rows, int *n_cols,double *temperature,
         int *poc, int *por
         )
 {
-
-
-	
-
 	bool success;
 	int ncols,nrows;//,skip;
-        
 	int i,j;
 	int nPresI,nPresJ=0;
 	int *colOrder,*rowOrder;
@@ -159,6 +163,7 @@ int bmn(int *matrix, int *n_rows, int *n_cols,double *temperature,
 	int **tempMat;
 	unsigned long nr;
 	long idum=-48367;
+	//idum = time(0);
 	double fill;
 	double p,p1,p2,p3,r;
 	double tInt,tTemp;
@@ -166,12 +171,11 @@ int bmn(int *matrix, int *n_rows, int *n_cols,double *temperature,
 	double *pCol,*pRow;
 	double *nullTemp;
 	
-  toc=poc;     // move pointer of column and row order
+	toc=poc;     // move pointer of column and row order
   tor=por;     // to R objects in bmn
+  bmo = *binmatout;
 
-//int *mat = matrix;
-
-
+	
 
 /*
 	int stoch;
@@ -190,47 +194,96 @@ int bmn(int *matrix, int *n_rows, int *n_cols,double *temperature,
 		idum *= -1;
 	}
 */
+/*	fprintf(stdout, "Type the name of the input data file,\n");
+	fprintf(stdout, "then press ENTER\n");
+*/	//getline(cin,INFILE,'\n');
+//	INFILE = "web.txt";
 
-//char  INFILE='i';
+/*	fprintf(stdout, "\n\nType the name of the file\n");
+	fprintf(stdout, "where the results should be saved\n");
+	fprintf(stdout, "(do not forget the txt extension),\n");
+*///	fprintf(stdout, "then press ENTER\n");
+	//getline(cin,OUTFILE,'\n');
+	
 
-//char OUTFILE= 'o';
+
+/*	do {
+		fprintf(stdout, "\n\nType the number of null matrices\n");
+		fprintf(stdout, "that you want to use to calculate p values,\n");
+		fprintf(stdout, "then press ENTER\n");
+		cin >> NBRS;
+		if (NBRS<=0) fprintf(stdout, "must be a positive integer\n");
+	} while (NBRS<=0);
+
+	do {
+		fprintf(stdout, "\n\nType the population size\n");
+		fprintf(stdout, "that you want to use in the GA\n");
+		fprintf(stdout, "to calculate matrix temperature,\n");
+		fprintf(stdout, "then press ENTER.\n");
+		fprintf(stdout, "We recommend 30\n");
+		cin >> POPSIZE;
+		if (POPSIZE<15) fprintf(stdout, "must be at least 15\n");
+	} while (POPSIZE<15);
+
+	do {
+		fprintf(stdout, "\n\nType the number of individuals\n");
+		fprintf(stdout, "that you want to select\n");
+		fprintf(stdout, "at each generation of the GA,\n");
+		fprintf(stdout, "then press ENTER\n");
+		fprintf(stdout, "The number must be at least 4 and smaller than %2i\n",POPSIZE);
+		fprintf(stdout, "We recommend 7\n");
+		cin >> TOURSIZE;
+		if (TOURSIZE<4) fprintf(stdout, "must be at least 4\n");
+		if (TOURSIZE>=POPSIZE) fprintf(stdout, "must be smaller than %2i\n",POPSIZE);
+	} while (TOURSIZE<4 || TOURSIZE>=POPSIZE);
+
+	do {
+		fprintf(stdout, "\n\nType the number of generations\n");
+		fprintf(stdout, "for the GA,\n");
+		fprintf(stdout, "then press ENTER\n");
+		fprintf(stdout, "We recommend 2000\n");
+		cin >> NBGENER;
+		if (NBGENER<=0) fprintf(stdout, "must be a positive integer\n");
+	} while (NBGENER<=0);
+*/
 
 
 nrows=*n_rows;
 ncols=*n_cols;
-
 NBRS =*n_nullmodels;
-
 POPSIZE =*p_size;
-
-
-
 TOURSIZE =*n_individuals;
-
-	
 NBGENER = *n_generations;
 
-//	fprintf(stdout, "\n\n\n");
-//	fprintf(stdout, "BINMATNEST is calculating the temperature of your matrix\n");
-//	fprintf(stdout, "and the corresponding p-values. Please be patient.\n");
-//	fprintf(stdout, "\n\n\n");
+OUTFILE ="binmat.out";
 
+/*	fprintf(stdout, "\n\n\n");
+	fprintf(stdout, "BINMATNEST is calculating the temperature of your matrix\n");
+	fprintf(stdout, "and the corresponding p-values. Please be patient.\n");
+	fprintf(stdout, "\n\n\n");
+*/
 //	matrixSize(INFILE,nrows,ncols,skip);
 	interactMat = imatrix(1,nrows,1,ncols);
-//	readMatrix(INFILE,nrows,ncols,skip,interactMat);
+	//readMatrix(INFILE,nrows,ncols,skip,interactMat);
+//check matrix handing over....
 
-// hand over R matrix....
+
+//	out = fopen(OUTFILE.c_str(),"a");
+//	fprintf(out,"matrix from R\n\n");
 
 
-for (int j=1; j<=ncols;j++)
-	{
+
 for (int i=1; i<=nrows;i++)
 {
+for (int j=1; j<=ncols;j++)
+{
 	interactMat[i][j] = matrix[(j-1)*nrows+(i-1)];
+//	fprintf(out,"%1i",interactMat[i][j]);
 	}
+//	fprintf(out,"\n");
 }
 
-
+//fclose(out);
 
 	//	Some variables are initialised
 	fill = 0.0;
@@ -260,25 +313,20 @@ for (int i=1; i<=nrows;i++)
 
 	colOrder = ivector(1,ncols);
 	rowOrder = ivector(1,nrows);
-
-	
-
 	tInt = matrixTemperature(success,1,interactMat,colOrder,rowOrder,nrows,ncols,idum);
-
-	//hand over matrix temperature to R
-	
-	*temperature = tInt;
-
+ if (bmo==1)   { //save binmatnest in output file
+	out = fopen(OUTFILE.c_str(),"a");
+	fprintf(out,"Matrix temperature: T = %11.5f\n",tInt);
+	fprintf(out,"\n\n");
+//	fprintf(stdout,"Matrix temperature = %11.5f\n",tInt);
+	fclose(out);
+}
+ 	*temperature = tInt;
   // return packing order by pointers (tor and toc via poc and por)
-  
-
-  
-
 	free_imatrix(interactMat,1,nrows,1,ncols);
 
+if (*nullmodels==1) {  //should nullmodels be calculated??
 
-  if (*nullmodels==1) {  //should nullmodels be calculated??
-  
 	tempMat = imatrix(1,nrows,1,ncols);
 	nullTemp = vector(1,NBRS);
 	//	First null model:
@@ -317,20 +365,17 @@ for (int i=1; i<=nrows;i++)
 	}
 	p1 /= (1.0*NBRS);
 	avevar(nullTemp,NBRS,ave,var);
-	
+  //save results of nullmodel 1
 	*p_null1 = p1;
 	*avt_null1 = ave;
 	*avv_null1 = var;
-	
-	//out = fopen(OUTFILE, "a");
-	//out = fopen("OUTFILE", "a");
-	//fprintf(out,"  Null model     p-value   Average T    Variance\n");
-	//fprintf(out,"       First %11.5f %11.5f %11.5f\n",p1,ave,var);
-	//fprintf(stdout,"First null model:  p1 = %11.5f\n",p1);
-
-	//close_file(out);
-	//fclose(out);
-
+ if (bmo==1)  { //save binmatnest in output file
+	out = fopen(OUTFILE.c_str(),"a");
+	fprintf(out,"  Null model     p-value   Average T    Variance\n");
+	fprintf(out,"       First %11.5f %11.5f %11.5f\n",p1,ave,var);
+	fprintf(stdout,"First null model:  p1 = %11.5f\n",p1);
+	fclose(out);
+}
 	//	Second null model:
 	p2 = 0.0;
 	for (nr=1;nr<=NBRS;nr++)
@@ -367,16 +412,16 @@ for (int i=1; i<=nrows;i++)
 	}
 	p2 /= (1.0*NBRS);
 	avevar(nullTemp,NBRS,ave,var);
-	
-		*p_null2 = p2;
+  //save results null model2
+	*p_null2 = p2;
 	*avt_null2 = ave;
 	*avv_null2 = var;
-	//out = open_append(OUTFILE);
-	//out = fopen("OUTFILE", "a");
-	//fprintf(out,"      Second %11.5f %11.5f %11.5f\n",p2,ave,var);
-	//fprintf(stdout,"Second null model: p2 = %11.5f\n",p2);
-	//close_file(out);
-	//fclose(out);
+if (bmo==1)  { //save binmatnest in output file
+	out = fopen(OUTFILE.c_str(),"a");
+	fprintf(out,"      Second %11.5f %11.5f %11.5f\n",p2,ave,var);
+	fprintf(stdout,"Second null model: p2 = %11.5f\n",p2);
+	fclose(out);
+}
 	//	Third null model:
 	p3 = 0.0;
 	for (nr=1;nr<=NBRS;nr++)
@@ -414,59 +459,198 @@ for (int i=1; i<=nrows;i++)
 	p3 /= (1.0*NBRS);
 	avevar(nullTemp,NBRS,ave,var);
 	
-		*p_null3 = p3;
+	*p_null3 = p3;
 	*avt_null3 = ave;
 	*avv_null3 = var;
-	//out = open_append(OUTFILE);
-	//out = fopen("OUTFILE", "a");
-	//fprintf(out,"       Third %11.5f %11.5f %11.5f\n",p3,ave,var);
-	//fprintf(stdout,"Third null model:  p3 = %11.5f\n",p3);
-	//close_file(out);
-	//fclose(out);
 
+if (bmo==1)  { //save binmatnest in output file
+	out = fopen(OUTFILE.c_str(),"a");
+	fprintf(out,"       Third %11.5f %11.5f %11.5f\n",p3,ave,var);
+	fprintf(stdout,"Third null model:  p3 = %11.5f\n",p3);
+	fclose(out);
+}
 	free_ivector(rowOrder,1,nrows);
 	free_ivector(colOrder,1,ncols);
 	free_imatrix(tempMat,1,nrows,1,ncols);
 	free_vector(pRow,1,nrows);
 	free_vector(pCol,1,ncols);
 	free_vector(nullTemp,1,NBRS);
- }
+	 }
  // end of nullmodels.....
-	//fprintf(stdout, "\n\n\n");
-	//fprintf(stdout, "BINMATNEST has saved the results.\n");
-	//fprintf(stdout, "Type a number and press ENTER to continue\n");
-//        cin >> TOURSIZE;
-
-        //res[1] = 1.11;
-        //matrix[8] = 2.234;
+/*
+	fprintf(stdout, "\n\n\n");
+	fprintf(stdout, "BINMATNEST has saved the results.\n");
+	fprintf(stdout, "Type a number and press ENTER to continue\n");
+        cin >> TOURSIZE;
+*/
 	return EXIT_SUCCESS;
-
 }
 /***
  *****************************************
  ***/
-void matrixSize(char inputFile, int& nrows, int& ncols, int& skip)
+void matrixSize(string inputFile, int& nrows, int& ncols, int& skip)
 {
+	int j,k;
+	char b;	/*caracter leido*/
+	FILE *f=0;
 
+	/*abro*/
+	if( fopen(inputFile.c_str(),"r")==NULL)
+		nrerror((char*)"Error trying to open input file\n\n");
 
-skip=1;
+	endnote(f);   /*me trago la nota */
+
+	nrows=0;
+	ncols=0;
+
+	/*	Me situo al principio de la matriz, saltando posibles blancos */
+	b=fgetc(f);
+	while (b!=CE && b!=UN)
+	{
+		b=fgetc(f);
+		if (b==EOF) nrerror((char*)"no data found in input matrix\n\n");
+	} 
+
+	/*leo la primera fila y asi ya se cuantas columnas hay*/
+	while (b==CE || b==UN)  /*hasta fin de linea*/
+	{
+		ncols++;
+		b=fgetc(f);
+	}
+	skip = 1;
+	nrows++;  
+
+	//	Second row: first, we must see how many character separate consecutive rows
+	while (true)
+	{
+		b=fgetc(f);
+		if ( (b==CE) || (b==UN) || (b==EOF) ) break;
+		skip++;
+	}
+
+	if (b == EOF) 
+	{
+		fclose(f);
+		return;
+	}
+	for (j=2;j<=ncols;j++)
+	{
+		b=fgetc(f);
+		if ((b != CE) && (b !=UN)) nrerror((char*)"all rows must have the same number of columns\n\n");
+	}
+	nrows++;  
+
+	/*ahora leo fila a fila hasta el final*/
+	while (true)		/*bucle infinito*/
+	{
+		for (k=1;k<=skip;k++)
+		{
+			b=fgetc(f);
+			if (b == EOF) 
+			{
+				fclose(f);
+				return;
+			}
+		}
+
+		b=fgetc(f);				/*leo el primer char de la segunda fila*/
+
+		if ( (b != CE) && (b !=UN) )
+		{
+			fclose(f);
+			return;
+		}
+
+		/*ahora leo el resto de la fila*/
+		for (j=2;j<=ncols;j++)
+		{
+			b=fgetc(f);
+			if ((b != CE) && (b !=UN)) nrerror((char*)"all rows must have the same number of columns\n\n");
+		}
+		nrows++;
+		/*aumento el contador de filas e intenta leer otra*/
+	}
 }
 /***
  *****************************************
  ***/
-void readMatrix(char inputFile, int nrows, int ncols, int skip, int **m)
+void readMatrix(string inputFile, int nrows, int ncols, int skip, int **m)
 {
+	int i,j,k;
+	char b;	/*caracter leido*/
+	FILE *f=0;
 
+	/*abro*/
+	if( fopen(inputFile.c_str(),"r")==NULL)
+		nrerror((char*)"Error trying to open input file\n\n");
 
+	endnote(f);   /*me trago la nota y ya estoy situado en el inicio de la matriz*/
 
-	
+	/*leo la primera fila */
+	/*	Me situo al principio de la matriz, saltando posibles blancos */
+	b=fgetc(f);
+	while (b!=CE && b!=UN)
+	{
+		b=fgetc(f);
+		if (b==EOF) nrerror((char*)"no data found in input matrix\n\n");
+	} 
+	m[1][1] = (b==CE ? 0 : 1);
+	for (j=2;j<=ncols;j++)
+	{
+		b=fgetc(f);
+		m[1][j] = (b==CE ? 0 : 1);
+	}
+
+	for (i=2;i<=nrows;i++) 		
+	{
+		for (k=1;k<=skip;k++)
+		{
+			b=fgetc(f);
+			if (b == EOF) nrerror((char*)"Error reading data");
+		}
+
+		/*ahora leo la fila*/
+		for (j=1;j<=ncols;j++)
+		{
+			b=fgetc(f);
+			if ((b != CE) && (b !=UN)) nrerror((char*)"all rows must have the same number of columns\n\n");
+			m[i][j] = (b==CE ? 0 : 1);
+		}
+	}
 }
 /***
  *****************************************
  ***/
 void endnote(FILE *f)
 {
+	int i;
+	char c[8];   /*aqui meto lo que leo*/
+	char fin[8]={101,110,100,110,111,116,101,115}; /* codificacion de "endnotes" */
+	char fim[8]={69,78,68,78,79,84,69,83}; /* codificacion de "ENDNOTES" */
 
+	/*lee los primeros 8 caracteres*/
+	for(i=0;i<8;i++)
+	{
+		c[i]=fgetc(f);
+	}
+
+	while (c[7]!=EOF)
+	{
+		if ( (c[0]==fin[0] || c[0]==fim[0]) && (c[1]==fin[1] || c[1]==fim[1]) && (c[2]==fin[2] || c[2]==fim[2]) 
+			&& (c[3]==fin[3] || c[3]==fim[3]) && (c[4]==fin[4] || c[4]==fim[4]) && (c[5]==fin[5] || c[5]==fim[5]) 
+			&& (c[6]==fin[6] || c[6]==fim[6])  && (c[7]==fin[7] || c[7]==fim[7]) )
+		{
+			c[0]=fgetc(f); /*se supone que despues de endnotes hay un final de linea. lo leo y me lo como*/
+			return;
+		}
+		else
+		{
+			for (i=0;i<7;i++)	/*mueve a la izquierda*/
+				c[i]=c[i+1];
+			c[7]=fgetc(f);		/* y lee otro caracter al final */
+		}
+	}
+	nrerror((char*)"The word endnotes must appear in the input file before the matrix\n\n");
 }
 /***
  *****************************************
@@ -480,7 +664,7 @@ double matrixTemperature(bool &success,int sp, int **dataMat, int *c_ord, int *r
 	int **mat;
 	int **packed;
 	double phi,z;
-	double tMat=0.0;
+	double tMat=0;
 	double *border;
 	double **distance;
 
@@ -498,22 +682,59 @@ double matrixTemperature(bool &success,int sp, int **dataMat, int *c_ord, int *r
 	orderMatrix(mat,c_ord,r_ord,nr,nc,effInsect,effPlant);
 	removeBlacks(mat,c_ord,r_ord,effInsect,effPlant,nbRows,nbCols,phi);
 	packed = imatrix(1,nbRows,1,nbCols);
+
+//	out = fopen(OUTFILE.c_str(),"a");      // ******************
+//	fprintf(out,"prepacked matrix bmn5\n\n"); // ******************
+
 	for (i=1;i<=nbRows;i++)
 	{
 		for (j=1;j<=nbCols;j++) 
 		{
 			packed[i][j] = mat[i][j];
+      //print out pack matrix
+//     	fprintf(out,"%1i",packed[i][j]); // ******************
+
+      
 		}
+//		fprintf(out,"\n");
 	}
+
+
+//fclose(out);  // ******************
+
 
 	if (nbCols>2 && nbRows>2)
 	{
 		border = vector(1,nbCols);
 		calcZ(phi,z);
+//    out = fopen(OUTFILE.c_str(),"a");      // ******************
+//	fprintf(out,"phi bmn5 %10.5f \n",phi); // ******************
+//	fprintf(out,"z bmn5 %10.5f \n",z); // ******************
 
+
+//  fprintf(out,"border bmn5 border \n"); // ******************
+//  for (j=1;j<=nbCols;j++) fprintf(out,"%10.5f",border[j]); // ******************
+// 	fprintf(out,"\n"); //************************
+//fclose(out);  // ******************
 		//	Calculate distance matrix
 		distance = matrix(1,nbRows,1,nbCols);
 		calcDistance(z,border,distance,nbRows,nbCols);
+//****************************
+//	out = fopen(OUTFILE.c_str(),"a");      // ******************
+//	fprintf(out,"distance matrix bmn5\n\n"); // ******************
+//	for (i=1;i<=nbRows;i++)
+//	{
+//		for (j=1;j<=nbCols;j++)
+//		{
+		//if (j==nbCols) distance[i][j] *= -1;
+//     	fprintf(out,"%10.5f",distance[i][j]); // ******************
+//		}
+//		fprintf(out,"\n");
+//	}
+	
+//fclose(out);  // ******************
+//****************************
+
 		//	Final packing using GA. Returns the temperature of the matrix
 		tMat = packMatrix(sp,dataMat,packed,distance,c_ord,r_ord,nbRows,nbCols,nr,nc,idum);
 
@@ -522,13 +743,13 @@ double matrixTemperature(bool &success,int sp, int **dataMat, int *c_ord, int *r
 	}
 	else 
 	{
-		if (sp) nrerror();
+		if (sp) nrerror((char*)"input matrix must have more than two rows and columns after removing blancks");
 		else
 		{
 			tMat = 0;
 			success = false;
 			count++;
-			if (count>1000) nrerror();
+			if (count>1000) nrerror((char*)"random matrix has less than two rows or columns too often");
 		}
 	}
 	
@@ -722,15 +943,45 @@ void calcDistance(double z,double border[],double **mat,int nr,int nc)
 
 	if (z>0 && z<100)
 	{
-		for (j=1;j<=nc;j++)
+
+//    out = fopen(OUTFILE.c_str(),"a");
+  	for (j=1;j<=nc;j++)
 		{
 			x = (j-0.5)/nc;
 			xx = (x-0.5/nc)*nc/(nc-1);
-			s = pow(1-xx,z);
-			yy = pow(1-s,1/z);
+      if (xx==1) s=0; else    s = pow(1-xx,z);
+      if (s==1) yy=0; else 		yy = pow(1-s,1/z);
 			y = (0.5+(nr-1)*yy)/nr;
 			border[j] = y*nr;
+			
+//   fprintf(out,"%10.5f",x);
+//   fprintf(out,"%10.5f",xx);
+//   fprintf(out,"%10.5f",s);
+//   fprintf(out,"%10.5f",yy);
+//   fprintf(out,"%10.5f",y);
+//   fprintf(out,"%10.5f",border[j]);
+//   fprintf(out,"  \n"); // ******************
+
 		}
+//    fclose(out);  // ******************
+
+//  out = fopen(OUTFILE.c_str(),"a");      // ******************
+
+//  fprintf(out,"border bmn5 border \n"); // ******************
+//  for (j=1;j<=nc;j++) fprintf(out,"%10.5f",border[j]); // ******************
+// 	fprintf(out,"\n"); //************************
+//  fclose(out);  // ******************
+
+
+
+
+
+//out = fopen(OUTFILE.c_str(),"a");      // ******************
+
+//  fprintf(out,"i,j bmn5  \n"); // ******************
+
+
+
 
 		for (i=1;i<=nr;i++)
 		{
@@ -745,6 +996,8 @@ void calcDistance(double z,double border[],double **mat,int nr,int nc)
 //					but we calculate only half of the distance:
 					dmax2 = (x1+y1<1 ? (x1+y1)*(x1+y1) : (2-x1-y1)*(2-x1-y1));
 					yy = zbrent(nr,nc,x1,y1,z);
+					
+
 					y = (0.5+(nr-1)*yy)/nr;
 /*	
 					d2 = (x1-x)*(x1-x) + (y1-y)*(y1-y);
@@ -756,10 +1009,13 @@ void calcDistance(double z,double border[],double **mat,int nr,int nc)
 */	
 					d2 = (y1-y)*(y1-y);
 					mat[i][j] = d2/dmax2;
-					if ((nr-i+0.5)<border[j]) mat[i][j] *= -1;
+					if ((nr-i+0.5)<border[j])  mat[i][j] *= -1;
+ //                  fprintf(out,"%1i/%1i, ",i,j);} // ******************
 				}
 			}
 		}
+//		fclose(out);  // ******************
+
 	}
 	else if (z>100)
 	{
@@ -843,7 +1099,7 @@ double packMatrix(int sp, int **dataMat, int **intMat, double **d, int *c_ord, i
 {
 	int i,j,l,k1,k2,ng;
 	int *indr,*indc;
-	int *pr,*or1,*pc,*oc;
+	int *pr,*or_new,*pc,*oc;
 	int *players,*sorted;
 	int *bestr,*bestc;
 	int *unused;
@@ -851,13 +1107,13 @@ double packMatrix(int sp, int **dataMat, int **intMat, double **d, int *c_ord, i
 	int **mat;
 	double tMin;
 	double *temp,*tPlayers;
-
+	FILE *out=NULL;
 
 	indr = ivector(1,nr);
 	indc = ivector(1,nc);
 	pr = ivector(1,nr);
 	pc = ivector(1,nc);
-	or1 = ivector(1,nr);
+	or_new = ivector(1,nr);
 	oc = ivector(1,nc);
 	bestr = ivector(1,nr);
 	bestc = ivector(1,nc);
@@ -908,7 +1164,7 @@ double packMatrix(int sp, int **dataMat, int **intMat, double **d, int *c_ord, i
 		indexxD(TOURSIZE,tPlayers,sorted);
 
 		k1 = players[sorted[1]];
-		for (i=1;i<=nr;i++) or1[i] = pRows[k1][i];
+		for (i=1;i<=nr;i++) or_new[i] = pRows[k1][i];
 		for (j=1;j<=nc;j++) oc[j] = pCols[k1][j];
 		do
 		{
@@ -916,20 +1172,20 @@ double packMatrix(int sp, int **dataMat, int **intMat, double **d, int *c_ord, i
 		} while (k1==k2 || k2>POPSIZE);
 		for (i=1;i<=nr;i++) pr[i] = pRows[k2][i];
 		for (j=1;j<=nc;j++) pc[j] = pCols[k2][j];
-		crossOver(idum,nr,nc,pr,pc,or1,oc);
+		crossOver(idum,nr,nc,pr,pc,or_new,oc);
 		l = players[sorted[TOURSIZE]];
-		for (i=1;i<=nr;i++) pRows[l][i] = or1[i];
+		for (i=1;i<=nr;i++) pRows[l][i] = or_new[i];
 		for (j=1;j<=nc;j++) pCols[l][j] = oc[j];
-		temp[l] = calcTemp(d,intMat,or1,oc,nr,nc);
+		temp[l] = calcTemp(d,intMat,or_new,oc,nr,nc);
 		if (temp[l]<tMin)
 		{
 			tMin = temp[l];
-			for (i=1;i<=nr;i++) bestr[i] = or1[i];
+			for (i=1;i<=nr;i++) bestr[i] = or_new[i];
 			for (j=1;j<=nc;j++) bestc[j] = oc[j];
 		}
 
 		k1 = players[sorted[2]];
-		for (i=1;i<=nr;i++) or1[i] = pRows[k1][i];
+		for (i=1;i<=nr;i++) or_new[i] = pRows[k1][i];
 		for (j=1;j<=nc;j++) oc[j] = pCols[k1][j];
 		do
 		{
@@ -937,44 +1193,49 @@ double packMatrix(int sp, int **dataMat, int **intMat, double **d, int *c_ord, i
 		} while (k1==k2 || k2>POPSIZE);
 		for (i=1;i<=nr;i++) pr[i] = pRows[k2][i];
 		for (j=1;j<=nc;j++) pc[j] = pCols[k2][j];
-		crossOver(idum,nr,nc,pr,pc,or1,oc);
+		crossOver(idum,nr,nc,pr,pc,or_new,oc);
 		l = players[sorted[TOURSIZE-1]];
-		for (i=1;i<=nr;i++) pRows[l][i] = or1[i];
+		for (i=1;i<=nr;i++) pRows[l][i] = or_new[i];
 		for (j=1;j<=nc;j++) pCols[l][j] = oc[j];
-		temp[l] = calcTemp(d,intMat,or1,oc,nr,nc);
+		temp[l] = calcTemp(d,intMat,or_new,oc,nr,nc);
 		if (temp[l]<tMin)
 		{
 			tMin = temp[l];
-			for (i=1;i<=nr;i++) bestr[i] = or1[i];
+			for (i=1;i<=nr;i++) bestr[i] = or_new[i];
 			for (j=1;j<=nc;j++) bestc[j] = oc[j];
 		}
 	}
-
+	
+if (bmo==1) 	out = fopen(OUTFILE.c_str(),"a");
+	
+if (bmo==1) {
 	if (sp)
 	{
-		//out = open_append(OUTFILE);
-		//out = fopen("OUTFILE", "a");
-		//fprintf(out,"Packed matrix:\n");
+	//	out = fopen(OUTFILE.c_str(),"a");
+
+		fprintf(out,"Packed matrix:\n");
+
 		for (i=1;i<=nr;i++)
 		{
-			for (j=1;j<=nc;j++) 
+			for (j=1;j<=nc;j++)
 			{
-				;//fprintf(out,"%1i",intMat[bestr[i]][bestc[j]]);
+				fprintf(out,"%1i",intMat[bestr[i]][bestc[j]]);
 			}
-			//fprintf(out,"\n");
+			fprintf(out,"\n");
 		}
-		//fprintf(out,"\n");
-        
-		//close_file(out);
-		//fclose(out);
-		calcIdiosyncTemp(d,intMat,or1,oc,nr,nc);
-	}
+		fprintf(out,"\n");
 
+		fclose(out);
+
+
+		calcIdiosyncTemp(d,intMat,or_new,oc,nr,nc);
+	}
+}
 	free_ivector(indr,1,nr);
 	free_ivector(indc,1,nc);
 	free_ivector(pr,1,nr);
 	free_ivector(pc,1,nc);
-	free_ivector(or1,1,nr);
+	free_ivector(or_new,1,nr);
 	free_ivector(oc,1,nc);
 	free_ivector(players,1,TOURSIZE);
 	free_ivector(sorted,1,TOURSIZE);
@@ -983,11 +1244,11 @@ double packMatrix(int sp, int **dataMat, int **intMat, double **d, int *c_ord, i
 	free_imatrix(pRows,1,POPSIZE,1,nr);
 	free_imatrix(pCols,1,POPSIZE,1,nc);
 
+
 	if (sp)
 	{
-		//out = open_append(OUTFILE);
-		//out = fopen("OUTFILE", "a");
 
+//    fopen(OUTFILE.c_str(),"a");
 		sorted = ivector(1,nr);
 		for (i=1;i<=nr;i++) sorted[i] = r_ord[i];
 		for (i=1;i<=nr;i++) r_ord[i] = sorted[bestr[i]];
@@ -1006,29 +1267,29 @@ double packMatrix(int sp, int **dataMat, int **intMat, double **d, int *c_ord, i
 			}
 		}
 
-		//fprintf(out,"Permutation of rows:\n");
-		//fprintf(out,"Row number            ");
+if (bmo==1)  fprintf(out,"Permutation of rows:\n");
+if (bmo==1)  fprintf(out,"Row number            ");
 		for (i=1;i<=nrows;i++)
 		{
-			if (unused[i]==1) ;//fprintf(out,"%5i",unused[i]);
+			if (unused[i]==1)  if (bmo==1) fprintf(out,"%5i",unused[i]);
 		}
-		for (i=1;i<=nr;i++) ;//fprintf(out,"%5i",i);
+		for (i=1;i<=nr;i++)  if (bmo==1) fprintf(out,"%5i",i);
 		for (i=1;i<=nrows;i++)
 		{
-			if (unused[i]>1);// fprintf(out,"%5i",unused[i]);
+			if (unused[i]>1)  if (bmo==1) fprintf(out,"%5i",unused[i]);
 		}
-		//fprintf(out,"\n");
-		//fprintf(out,"comes from position   ");
+		if (bmo==1) fprintf(out,"\n");
+ 		if (bmo==1) fprintf(out,"comes from position   ");
 		for (i=1;i<=nrows;i++)
 		{
-			if (unused[i]==1) tor[i-1]=i;//fprintf(out,"%5i",i);
+			if (unused[i]==1) { if (bmo==1) fprintf(out,"%5i",i); tor[i-1]=i;}
 		}
-		for (i=1;i<=nr;i++) tor[i-1] = r_ord[i];// fprintf(out,"%5i",r_ord[i]);
+		for (i=1;i<=nr;i++) { if (bmo==1) fprintf(out,"%5i",r_ord[i]); tor[i-1] = r_ord[i];}
 		for (i=1;i<=nrows;i++)
 		{
-			if (unused[i]>1) tor[i-1]=i;//fprintf(out,"%5i",i);
+			if (unused[i]>1) { if (bmo==1) fprintf(out,"%5i",i); tor[i-1] =i;}
 		}
-		//fprintf(out,"\n\n");
+		if (bmo==1) fprintf(out,"\n\n");
 		free_ivector(unused,1,nrows);
 
 		sorted = ivector(1,nc);
@@ -1049,36 +1310,36 @@ double packMatrix(int sp, int **dataMat, int **intMat, double **d, int *c_ord, i
 			}
 		}
 
-		//fprintf(out,"Permutation of columns:\n");
-		//fprintf(out,"Column number         ");
+    if (bmo==1) fprintf(out,"Permutation of columns:\n");
+ 		if (bmo==1) fprintf(out,"Column number         ");
 		for (j=1;j<=ncols;j++)
 		{
-			if (unused[j]==1);// fprintf(out,"%5i",unused[j]);
+			if (unused[j]==1)  if (bmo==1) fprintf(out,"%5i",unused[j]);
 		}
-		for (j=1;j<=nc;j++) ;//fprintf(out,"%5i",j);
+		for (j=1;j<=nc;j++)  if (bmo==1) fprintf(out,"%5i",j);
 		for (j=1;j<=ncols;j++)
 		{
-			if (unused[j]>1) ;//fprintf(out,"%5i",unused[j]);
+			if (unused[j]>1)  if (bmo==1) fprintf(out,"%5i",unused[j]);
 		}
-		//fprintf(out,"\n");
-		//fprintf(out,"comes from position   ");
-
+		if (bmo==1) fprintf(out,"\n");
+ 		if (bmo==1) fprintf(out,"comes from position   ");
 		for (j=1;j<=ncols;j++)
 		{
-			if (unused[j]==1)  toc[j-1] = j;// fprintf(out,"%5i",j);
+			if (unused[j]==1) { if (bmo==1) fprintf(out,"%5i",j); toc[j-1] = j;}
 		}
-		for (j=1;j<=nc;j++) toc[j-1] = c_ord[j];//c_ord[j];// fprintf(out,"%5i",c_ord[j]);
+		for (j=1;j<=nc;j++) { if (bmo==1) fprintf(out,"%5i",c_ord[j]);toc[j-1] = c_ord[j];}
 		for (j=1;j<=ncols;j++)
 		{
-			if (unused[j]>1)  toc[j-1] = j;// fprintf(out,"%5i",j);
+			if (unused[j]>1) { if (bmo==1) fprintf(out,"%5i",j); toc[j-1] = j;}
 		}
-		//fprintf(out,"\n\n");
+ 		if (bmo==1) fprintf(out,"\n\n");
 		free_ivector(unused,1,ncols);
 
-		//close_file(out);
-		//fclose(out);
-	}
+ 		//fclose(out);
 
+  }
+  
+if (bmo==1)  	fclose(out);
 	mat = imatrix(1,nr,1,nc);
 	for (i=1;i<=nr;i++)
 	{
@@ -1305,16 +1566,15 @@ void calcIdiosyncTemp(double **d, int **mat, int indr[], int indc[], int nr, int
 	int i1,j1;
 	double unex;
 	double tIdiosync;
-
-
-	//out = open_append(OUTFILE);
-	//out = fopen("OUTFILE", "a");
+	FILE *out;
+if (bmo==1) {
+	out = fopen(OUTFILE.c_str(),"a");
 	//	Idiosyncratic temperature for rows:
-	//fprintf(out,"Idiosyncratic temperature for rows:\n");
-	//fprintf(out,"Row:                       ");
-	for (i=1;i<=nr;i++) ;//fprintf(out,"%10i",i);
-	//fprintf(out,"\n");
-	//fprintf(out,"Idiosyncratic temperature: ");
+	fprintf(out,"Idiosyncratic temperature for rows:\n");
+	fprintf(out,"Row:                       ");
+	for (i=1;i<=nr;i++) fprintf(out,"%10i",i);
+	fprintf(out,"\n");
+	fprintf(out,"Idiosyncratic temperature: ");
 	for (i=1;i<=nr;i++)
 	{
 		unex = 0.0;
@@ -1329,16 +1589,16 @@ void calcIdiosyncTemp(double **d, int **mat, int indr[], int indc[], int nr, int
 		}
 		unex /= nc;
 		tIdiosync = 100*unex/UMAX;
-		//fprintf(out,"%10.5f",tIdiosync);
+		fprintf(out,"%10.5f",tIdiosync);
 	}
-	//fprintf(out,"\n\n");
+	fprintf(out,"\n\n");
 
 	//	Idiosyncratic temperature for columns:
-	//fprintf(out,"Idiosyncratic temperature for columns:\n");
-	//fprintf(out,"Column:                    ");
-	for (j=1;j<=nc;j++);// fprintf(out,"%10i",j);
-	//fprintf(out,"\n");
-	//fprintf(out,"Idiosyncratic temperature: ");
+	fprintf(out,"Idiosyncratic temperature for columns:\n");
+	fprintf(out,"Column:                    ");
+	for (j=1;j<=nc;j++) fprintf(out,"%10i",j);
+	fprintf(out,"\n");
+	fprintf(out,"Idiosyncratic temperature: ");
 	for (j=1;j<=nc;j++)
 	{
 		unex = 0.0;
@@ -1353,12 +1613,12 @@ void calcIdiosyncTemp(double **d, int **mat, int indr[], int indc[], int nr, int
 		}
 		unex /= nr;
 		tIdiosync = 100*unex/UMAX;
-		//fprintf(out,"%10.5f",tIdiosync);
+		fprintf(out,"%10.5f",tIdiosync);
 	}
-	//fprintf(out,"\n\n");
+	fprintf(out,"\n\n");
 
-	//close_file(out);
-	//fclose(out);
+	fclose(out);
+}
 }
 /***
  *****************************************
@@ -1417,7 +1677,7 @@ void choosePlayers(long& idum, int n,int m,int arr[])
 	int *index;
 
 	index = ivector(1,m);
-	if (n>m) nrerror();
+	if (n>m) nrerror((char*)"n too large in choosePlayers");
 	else if (n==m)
 	{
 		for (i=1;i<=n;i++) arr[i] = i;
@@ -1442,8 +1702,8 @@ void choosePlayers(long& idum, int n,int m,int arr[])
 /***
  *****************************************
  ***/
-void crossOver(long& idum, int nr, int nc, int pr[], int pc[], int or1[], int oc[])
-//	At input, the arrays pr[] and or1[] contain a permutation of row indexes from two individuals of the population,
+void crossOver(long& idum, int nr, int nc, int pr[], int pc[], int or_new[], int oc[])
+//	At input, the arrays pr[] and or[] contain a permutation of row indexes from two individuals of the population,
 //	while pc[] and oc[] contain permutations of the column indexes. At output, pr and pc are not changed, but or and oc
 //	contain new permutations, obtained from "crossing" over the corresponding input strategies, and possibly by mutating 
 //	the resulting strategy.
@@ -1460,15 +1720,15 @@ void crossOver(long& idum, int nr, int nc, int pr[], int pc[], int or1[], int oc
 			ind = ivector(1,nr);
 			for (i=1;i<=nr;i++) ind[i] = 0;
 			k = 2 + int((nr-2)*ran1(idum));
-			for (i=1;i<=k;i++) ind[or1[i]] = 1;
+			for (i=1;i<=k;i++) ind[or_new[i]] = 1;
 			for (i=k+1;i<=nr;i++)
 			{
 				if (ind[pr[i]]==0)
 				{
 					ind[pr[i]] = 1;
-					or1[i] = pr[i];
+					or_new[i] = pr[i];
 				}
-				else or1[i] = 0;
+				else or_new[i] = 0;
 			}
 			m = 0;
 			for (i=1;i<=nr;i++)
@@ -1484,10 +1744,10 @@ void crossOver(long& idum, int nr, int nc, int pr[], int pc[], int or1[], int oc
 			{
 				for (i=1;i<=nr;i++)
 				{
-					if (or1[i]==0)
+					if (or_new[i]==0)
 					{
-						if (m<=0) nrerror();
-						or1[i] = ind[m];
+						if (m<=0) nrerror((char*)"problem in crossOver, rows");
+						or_new[i] = ind[m];
 						m--;
 					}
 				}
@@ -1527,7 +1787,7 @@ void crossOver(long& idum, int nr, int nc, int pr[], int pc[], int or1[], int oc
 				{
 					if (oc[j]==0)
 					{
-						if (m<=0) nrerror();
+						if (m<=0) nrerror((char*)"problem in crossOver, columns");
 						oc[j] = ind[m];
 						m--;
 					}
@@ -1538,7 +1798,7 @@ void crossOver(long& idum, int nr, int nc, int pr[], int pc[], int or1[], int oc
 		}
 	}
 	//	now mutate:
-	if (ran1(idum)<0.1) mutate(idum,nr,or1);
+	if (ran1(idum)<0.1) mutate(idum,nr,or_new);
 	if (ran1(idum)<0.1) mutate(idum,nc,oc);
 }
 /***
@@ -1591,7 +1851,7 @@ void indexx(int n, int arr[], int indx[])
 			indx[l+1]=indx[j];
 			indx[j]=indxt;
 			jstack += 2;
-			if (jstack > NSTACK) nrerror();
+			if (jstack > NSTACK) nrerror((char*)"NSTACK too small in indexx.");
 			if (ir-i+1 >= j-l) {
 				istack[jstack]=ir;
 				istack[jstack-1]=i;
@@ -1655,7 +1915,7 @@ void indexxD(int n, double arr[], int indx[])
 			indx[l+1]=indx[j];
 			indx[j]=indxt;
 			jstack += 2;
-			if (jstack > NSTACK) nrerror();
+			if (jstack > NSTACK) nrerror((char*)"NSTACK too small in indexx.");
 			if (ir-i+1 >= j-l) {
 				istack[jstack]=ir;
 				istack[jstack-1]=i;
@@ -1676,7 +1936,7 @@ double zbrent(int nr, int nc, double u1, double v1, double z)
 {
 	int iter;
 	double x1,x2=1,tol=1.0e-5;
-	double a,b=x2,c=x2,d=0.0,e=0.0,min1,min2;
+	double a,b=x2,c=x2,d=0,e=0,min1,min2;
 	double fa,fb,fc,p,q,r,s,tol1,xm;
 
 	x1 = (u1+v1<1 ? 0 : u1+v1-1);
@@ -1686,7 +1946,7 @@ double zbrent(int nr, int nc, double u1, double v1, double z)
    
 	if ((fa > 0.0 && fb > 0.0) || (fa < 0.0 && fb < 0.0))
 	{
-		nrerror();
+		nrerror((char*)"Root must be bracketed in zbrent");
 	}
 	fc=fb;
 	for (iter=1;iter<=ITMAX;iter++) {
@@ -1740,7 +2000,7 @@ double zbrent(int nr, int nc, double u1, double v1, double z)
 			b += SIGN(tol1,xm);
 		fb=func(b,nr,nc,u1,v1,z);
 	}
-	nrerror();
+	nrerror((char*)"Maximum number of iterations exceeded in zbrent");
 	return 0.0;
 }
 /***
@@ -1816,7 +2076,7 @@ int *ivector(long nl, long nh)
 	int *v;
    
 	v=(int *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(int)));
-	if (!v) nrerror();
+	if (!v) nrerror((char*)"allocation failure in ivector()");
 	return v-nl+NR_END;
 }
 /***
@@ -1828,7 +2088,7 @@ double *vector(long nl, long nh)
 	double *v;
    
 	v=(double *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(double)));
-	if (!v) nrerror();
+	if (!v) nrerror((char*)"allocation failure in dvector()");
 	return v-nl+NR_END;
 }
 /***
@@ -1858,13 +2118,13 @@ int **imatrix(long nrl, long nrh, long ncl, long nch)
    
 	/* allocate pointers to rows */
 	m=(int **) malloc((size_t)((nrow+NR_END)*sizeof(int*)));
-	if (!m) nrerror();
+	if (!m) nrerror((char*)"allocation failure 1 in imatrix()");
 	m += NR_END;
 	m -= nrl;
    
 	/* allocate rows and set pointers to them */
 	m[nrl]=(int *) malloc((size_t)((nrow*ncol+NR_END)*sizeof(int)));
-	if (!m[nrl]) nrerror();
+	if (!m[nrl]) nrerror((char*)"allocation failure 2 in imatrix()");
 	m[nrl] += NR_END;
 	m[nrl] -= ncl;
    
@@ -1884,13 +2144,13 @@ double **matrix(long nrl, long nrh, long ncl, long nch)
    
 	/* allocate pointers to rows */
 	m=(double **) malloc((size_t)((nrow+NR_END)*sizeof(double*)));
-	if (!m) nrerror();
+	if (!m) nrerror((char*)"allocation failure 1 in matrix()");
 	m += NR_END;
 	m -= nrl;
    
 	/* allocate rows and set pointers to them */
 	m[nrl]=(double *) malloc((size_t)((nrow*ncol+NR_END)*sizeof(double)));
-	if (!m[nrl]) nrerror();
+	if (!m[nrl]) nrerror((char*)"allocation failure 2 in matrix()");
 	m[nrl] += NR_END;
 	m[nrl] -= ncl;
    
@@ -1920,18 +2180,18 @@ void free_matrix(double **m, long nrl, long nrh, long ncl, long nch)
 /***
  *****************************************
  ***/
-void nrerror()
+void nrerror(char error_text[])
 /* Numerical Recipes standard error handler */
 {
-	//fprintf(stderr,"\n");
-	//fprintf(stderr,"\n");
-	//fprintf(stderr,"Run-time error...\n");
-	//fprintf(stderr,"\n");
-	//fprintf(stderr,"fehler\n");
-	//fprintf(stderr,"\n\n");
-	//fprintf(stdout, "Type a number and press ENTER to continue\n");
-	//fprintf(stderr,"\n");
-//        cin >> TOURSIZE;
+	fprintf(stderr,"\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"Run-time error...\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"%s\n",error_text);
+	fprintf(stderr,"\n\n");
+	fprintf(stdout, "Type a number and press ENTER to continue\n");
+	fprintf(stderr,"\n");
+        cin >> TOURSIZE;
 
 	exit(1);
 }
@@ -1939,6 +2199,7 @@ void nrerror()
  *****************************************
  ***/
 
-}
+
 
    
+}

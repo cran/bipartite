@@ -156,8 +156,8 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
 
     #---------------------------------------------------------------------------
     # Blüthgen's specialisation/non-conformity index
-    if ("H2" %in% index) out$"H2"=as.numeric(H2fun(web)[1]) #1.element is the standardised H2 prime
-
+    if ("H2" %in% index) H2 <- as.numeric(H2fun(web)[1]) #1.element is the standardised H2 prime
+        out$"H2"= ifelse(H2<0, 0, H2)
     #---------------------------------------------------------------------------
     # web asymmetry (Blüthgen et al. 2007, Fig. S2)
     if (any(c("SA", "ISA", "web asymmetry") %in% index)){

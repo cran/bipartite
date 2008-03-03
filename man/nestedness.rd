@@ -8,7 +8,7 @@
 by calling a tweaked version of the C++ program binmatnest. For a full description what it does please refer to the paper of Miguel. In principle nestedness temperature is calculated by using a line of perfect order (using a genetic algorithm) to determine the reordering of rows and columns that leads to minimum matrix temperature of given size and fills. The deviation from this minimun temperature is the matrix temperature. In addition nestedness uses there different null models to check for statistical significance of the matrix temperature.}
 
 \usage{
-nestedness(m, null.models = TRUE, n.nulls = 100, popsize = 30, n.ind = 7, n.gen = 2000)
+nestedness(m, null.models = TRUE, n.nulls = 100, popsize = 30, n.ind = 7, n.gen = 2000, binmatnestout=FALSE)
 }
 
 \arguments{
@@ -18,6 +18,7 @@ nestedness(m, null.models = TRUE, n.nulls = 100, popsize = 30, n.ind = 7, n.gen 
   \item{popsize}{For the genetic algorithm some parameters have to be initialised. First is \code{popsize}, default is 30}
   \item{n.ind}{Second is number of individuals picked for the next generation. Default of \code{n.ind} is 7.}
   \item{n.gen}{Third is the number of generations until the genetic algorithm stops. Default of \code{n.gen} is 2000.}
+  \item{binmatnestout}{if set to TRUE a file "binmat.out" is saved in the current working directory , which stores the original binmatnest output}
 }
 
 \details{

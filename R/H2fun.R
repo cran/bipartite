@@ -40,7 +40,43 @@ function(web){
        if (length(bestone)>1) bestone <- sample(bestone,1) # select randomly a cell, if different are possible
        newweb[bestone] <- newweb[bestone]+1 # put an interaction into that cell
     }
-    H2_max <- -sum(newweb/tot*log(newweb/tot), na.rm=TRUE)
+    
+    
+#  # Hmaxfind     IMPROVED CODE FROM JOCHEN ------------------------------------
+  if (max(exexpec)>0.3679*tot) {                     # 0.3679 is the proportion yielding maximal contribution
+    # warning("one cell dominates too extremely, H2max can probably not be estimated correctly")
+    # further modification to match expected values even better... ; great advance, but can get caught!!  introduce random step if this happens
+    for (tries in 1:50) {
+      newmx <- newweb                         # "hin- und herschieben"
+      difexp<-exexpec-newmx #newmx=newweb!
+      greatestdif = difexp==min(difexp)
+      if (length(which(greatestdif))>1) {
+          largestvalue = newmx==max(newmx[greatestdif])  # evtl den größten auswählen
+          first=greatestdif & largestvalue
+      } else {first=greatestdif}   # "first" is a boolean matrix
+      newmx[first][1] <-  newmx[first][1] - 1                                    # remove one interaction from one cell (with largest difference to expected values; "too large")
+      throw = which(rowSums(first)>0)[1] ;  thcol = which(colSums(first)>0)[1]  # find row- and column-number of removed cell (not elegant!!)
+      mr=max(difexp[throw,])   ; mc=max(difexp[,thcol])                         # find largest difference value in row and column to expected; "too small"
+      if (mr>=mc) {scnd = which(difexp[throw,]==mr) [1]                         # reallocation; start in row
+                   newmx[throw,scnd] = newmx[throw,scnd]+1                      # put in cell
+                   thrd=which(difexp[,scnd]==min(difexp[,scnd]))[1]
+                   newmx[thrd,scnd] = newmx[thrd,scnd] - 1                      # remove interaction from "too large cell" in that column
+                   newmx[thrd,thcol] = newmx[thrd,thcol] + 1                    # put interaction in the cell that recovers original r/c-sums
+                  } else {                                                      # as above, but first reallocation in column
+                   scnd = which(difexp[,thcol]==mc)[1]
+                   newmx[scnd,thcol] = newmx[scnd,thcol] + 1
+                   thrd=which(difexp[scnd,]==min(difexp[scnd,]))[1]
+                   newmx[scnd,thrd] = newmx[scnd,thrd] - 1
+                   newmx[throw,thrd] = newmx[throw,thrd] + 1
+                  }
+      }
+      newweb <- newmx
+  }     # end Hmaxfind
+#  Hmax=H2(newmx)    
+
+    H2_max <- -sum(newweb/tot*log(newweb/tot), na.rm=TRUE)   
+   
+    
 
    #--------------- H2 min ------------
     # The key idea here is that allocating the col- & row-sums into the
@@ -67,3 +103,4 @@ function(web){
     
 }
 
+#H2fun(r2dtable(1, r=rowSums(Safariland), c=colSums(Safariland))[[1]])
