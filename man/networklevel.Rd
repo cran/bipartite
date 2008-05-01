@@ -27,8 +27,8 @@ networklevel(web, index="ALL", ISAmethod="Bluethgen", SAmethod = "Bluethgen",
   for low number of interactions (range -1 to 1); see Bascompte et al. (2006) and
   Blüthgen et al. (2007).}
   \item{SAmethod}{Which method to use to calculate the specification asymmetry: mean
-  of log-transformed dependences (\dQuote{log}) or Blüthgen's abunance-weighted mean
-  (\dQuote{Bluethgen}: default); see Blüthgen et al. (2007).}
+  of log-transformed dependencies (\dQuote{log}) or Blüthgen's abundance-weighted mean
+  (default); see Blüthgen et al. (2007).}
   \item{extinctmethod} {Specifies how species are removed from matrix: \dQuote{random}
   or \dQuote{abundance} (partial matching), where abundance removes species in the
   order of increasing abundance (i.e. rarest first); see Memmott et al. (2004).}
@@ -109,7 +109,7 @@ Tylianakis, J. M., Tscharntke, T. and Lewis, O. T. 2007 Habitat modification alt
 Watts, D. J. and Strogatz, S. 1998 Collective dynamics of \sQuote{small-world} networks. \emph{Nature} \bold{393}, 440--442
 }
 
-\author{ Carsten F. Dormann }
+\author{ Carsten F. Dormann \email{carsten.dormann@ufz.de}}
 
 \seealso{ Some functions are implemented separately: \code{\link{H2fun}}, \code{\link{second.extinct}}, \code{\link{degreedistr}}, \code{\link{C.score}} and \code{\link{V.ratio}}}
 

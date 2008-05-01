@@ -55,7 +55,7 @@ may lead to rather long runtimes!
 \examples{
 data(mosquin1967)
 null.t.test(mosquin1967, index=c("generality", "vulnerability",
-    "cluster coefficient", "H2", "ISA", "SA"), nrep=2, N=20)
+    "cluster coefficient", "H2", "ISA", "SA"), nrep=2, N=10)
 
 }
 \keyword{ package }

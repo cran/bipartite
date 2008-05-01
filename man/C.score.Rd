@@ -17,19 +17,25 @@ C.score(web, normalise = TRUE, FUN = mean, ...)
   \item{FUN}{ Function to use when summarising the C-scores for each pairwise comparison. Defaults to \code{mean}, but other useful functions could be \code{median} (because C-scores are rather skewed) or \code{hist} (for a nice graph). }
   \item{\dots}{ Options to be passed on to FUN, e.g. \option{na.rm=T} for matrices with many zeros and \option{normalise=TRUE}. }
 }
+
 \details{
  As a first step, any quantitative matrix is converted to a binary matrix of presences and absences.
 
  Then, the formula given in Stone and Roberts (1990) is calculated for all species combinations, by calling \code{designdist} from the package vegan. See code for details.
 }
+
 \value{
 Returns whatever the \option{FUN} produces as output. Default would be a single value, i.e.~the mean C-score of the web.
 }
+
 \references{ 
 Gotelli, N.J. and Rohde, K. 2002 Co-occurrence of ectoparasites of marine fishes: a null model analysis. \emph{Ecology Letters} \bold{5}, 86-94
+
 Stone, L. and Roberts, A. 1990 The checkerboard score and species distributions. \emph{Oecologia} \bold{85}, 74-79.
 }
+
 \author{ Carsten F. Dormann }
+
 \note{ 
 The normalisation uses the following logic: let A and B be the number of occurrences of each of the two
 species, respectively. Then J is the number of sites where both occur and P the total number of sites.

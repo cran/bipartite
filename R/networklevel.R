@@ -156,8 +156,10 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
 
     #---------------------------------------------------------------------------
     # Blüthgen's specialisation/non-conformity index
-    if ("H2" %in% index) H2 <- as.numeric(H2fun(web)[1]) #1.element is the standardised H2 prime
+    if ("H2" %in% index){
+        H2 <- as.numeric(H2fun(web)[1]) #1.element is the standardised H2 prime
         out$"H2"= ifelse(H2<0, 0, H2)
+    }
     #---------------------------------------------------------------------------
     # web asymmetry (Blüthgen et al. 2007, Fig. S2)
     if (any(c("SA", "ISA", "web asymmetry") %in% index)){
@@ -197,18 +199,20 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
         # either as Blüthgen et al: average weighted by number of interactions in the cell
         # or as mean of logarithms (since the dependencies follow a lognormal distribution)
 
-        di <- dfun(web)$dprime
-        dj <- dfun(t(web))$dprime
-        if (SAmethod=="log"){
-            lgmeani <- mean(log(di)); lgmeanj <- mean(log(dj))
-            SA <- (lgmeanj-lgmeani)/sum(lgmeani, lgmeanj)  # ij-sequence changed because log changes sequence, too
+        if ("SA" %in% index){
+          di <- dfun(web)$dprime
+          dj <- dfun(t(web))$dprime
+          if (SAmethod=="log"){
+              lgmeani <- mean(log(di)); lgmeanj <- mean(log(dj))
+              SA <- (lgmeanj-lgmeani)/sum(lgmeani, lgmeanj)  # ij-sequence changed because log changes sequence, too
+          }
+          if (SAmethod=="Bluethgen"){
+              wmeani <- sum(di*rowSums(web))/sum(web)
+              wmeanj <- sum(dj*colSums(web))/sum(web)
+              SA <- (wmeanj-wmeani)/sum(wmeani, wmeanj)
+          }
+          out$"specialisation asymmetry"=SA
         }
-        if (SAmethod=="Bluethgen"){
-            wmeani <- sum(di*rowSums(web))/sum(web)
-            wmeanj <- sum(dj*colSums(web))/sum(web)
-            SA <- (wmeanj-wmeani)/sum(wmeani, wmeanj)
-        }
-        out$"specialisation asymmetry"=SA
 
     }
     #----------------------------------------------------------------------------

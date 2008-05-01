@@ -23,8 +23,8 @@ specieslevel(web, index="ALL")
             \dQuote{d} for Blüthgen's d, \dQuote{species strength} as sum of dependencies,
             \dQuote{interaction} for interaction push/pull (our version of dependence
             asymmetry: see details), \dQuote{PSI} for pollination service index (or pollinator
-            support index, depending on the trophic level), or \dQuote{ALL}
-            for all the aforementioned (default).}
+            support index, depending on the trophic level), \dQuote{FS} for functional
+            specialisation index, or \dQuote{ALL} for all the aforementioned (default).}
 }
 \details{
 This function implements a variety of the many (and still procreating) indices describing
@@ -76,6 +76,9 @@ For both the \dQuote{higher trophic level} and the \dQuote{higher trophic level}
         It is a really cool measure, but it's not easy to get one's head around it. Alternatively, one can
         see it as the inverse of redundancy of the species for the web: the higher the value, the less
         redundant.}
+  \item{functional specialisation index}{Another measure of specialisation, based on the path length between any two 
+        higher-trophic level species. Species sharing hosts/prey have an FS-value of 1. See specific function
+        \code{\link{functspec}} for details, problems and reference.}
   \item{species degree}{Sum of interactions per species.}
   \item{dependence}{Web entry divided by column totals (for higher trophic level) or row totals (for lower
         trophic level). Expresses the proportion of interactions with each species, and sums to 1 for each.}
@@ -91,7 +94,7 @@ For both the \dQuote{higher trophic level} and the \dQuote{higher trophic level}
   Vázquez, D. P., Melián, C. J., Williams, N. M., Blüthgen N., Krasnov B. R. and Poulin R. 2007 Species abundance and asymmetric interaction   strength in ecological networks. \emph{Oikos} \bold{116}, 1120--1127.
 }
 
-\author{ Carsten F. Dormann }
+\author{ Carsten F. Dormann \email{carsten.dormann@ufz.de}}
 
 \note{
 Dependencies are still an open field of debate. Dependencies are calculated as the value in a matrix divided by

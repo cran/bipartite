@@ -1,19 +1,25 @@
 \encoding{latin1}
+
 \name{bipartite-package}
+
 \alias{bipartite-package}
+
 \alias{bipartite}
+
 \docType{package}
+
 \title{
 Analysis of bipartite ecological webs.
 }
+
 \description{
 Bipartite provides functions to viualise webs and calculate a series of indices commonly
 used to describe pattern in ecological webs. It focusses on webs consisting of only
 two trophic levels, e.g. pollination webs or predator-prey-webs. Visualisation is
 important to get an idea of what we are actually looking at, while the indices summarise
 different aspects of the webs topology.}
-\details{
 
+\details{
 We only had three types of bipartite webs in mind when writing this package: seed-disperser,
 plant-pollinator and predator-prey systems. In how far it makes sense to use these
 functionalities for other systems (or indeed for these systems) lies in the hands
@@ -46,8 +52,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 0.5\cr
-Date: \tab 2008-03-06\cr
+Version: \tab 0.6\cr
+Date: \tab 2008-05-01\cr
 License: \tab GPL \cr
 }
 

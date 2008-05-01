@@ -28,15 +28,19 @@ shuffle.web(web, N)
 }
 
 \references{
- There is no reference for this specific nullmodel. For a very nice and thorough overview of nullmodels in general see
+ This nullmodel can be thought of as a quantitative version of Fortuna & Bascompte (2006) \dQuote{null model 1}:
+
+ Fortuna, M. A., and J. Bascompte. 2006. Habitat loss and the structure of plant-animal mutualistic networks. Ecology Letters 9: 281-286.
+
+ For a very nice and thorough overview of nullmodels in general see:
 
  Gotelli, N. J., and G. R. Graves. 1996. Null Models in Ecology. Smithsonian Institution Press, Washington D.C.
  
  For nullmodels and their application to webs/networks see, e.g.:
 
- Vázquez, D. P., and M. A. Aizen. 2003. Null model analyses of specialization in plant-pollinator interactions. Ecology 84:2493-2501.
+ Vázquez, D. P., and M. A. Aizen. 2003. Null model analyses of specialization in plant-pollinator interactions. Ecology 84: 2493-2501.
 
- Vázquez, D. P., C. J. Melián, N. M. Williams, N. Blüthgen, B. R. Krasnov, and R. Poulin. 2007. Species abundance and asymmetric interaction strength in ecological networks. Oikos 116:1120-1127.
+ Vázquez, D. P., C. J. Melián, N. M. Williams, N. Blüthgen, B. R. Krasnov, and R. Poulin. 2007. Species abundance and asymmetric interaction strength in ecological networks. Oikos 116: 1120-1127.
 
 }
 

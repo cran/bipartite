@@ -26,7 +26,7 @@ function(web, index="ALL") {
     # m <- matrix(c(4,7,0,0,9,1,2,0,5), 3, byrow=TRUE)
 
     if (index=="ALL") index <- c("specs", "species degree", "dependence", "d", "species strength",
-              "interaction", "PSI", "niche overlap")
+              "interaction", "PSI", "niche overlap", "FS")
 #    out <- list("higher trophic level"=1, "lower trophic level"=1)
     out <- list()
 
@@ -81,6 +81,14 @@ function(web, index="ALL") {
         out$"higher trophic level"$"Pollination Service Index PSI" <- psi
         out$"lower trophic level"$"Pollinator Support Index PSI" <- PSI(t(web))
 
+    }
+    
+    #----------------------------------------------------------------------------
+    if ("FS" %in% index){
+#      require(sna) # which brings the function geodist used in functspec
+      FS <- functspec(web)
+      out$"higher trophic level"$"functional specialisation index"=FS$higher
+      out$"lower trophic level"$"functional specialisation index"=FS$lower
     }
 
     #----------------------------------------------------------------------------

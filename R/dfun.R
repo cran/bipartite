@@ -62,12 +62,18 @@ function(web, abundances=NULL){
       if ((length(emptycols)+length(emptyrows))>restuse) warning("There are more empty cols/rows than spare interactions.")
       difexp <- exexpec-expec               #use for allocation ranking
       # put 1s into empty cols/rows (to keep the same number of species as in web):
-      replaceindexC <- apply(as.matrix(difexp[,emptycols]), 2, which.max)
-      expec[replaceindexC, emptycols] <- 1
-      replaceindexR <- apply(as.matrix(difexp[emptyrows,]), 1, which.max)
-      expec[emptyrows, replaceindexR] <- 1
-      restuse <- sum(web) - sum(expec)  #number of interactions left to allocate
-      difexp <- exexpec-expec               #use for allocation ranking
+      #PROBLEM: when all entries are identical, the first column will always be selected!
+      #SOLUTION: start with empty matrix, not with one already containing values.
+      #This problem will only occur in binary matrices, particularly those manually created.
+      #Changes from version 0.5 should not make any difference for analysis of the 19 webs provided.
+      #In function H2fun this was implemented since the beginning!
+      #
+      #replaceindexC <- apply(as.matrix(difexp[,emptycols]), 2, which.max) 
+      #expec[replaceindexC, emptycols] <- 1
+      #replaceindexR <- apply(as.matrix(difexp[emptyrows,]), 1, which.max)
+      #expec[emptyrows, replaceindexR] <- 1
+      #restuse <- sum(web) - sum(expec)  #number of interactions left to allocate
+      #difexp <- exexpec-expec               #use for allocation ranking
 #      if (restuse>0) {
 #          # this is not very elegant: it now allocates more interactions than it
 #          # actually has (but at least returns a warning)
