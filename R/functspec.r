@@ -1,6 +1,6 @@
 require(sna)
 
-functspec <- function(web, quantitative=FALSE, inf.replace=NA){
+functspec <- function(web, inf.replace=NA){
   # an index to describe the functional specialisation of pollinators
   # proposed by Dalgaard et al. 2008 in Oikos
   # this is a purely qualitative measure at present, but could be extended to a
@@ -40,14 +40,13 @@ functspec <- function(web, quantitative=FALSE, inf.replace=NA){
   # whose value hence is: (n-k)+1
   # This is NOT right. I don't know how to calculate maximum specialisation...
 
-  if (quantitative) {  # the quantitative version according to CFD
-    # here the "solution" for compartments is to replace infinite path lengths by max.length+1
-    dquant <- geodist(g, inf.replace=inf.replace)$gdist
-    dquant[is.infinite(dquant)] <- max(dquant[!is.infinite(dquant)])+1
-    FSlower <- sapply(1:rr, function(x) meanwithoutself(d[x, 1:rr], w=dquant[x, 1:rr]))
-    FShigher <- sapply((rr+1):(rr+cc), function(x) meanwithoutself(d[x, (rr+1):(rr+cc)], w=dquant[x, (rr+1):(rr+cc)]))
-  }
-
+#  if (quantitative) {  # the quantitative version according to CFD
+#    # here the "solution" for compartments is to replace infinite path lengths by max.length+1
+#    dquant <- geodist(g, inf.replace=inf.replace)$gdist
+#    dquant[is.infinite(dquant)] <- max(dquant[!is.infinite(dquant)])+1
+#    FSlower <- sapply(1:rr, function(x) meanwithoutself(d[x, 1:rr], w=dquant[x, 1:rr]))
+#    FShigher <- sapply((rr+1):(rr+cc), function(x) meanwithoutself(d[x, (rr+1):(rr+cc)], w=1/dquant[x, (rr+1):(rr+cc)]))
+#  }
 
   names(FSlower) <- rownames(web)
   names(FShigher) <- colnames(web)

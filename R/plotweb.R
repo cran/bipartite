@@ -5,6 +5,7 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
     lablength = NULL, sequence=NULL)
 {
   if (empty) web <- empty(web) else method <- "normal"
+  web<-as.matrix(web) # to convert data.frames into matrix: needed for cumsum
 
   meths <- c("normal", "cca")
   meths.match <- pmatch(method, meths)

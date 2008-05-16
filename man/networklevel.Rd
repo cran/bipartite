@@ -18,9 +18,9 @@ networklevel(web, index="ALL", ISAmethod="Bluethgen", SAmethod = "Bluethgen",
   \dQuote{links per species}, \dQuote{connectance}, \dQuote{linkage density},\dQuote{web asymmetry},
   \dQuote{number of compartments}, \dQuote{generality},\dQuote{vulnerability},
   \dQuote{interaction evenness},\dQuote{compartment diversity}, \dQuote{cluster coefficient},
-  \dQuote{H2},\dQuote{ISA},\dQuote{SA},\dQuote{extinction slope},
+  \dQuote{H2},\dQuote{ISA},\dQuote{SA},\dQuote{extinction slope}, \dQuote{degreedistribution},
   \dQuote{niche overlap}, \dQuote{mean number of shared hosts}, \dQuote{togetherness},
-  \dQuote{C-score}, \dQuote{V-ratio}. \dQuote{ALL} (default) calculates all indices.}
+  \dQuote{C-score}, \dQuote{V-ratio}, \dQuote{nestedness}. \dQuote{ALL} (default) calculates all indices.}
   \item{ISAmethod}{Method to use for calculating interaction strength (= dependence)
   asymmetry; original by \dQuote{Bascompte}  is biased for singletons and few interactions
   (range 0 to infty); \dQuote{Bluethgen} (default) excludes singletons and corrects
