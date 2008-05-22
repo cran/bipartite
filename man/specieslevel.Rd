@@ -87,19 +87,26 @@ For both the \dQuote{higher trophic level} and the \dQuote{higher trophic level}
 }
 
 \references{
-  Bascompte, J., Jordano, P. and Olesen, J. M. (2006) Asymmetric coevolutionary networks facilitate biodiversity maintenance. \emph{Science} \bold{312}, 431--433
+  Bascompte, J., Jordano, P. and Olesen, J. M. 2006 Asymmetric coevolutionary networks facilitate biodiversity maintenance. \emph{Science} \bold{312}, 431--433.
 
-  Blüthgen, N., Menzel, F. and Blüthgen, N. (2006) Measuring specialization in species interaction networks. \emph{BMC Ecology} \bold{6}, 9
+  Blüthgen, N., Menzel, F. and Blüthgen, N. 2006 Measuring specialization in species interaction networks. \emph{BMC Ecology} \bold{6}, 9.
 
-  Vázquez, D. P., Melián, C. J., Williams, N. M., Blüthgen N., Krasnov B. R. and Poulin, R. (2007) Species abundance and asymmetric interaction strength in ecological networks. \emph{Oikos} \bold{116}, 1120--1127
+  Vázquez, D. P., Melián, C. J., Williams, N. M., Blüthgen N., Krasnov B. R. and Poulin R. 2007 Species abundance and asymmetric interaction   strength in ecological networks. \emph{Oikos} \bold{116}, 1120--1127.
 }
 
 \author{ Carsten F. Dormann \email{carsten.dormann@ufz.de}}
 
 \note{
-Dependencies are still an open field of debate. Dependencies are calculated as the value in a matrix divided by the \code{rowSums} (for the lower trophic level) or the \code{colSums} (for the higher trophic level). As such, any pollinator observed only once will receive a dependency-value of 1, indicating perfect dependence on this plant species. That may or may not be true. In any case it is based on a sample size of 1, that is why the dependency asymmetry (which is based on the dependencies for both trophic levels) has come under criticism and may be rather sensitive to singletons.
+Dependencies are still an open field of debate. Dependencies are calculated as the value in a matrix divided by
+the \code{rowSums} (for the lower trophic level) or the \code{colSums} (for the higher trophic level). As such, any
+pollinator observed only once will receive a dependency-value of 1, indicating perfect dependence on this plant
+species. That may or may not be true. In any case it is based on a sample size of 1, that is why the dependency
+asymmetry (which is based on the dependencies for both trophic levels) has come under criticism and may be rather
+sensitive to singletons.
 
-We here provide the code to calculate the strength of a species (i.e. sum of its dependencies), based on the current proposal by Bascompte et al. (2006). It may be a good idea to remove all singletons from the web before calculating this index, to investigate whether it is indeed driven by those scarce observations.
+We here provide the code to calculate the strength of a species (i.e. sum of its dependencies), based on the current
+proposal by Bascompte et al. (2006). It may be a good idea to remove all singletons from the web before calculating this
+index, to investigate whether it is indeed driven by those scarce observations.
 }
 
 \seealso{ \code{\link{networklevel}} for some further comments; \code{\link{dfun}}, which is called by this function }

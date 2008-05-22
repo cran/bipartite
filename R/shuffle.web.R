@@ -31,7 +31,7 @@ function(web, N){
       }
       if (dimdiff > 0){
           for (j in 1:abs(dimdiff)){
-           out[rowindex[j], colposition[j]] <- shuf[nozero.index[(length(diag(web))+j)]]
+           out[rowindex[i], colposition[i]] <- shuf[nozero.index[(length(diag(web))+i)]]
           }
       }
     

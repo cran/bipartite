@@ -18,7 +18,7 @@ The authors recorded their data by counting the number of individual flower visi
 \format{
 }
 \references{
-Barrett, S. C. H. and Helenurm, K. (1987) The Reproductive-Biology Of Boreal Forest Herbs. 1. Breeding Systems And Pollination. \emph{Canadian Journal Of Botany-Revue Canadienne De Botanique} \bold{65}, 2036--2046
+Barrett, S. C. H. and Helenurm, K. 1987 The Reproductive-Biology Of Boreal Forest Herbs.1. Breeding Systems And Pollination. \emph{Canadian Journal Of Botany-Revue Canadienne De Botanique} \bold{65}, 2036--2046.
 }
 \examples{
 data(barrett1987)

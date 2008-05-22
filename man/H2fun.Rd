@@ -40,7 +40,7 @@ H2fun(web)
 }
 
 \references{ 
-Blüthgen, N., Menzel, F. and Blüthgen, N. (2006) Measuring specialization in species
+Blüthgen, N., Menzel, F. and Blüthgen, N. 2006 Measuring specialization in species
 interaction networks. \emph{BMC Ecology} \bold{6}, 9
 
  }

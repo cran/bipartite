@@ -28,7 +28,7 @@ as.one.mode(web, fill = 0)
   bipartite representation into a one-mode-representation, filling the unobserved type of interactions (
   i.e. plants with plants and pollinators with pollinators) with 0 (unless you specify it differently in \option{fill}).
 
-  The lower trophic level (e.g. plants or rows) is listed first, then the higher trophic level (e.g. pollinators or columns). 
+  The lower trophic level (e.g.~plants or rows) is listed first, then the higher trophic level (e.g.~pollinators or columns). 
   Hence, pollinator 2 becomes species number r+2, where r is the number of rows of the network matrix.
   
   The benefit of this conversion is access to the wonderful R-package Social Network Analysis (\pkg{sna}), 

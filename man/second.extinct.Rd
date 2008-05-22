@@ -61,7 +61,7 @@ or plant).
 }
 
 \references{
-Memmott, J., Waser, N. M. and Price, M. V. (2004) Tolerance of pollination networks
+Memmott, J., Waser, N. M. and Price, M. V. 2004 Tolerance of pollination networks
 to species extinctions. \emph{Proceedings of the Royal Society b} \bold{271}, 2605--2611.
  }
 

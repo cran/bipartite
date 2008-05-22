@@ -1,19 +1,19 @@
 `networklevel` <-
 function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctmethod="r",
     nrep=100, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn",
-    normalise=TRUE, nest.weighted=FALSE, empty.web=TRUE){
+    normalise=TRUE){
     ##
     ## web         interaction matrix, with lower trophic level in rows, higher in columns
     ##
-    if(empty.web) {web <- empty(web)}
-    web.e <- empty(web) # emptied web for some indices 
-    if (nrow(web) < 2 | ncol(web) <2) warning("Web is really too small to calculate any reasonable index. You will get the values nonetheless, but I wouldn't put any faith in them!")
+    web <- empty(web)
+    if (nrow(web) < 2 | ncol(web) <2) stop("Web is too small to calculate any reasonable index.")
 
     if (any(index %in% "ALL")) index <- c("number of species", "links per species",
           "connectance", "linkage density", "web asymmetry",
           "number of compartments", "generality", "vulnerability", "interaction evenness",
           "compartment diversity", "cluster coefficient", "H2", "ISA", "SA",
-          "extinction slope", "degreedistribution", "niche overlap", "mean number of shared hosts",  "C-score", "togetherness", "V-ratio", "nestedness", "nestedness.corso", "discrepancy")
+          "extinction slope", "degreedistribution", "niche overlap", "mean number of shared hosts", 
+          "C-score", "togetherness", "V-ratio", "nestedness")
     out <- list()
 
     # set up enough panals for plotting:
@@ -66,12 +66,11 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
         # linkage density
         LD_q <- 0.5*(V+G)
         if ("linkage density" %in% index) out$"linkage density"=LD_q
-        #LD_qs <- LD_q/(NROW(web)+NCOL(web)) # "weighted food web connectance", according to Jason's appendix
+        #LD_qs <- LD_q/(NROW(web)+NCOL(web)) # according to Jason's text
         # interaction evenness
         p_i.mat <- web/sum(web)
-        SH <- -sum(p_i.mat*log(p_i.mat), na.rm=TRUE)
-        IE <- SH/log(prod(dim(web))) #log(sum(web>0))
-        
+        IE <- -sum(p_i.mat*log2(p_i.mat), na.rm=TRUE)/log2(sum(web!=0))
+
         evenness <- function(web){
             # calculates evenness of the numbers of individuals of different species in
             # a community, NOT according to formula in Müller et al. 1999, J. Anim. Ecol,
@@ -83,7 +82,6 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
 
         E <- evenness(web)
         if ("interaction evenness" %in% index){
-            out$"Shannon diversity" <- SH
             out$"interaction evenness"=IE
             out$"Alatalo interaction evenness"=E
         }
@@ -108,7 +106,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
           CD
         }
        
-        comps <- compart(web.e)
+        comps <- compart(web)
         if (class(comps)=="try-error") {
             ncompart <- compdiv <- NA
         } else  {
@@ -170,15 +168,10 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
 
         #----------------------------------------------------------------------------
         # Dependence asymmetry (Bascompte et al. 2006; Blüthgen et al. 2007, Fig. S2)
-        depL <- web.e/matrix(rowSums(web.e), nrow=NROW(web.e), ncol=NCOL(web.e), byrow=FALSE)
-        depH <- web.e/matrix(colSums(web.e), nrow=NROW(web.e), ncol=NCOL(web.e), byrow=TRUE)
+        depL <- web/matrix(rowSums(web), nrow=NROW(web), ncol=NCOL(web), byrow=FALSE)
+        depH <- web/matrix(colSums(web), nrow=NROW(web), ncol=NCOL(web), byrow=TRUE)
 
-        if (ISAmethod=="Bascompte" & "ISA" %in% index) {
-            depMax <- depL
-            greaterindex <- depL < depH
-            depMax[greaterindex] <- depH[greaterindex]
-            out$"dependence asymmetry"=mean(abs(depL-depH)/depMax, na.rm=TRUE)
-        }
+        if (ISAmethod=="Bascompte" & "ISA" %in% index)  out$"dependence asymmetry"=mean(abs(depL-depH)/max(depL, depH))
         if (ISAmethod=="Bluethgen" & "ISA" %in% index) {
             web2 <- web
             # delete cells for species encountered only once:
@@ -207,16 +200,16 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
         # or as mean of logarithms (since the dependencies follow a lognormal distribution)
 
         if ("SA" %in% index){
-          di <- dfun(web)$dprime  # plants
-          dj <- dfun(t(web))$dprime # pollinators
+          di <- dfun(web)$dprime
+          dj <- dfun(t(web))$dprime
           if (SAmethod=="log"){
-              lgmeani <- mean(log(di[di>0])); lgmeanj <- mean(log(dj[dj>0]))
+              lgmeani <- mean(log(di)); lgmeanj <- mean(log(dj))
               SA <- (lgmeanj-lgmeani)/sum(lgmeani, lgmeanj)  # ij-sequence changed because log changes sequence, too
           }
           if (SAmethod=="Bluethgen"){
-              wmeani <- sum(di*rowSums(web.e))/sum(web.e)
-              wmeanj <- sum(dj*colSums(web.e))/sum(web.e)
-              SA <- (wmeanj-wmeani)/sum(wmeani, wmeanj) # positive values indicate more specialisation in the higher trophic level
+              wmeani <- sum(di*rowSums(web))/sum(web)
+              wmeanj <- sum(dj*colSums(web))/sum(web)
+              SA <- (wmeanj-wmeani)/sum(wmeani, wmeanj)
           }
           out$"specialisation asymmetry"=SA
         }
@@ -237,11 +230,8 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
     #----------------------------------------------------------------------------
     # degree distribution fits:
     if ("degreedistribution" %in% index){
-        dd <- try(degreedistr(web.e, plot.it=plot.it.dd, pure.call=FALSE))
-        if (class(dd)=="try-error"){
-          dd$"lower trophic level dd fits" <- NA
-          dd$"higher trophic level dd fits" <- NA
-        }
+        dd <- try(degreedistr(web, plot.it=plot.it.dd, pure.call=FALSE))
+
         out$"degree distribution lower trophic level"=dd$"lower trophic level dd fits"
         out$"degree distribution higher trophic level"=dd$"higher trophic level dd fits"
 
@@ -253,8 +243,8 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
     # to calculate dissimilarity between higher level species; similarity is simply
     # 1-dissimilarity:
     if ("niche overlap" %in% index) {
-      NOhigher <- mean(1-vegdist(t(web.e), method=dist))
-      NOlower <- mean(1-vegdist(web.e, method=dist))
+      NOhigher <- mean(1-vegdist(t(web), method=dist))
+      NOlower <- mean(1-vegdist(web, method=dist))
       out$"higher trophic level niche overlap" <- NOhigher
       out$"lower trophic level niche overlap" <- NOlower
     }
@@ -284,20 +274,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
 
     #-------------------
     if ("nestedness" %in% index){
-      nest <- try(nestedtemp(web)$statistic)
-      out$nestedness <- ifelse(class(nest)=="try-error", NA, nest)
-      # a fast implementation of nestedness by Jari Oksanen
-      #nestedness(web, null.models=FALSE)$temperature
-    }
-
-    #-------------------
-    if ("nestedness.corso" %in% index){
-      out$nestedness <- nestedness.corso(web.e, weighted=nest.weighted)
-    }
-
-    #-------------------
-    if ("discrepancy" %in% index){
-      out$discrepancy <- unname(discrepancy(web))
+      out$nestedness <- nestedness(web, null.models=FALSE)$temperature
     }
 
     return(out)

@@ -20,7 +20,7 @@ See also \url{http://www.nceas.ucsb.edu/interactionweb/html/datasets.html}
 }
 
 \references{
-  Elberling H. and Olesen J.M. (1999) The structure of a high latitude plant-flower visitor system: the dominance of flies. \emph{Ecography} \bold{22}, 314--323
+  Elberling H. & Olesen J.M. (1999) The structure of a high latitude plant-flower visitor system: the dominance of flies. Ecography, 22, 314-323
 
 }
 \examples{

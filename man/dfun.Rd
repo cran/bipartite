@@ -14,7 +14,7 @@ dfun(web, abundances=NULL)
 
 \arguments{
   \item{web}{ Web is a matrix representing the interactions observed between higher trophic level species (columns) and lower trophic level species (rows). Usually this will be number of pollinators on each species of plants or number of parasitoids on each species of prey.}
-  \item{abundances}{A vector of abundances for the HIGHER trophic level, usually from additional information. If none is given (default) marginal sums are used.}
+  \item{abundances}{A vector of abundances for the higher trophic level, usually from additional information. If none is given (default) marginal sums are used.}
 }
 
 \details{
@@ -41,7 +41,7 @@ The \code{abundances} vector allows to incorporate independent estimates of the 
 }
 
 \references{ 
-Blüthgen, N., Menzel, F. and Blüthgen, N. (2006) Measuring specialization in species interaction networks. \emph{BMC Ecology} \bold{6}, 12
+Blüthgen, N., Menzel, F. and Blüthgen, N. 2006 Measuring specialization in species interaction networks. \emph{BMC Ecology} \bold{6}, 12
  }
 
 \author{Carsten F. Dormann and Jochen Fründ}

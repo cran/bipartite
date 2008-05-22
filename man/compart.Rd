@@ -26,7 +26,7 @@ Returns a list with two entries:
   \item{ncompart}{The number of compartments.}
 }
 \references{
-Lewinsohn, T. M., P. I. Prado, P. Jordano, J. Bascompte, and J. M. Olesen (2006) Structure in plant-animal interaction assemblages. \emph{Oikos} \bold{113}, 174--184
+Lewinsohn, T. M., P. I. Prado, P. Jordano, J. Bascompte, and J. M. Olesen. 2006. Structure in plant-animal interaction assemblages. \emph{Oikos} \bold{113}, 174--184
 }
 \author{ Carsten F. Dormann <carsten.dormann@ufz.de> }
 \seealso{ See also \code{\link{networklevel}}, \code{distconnected} and \code{cca}. }

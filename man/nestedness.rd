@@ -8,8 +8,7 @@
 by calling a tweaked version of the C++ program binmatnest. For a full description what it does please refer to the paper of Miguel. In principle nestedness temperature is calculated by using a line of perfect order (using a genetic algorithm) to determine the reordering of rows and columns that leads to minimum matrix temperature of given size and fills. The deviation from this minimun temperature is the matrix temperature. In addition nestedness uses there different null models to check for statistical significance of the matrix temperature.}
 
 \usage{
-nestedness(m, null.models = TRUE, n.nulls = 100, popsize = 30, n.ind = 7, 
-n.gen = 2000, binmatnestout=FALSE)
+nestedness(m, null.models = TRUE, n.nulls = 100, popsize = 30, n.ind = 7, n.gen = 2000, binmatnestout=FALSE)
 }
 
 \arguments{
@@ -45,11 +44,8 @@ Rodríguez-Gironés M.A., and Santamaría L. 2006. A new algorithm to calculate the
 
 \author{Bernd Gruber, based on C++-code by Miguel Rodríguez-Gironés.}
 
-\note{ Make sure matrix \code{m} is valid, as error proofing in the C++ function does not fully work, and therefore it is possible that R may crash when using strange types of matrices, such as matrices with only one entry.
-
-Also, while this function returns exactly the same values as binmatnest, there seems to be the occassional glitch in the software, in that in unexplicable circumstances the matrix is inverted before calculating nestedness. We are currently trying to find the cause of this problem. Sorry!
-
-In the meantime, use \code{nestedtemp} in \pkg{vegan} (as we do in \code{networklevel})!
+\note{ Make sure matrix \code{m} is valid, as error proofing in the C++ function does not fully work,
+and therefore it is possible that R may crash when using strange types of matrices, such as matrices with only one entry.
 }
 
 \examples{

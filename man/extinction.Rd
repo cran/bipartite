@@ -2,10 +2,10 @@
 
 \alias{extinction}
 
-\title{ Simulates extinction of a species from a bipartite network }
+\title{ Simulates extinction of a species from a bipartite network. }
 
 \description{
-  Following (how I remember) the paper of Memmott et al. (2004), this function deletes a column (e.g. pollinator) or row (e.g. plant). Only a helper function for \code{\link{second.extinct}}, really.
+  Following (how I remember) the paper of Memmott et al. (2004), this function deletes a column (e.g.~pollinator) or row (e.g.~plant). Only a helper function for \code{\link{second.extinct}}, really.
 }
 
 \usage{
