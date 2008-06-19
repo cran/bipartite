@@ -66,10 +66,10 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
         # linkage density
         LD_q <- 0.5*(V+G)
         if ("linkage density" %in% index) out$"linkage density"=LD_q
-        #LD_qs <- LD_q/(NROW(web)+NCOL(web)) # according to Jason's text
+        #LD_qs <- LD_q/(NROW(web)+NCOL(web)) # "weighted food web connectance", according to Jason's appendix
         # interaction evenness
         p_i.mat <- web/sum(web)
-        IE <- -sum(p_i.mat*log2(p_i.mat), na.rm=TRUE)/log2(sum(web!=0))
+        IE <- -sum(p_i.mat*log(p_i.mat), na.rm=TRUE)/log(prod(dim(web)))
 
         evenness <- function(web){
             # calculates evenness of the numbers of individuals of different species in

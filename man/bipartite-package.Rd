@@ -52,8 +52,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 0.72\cr
-Date: \tab 2008-05-22\cr
+Version: \tab 0.73\cr
+Date: \tab 2008-06-19\cr
 License: \tab GPL \cr
 }
 

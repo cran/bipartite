@@ -1,7 +1,7 @@
 \name{plotweb}
 \alias{plotweb}
 
-\title{Visualize a bipartite interaction matrix (e.g.~a foodweb)}
+\title{Visualize a bipartite interaction matrix (e.g. a foodweb)}
 \description{
 A two dimensional matrix is plotted as a bipartite graph.
 }

@@ -69,49 +69,57 @@ function (web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1, plotsi
 
         ## labels on x-axis (prednames)
         pnl<-0
-        if (prednames){
-        for (ii in 1:n.pred){
-          s <- colnames(web)[ii]
-          if (!is.null(s)){
-            pop <- regexpr("_", s)
-            if (pop>0){
-                cn <- paste(c(substr(s, 1, min(pop-1,9)), "\n",
-                    substr(s, pop+1, pop+9)), sep="", collapse="")
-            } else {
-                  if (!is.null(pred.lablength)){
+    if (prednames && !is.null(colnames(web))) {
+        for (ii in 1:n.pred) {
+            s <- colnames(web)[ii]
+            if (!is.null(s)) {
+                pop <- regexpr("_", s)
+                if (pop > 0) {
+                  cn <- paste(c(substr(s, 1, min(pop - 1, 9)),
+                    "\n", substr(s, pop + 1, pop + 9)), sep = "",
+                    collapse = "")
+                }
+                else {
+                  if (!is.null(pred.lablength)) {
                     cn <- substr(s, 1, pred.lablength)
-                  } else { cn <- s }
+                  }
+                  else {
+                    cn <- s
+                  }
+                }
+                pnl[ii] <- cn
             }
-            #mtext(cn, side=1, at=c(ii-0.5), cex=0.6*labsize*clratio, las=las )
-            pnl[ii]<-cn
-            }
-          }
         }
-        axis(1,(1:n.pred)-0.5,labels=pnl,tick=FALSE, mgp=c(0,0,0),las=2,cex.axis=0.4*labsize*clratio)
-        ## labels on y-axis (preynames)
-        ynl<-0
-        if (preynames){
-        for (i in 1:n.prey){
-          s <- rownames(web)[n.prey-i+1]
-          if (!is.null(s))
-            {
-            pop <- regexpr("_",s)
-            if (pop>0){
-                cr <- paste(c(substr(s,1,min(pop-1,9)),"\n", substr(s,pop+1,pop+9)),
-                  sep="",collapse="")
-            } else {
-                if (!is.null(prey.lablength)){
-                    cr <- substr(s,1,prey.lablength)
-                } else  {  cr <- s }
-            }
 
-            #mtext(cr, side=2, at=c(i-0.5), cex=0.6*labsize*clratio, las=las)# -0.5
-            ynl[i]<-cr
+    axis(1, (1:n.pred) - 0.5, labels = pnl, tick = FALSE, mgp = c(0,
+        0, 0), las = 2, cex.axis = 0.4 * labsize * clratio)
+    }
+    ynl <- 0
+    if (preynames  && !is.null(rownames(web))) {
+        for (i in 1:n.prey) {
+            s <- rownames(web)[n.prey - i + 1]
+            if (!is.null(s)) {
+                pop <- regexpr("_", s)
+                if (pop > 0) {
+                  cr <- paste(c(substr(s, 1, min(pop - 1, 9)),
+                    "\n", substr(s, pop + 1, pop + 9)), sep = "",
+                    collapse = "")
+                }
+                else {
+                  if (!is.null(prey.lablength)) {
+                    cr <- substr(s, 1, prey.lablength)
+                  }
+                  else {
+                    cr <- s
+                  }
+                }
+                ynl[i] <- cr
             }
-          }
         }
-        axis(2,(1:n.prey)-0.5,labels=ynl,tick=FALSE, mgp=c(0,0,0), las=2,cex.axis=0.4*labsize*clratio)
 
+    axis(2, (1:n.prey) - 0.5, labels = ynl, tick = FALSE, mgp = c(0,
+        0, 0), las = 2, cex.axis = 0.4 * labsize * clratio)
+    }
             ### Crossfunktion für calculation of compartments ....
             cross = function(web,start,comp) {
                 n.r=nrow(web)

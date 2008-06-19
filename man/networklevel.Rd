@@ -60,7 +60,7 @@ Depending on the selected indices, some or all of the below:
   \item{number of compartments}{Compartments are sub-sets of the web which are not connected (through either higher or lower trophic level) to another compartment. Mathematically, they are Jordan blocks, but this implementation is rule-based (and fast). They are also nicely visualised in the \code{\link{visweb}} function.}
   \item{generality}{Effective mean number of prey per predator; see Tylianakis et al. (2007).}
   \item{vulnerability}{Effective mean number of predator per prey; see Tylianakis et al. (2007).}
-  \item{interaction evenness}{Shannon's evenness for the web entries, treating zeros as no data.}
+  \item{interaction evenness}{Shannon's evenness for the web entries, treating zeros as real data.}
   \item{Alatalo interaction evenness}{A different measure for web entry evenness, as proposed by Müller et al. (1999). }
   \item{compartment diversity C.D.}{Shannon's diversity index across compartment sizes (i.e. number of participants); see Tylianakis et al. (2007).}
   \item{cluster coefficient}{The CC for a network is the average CC of its members. CC for each node, in turn, is simply the number of realised links devided by the number of possible links. Introduced by Watts \& Strogatz (1998) and described in Wikipedia under \url{http://en.wikipedia.org/w/index.php?title=Clustering_coefficient}.}
