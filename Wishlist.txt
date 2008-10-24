@@ -27,6 +27,3 @@ Error in `[.data.frame`(cumsum(web), (j - 1) * nrow(web) + (i - 1)) :
 
 * second.extinct: allow for an index-vector to be passed to specify extinction sequence
 
-
-
-* visweb works now fine with no col/rownames...

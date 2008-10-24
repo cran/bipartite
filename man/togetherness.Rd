@@ -25,7 +25,7 @@ togetherness(web, normalise=TRUE, FUN = mean, ...)
   Returns the average (default) togetherness of all species combinations.   
 }
 \references{ 
-Stone, L. and Roberts, A. 1992 Competitive exclusion, or species aggregation? An aid in deciding. \emph{Oecologia} \bold{91}, 419--424
+Stone, L. and Roberts, A. (1992) Competitive exclusion, or species aggregation? An aid in deciding. \emph{Oecologia} \bold{91}, 419--424
 
 }
 \author{ Carsten F. Dormann}

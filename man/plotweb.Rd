@@ -1,3 +1,4 @@
+\encoding{latin1}
 \name{plotweb}
 \alias{plotweb}
 
@@ -9,7 +10,8 @@ A two dimensional matrix is plotted as a bipartite graph.
 plotweb(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
     y_width = 0.1, spacing = 0.05, arrow="no", col.interaction="grey80",
     col.pred = "grey10", col.prey="grey10", lab.space=1,
-    lablength = NULL, sequence=NULL)
+    lablength = NULL, sequence=NULL, low.abun=NULL, low.abun.col="green", 
+    high.abun=NULL, high.abun.col="red")
 }
 
 \arguments{
@@ -27,12 +29,16 @@ plotweb(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
   \item{lab.space}{sometimes it is neccessary to add additional space for labels below und above of the boxes, so all labes are shown, default is 1.}
   \item{lablength}{number of characters of labels that should be plotted. If zero no labels are shown, default is NULL which plots the complete labels.}
   \item{sequence}{list of two with two names vectors: \code{seq.pred} and \code{seq.prey}, which specify the order in which species are plotted. Cannot be set for \option{method="cca"}. Defaults to \code{NULL}, where the sequence remains as given or is determined by the CCA internally.}
+  \item{low.abun}{Vector with independent abundance estimates for the lower trophic level, NULL if none exists.}
+  \item{low.abun.col}{Colour for depicting the abundance estimates for the lower trophic level; defaults to green.}
+  \item{high.abun}{Vector with independent abundance estimates for the higher trophic level, NULL if none exists.}
+  \item{high.abun.col}{Colour for depicting the abundance estimates for the lower trophic level; defaults to red.}
 }
 \value{
   Returns a window with a bipartite graph of a foodweb.
 }
 \references{
-Tylianakis, J. M., Tscharntke, T. and Lewis, O. T. 2007 Habitat modification alters the structure of tropical host-parasitoid food webs. \emph{Nature} \bold{445}, 202--205
+Tylianakis, J. M., Tscharntke, T. and Lewis, O. T. (2007) Habitat modification alters the structure of tropical host-parasitoid food webs. \emph{Nature} \bold{445}, 202--205
  }
 \author{ Bernd Gruber \email{bernd.gruber@ufz.de} }
 

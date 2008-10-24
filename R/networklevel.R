@@ -1,19 +1,18 @@
 `networklevel` <-
 function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctmethod="r",
     nrep=100, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn",
-    normalise=TRUE){
+    normalise=TRUE, nest.weighted=FALSE){
     ##
     ## web         interaction matrix, with lower trophic level in rows, higher in columns
     ##
     web <- empty(web)
-    if (nrow(web) < 2 | ncol(web) <2) stop("Web is too small to calculate any reasonable index.")
+    if (nrow(web) < 2 | ncol(web) <2) warning("Web is really too small to calculate any reasonable index. You will get the values nonetheless, but I wouldn't put much faith in them!")
 
     if (any(index %in% "ALL")) index <- c("number of species", "links per species",
           "connectance", "linkage density", "web asymmetry",
           "number of compartments", "generality", "vulnerability", "interaction evenness",
           "compartment diversity", "cluster coefficient", "H2", "ISA", "SA",
-          "extinction slope", "degreedistribution", "niche overlap", "mean number of shared hosts", 
-          "C-score", "togetherness", "V-ratio", "nestedness")
+          "extinction slope", "degreedistribution", "niche overlap", "mean number of shared hosts",  "C-score", "togetherness", "V-ratio", "nestedness", "nestedness.corso", "discrepancy")
     out <- list()
 
     # set up enough panals for plotting:
@@ -171,7 +170,12 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
         depL <- web/matrix(rowSums(web), nrow=NROW(web), ncol=NCOL(web), byrow=FALSE)
         depH <- web/matrix(colSums(web), nrow=NROW(web), ncol=NCOL(web), byrow=TRUE)
 
-        if (ISAmethod=="Bascompte" & "ISA" %in% index)  out$"dependence asymmetry"=mean(abs(depL-depH)/max(depL, depH))
+        if (ISAmethod=="Bascompte" & "ISA" %in% index) {
+            depMax <- depL
+            greaterindex <- depL < depH
+            depMax[greaterindex] <- depH[greaterindex]
+            out$"dependence asymmetry"=mean(abs(depL-depH)/depMax, na.rm=TRUE)
+        }
         if (ISAmethod=="Bluethgen" & "ISA" %in% index) {
             web2 <- web
             # delete cells for species encountered only once:
@@ -274,7 +278,20 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
 
     #-------------------
     if ("nestedness" %in% index){
-      out$nestedness <- nestedness(web, null.models=FALSE)$temperature
+      nest <- try(nestedtemp(web)$statistic)
+      out$nestedness <- ifelse(class(nest)=="try-error", NA, nest)
+      # a fast implementation of nestedness by Jari Oksanen
+      #nestedness(web, null.models=FALSE)$temperature
+    }
+
+    #-------------------
+    if ("nestedness.corso" %in% index){
+      out$nestedness <- nestedness.corso(web, weighted=nest.weighted)
+    }
+
+    #-------------------
+    if ("discrepancy" %in% index){
+      out$discrepancy <- unname(discrepancy(web))
     }
 
     return(out)

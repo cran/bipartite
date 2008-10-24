@@ -24,13 +24,16 @@ functspec <- function(web, inf.replace=NA){
     # helper function to calculate the mean path length without the path from a vertex to itself
     # di is a vector of path lengths take from the geodist-matrix
     # the 0 in this vector receives a weight of 0
+    
+    # divide by two! (Fig. 1c shows that they want the two steps (pollinator to plant than on to next pollinator) as one step.
+     
     zero.position <- which(di==0)
     w[zero.position] <- 0
-    weighted.mean(di, w=w, na.rm=TRUE)
+    weighted.mean(di, w=w, na.rm=TRUE)/2
   }
   
-  FSlower <- apply(d[1:rr, 1:rr], 2, meanwithoutself)
-  FShigher <- apply(d[(rr+1):(rr+cc), (rr+1):(rr+cc)], 2, meanwithoutself)
+  FSlower <- apply(d[1:rr, 1:rr], 2, meanwithoutself) 
+  FShigher <- apply(d[(rr+1):(rr+cc), (rr+1):(rr+cc)], 2, meanwithoutself) 
 
   # minimum specialisation: all polls linked to all plants, hence mean(geodist(.))=1, except with more than 1 compartment!
   

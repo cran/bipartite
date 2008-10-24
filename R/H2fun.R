@@ -95,6 +95,7 @@ function(web){
     H2_min <- -sum(Pnew*log(Pnew), na.rm=TRUE)
 
    #--------------- H2'  ------------
+   if (H2uncorr < H2_min) H2_min <- H2uncorr
     #ranging (between 0 and 1):
     H_2prime <- (H2_max - H2uncorr) / (H2_max - H2_min)
 

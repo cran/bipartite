@@ -1,5 +1,3 @@
-#library(bipartite)
-
 swap.web <- function(N, web, verbose=FALSE, c.crit=1e4){
   # function to generate null model webs under the following constraints:
   # 1. marginal totals are identical to those observed (as in r2dtable)

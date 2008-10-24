@@ -45,6 +45,7 @@ totals are identical to those observed (as in \code{r2dtable}), 2. connectance i
  
  The algorithm in our implementation has some variations on finding the submatrix and constraining the number of 
  successless trials before starting on a new random matrix, but they are only for speeding up the process.
+ 
 }
 
 \value{
@@ -53,20 +54,23 @@ totals are identical to those observed (as in \code{r2dtable}), 2. connectance i
 
 \references{
 
- Vázquez, D. P., and M. A. Aizen. 2003. Null model analyses of specialization in plant-pollinator interactions. Ecology 84: 2493-2501.
+ Vázquez, D. P., and M. A. Aizen (2003) Null model analyses of specialization in plant-pollinator interactions. \emph{Ecology} \bold{84} 2493-2501
 
- Vázquez, D. P., C. J. Melián, N. M. Williams, N. Blüthgen, B. R. Krasnov, and R. Poulin. 2007. Species abundance and asymmetric interaction strength in ecological networks. Oikos 116: 1120-1127.
+ Vázquez, D. P., C. J. Melián, N. M. Williams, N. Blüthgen, B. R. Krasnov, and R. Poulin (2007) Species abundance and asymmetric interaction strength in ecological networks. \emph{Oikos} \bold{116}, 1120--1127
 
  For a very nice and thorough overview of nullmodels in general see:
 
- Gotelli, N. J., and G. R. Graves. 1996. Null Models in Ecology. Smithsonian Institution Press, Washington D.C.
+ Gotelli, N. J., and G. R. Graves (1996) Null Models in Ecology. Smithsonian Institution Press, Washington D.C.
  
 
 }
 
-\author{ Carsten F. Dormann <carsten.dormann@ufz.de> and Bernd Gruber}
+\author{ Carsten F. Dormann <carsten.dormann@ufz.de> }
 
-\note{ \code{swap.web} is a very constraint nullmodel. You need to consider if it is the right one for your application!
+\note{ 
+  Long stories can be told about the swap algorithm. I am not the right person to do so, but for a much more detailed coverage of the topic, for many more ways to implement null models for \bold{binary} matrices, with various flavours of the swap and possible alternatives, first brew yourself a cup of tea and then check out the help pages of \code{oecosimu} in \pkg{vegan}. (As usual, Jari Oksanen has spend considerable care to implement even the most bizarr and abstruse way to move 0s and 1s around. His ecological advise between the lines make his package worthwhile already! I, personally, would use \code{method="quasiswap"}, as is done in the example to \code{\link{discrepancy}}.)
+
+  \code{swap.web} is a very constraint nullmodel. You need to consider if it is the right one for your application!
 }
 
 \seealso{ \code{\link{r2dtable}} and \code{\link{shuffle.web}}}

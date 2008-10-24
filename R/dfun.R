@@ -10,6 +10,7 @@ function(web, abundances=NULL){
     # both in the d-function itself, as well as in the calculation of the minimum ds.
 
     web <- empty(web)
+    if (!is.null(abundances) & length(abundances)!= ncol(web)) stop("Length of abundance vector and number of higher trophic level species do not match!")
     #-- -- -- -- -- -- --
     # d uncorrected:
     d <- function(web, abundances=NULL){#
@@ -119,3 +120,10 @@ function(web, abundances=NULL){
 }
 
 # dfun(Safariland, abundances=runif(ncol(Safariland)))
+
+#
+#m <- matrix(1:18, nrow=3)
+#ablow <- c(70, 22, 3) # do not add to 100
+#abhigh <- c(10, 5, 10, 5, 10, 5)
+#dfun(m, abhigh)
+#dfun(t(m), ablow)
