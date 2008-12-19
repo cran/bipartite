@@ -32,14 +32,13 @@ Returns one number, the exponent of the fitted hyperbolic model.
 }
 
 \references{
-Memmott, J., Waser, N. M. and Price, M. V. 2004 Tolerance of pollination networks to species extinctions. \emph{Proceedings of the Royal Society B} \bold{271}, 2605--2611.
+Memmott, J., Waser, N. M. and Price, M. V. (2004) Tolerance of pollination networks to species extinctions. \emph{Proceedings of the Royal Society B} \bold{271}, 2605--2611
 }
 
 \author{ Carsten F. Dormann}
 
 \note{
-This function is not as vigorously tested as it should probably be. It worked fine for large networks, but small ones
-may behave strangely, I fathom.
+This function is not as vigorously tested as it should probably be. It worked fine for large networks, but small ones may behave strangely, I fathom.
 
 Note also that it CANNOT fit concave curves! The most extreme is a linear decline of secondary extinctions with primary extinctions. The function can be adapted to handle this, but only at the expense of fitting another parameter.
 

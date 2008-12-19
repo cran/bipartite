@@ -34,7 +34,7 @@ visweb(web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1,
             \bold{compartment}: (belonging to same compartment indicated by capitel Letters)\cr
             \bold{none       }: (no text is shown)\cr
   }
-  \item{frame}{ a frame is drawn around each compartment (frame=T), best used with type=\dQuote{diagonal}  }
+  \item{frame}{ a frame is drawn around each compartment (frame=TRUE), best used with type=\dQuote{diagonal}  }
   \item{textsize}{ factor for size of text in squares, default=1 }
   \item{textcol}{  color of text in grid cells, default =\dQuote{red}}
   \item{pred.lablength}{length of predators (upper) labels that should be displayed}

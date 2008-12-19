@@ -21,7 +21,7 @@ C.score(web, normalise = TRUE, FUN = mean, ...)
 \details{
  As a first step, any quantitative matrix is converted to a binary matrix of presences and absences.
 
- Then, the formula given in Stone and Roberts (1990) is calculated for all species combinations, by calling \code{designdist} from the package vegan. See code for details.
+ Then, the formula given in Stone and Roberts (1990) is calculated for all species combinations, by calling \code{designdist} from the package \pkg{vegan}. See code for details.
 }
 
 \value{
@@ -29,16 +29,15 @@ Returns whatever the \option{FUN} produces as output. Default would be a single 
 }
 
 \references{ 
-Gotelli, N.J. and Rohde, K. 2002 Co-occurrence of ectoparasites of marine fishes: a null model analysis. \emph{Ecology Letters} \bold{5}, 86-94
+Gotelli, N.J. and Rohde, K. (2002) Co-occurrence of ectoparasites of marine fishes: a null model analysis. \emph{Ecology Letters} \bold{5}, 86--94
 
-Stone, L. and Roberts, A. 1990 The checkerboard score and species distributions. \emph{Oecologia} \bold{85}, 74-79.
+Stone, L. and Roberts, A. (1990) The checkerboard score and species distributions. \emph{Oecologia} \bold{85}, 74--79
 }
 
 \author{ Carsten F. Dormann }
 
 \note{ 
-The normalisation uses the following logic: let A and B be the number of occurrences of each of the two
-species, respectively. Then J is the number of sites where both occur and P the total number of sites.
+The normalisation uses the following logic: let A and B be the number of occurrences of each of the two species, respectively. Then J is the number of sites where both occur and P the total number of sites.
 The maximum value for C in each comparison is A*B, when they are exactly complementary and hence J=0. 
 However, if (A+B)>length of vector(P), then there will be some co-occurrences and 
 hence J>0=(A+B-P). The general maximum then becomes (A-A-B+P)(B-A-B+P)=(P-B)(P-A). 
@@ -48,7 +47,7 @@ The minimum is set to 0.
 
 }
 
-\seealso{\code{\link{V.ratio}} for another measure of species associations.}
+\seealso{\code{\link{V.ratio}} for another measure of species associations, \code{nestedchecker} in \pkg{vegan}, which also calculates the C-score (even yielding the same value), but not its normalised version}
 
 \examples{
 m <- matrix(c(1,0,0, 1,1,0, 1,1,0, 0,1,1, 0,0,1), 5,3,TRUE)

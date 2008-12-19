@@ -29,15 +29,16 @@ Most problematic with the use of this particular approach is the extreme demand 
 }
 
 \references{
-Jordano, P., Bascompte, J. and Olesen, J. M. 2003 Invariant properties in coevolutionary networks of plant-animal interactions. \emph{Ecology Letters} \bold{6}, 69-81  }
+Jordano, P., Bascompte, J. and Olesen, J. M. (2003) Invariant properties in coevolutionary networks of plant-animal interactions. \emph{Ecology Letters} \bold{6}, 69-81  }
 
 \author{ Carsten F. Dormann \email{carsten.dormann@ufz.de} }
 
 \note{
 The truncated power law fits two coefficients: slope and cut-off. The function only returns the slope.
 R2-values for non-linear fits are not well liked among statisticians! See the discussion the R-help list (e.g. \url{http://finzi.psych.upenn.edu/R/Rhelp02a/archive/90168.html}).
-Finally, often data are too few to yield any fit. In this case the error message \dQuote{singular gradient}
-is returned to signalise this problem!
+Finally, often data are too few to yield any fit. In this case the error message \dQuote{singular gradient} is returned to signalise this problem!
+
+Post finally, yes, I am aware that degrees are integers and unlikely to be normally distributed, and that thus the \code{nls} procedure is not really a good idea. My (poor) excuse: I followed the implementation of the above-cited paper and do not believe enough in degree distributions (and power laws, for that matter) to implement a proper likelihood-based approach. Check out the \pkg{statnet} bundle for alternative approaches to this problem.
 }
 
 \seealso{ \code{\link{networklevel}}, where \code{degreedistr} is called (without picturing the results) }

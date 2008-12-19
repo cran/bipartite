@@ -2,7 +2,8 @@
 function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
     y_width = 0.1, spacing = 0.05, arrow="no", col.interaction="grey80",
     col.pred = "grey10", col.prey="grey10", lab.space=1,
-    lablength = NULL, sequence=NULL)
+    lablength = NULL, sequence=NULL,low.abun=NULL,low.abun.col="green",
+    high.abun=NULL, high.abun.col="red")
 {
   if (empty) web <- empty(web) else method <- "normal"
   web<-as.matrix(web) # to convert data.frames into matrix: needed for cumsum
@@ -19,13 +20,57 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
   }
 
         if (!is.null(sequence)) {
-            cs <- sequence$seq.pred %in% colnames(web)
-            rs <- sequence$seq.prey %in% rownames(web)
+            cs <- which(sequence$seq.pred %in% colnames(web))
+            rs <- which(sequence$seq.prey %in% rownames(web))
             web <- web[sequence$seq.prey[rs], sequence$seq.pred[cs]]
         }
-        websum <- sum(web)
-        pred_prop <- colSums(web)/websum
-        prey_prop <- rowSums(web)/websum
+
+   websum <- sum(web)
+   difff <- diffh <-0 # if no abundances are set leave plotsize as before
+
+        ###rearrange if lowfreq is set  # lowfreq is a named vector!!!
+        if (!is.null(low.abun)) {
+
+        lowfreq = rowSums(web)
+
+        dummy <- lowfreq
+
+        for (i in 1:length(low.abun) )
+        {
+        ind <- which(names(low.abun)[i] == names(dummy))
+        
+        lowfreq[ind] <- lowfreq[ind]+low.abun[i]
+
+        }
+        #websum <- sum(lowfreq)
+        difff = (lowfreq-rowSums(web))/websum
+        }
+
+        ###rearrange if highfreq is set  # lowfreq is a named vector!!!
+        if (!is.null(high.abun)) {
+
+        highfreq = colSums(web)
+
+        dummy <- highfreq
+
+        for (i in 1:length(high.abun) )
+        {
+        ind <- which(names(high.abun)[i] == names(dummy))
+
+        highfreq[ind] <- highfreq[ind]+high.abun[i]
+
+        }
+        #websum <- sum(highfreq)
+        diffh = (highfreq-colSums(web))/websum
+        }
+
+
+
+
+
+
+        if (is.null(high.abun)) pred_prop <- colSums(web)/websum else pred_prop <- highfreq/websum
+        if (is.null(low.abun)) prey_prop <- rowSums(web)/websum else prey_prop <- lowfreq/websum
         n.pred <- length(pred_prop)
         n.prey <- length(prey_prop)
         pred_x <- 0
@@ -52,8 +97,14 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
         prey_spacing <- prey_spacing*spacing
 
         if (n.pred>n.prey) prey_spacing <- pred_spacing*(n.pred-1)/(n.prey-1) else pred_spacing<- prey_spacing*(n.prey-1)/(n.pred-1)
+        
+        if (!is.null(low.abun)) pred_spacing <- pred_spacing+sum(difff)/n.pred
+        
+        if (!is.null(high.abun)) prey_spacing <- prey_spacing+sum(diffh)/n.prey
+
+        
         wleft = 0
-        wright = (max(n.pred, n.prey)) * min(prey_spacing,pred_spacing) +1
+        wright = (max(n.pred, n.prey)) * min(prey_spacing,pred_spacing) +1+max(sum(diffh),sum(difff))
 
         wup <- 1.6 + y_width + lab.space * 0.05 #we need some space for labels
         wdown <- 0.4 - y_width - lab.space * 0.05 #we need some space for labels
@@ -68,6 +119,13 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
         for (i in 1:n.pred) {
             rect(pred_x, pred_y - y_width, pred_x + pred_prop[i],
                 pred_y + y_width, col = col.pred)
+            #### coloured boxes at the end if highfreq is given
+            if (!is.null(high.abun))
+              {
+              rect(pred_x + pred_prop[i]-diffh[i], pred_y - y_width, pred_x + pred_prop[i],
+                pred_y + y_width, col = high.abun.col)
+              }
+
             breite <- strwidth(colnames(web)[i], cex = 0.6 *
                 labsize)
             links <- pred_x + pred_prop[i]/2 - breite/2
@@ -90,6 +148,12 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
         for (i in 1:n.prey) {
             rect(prey_x, prey_y - y_width, prey_x + prey_prop[i],
                 prey_y + y_width, col = col.prey)
+            #### coloured boxes at the end if lowfreq is given
+            if (!is.null(low.abun))
+              {
+              rect(prey_x + prey_prop[i]-difff[i], prey_y - y_width, prey_x + prey_prop[i],
+                prey_y + y_width, col = low.abun.col)
+              }
             breite <- strwidth(rownames(web)[i], cex = 0.6 *
                 labsize)
             links <- prey_x + prey_prop[i]/2 - breite/2
@@ -125,6 +189,7 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
                 x1 <- 0
             else x1 <- (j - 1) * pred_spacing + cumsum(web)[(j -
                 1) * nrow(web) + (i - 1)]/websum
+            if (!is.null(high.abun) && j>1) x1 <- x1 +cumsum(diffh)[j-1]
             x2 <- x1 + web[i, j]/websum
             if (arrow=="up" || arrow=="both") {x2<-(x1+x2)/2; x1<-x2}
             tweb <- t(web)
@@ -132,12 +197,10 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
                 x3 <- 0
             else x3 <- (i - 1) * prey_spacing + cumsum(tweb)[(i -
                 1) * nrow(tweb) + (j - 1)]/websum
+            if (!is.null(low.abun) && i>1) x3 <- x3 +cumsum(difff)[i-1]
             x4 <- x3 + tweb[j, i]/websum
             if (arrow=="down" || arrow=="both") {x4<-(x3+x4)/2; x3<-x4}
             polygon(c(x1, x2, x4, x3), c(y1, y2, y4, y3), col = col.interaction)
         }
 }
-
-
-
 
