@@ -6,7 +6,7 @@ discrepancy <- function(mat){
     # there is already an implementation of this function in vegan (called: nesteddisc), but it does not deliver the "right" answer on the example above (taken from Brualdi & Sanderson 1999)
     mat <- unname(as.matrix(mat>0))*1
     # first, pack matrix by sorting, yielding matrix A: (code from nestedness.corso)
-    A <- mat[order(rowSums(mat), decreasing=TRUE), order(colSums(mat), decreasing=TRUE)]
+    A <- mat[order(rowSums(mat), decreasing=TRUE), order(colSums(mat), decreasing=TRUE), drop=FALSE]
 
     # second, pack matrix maximally, yielding P:
     P <- A

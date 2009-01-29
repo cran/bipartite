@@ -1,6 +1,6 @@
 #the corso nestedness
 
-nestedness.corso <- function(web, weighted=FALSE, reps=5000){
+nestedness.corso <- function(web, weighted=FALSE, reps=500){
     #this function implements the nestedness calculation according to Corso et al. (2008, arXiv: 0803.0007v1 [physics.bio-ph] 29 Feb 2008)
     #
     # there are two great news to nestedness freaks: 1. it is fast; 2. it is indifferent to transposing of the data!
@@ -9,7 +9,9 @@ nestedness.corso <- function(web, weighted=FALSE, reps=5000){
   
    d.weighted <- function(web){
     # helper function to pack web, calculate distances:
-        web.packed <- web[order(rowSums(web), decreasing=TRUE), order(colSums(web), decreasing=TRUE)]
+        web.packed <- web[order(rowSums(web>0), decreasing=TRUE), order(colSums(web>0), decreasing=TRUE), drop=FALSE]
+        # note: there is no way to deal with ties implemented as yet!
+        # also, for weighted webs, it is the number of LINKS that determine theorting, not the number of interactions! (is that intuitive? at least, that's what they write)
         L1 <- nrow(web); L2 <- ncol(web)
         coords <- which(web.packed>0, arr.ind=TRUE)
         coords.square <- coords
@@ -24,15 +26,15 @@ nestedness.corso <- function(web, weighted=FALSE, reps=5000){
         d
     }
 
-  
-  
+    
     web <- as.matrix(web)
+    web <- empty(web)
     if (weighted==FALSE) web <- (web>0) * 1 # turns quantitative matrix into a binary matrix
     colnames(web) <- rownames(web) <- NULL # just to get rid of species names
     
     
     #1. pack the matrix:
-    web.packed <- web[order(rowSums(web), decreasing=TRUE), order(colSums(web), decreasing=TRUE)]
+    web.packed <- web[order(rowSums(web>0), decreasing=TRUE), order(colSums(web>0), decreasing=TRUE), drop=FALSE]
     
     #2. project into unit square:
     # in fact, we now turn the matrix into a data.frame of coordinates, but only for the ones (since the distance to an empty cell is 0):
@@ -53,6 +55,7 @@ nestedness.corso <- function(web, weighted=FALSE, reps=5000){
     }
 
     #5. pack the matrix maximally and calculate d.min: the detail here is to fill the square matrix, not the original!
+ #  also notice that the number of interactions has NO say in the sequence, only the distance to centre
     all.cells <- which(!is.na(web), arr.ind=TRUE)
     all.cells.square <- all.cells
     all.cells.square[,1] <- (all.cells[,1]-1)/L1 + 1/(2*L1)
@@ -69,20 +72,21 @@ nestedness.corso <- function(web, weighted=FALSE, reps=5000){
 
     if (weighted==FALSE) { d.min <- sum(rowSums(coords.max.square)) }
     if (weighted){
-        d <- d.weighted(web)
+        d <- d.weighted(web)  # gives d for the packed web
         
-        max.packed[all.cells[filling.seq[1:N],]] <- web[web>0]
+        max.packed[all.cells[filling.seq[1:N],]] <- sort(web[web>0], decreasing=TRUE)
         d.min <- d.weighted(max.packed)
    
         # "heuristic" search for maximally un-nested web:
         random.d <- sapply(shuffle.web(web, reps), d.weighted)
-        d.rand <- max(random.d)
+        d.rand <- quantile(random.d, 0.95) # The 0.95% quantile is more robust to lower levels of randomisations than the max. This will yield a consistent overestimation of the "true" nestedness. Until a cool idea for finding the real maximum is available, this is better, in my view, than the max (thanks to Bernd for this idea).
+        
     } 
     
     
     #6. range value:
     eta <- (d-d.min)/(d.rand-d.min) #done
-    eta
+    unname(round(eta, 2)) # that is all accuracy there is!
 }
 
 #nestedness.corso(Safariland)

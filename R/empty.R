@@ -9,7 +9,7 @@ function(web, count=FALSE){
 
     web[is.na(web)] <- 0
 
-    if (NCOL(web)==1 | NROW(web)==1)
+    if (NCOL(web)==1 & NROW(web)==1)
     {
         if (NCOL(web)==1) {nr <- sum(web>0); nc <- 1}
         if (NROW(web)==1) {nc <- sum(web>0); nr <- 1}

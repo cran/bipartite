@@ -10,8 +10,11 @@ A two dimensional matrix is plotted as a bipartite graph.
 plotweb(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
     y_width = 0.1, spacing = 0.05, arrow="no", col.interaction="grey80",
     col.pred = "grey10", col.prey="grey10", lab.space=1,
-    lablength = NULL, sequence=NULL, low.abun=NULL, low.abun.col="green", 
-    high.abun=NULL, high.abun.col="red")
+    bor.col.interaction ="black", bor.col.pred="black", bor.col.prey="black",
+    lablength = NULL, sequence=NULL, low.abun=NULL, low.abun.col="green",
+    bor.low.abun.col ="black", 
+    high.abun=NULL, high.abun.col="red", bor.high.abun.col="black",
+    text.rot=0)
 }
 
 \arguments{
@@ -27,12 +30,18 @@ plotweb(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
   \item{col.pred}{color of upper boxes, default is grey10.}
   \item{col.prey}{color of lower boxes, default is grey10.}
   \item{lab.space}{sometimes it is neccessary to add additional space for labels below und above of the boxes, so all labes are shown, default is 1.}
+  \item{bor.col.interaction}{border color of interaction, default is black}
+  \item{bor.col.pred}{border color of upper boxes, default is black}
+  \item{bor.col.prey}{border color of lower boxes, default is black}
   \item{lablength}{number of characters of labels that should be plotted. If zero no labels are shown, default is NULL which plots the complete labels.}
   \item{sequence}{list of two with two names vectors: \code{seq.pred} and \code{seq.prey}, which specify the order in which species are plotted. Cannot be set for \option{method="cca"}. Defaults to \code{NULL}, where the sequence remains as given or is determined by the CCA internally.}
   \item{low.abun}{Vector with independent abundance estimates for the lower trophic level, NULL if none exists.}
   \item{low.abun.col}{Colour for depicting the abundance estimates for the lower trophic level; defaults to green.}
+  \item{bor.low.abun.col}{border color for depicting the abundance estimates for the lower trophic level, default is black}
   \item{high.abun}{Vector with independent abundance estimates for the higher trophic level, NULL if none exists.}
   \item{high.abun.col}{Colour for depicting the abundance estimates for the lower trophic level; defaults to red.}
+  \item{bor.high.abun.col}{border color for depicting the abundance estimates for the higher trophic level, default is black}
+  \item{text.rot}{orientation of labels in the plot (to avoid overlapping of horizontal labels if dimension of the webs are high), default is 0 for horizontal labels, use text.rot=90 for vertical labels.}
 }
 \value{
   Returns a window with a bipartite graph of a foodweb.
@@ -47,6 +56,20 @@ Tylianakis, J. M., Tscharntke, T. and Lewis, O. T. (2007) Habitat modification a
 data(Safariland)
 plotweb(Safariland)
 
+# shorter labels
+plotweb(Safariland, lablength=3)
+
+#orginal sequence, up arrows and different box width
+plotweb(Safariland, method="normal", arrow="up", y_width=0.3, lablength=4)
+# interactions as lines
+plotweb(Safariland, arrow="both", y_width=0.05, text.rot=90, col.pred="blue", col.prey="green")
+
+# add an abundance vector for lower trophic species 
+low.abun = round(runif(dim(Safariland)[1],1,40)) #create
+names(low.abun) <- rownames(Safariland)
+plotweb(Safariland, text.rot=90, low.abun=low.abun, col.interaction="purple", y_width=0.05)
+
+plotweb(Safariland, text.rot=90, low.abun=low.abun, col.interaction ="red", bor.col.interaction="red", arrow="down")
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

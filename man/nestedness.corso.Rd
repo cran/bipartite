@@ -12,7 +12,7 @@
 }
 
 \usage{
-nestedness.corso(web, weighted=FALSE, reps=5000)
+nestedness.corso(web, weighted=FALSE, reps=500)
 }
 
 \arguments{
@@ -26,10 +26,12 @@ nestedness.corso(web, weighted=FALSE, reps=5000)
  The logic and descriptions are available from the two references. However, it may be useful to point out that while there is a straightforward way to calculate observed, maximum and minimum nestedness for the unweighted version, the weighted version has an element of heuristics (i.e. fiddling).
  
  In principle, both versions sort the matrix by arranging rows and columns to densest packing, then calculate distances between (occupied) cells and sum those. Then the same is done for the minimally and maximally nested matrix with the same dimensions and number of links. For the weighted version, however, only the maximally nested can be identified uniquely, not the unnested maximum. Hence, we resorted to using the \code{\link{shuffle.web}} function to produce random, high-entropy webs, that serve to delimit the lowest possible nestedness.
+ 
+ Furthermore, because the real maximum chaos cannot be derived (to my knowledge) algorithmically, we use the 95\% quantile of 500 randomisations as maximum. This will lead to a consistently overestimated nestedness, but it is less sensitive to the number of replicates than the max.
 }
 
 \value{
-  The nestedness value, ranging between 0 (chaos) and 1 (perfect nesting).
+  The nestedness value, ranging between 0 (perfect nesting) and 1 (chaos).
 }
 
 \references{ 

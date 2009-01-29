@@ -2,9 +2,13 @@
 function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
     y_width = 0.1, spacing = 0.05, arrow="no", col.interaction="grey80",
     col.pred = "grey10", col.prey="grey10", lab.space=1,
+    bor.col.interaction ="black", bor.col.pred="black", bor.col.prey="black",
     lablength = NULL, sequence=NULL,low.abun=NULL,low.abun.col="green",
-    high.abun=NULL, high.abun.col="red")
+    bor.low.abun.col ="black",
+    high.abun=NULL, high.abun.col="red", bor.high.abun.col="black",
+    text.rot=0)
 {
+  op <- par(no.readonly = TRUE)
   if (empty) web <- empty(web) else method <- "normal"
   web<-as.matrix(web) # to convert data.frames into matrix: needed for cumsum
 
@@ -118,12 +122,12 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
         hoehe <- strheight(colnames(web)[1], cex = 0.6)
         for (i in 1:n.pred) {
             rect(pred_x, pred_y - y_width, pred_x + pred_prop[i],
-                pred_y + y_width, col = col.pred)
+                pred_y + y_width, col = col.pred, border=bor.col.pred)
             #### coloured boxes at the end if highfreq is given
             if (!is.null(high.abun))
               {
               rect(pred_x + pred_prop[i]-diffh[i], pred_y - y_width, pred_x + pred_prop[i],
-                pred_y + y_width, col = high.abun.col)
+                pred_y + y_width, col = high.abun.col, border=bor.high.abun.col)
               }
 
             breite <- strwidth(colnames(web)[i], cex = 0.6 *
@@ -135,9 +139,10 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
                 rechts <- pred_x + pred_prop[i]/2 + breite/2
                 hoffset <- 0
             }
+            if (text.rot==90) {hoffset=0; ad =c(0,0.3)} else ad=c(0.5,0.4)
             text(pred_x + pred_prop[i]/2, pred_y + y_width +
                 hoehe + hoffset, colnames(web)[i], cex = 0.6 *
-                labsize, offset = 0)
+                labsize, offset = 0, srt=text.rot, adj=ad)
             pred_x <- pred_x + pred_prop[i] + pred_spacing
         }
         prey_x <- 0
@@ -147,12 +152,12 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
         hoffset <- hoehe
         for (i in 1:n.prey) {
             rect(prey_x, prey_y - y_width, prey_x + prey_prop[i],
-                prey_y + y_width, col = col.prey)
+                prey_y + y_width, col = col.prey, border=bor.col.prey)
             #### coloured boxes at the end if lowfreq is given
             if (!is.null(low.abun))
               {
               rect(prey_x + prey_prop[i]-difff[i], prey_y - y_width, prey_x + prey_prop[i],
-                prey_y + y_width, col = low.abun.col)
+                prey_y + y_width, col = low.abun.col, border=bor.low.abun.col)
               }
             breite <- strwidth(rownames(web)[i], cex = 0.6 *
                 labsize)
@@ -163,10 +168,12 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
                 rechts <- prey_x + prey_prop[i]/2 + breite/2
                 hoffset <- hoehe
             }
+            if (text.rot==90) {hoffset=hoehe; ad =c(1,0.3)} else ad=c(0.5,0.4)
             text(prey_x + prey_prop[i]/2, prey_y - y_width -
                 hoffset, rownames(web)[i], cex = 0.6 * labsize,
-                offset = 0)
+                offset = 0, srt=text.rot, adj=ad)
             prey_x <- prey_x + prey_prop[i] + prey_spacing
+
         }
         px <- c(0, 0, 0, 0)
         py <- c(0, 0, 0, 0)
@@ -200,7 +207,7 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
             if (!is.null(low.abun) && i>1) x3 <- x3 +cumsum(difff)[i-1]
             x4 <- x3 + tweb[j, i]/websum
             if (arrow=="down" || arrow=="both") {x4<-(x3+x4)/2; x3<-x4}
-            polygon(c(x1, x2, x4, x3), c(y1, y2, y4, y3), col = col.interaction)
+            polygon(c(x1, x2, x4, x3), c(y1, y2, y4, y3), col = col.interaction, border=bor.col.interaction)
         }
+par(op)
 }
-

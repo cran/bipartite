@@ -1,21 +1,26 @@
 compart <- function(web){
     # finds compartments and assigns numbers to them:
     # 1. organise web along the diagonal:
-    ca <- cca(web)
-    rindex <- order(summary(ca)$sites[,1], decreasing=TRUE)
-    cindex <- order(summary(ca)$species[,1], decreasing=TRUE)
-    web2 <- web[rindex, cindex]
-    # 2. analyse for compartments, first rows, then cols:
-    cr <- distconnected(vegdist(web2, "jaccard"), trace=FALSE)
-    cc <- distconnected(vegdist(t(web2), "jaccard"), trace=FALSE)
-    # 3. numbered sequences are now matching each other to describe the clusters:
-    clu.cr <- matrix(rep(cr, ncol(web2)), nrow=nrow(web2))
-    clu.cc <- matrix(rep(cc, nrow(web2)), ncol=ncol(web2), byrow=TRUE)
-    clu <- web
-    clu[clu.cr == clu.cc] <- clu.cr[clu.cr == clu.cc]
-    # 4. resort the web:
-    outweb <- clu[order(rindex), order(cindex)]
-    return(list(cweb=outweb, n.compart=max(cr)))
+    if (any(dim(web))<2){
+      out <- list(cweb=web, n.compart=1)
+    } else {
+      ca <- cca(web)
+      rindex <- order(summary(ca)$sites[,1], decreasing=TRUE)
+      cindex <- order(summary(ca)$species[,1], decreasing=TRUE)
+      web2 <- web[rindex, cindex]
+      # 2. analyse for compartments, first rows, then cols:
+      cr <- distconnected(vegdist(web2, "jaccard"), trace=FALSE)
+      cc <- distconnected(vegdist(t(web2), "jaccard"), trace=FALSE)
+      # 3. numbered sequences are now matching each other to describe the clusters:
+      clu.cr <- matrix(rep(cr, ncol(web2)), nrow=nrow(web2))
+      clu.cc <- matrix(rep(cc, nrow(web2)), ncol=ncol(web2), byrow=TRUE)
+      clu <- web
+      clu[clu.cr == clu.cc] <- clu.cr[clu.cr == clu.cc]
+      # 4. resort the web:
+      outweb <- clu[order(rindex), order(cindex)]
+      out <- list(cweb=outweb, n.compart=max(cr))
+    }
+    return(out)
 }
 
 ## example:

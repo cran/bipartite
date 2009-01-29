@@ -8,8 +8,7 @@ Calculates a variety of indices and values for a bipartite network.
 }
 \usage{
 networklevel(web, index="ALL", ISAmethod="Bluethgen", SAmethod = "Bluethgen",
-    extinctmethod = "r", nrep = 100, plot.it.extinction = FALSE, plot.it.dd=FALSE,
-    CCfun=median, dist="horn", normalise=TRUE, nest.weighted=FALSE)
+    extinctmethod = "r", nrep = 100, plot.it.extinction = FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn", normalise=TRUE, nest.weighted=FALSE, empty.web=TRUE)
 }
 
 \arguments{
@@ -29,16 +28,17 @@ networklevel(web, index="ALL", ISAmethod="Bluethgen", SAmethod = "Bluethgen",
   \item{SAmethod}{Which method to use to calculate the specification asymmetry: mean
   of log-transformed dependencies (\dQuote{log}) or Blüthgen's abundance-weighted mean
   (default); see Blüthgen et al. (2007).}
-  \item{extinctmethod} {Specifies how species are removed from matrix: \dQuote{random}
+  \item{extinctmethod}{Specifies how species are removed from matrix: \dQuote{random}
   or \dQuote{abundance} (partial matching), where abundance removes species in the
   order of increasing abundance (i.e. rarest first); see Memmott et al. (2004).}
   \item{nrep}{Number of replicates for the extinction sequence analysis.}
   \item{plot.it.extinction}{logical; plot the extinction sequence graph; defaults to FALSE. }
   \item{plot.it.dd}{logical; plot the degree distribution fits?; defaults to FALSE. }
   \item{CCfun}{Method to use when calculating the clustering coefficient. Originally proposed as mean of cluster coefficients for each node. Defaults to \dQuote{median}, because cluster coefficients are strongly skewed. }
-  \item{dist}{ Distance metric to be used to calculate niche overlap; defaults to Horn's index, which is the recommendation of Krebs (Ecological Methodology); for other options see \code{vegdist} in \pkg{vegan}.}
+  \item{dist}{Distance metric to be used to calculate niche overlap; defaults to Horn's index, which is the recommendation of Krebs (Ecological Methodology); for other options see \code{vegdist} in \pkg{vegan}.}
   \item{normalise}{Logical; shall the C-score and togetherness metrics be normalised to a range of 0 to 1? Defaults to \code{TRUE}.}
   \item{nest.weighted}{Shall the interaction-weighted nestedness be calculated (see \code{\link{nestedness.corso}} for details)? Defaults to \code{FALSE}.}
+  \item{empty.web}{Shall the empty columns and rows be deleted? Defaults to TRUE.}
 }
 
 \details{
@@ -61,7 +61,8 @@ Depending on the selected indices, some or all of the below:
   \item{number of compartments}{Compartments are sub-sets of the web which are not connected (through either higher or lower trophic level) to another compartment. Mathematically, they are Jordan blocks, but this implementation is rule-based (and fast). They are also nicely visualised in the \code{\link{visweb}} function.}
   \item{generality}{Effective mean number of prey per predator; see Tylianakis et al. (2007).}
   \item{vulnerability}{Effective mean number of predator per prey; see Tylianakis et al. (2007).}
-  \item{interaction evenness}{Shannon's evenness for the web entries, treating zeros as real data.}
+  \item{Shannon diversity}{Shannon's diversity of interactions (i.e. network entries).}
+  \item{interaction evenness}{Shannon's evenness for the web entries, treating zeros as no data.}
   \item{Alatalo interaction evenness}{A different measure for web entry evenness, as proposed by Müller et al. (1999). }
   \item{compartment diversity C.D.}{Shannon's diversity index across compartment sizes (i.e. number of participants); see Tylianakis et al. (2007).}
   \item{cluster coefficient}{The CC for a network is the average CC of its members. CC for each node, in turn, is simply the number of realised links devided by the number of possible links. Introduced by Watts \& Strogatz (1998) and described in Wikipedia under \url{http://en.wikipedia.org/w/index.php?title=Clustering_coefficient}.}

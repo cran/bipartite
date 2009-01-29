@@ -31,12 +31,13 @@ function(web, N){
       }
       if (dimdiff > 0){
           for (j in 1:abs(dimdiff)){
-           out[rowindex[i], colposition[i]] <- shuf[nozero.index[(length(diag(web))+i)]]
+           out[rowindex[j], colposition[j]] <- shuf[nozero.index[(length(diag(web))+j)]]
           }
       }
     
       # allocate remaining entries:
-      remains <- shuf[nozero.index[(length(diag(web))+abs(diff(dim(out)))+1):length(nozero.index)]]
+      remains <- shuf[!(shuf %in% out)]  
+#      remains <- shuf[nozero.index[(length(diag(web))+abs(diff(dim(out)))+1):length(nozero.index)]]
       option <- which(out == 0, arr.ind=TRUE)
       out[option[sample(dim(option)[1], length(remains)),]] <- remains
       colnames(out) <- rownames(out) <- NULL
