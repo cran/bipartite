@@ -6,11 +6,12 @@ citEntry(entry="Article",
                              as.person("J. Fründ"),
                              as.person("N. Blüthgen"),
                              as.person("B. Gruber")),
- journal="Open Journal of Ecology (in press)",
+ journal="The Open Ecology Journal",
+ volume= "2",
+ pages="7-24",
  year="2009",
 
- textVersion="Dormann, C.F., Fründ, J., Blüthgen, N. & Gruber B. (accepted). Indices, graphs and null models: analyzing bipartite ecological networks. Open Journal of Ecology."
-)
+ textVersion="Dormann, C.F., Fründ, J., Blüthgen, N. & Gruber B. 2009. Indices, graphs and null models: analyzing bipartite ecological networks. The Open Ecology Journal, 2, 7-24.")
 
 citEntry(entry="Article",
          title = "Introducing the bipartite Package: Analysing Ecological Networks.",

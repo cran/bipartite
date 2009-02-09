@@ -29,8 +29,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 0.82\cr
-Date: \tab 2009-01-02\cr
+Version: \tab 0.83\cr
+Date: \tab 2009-02-09\cr
 License: \tab GPL \cr
 }
 }
@@ -38,6 +38,8 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+	\item 0.83 (release date: 9-Feb-2009)
+	pdf of OEJ-paper added as vignette
 
 	\item 0.82 (release date: 27-Jan-2009)
 	\describe{
@@ -106,7 +108,7 @@ Corso G., de Araújo A.I.L. and de Almeida A.M. (2008) A new nestedness estimator
 
 Dalsgaard, B., A. M. Martín González, J. M. Olesen, A. Timmermann, L. H. Andersen, and J. Ollerton. (2008) Pollination networks and functional specialization: a test using Lesser Antillean plant-hummingbird assemblages. \emph{Oikos} \bold{117}, 789--793
 
-Dormann, C.F., Fründ, J., Blüthgen, N., and Gruber, B. (2009) Indices, graphs and null models: analysing bipartite ecological networks. \emph{The Open Ecology Journal}, in press.
+Dormann, C.F., Fründ, J., Blüthgen, N., and Gruber, B. (2009) Indices, graphs and null models: analysing bipartite ecological networks. \emph{The Open Ecology Journal} \bold{2}, 7--24..
 
 Galeano J., Pastor J.M. and Iriondo J.M. (2008) Weighted-Interaction Nestedness Estimator (WINE): A new estimator to calculate over frequency matrices. \emph{arXiv} 0808.3397v1 [physics.bio-ph]
 
