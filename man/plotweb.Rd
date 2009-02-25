@@ -25,7 +25,7 @@ plotweb(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
   \item{ybig}{ vertical distance between upper and lower boxes, default is 1}
   \item{y_width}{ width of upper and lower boxes, default is 0.1 }
   \item{spacing}{ horizonatal distance between upper and lower boxes, default is 0.05}
-  \item{arrow}{ display type of connection between upper and lower boxes, options are \option{up}, \option{down}, \option{both} and \option{no}, default is \option{no}, which is a polygonal connection between boxes. }
+  \item{arrow}{ display type of connection between upper and lower boxes, options are \option{up}, \option{down}, \option{both}, \option{up.center}, \option{down.center}, \option{both.center} and \option{no}, default is \option{no}, which is a polygonal connection between boxes. }
   \item{col.interaction}{color of interaction, default is grey80. }
   \item{col.pred}{color of upper boxes, default is grey10.}
   \item{col.prey}{color of lower boxes, default is grey10.}
@@ -57,7 +57,10 @@ data(Safariland)
 plotweb(Safariland)
 
 # shorter labels
-plotweb(Safariland, lablength=3)
+plotweb(Safariland, lablength=3, arrow="down")
+
+# centered triangles for displaying interacions
+plotweb(Safariland, text.rot=90, arrow="down.center", col.interaction="wheat2")
 
 #orginal sequence, up arrows and different box width
 plotweb(Safariland, method="normal", arrow="up", y_width=0.3, lablength=4)

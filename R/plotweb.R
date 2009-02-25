@@ -1,3 +1,4 @@
+
 `plotweb` <-
 function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
     y_width = 0.1, spacing = 0.05, arrow="no", col.interaction="grey80",
@@ -193,21 +194,44 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
             i <- XYcoords[p, 1]
             j <- XYcoords[p, 2]
             if (j == 1 & i == 1)
-                x1 <- 0
-            else x1 <- (j - 1) * pred_spacing + cumsum(web)[(j -
+                x1 <- 0   else x1 <- (j - 1) * pred_spacing + cumsum(web)[(j -
                 1) * nrow(web) + (i - 1)]/websum
             if (!is.null(high.abun) && j>1) x1 <- x1 +cumsum(diffh)[j-1]
             x2 <- x1 + web[i, j]/websum
             if (arrow=="up" || arrow=="both") {x2<-(x1+x2)/2; x1<-x2}
-            tweb <- t(web)
+            if (arrow=="up.center"|| arrow=="both.center")
+               {
+               if (j!=1)  {x2 <-  (j - 1) * pred_spacing + cumsum(web)[(j -
+                1) * nrow(web) ]/websum +colSums(web)[j]/websum/2
+               if (!is.null(high.abun)) x2 <- x2 +cumsum(diffh)[j-1]
+               x1<-x2
+                }  else
+                   {
+                   x2=colSums(web)[j]/websum/2; x1<-x2
+                   }
+               }
+                tweb <- t(web)
             if (j == 1 & i == 1)
-                x3 <- 0
-            else x3 <- (i - 1) * prey_spacing + cumsum(tweb)[(i -
+                x3 <- 0   else x3 <- (i - 1) * prey_spacing + cumsum(tweb)[(i -
                 1) * nrow(tweb) + (j - 1)]/websum
             if (!is.null(low.abun) && i>1) x3 <- x3 +cumsum(difff)[i-1]
             x4 <- x3 + tweb[j, i]/websum
             if (arrow=="down" || arrow=="both") {x4<-(x3+x4)/2; x3<-x4}
+            if (arrow=="down.center" || arrow=="both.center")
+               {
+               if (i!=1)  {x3 <-  (i - 1) * prey_spacing + cumsum(tweb)[(i -
+                1) * nrow(tweb) ]/websum +colSums(tweb)[i]/websum/2
+                if (!is.null(low.abun)) x3<- x3 +cumsum(difff)[i-1]
+                x4<-x3
+
+                }  else
+                   {
+                   x3=colSums(tweb)[i]/websum/2; x4=x3;
+                   }
+               }
+
             polygon(c(x1, x2, x4, x3), c(y1, y2, y4, y3), col = col.interaction, border=bor.col.interaction)
         }
 par(op)
 }
+
