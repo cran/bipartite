@@ -14,7 +14,7 @@ plotweb(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
     lablength = NULL, sequence=NULL, low.abun=NULL, low.abun.col="green",
     bor.low.abun.col ="black", 
     high.abun=NULL, high.abun.col="red", bor.high.abun.col="black",
-    text.rot=0)
+    text.rot=0, text.high.col="black", text.low.col="black")
 }
 
 \arguments{
@@ -42,9 +42,11 @@ plotweb(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
   \item{high.abun.col}{Colour for depicting the abundance estimates for the lower trophic level; defaults to red.}
   \item{bor.high.abun.col}{border color for depicting the abundance estimates for the higher trophic level, default is black}
   \item{text.rot}{orientation of labels in the plot (to avoid overlapping of horizontal labels if dimension of the webs are high), default is 0 for horizontal labels, use text.rot=90 for vertical labels.}
+  \item{text.high.col}{Colour for text labels of higher trophic level, a vector of colours can be given}
+  \item{text.low.col}{Colour for text labels of lower trophic level. A vector of colours can be given}
 }
 \value{
-  Returns a window with a bipartite graph of a foodweb.
+  Returns a window with a bipartite graph of a foodweb.  For all colours vectors can be used (which are recycled if length differs.
 }
 \references{
 Tylianakis, J. M., Tscharntke, T. and Lewis, O. T. (2007) Habitat modification alters the structure of tropical host-parasitoid food webs. \emph{Nature} \bold{445}, 202--205
@@ -73,6 +75,12 @@ names(low.abun) <- rownames(Safariland)
 plotweb(Safariland, text.rot=90, low.abun=low.abun, col.interaction="purple", y_width=0.05)
 
 plotweb(Safariland, text.rot=90, low.abun=low.abun, col.interaction ="red", bor.col.interaction="red", arrow="down")
+
+# now vectors for all colours can be given, to mark certain species or interactions. Colour vectors are recycled if not of appropriate length
+plotweb(Safariland,col.pred=c("orange","green"))
+plotweb(Safariland,col.pred=c("orange","green"),col.prey=c("white","grey","purple"),text.high.col=c("blue","red"), col.interaction=c("red",rep("green",26),rep("brown",242)), bor.col.interaction=c(rep("green",26),rep("brown",242)),method="normal", text.rot=90, lablength=10)
+
+
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

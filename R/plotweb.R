@@ -7,11 +7,16 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
     lablength = NULL, sequence=NULL,low.abun=NULL,low.abun.col="green",
     bor.low.abun.col ="black",
     high.abun=NULL, high.abun.col="red", bor.high.abun.col="black",
-    text.rot=0)
+    text.rot=0, text.high.col="black", text.low.col="black")
 {
   op <- par(no.readonly = TRUE)
   if (empty) web <- empty(web) else method <- "normal"
   web<-as.matrix(web) # to convert data.frames into matrix: needed for cumsum
+
+  prey.order <-1:dim(web)[1]
+  pred.order <- 1:dim(web)[2]
+  
+
 
   meths <- c("normal", "cca")
   meths.match <- pmatch(method, meths)
@@ -21,12 +26,17 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
     require(vegan)
     ca <- cca(web)
     web <- web[order(summary(ca)$sites[,1], decreasing=TRUE), order(summary(ca)$species[,1], decreasing=TRUE)]
+    prey.order <- order(summary(ca)$sites[,1], decreasing=TRUE)
+    pred.order <- order(summary(ca)$species[,1], decreasing=TRUE)
 
   }
 
         if (!is.null(sequence)) {
             cs <- which(sequence$seq.pred %in% colnames(web))
             rs <- which(sequence$seq.prey %in% rownames(web))
+
+            for (i in 1:dim(web)[2]) pred.order[i] <- which(sequence$seq.pred[i]==colnames(web))
+            for (i in 1:dim(web)[1]) prey.order[i] <- which(sequence$seq.prey[i]==rownames(web))
             web <- web[sequence$seq.prey[rs], sequence$seq.pred[cs]]
         }
 
@@ -123,12 +133,12 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
         hoehe <- strheight(colnames(web)[1], cex = 0.6)
         for (i in 1:n.pred) {
             rect(pred_x, pred_y - y_width, pred_x + pred_prop[i],
-                pred_y + y_width, col = col.pred, border=bor.col.pred)
+                pred_y + y_width, col = col.pred[(pred.order[i]-1) %% (length(col.pred))+1], border=bor.col.pred)
             #### coloured boxes at the end if highfreq is given
             if (!is.null(high.abun))
               {
               rect(pred_x + pred_prop[i]-diffh[i], pred_y - y_width, pred_x + pred_prop[i],
-                pred_y + y_width, col = high.abun.col, border=bor.high.abun.col)
+                pred_y + y_width, col = high.abun.col[(pred.order[i]-1) %% (length(high.abun.col))+1],                           border=bor.high.abun.col[(pred.order[i]-1) %% (length(bor.high.abun.col))+1])
               }
 
             breite <- strwidth(colnames(web)[i], cex = 0.6 *
@@ -143,7 +153,8 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
             if (text.rot==90) {hoffset=0; ad =c(0,0.3)} else ad=c(0.5,0.4)
             text(pred_x + pred_prop[i]/2, pred_y + y_width +
                 hoehe + hoffset, colnames(web)[i], cex = 0.6 *
-                labsize, offset = 0, srt=text.rot, adj=ad)
+                labsize, offset = 0, srt=text.rot, adj=ad,
+                col=text.high.col[(pred.order[i]-1) %% (length(text.high.col))+1])
             pred_x <- pred_x + pred_prop[i] + pred_spacing
         }
         prey_x <- 0
@@ -153,12 +164,12 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
         hoffset <- hoehe
         for (i in 1:n.prey) {
             rect(prey_x, prey_y - y_width, prey_x + prey_prop[i],
-                prey_y + y_width, col = col.prey, border=bor.col.prey)
+                prey_y + y_width, col = col.prey[(prey.order[i]-1) %% (length(col.prey))+1], border=bor.col.prey[(prey.order[i]-1) %% (length(bor.col.prey))+1])
             #### coloured boxes at the end if lowfreq is given
             if (!is.null(low.abun))
               {
               rect(prey_x + prey_prop[i]-difff[i], prey_y - y_width, prey_x + prey_prop[i],
-                prey_y + y_width, col = low.abun.col, border=bor.low.abun.col)
+                prey_y + y_width, col = low.abun.col[(prey.order[i]-1) %% (length(low.abun.col))+1], border=bor.low.abun.col[(prey.order[i]-1) %% (length(bor.low.abun.col))+1])
               }
             breite <- strwidth(rownames(web)[i], cex = 0.6 *
                 labsize)
@@ -172,7 +183,8 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
             if (text.rot==90) {hoffset=hoehe; ad =c(1,0.3)} else ad=c(0.5,0.4)
             text(prey_x + prey_prop[i]/2, prey_y - y_width -
                 hoffset, rownames(web)[i], cex = 0.6 * labsize,
-                offset = 0, srt=text.rot, adj=ad)
+                offset = 0, srt=text.rot, adj=ad,
+                col=text.low.col[(prey.order[i]-1) %% (length(text.low.col))+1])
             prey_x <- prey_x + prey_prop[i] + prey_spacing
 
         }
@@ -182,8 +194,9 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
         zwischenweb <- web
         XYcoords <- matrix(ncol = 2, nrow = length(zwischenweb))
         for (i in 1:length(zwischenweb)) {
-            XYcoords[i, ] <- which(zwischenweb == max(zwischenweb),
+            XYcoords[i,1:2 ] <- which(zwischenweb == max(zwischenweb),
                 arr.ind = TRUE)[1, ]
+
             zwischenweb[XYcoords[i, 1], XYcoords[i, 2]] <- -1
         }
         y1 <- pred_y - y_width
@@ -193,6 +206,7 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
         for (p in 1:sum(web > 0)) {
             i <- XYcoords[p, 1]
             j <- XYcoords[p, 2]
+
             if (j == 1 & i == 1)
                 x1 <- 0   else x1 <- (j - 1) * pred_spacing + cumsum(web)[(j -
                 1) * nrow(web) + (i - 1)]/websum
@@ -229,9 +243,10 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
                    x3=colSums(tweb)[i]/websum/2; x4=x3;
                    }
                }
-
-            polygon(c(x1, x2, x4, x3), c(y1, y2, y4, y3), col = col.interaction, border=bor.col.interaction)
+            # calculate color of interaction based on web order
+            icol <- col.interaction[((prey.order[XYcoords[p,1]]-1)* (length(pred.order))+(pred.order[XYcoords[p,2]]-1)) %% (length(col.interaction))+1]
+            bicol <- bor.col.interaction[((prey.order[XYcoords[p,1]]-1)* (length(pred.order))+(pred.order[XYcoords[p,2]]-1)) %% (length(bor.col.interaction))+1]
+            polygon(c(x1, x2, x4, x3), c(y1, y2, y4, y3), col = icol, border=bicol) #bor.col.interaction[(p-1) %% (length(bor.col.interaction))+1])
         }
 par(op)
 }
-

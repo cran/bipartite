@@ -38,9 +38,13 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+	\item 0.85 (release date: 10-Mar-2009)
+  \describe{
+		\item{Function \code{\link{plotweb}}}{New feature: text labels can now be printed in different colours. All colours can be passed as vectors and vectors are recycled if not of appropriate length }
+	}
 	\item 0.84 (release date: 25-Feb-2009)
   \describe{
-		\item{Function \code{\link{plotweb}}}{New feature: arrow=\dQuote{center.up}, arrow=\dQuote{center.down}, arrow=\dQuote{center.both}: this results in the standard presentation of bipartite networks, where interactions are displayed as centered triangles }
+		\item{Function \code{\link{plotweb}}}{New feature: arrow=\dQuote{center.up}, arrow=\dQuote{center.down}, arrow=\dQuote{center.both}: this results in the standard presentation of bipartite networks, where interactions are displayed as centered triangles. }
 	}
 
 	\item 0.83 (release date: 9-Feb-2009)
