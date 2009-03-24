@@ -2,14 +2,16 @@
 \alias{visweb}
 
 \title{ Plotfunction to visualize a bipartite foodweb }
-\description{ this function draws a foodweb as a grid using a matrix. colnames and rownames are used as labels and entries in the matrix are visualized by text and colours
+\description{ this function draws a foodweb as a grid using a matrix. colnames and rownames are used as labels and entries in the matrix are visualized by text and colours. now it can be used to plot bipartite webs in a Vazquez et al. 2009 style
 
 }
 
 \usage{
 visweb(web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1,
-  plotsize=12, square="interaction", text="compartment", frame=NULL, textsize=1,
-  textcol="red", pred.lablength=NULL, prey.lablength, clear=TRUE )
+  plotsize=12, square="interaction", text="no", frame=NULL, textsize=1,
+  textcol="red", pred.lablength=NULL, prey.lablength, clear=TRUE,
+  xlabel="", ylabel="", boxes=TRUE, circles=FALSE, circle.col="black",circle.min=0.2,
+  circle.max=2, outerbox.border="white", outerbox.col="white" )
 }
 
 \arguments{
@@ -41,13 +43,22 @@ visweb(web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1,
   \item{prey.lablength}{length of prey (lower) labels that should be displayed}
   
   \item{clear}{ delete species with no interactions (compulsory done for \dQuote{nested} and \dQuote{diagonal}) }
+  \item{xlabel}{label on the x-axis, make sure prey.lablength is set accordingly, default is empty}
+    \item{ylabel}{label on the y-axis, make sure pred.lablength is set accordingly, default is empty}
+  \item{boxes}{logical, if boxes should be drawn. Default is set to TRUE}
+  \item{circles}{logical, if circles in a Vazquez et al. style should be drawn. Default is set to FALSE, size and colours of circles and background can be set by the following arguments}
+  \item{circle.col}{Colour of circles, works only if circles=TRUE}
+  \item{circle.min}{minimal size of circles, use to rescale circles appropriately, default is 0.2}
+  \item{circle.max}{maximal size of circle, , use to rescale circles appropriately, default is 2}
+  \item{outerbox.border}{Colour of outerbox border if option circles=TRUE}
+  \item{outerbox.col}{Colour of background if option circles=TRUE}
 }
 \details{
 }
 \value{
   A plot window with appropriate size according to the dimensions of the web.
 }
-\references{ ... have to find appropriate ones  }
+\references{ Vazquez, P.D., Chacoff, N.,P. and  Cagnolo, L. (in press, 2009. Evaluating multiple determinants of the structure of plant-animal mutualistic networks. Ecology.  }
 \author{ Bernd Gruber }
 
 \seealso{ For a different plot on foodweb see \code{\link{plotweb}} }
@@ -56,6 +67,13 @@ visweb(web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1,
 data(Safariland)
 visweb(Safariland)
 visweb(Safariland, type="diagonal", square="compartment", text="none", frame=TRUE)
+visweb(Safariland, type="nested", text="compartment")
+
+
+visweb(Safariland, circles=TRUE,  boxes=FALSE,  labsize=1, circle.max=3, text="no")
+visweb(Safariland, circles=TRUE,  boxes=FALSE,  labsize=1,  text="no",circle.max=1.8, outerbox.border="black")
+visweb(Safariland, circles=TRUE,  boxes=TRUE, outerbox.col="orange", labsize=1, circle.max=1.8, text="no")
+
 }
 \keyword{ package }
 

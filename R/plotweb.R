@@ -11,34 +11,61 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
 {
   op <- par(no.readonly = TRUE)
   if (empty) web <- empty(web) else method <- "normal"
-  web<-as.matrix(web) # to convert data.frames into matrix: needed for cumsum
+  web <- as.matrix(web) # to convert data.frames into matrix: needed for cumsum
 
-  prey.order <-1:dim(web)[1]
+  prey.order <- 1:dim(web)[1]
   pred.order <- 1:dim(web)[2]
-  
+
 
 
   meths <- c("normal", "cca")
   meths.match <- pmatch(method, meths)
   if (is.na(meths.match)) stop("Choose plot-method: normal/cca.\n")
   if (meths.match==2)
-  {
-    require(vegan)
-    ca <- cca(web)
-    web <- web[order(summary(ca)$sites[,1], decreasing=TRUE), order(summary(ca)$species[,1], decreasing=TRUE)]
-    prey.order <- order(summary(ca)$sites[,1], decreasing=TRUE)
-    pred.order <- order(summary(ca)$species[,1], decreasing=TRUE)
+  { #for the option "cca" the web is first re-arranged and then treated as "normal"; thus: there is no "else" to this "if".
 
-  }
+  ## Problem: cca sometimes doesn't get the compartments right!!!!!
+  ## Function "compart" returns a matrix with links assigned to compartments
+  ## So, we need to extract the compartments there and put them in sequence:
+    co <- compart(web)
+    if (co$n.compart>1){ #do the arrangement for each compartment separately
+      require(vegan)
+      row.seq <- NULL
+      col.seq <- NULL
+      for (m in 1:co$n.compart){
+        comp.member <- which(abs(co$cweb)==m, arr.ind=TRUE)
+        rs <- unique(comp.member[,1])
+        cs <- unique(comp.member[,2])
+        if (length(rs) < 3 | length(cs) < 3){
+          row.seq <- c(row.seq, rs)
+          col.seq <- c(col.seq, cs)
+        } else { #works fine for webs with only one compartment
+          ca <- cca(web[rs, cs])
+          row.seq <- c(row.seq, rs[order(summary(ca)$sites[,1], decreasing=TRUE)])
+          col.seq <- c(col.seq, cs[order(summary(ca)$species[,2], decreasing=TRUE)])
 
-        if (!is.null(sequence)) {
-            cs <- which(sequence$seq.pred %in% colnames(web))
-            rs <- which(sequence$seq.prey %in% rownames(web))
-
-            for (i in 1:dim(web)[2]) pred.order[i] <- which(sequence$seq.pred[i]==colnames(web))
-            for (i in 1:dim(web)[1]) prey.order[i] <- which(sequence$seq.prey[i]==rownames(web))
-            web <- web[sequence$seq.prey[rs], sequence$seq.pred[cs]]
         }
+
+      }
+      web <- web[row.seq, col.seq]
+       prey.order <- row.seq
+       pred.order <- col.seq
+    } else {
+      ca <- cca(web)
+      web <- web[order(summary(ca)$sites[,1], decreasing=TRUE), order(summary(ca)$species[,1], decreasing=TRUE)]
+      prey.order <- order(summary(ca)$sites[,1], decreasing=TRUE)
+      pred.order <- order(summary(ca)$species[,1], decreasing=TRUE)
+    }
+  } # end for meths.match==2 condition; start of the "normal" plotting
+
+   if (!is.null(sequence)) {
+       cs <- which(sequence$seq.pred %in% colnames(web))
+       rs <- which(sequence$seq.prey %in% rownames(web))
+
+       for (i in 1:dim(web)[2]) pred.order[i] <- which(sequence$seq.pred[i]==colnames(web))
+       for (i in 1:dim(web)[1]) prey.order[i] <- which(sequence$seq.prey[i]==rownames(web))
+       web <- web[sequence$seq.prey[rs], sequence$seq.pred[cs]]
+   }
 
    websum <- sum(web)
    difff <- diffh <-0 # if no abundances are set leave plotsize as before
@@ -53,7 +80,7 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
         for (i in 1:length(low.abun) )
         {
         ind <- which(names(low.abun)[i] == names(dummy))
-        
+
         lowfreq[ind] <- lowfreq[ind]+low.abun[i]
 
         }
@@ -112,12 +139,12 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
         prey_spacing <- prey_spacing*spacing
 
         if (n.pred>n.prey) prey_spacing <- pred_spacing*(n.pred-1)/(n.prey-1) else pred_spacing<- prey_spacing*(n.prey-1)/(n.pred-1)
-        
+
         if (!is.null(low.abun)) pred_spacing <- pred_spacing+sum(difff)/n.pred
-        
+
         if (!is.null(high.abun)) prey_spacing <- prey_spacing+sum(diffh)/n.prey
 
-        
+
         wleft = 0
         wright = (max(n.pred, n.prey)) * min(prey_spacing,pred_spacing) +1+max(sum(diffh),sum(difff))
 
@@ -250,3 +277,4 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
         }
 par(op)
 }
+

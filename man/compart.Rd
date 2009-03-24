@@ -12,13 +12,10 @@ compart(web)
   \item{web}{A bipartite interaction web, i.e.~a matrix with higher (cols) and lower (rows) trophic levels.}
 }
 \details{
-Internal function, to be called by \code{\link{networklevel}}.
-
-The matrix \code{web} is \dQuote{diagonalised} through CA-scores, then compartments are 
-detected based on the \code{distconnect}-function from \pkg{vegan}, and the interactions 
-are assigned to the compartments. Finally, the original data structure is reinstated and returned.
-
-The logic of using a CA before the analysis was based on a sentence somewhere in Lewinsohn et al.~(2006).
+Internal function, to be called by \code{\link{networklevel}}. 
+}
+\note{
+Note that up to (and including) version 0.85 we used a code based on correspondence analysis (see Lewinsohn et al. 2006). This is, however, faulty for webs with many same-linked species. Hence we resort to a brute-force search for compartments, which is orders of magnitude slower, but at least works correctly.
 }
 \value{
 Returns a list with two entries:
@@ -29,7 +26,7 @@ Returns a list with two entries:
 Lewinsohn, T. M., P. I. Prado, P. Jordano, J. Bascompte, and J. M. Olesen (2006) Structure in plant-animal interaction assemblages. \emph{Oikos} \bold{113}, 174--184
 }
 \author{ Carsten F. Dormann <carsten.dormann@ufz.de> }
-\seealso{ See also \code{\link{networklevel}}, \code{distconnected} and \code{cca}. }
+\seealso{ See also \code{\link{networklevel}}. }
 \examples{
 # make a nicely compartet web:
 web <- matrix(0, 10,10)

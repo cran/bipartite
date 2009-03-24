@@ -29,8 +29,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 0.84\cr
-Date: \tab 2009-02-25\cr
+Version: \tab 0.90\cr
+Date: \tab 2009-03-24\cr
 License: \tab GPL \cr
 }
 }
@@ -38,6 +38,16 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+  \item 0.90 (release date: 24-Mar-2009)
+  \describe{
+    \item{example \code{vazquez.example}:}{We added several new functionalities mainly to be able to analysis data and use network statistics as suggested by Vazquez et al. 2009. You can access this example by typing \code{?vazquez.example}.}
+    \item{new feature in \code{visweb}:}{Can now plot different sized circles to represent interactions, as proposed by Vazquez et al. (2009).}
+    \item{new feature in \code{networklevel}:}{We added an option to calculate interaction evenness either based on all possible links or just on realized links.}
+    \item{new function \code{sortweb}:}{Can be used to sort webs in different ways.}
+    \item{data set \code{inouye1988}:}{Another pollination network from the NCEAS database (see \code{\link{inouye1988}}).}
+    \item{Function \code{compart}:}{We replaced the CA-based approach to detecting compartments by a comprehensive and recursive approach. The latter is not affected by ties in the data set (i.e. species with the same number of links). In quantitative webs and for the networks included in bipartite, the old function was working fine, but in more recent trials it failed to detect 2-species compartments. In turn, we had to adapt \code{networklevel} and \code{plotweb}.}
+  }
+
 	\item 0.85 (release date: 10-Mar-2009)
   \describe{
 		\item{Function \code{\link{plotweb}}}{New feature: text labels can now be printed in different colours. All colours can be passed as vectors and vectors are recycled if not of appropriate length }
@@ -126,6 +136,8 @@ Memmott, J., Waser, N. M. and Price, M. V. (2004) Tolerance of pollination netwo
 Tylianakis, J. M., Tscharntke, T. and Lewis, O. T. (2007) Habitat modification alters the structure of tropical host-parasitoid food webs. \emph{Nature} \bold{445}, 202--205
 
 Vazquez, D. P. and Aizen, M. A. (2004) Asymmetric specialization: A pervasive feature of plant-pollinator interactions. \emph{Ecology} \bold{85}, 1251--1257
+
+Vazquez, P.D., Chacoff, N.,P. and  Cagnolo, L. (2009) Evaluating multiple determinants of the structure of plant-animal mutualistic networks. \emph{Ecology} in press.
 }
 \keyword{ package }
 

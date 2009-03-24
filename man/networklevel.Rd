@@ -8,7 +8,7 @@ Calculates a variety of indices and values for a bipartite network.
 }
 \usage{
 networklevel(web, index="ALL", ISAmethod="Bluethgen", SAmethod = "Bluethgen",
-    extinctmethod = "r", nrep = 100, plot.it.extinction = FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn", normalise=TRUE, nest.weighted=FALSE, empty.web=TRUE)
+    extinctmethod = "r", nrep = 100, plot.it.extinction = FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn", normalise=TRUE, nest.weighted=FALSE, empty.web=TRUE, intereven="prod")
 }
 
 \arguments{
@@ -39,6 +39,7 @@ networklevel(web, index="ALL", ISAmethod="Bluethgen", SAmethod = "Bluethgen",
   \item{normalise}{Logical; shall the C-score and togetherness metrics be normalised to a range of 0 to 1? Defaults to \code{TRUE}.}
   \item{nest.weighted}{Shall the interaction-weighted nestedness be calculated (see \code{\link{nestedness.corso}} for details)? Defaults to \code{FALSE}.}
   \item{empty.web}{Shall the empty columns and rows be deleted? Defaults to TRUE.}
+  \item{intereven}{Shall all cells of the matrix be used to calculate the interaction evenness (as we recommend and default: \option{intereven="prod"})? Or, as given by Bersier et al. (2002) and Tylianakis et al. (2007), should only the realised links be used (\option{intereven="sum"})? Prod and sum refer to using the log of the product of matrix dimensions (i.e. all cells) or the log of the sum of non-zero cells (i.e. number of links)  as denominator in the evenness formula.}
 }
 
 \details{
@@ -86,6 +87,8 @@ Depending on the selected indices, some or all of the below:
 
 \references{ 
 Bascompte, J., Jordano, P. and Olesen, J. M. 2006 Asymmetric coevolutionary networks facilitate biodiversity maintenance. \emph{Science} \bold{312}, 431--433
+
+Bersier, L. F., Banasek-Richter, C. and Cattin, M. F. (2002) Quantitative descriptors of food-web matrices. \emph{Ecology} \bold{83}, 2394--2407
 
 Blüthgen, N., Menzel, F., Hovestadt, T., Fiala, B. and Blüthgen N. 2007 Specialization, constraints and conflicting interests in mutualistic networks. \emph{Current Biology} \bold{17}, 1--6
 

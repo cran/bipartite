@@ -1,5 +1,5 @@
 `networklevel` <-
-function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctmethod="r", nrep=100, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn", normalise=TRUE, nest.weighted=FALSE, empty.web=TRUE){
+function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctmethod="r", nrep=100, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn", normalise=TRUE, nest.weighted=FALSE, empty.web=TRUE, intereven="prod"){
     ##
     ## web         interaction matrix, with lower trophic level in rows, higher in columns
     ##
@@ -68,7 +68,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
         # interaction evenness
         p_i.mat <- web/sum(web)
         SH <- -sum(p_i.mat*log(p_i.mat), na.rm=TRUE)
-        IE <- SH/log(prod(dim(web))) #log(sum(web>0))
+        IE <- ifelse(intereven=="prod", SH/log(prod(dim(web))), SH/log(sum(web>0)))
         
         evenness <- function(web){
             # calculates evenness of the numbers of individuals of different species in
@@ -97,7 +97,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
           if (co$n.compart>1){
             no <- NA
             for (i in 1:co$n.compart){
-              comp <- which(co$cweb==i, arr.ind=TRUE) # who is in a compartment?
+              comp <- which(abs(co$cweb)==i, arr.ind=TRUE) # who is in a compartment?
               no[i] <- length(unique(comp[,1])) + length(unique(comp[,2])) # how many species
             }
             no <- no/sum(dim(web)) # standardise for number of species in the web

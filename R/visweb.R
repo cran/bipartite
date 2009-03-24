@@ -1,8 +1,11 @@
                         `visweb` <-
 function (web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1, plotsize=12,
-                   square="interaction", text="compartment", frame=NULL,
+                   square="interaction", text="no", frame=NULL,
                    textsize=1, textcol="red", pred.lablength=NULL, prey.lablength=NULL,
-                   clear=TRUE)
+                   clear=TRUE,
+                   xlabel="", ylabel="",
+                   boxes=TRUE,
+                   circles=FALSE, circle.col="black",circle.min=0.2,circle.max=2, outerbox.border="white", outerbox.col="white")
 ### image funktion für foodwebs
 ### Version 1.0d
 ### written by Bernd Gruber, 2006-05-07
@@ -64,9 +67,9 @@ function (web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1, plotsi
        mm<-max(m.predsize,m.preysize)
       par(pin=c(wx,wy),  omi=c(0,0,0,0),  mai=c(mm,mm,0.0,0.0) )
 
-      plot(1, type="n", axes=FALSE, xlim=c(0,n.pred), ylim=c(0,n.prey),asp=1,xlab="",ylab="" )
+      plot(1, type="n", axes=FALSE, xlim=c(0,n.pred), ylim=c(0,n.prey),asp=1,xlab=xlabel,ylab=ylabel )
 
-
+       rect(0,0,n.pred,n.prey, col=outerbox.col, border=outerbox.border)
         ## labels on x-axis (prednames)
         pnl<-0
     if (prednames && !is.null(colnames(web))) {
@@ -156,6 +159,7 @@ function (web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1, plotsi
         lev <- as.numeric(names(table(web)))
 
 
+        max.web <- max(web)
         for (i in 1:n.prey)
         {
         for (ii in 1:n.pred)
@@ -166,7 +170,9 @@ function (web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1, plotsi
               c=1
 
           c=gray(c)
-          rect(ii-1,i-1,ii,i, col=c)
+          if (circles==TRUE) c=outerbox.col
+          if (boxes==TRUE) rect(ii-1,i-1,ii,i, col=c)
+          if (circles==TRUE && web[n.prey-i+1,ii]>0)  points(ii-0.5,i-0.5,pch=21,col=circle.col, bg=circle.col,cex=circle.min+(circle.max*web[n.prey-i+1,ii]/max.web))
           tc <- ""
           if (substr(text,1,1)=="i")
               {
@@ -195,4 +201,9 @@ function (web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1, plotsi
           }
         }
 }
+
+
+
+
+
 
