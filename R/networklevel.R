@@ -1,5 +1,5 @@
 `networklevel` <-
-function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctmethod="r", nrep=100, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn", normalise=TRUE, nest.weighted=FALSE, empty.web=TRUE, intereven="prod"){
+function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctmethod="r", nrep=100, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn", normalise=TRUE, empty.web=TRUE, intereven="prod"){
     ##
     ## web         interaction matrix, with lower trophic level in rows, higher in columns
     ##
@@ -11,7 +11,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
           "connectance", "linkage density", "web asymmetry",
           "number of compartments", "generality", "vulnerability", "interaction evenness",
           "compartment diversity", "cluster coefficient", "H2", "ISA", "SA",
-          "extinction slope", "degreedistribution", "niche overlap", "mean number of shared hosts",  "C-score", "togetherness", "V-ratio", "nestedness", "nestedness.corso", "discrepancy")
+          "extinction slope", "robustness", "degreedistribution", "niche overlap", "mean number of shared hosts",  "C-score", "togetherness", "V-ratio", "nestedness", "weighted nestedness", "discrepancy")
     out <- list()
 
     # set up enough panals for plotting:
@@ -222,14 +222,23 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
     }
     #----------------------------------------------------------------------------
     # species extinction curve:
-    if ("extinction slope" %in% index){
-        extL <- try(second.extinct(web=web, method=extinctmethod, nrep=nrep, participant="lower"))
-        slopeL <- try(slope.bipartite(extL, col="green", pch=16, type="b", plot.it=plot.it.extinction))
-        out$"extinction slope lower trophic level"=as.numeric(slopeL)
-        
+    if (any(c("extinction slope", "robustness") %in% index)){
+        extL <- try(second.extinct(web=web, method=extinctmethod, nrep=nrep, participant="lower"))       
         extH <- try(second.extinct(web=web, method=extinctmethod, nrep=nrep, participant="higher"))
-        slopeH <- try(slope.bipartite(extH, col="green", pch=16, type="b", plot.it=plot.it.extinction))
-        out$"extinction slope higher trophic level"=as.numeric(slopeH)
+        if ("extinction slope" %in% index){
+            slopeL <- try(slope.bipartite(extL, col="green", pch=16, type="b", plot.it=plot.it.extinction))
+            out$"extinction slope lower trophic level"=as.numeric(slopeL)
+            
+            slopeH <- try(slope.bipartite(extH, col="green", pch=16, type="b", plot.it=plot.it.extinction))
+            out$"extinction slope higher trophic level"=as.numeric(slopeH)
+        }
+    
+        if ("robustness" %in% index) {
+            robustL <- robustness(extL)
+            out$"robustness lower exterminated" = as.numeric(robustL)
+            robustH <- robustness(extH)
+            out$"robustness higher exterminated" = as.numeric(robustH)
+        }
     }
 
     #----------------------------------------------------------------------------
@@ -289,8 +298,8 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
     }
 
     #-------------------
-    if ("nestedness.corso" %in% index){
-      out$nestedness.corso <- nestedness.corso(web.e, weighted=nest.weighted)
+    if ("weighted nestedness" %in% index){
+      out$"weighted nestedness" <- wine(web.e, nreps=nrep)$wine
     }
 
     #-------------------

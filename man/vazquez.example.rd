@@ -18,19 +18,19 @@ Describes how to use bipartite to calculate the statistics presented in Vazquez 
 \details{
   The functions used are:
   \describe{
-    \item{confint}{ is the same as quantile}
-    \item{intasymm}{ can be extracted using specieslevel}
-    \item{intereven}{ is similar to interaction evenness in networklevel, but only for a specific option}
-    \item{mgen}{Random web based on the number of links; it usually looses ranks (i.e. not all species will still be represented in this random web), and it is based only on the binary web (i.e. all quantitative information is lost); see \code{r2dtable}, \code{swap.web} and \code{shuffle.web} for quantitative alternatives.}
-    \item{mlik}{A specific call to dmultinom and the calculation of the AIC; the number of parameters entering the AIC-calculation is not obvious; this depends on the constraints used by the null model. In the case of r2dtable, column and row totals are constrained, i.e. ncol+nrow parameters must be given. In the case of swap.web, connectance is also constrained, but how many parameters does that imply? One? In shuffle.web, we constrain the dimensionality and connectance, i.e. 3 (?) parameters. Vazquez et al. (2009) argue that they constrain only 2 parameters when producing the probability matrix given as pweb in the example below. We tend to disagree: the marginal probabilities of all columns and rows are given, hence k=ncol(web) + nrow(web). To our knowledge, there is no mathematical/statistical treatise of this problem.}
-    \item{netstats}{a wrapper calling the other functions, in that sense similar to networklevel, but also calling some output from specieslevel}
-    \item{plotmat}{now part of visweb, using the right options}
-    \item{quant2bin}{a dedicated function to do a simple thing: (web>0)*1}
-    \item{sortmatr}{newly defined function: \code{\link{sortweb}}}
-    \item{sortmatrext}{sort matrix by some given sequence; also part of \code{\link{sortweb}}}
+    \item{confint:}{ Is the same as \code{quantile}}
+    \item{intasymm:}{ Can be extracted using \code{\link{specieslevel}}}
+    \item{intereven:}{ Is similar to interaction evenness in \code{\link{networklevel}}, but only for a specific option}
+    \item{mgen:}{Random web based on the number of links; it usually looses ranks (i.e. not all species will still be represented in this random web), and it is based only on the binary web (i.e. all quantitative information is lost); see \code{r2dtable}, \code{\link{swap.web}} and \code{\link{shuffle.web}} for quantitative alternatives.}
+    \item{mlik:}{A specific call to \code{dmultinom} and the calculation of the AIC; the number of parameters entering the AIC-calculation is not obvious; this depends on the constraints used by the null model. In the case of \code{r2dtable}, column and row totals are constrained, i.e. ncol+nrow parameters must be given. In the case of \code{\link{swap.web}}, connectance is also constrained, but how many parameters does that imply? One? In \code{\link{shuffle.web}}, we constrain the dimensionality and connectance, i.e. 3 (?) parameters. Vazquez et al. (2009) argue that they constrain only 2 parameters when producing the probability matrix given as pweb in the example below. We tend to disagree: the marginal probabilities of all columns and rows are given, hence k = (ncol(web) + nrow(web)). To our knowledge, there is no mathematical/statistical treatise of this problem.}
+    \item{netstats:}{A wrapper calling the other functions, in that sense similar to \code{\link{networklevel}}, but also calling some output from \code{\link{specieslevel}}.}
+    \item{plotmat:}{Now part of \code{\link{visweb}}, using the right options.}
+    \item{quant2bin:}{A dedicated function to do a simple thing: \code{(web>0)*1}.}
+    \item{sortmatr:}{newly defined function: \code{\link{sortweb}}}
+    \item{sortmatrext:}{sort matrix by some given sequence; also part of \code{\link{sortweb}}}
   }
   
-  In the example below, we use the bipartite/standard R functions whenever possible. 
+  In the example below, we use the \pkg{bipartite}/standard R functions whenever possible. 
 
 }
 

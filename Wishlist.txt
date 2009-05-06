@@ -1,12 +1,6 @@
-* include new pollination webs and all quantitative host-parasitoid webs
+* include all quantitative host-parasitoid webs
 
 * compartments (implement more lax definition: Dicks/Corbet/Fryxell 2002? Set threshold to 1-5% of observations and ignore those?); 	compartment-test, including comparison to null-model?
 
 * modularity (Ecology paper by Oleson?); visualise modularity in plotweb
-
-* second.extinct: allow for an index-vector to be passed to specify extinction sequence
-
-* plotweb2 mit text.rot function and centered interactions
-
-
 

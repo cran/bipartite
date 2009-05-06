@@ -29,8 +29,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 0.90\cr
-Date: \tab 2009-03-24\cr
+Version: \tab 0.91\cr
+Date: \tab 2009-05-06\cr
 License: \tab GPL \cr
 }
 }
@@ -38,6 +38,13 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+  \item 0.91 (release data: 06-May-2009)
+  \describe{
+    \item{new function \code{\link{wine}}:}{This function replaces the (now deprecated) function \code{nestedness.corso} in calculating a (weighted) nestedness for bipartite networks. It was developed and implemented by Marcelino de la Cruz, Juan M. Pastor, Javier Galeano and Jose Iriondo. It is also called by \code{\link{networklevel}}. A plotting function is also available, depicting the contributions of each observed link to the web's nestedness. - \code{nestedness.corso} is now removed from the package. The main reason is that it served as an interim solution for \code{\link{wine}}, and the Corso-way of calculating nestedness is just one more of already too many. If you intend to use \code{\link{wine}} on binary data and interpret that as a Corso-equivalent, beware of the following two main differences (thanks to Jose Iriondo for summarising them): \emph{First, the nestedness of Corso et al. varies between 0 and 1, with the highest nestedness is reached at 0 and 1 corresponds to random, whereas in \code{\link{wine}} is just the opposite (this is because the Manhattan distances are calculated with regard to opposite sides of the matrix). Secondly, the \sQuote{d} in the nestedness of Corso is the sums of the \sQuote{dij}s whereas in \code{\link{wine}}, the \sQuote{d} (= \sQuote{win} value of the object produced by \code{\link{wine}}) is the average of the \sQuote{dij}s above 0.} So, we recommend NOT to use wine for calculating Corso's nestedness, but rather download the source code for \code{nestedness.corso} from an older version of \pkg{bipartite}.}
+    \item{new function \code{\link{robustness}}:}{A better way to quantify the effect of species loss on the extinctions in the other trophic level; kindly provided by Mariano Devoto. This index is also part of \code{\link{networklevel}}.}
+    \item{new data set \code{ollerton2003}:}{Another quantitative pollination network from the NCEAS database (see \code{\link{ollerton2003}}).}
+  }
+
   \item 0.90 (release date: 24-Mar-2009)
   \describe{
     \item{example \code{vazquez.example}:}{We added several new functionalities mainly to be able to analysis data and use network statistics as suggested by Vazquez et al. 2009. You can access this example by typing \code{?vazquez.example}.}
@@ -70,7 +77,7 @@ License: \tab GPL \cr
 		\item{Function \code{\link{nodespec}} replaces the now obsolete function \code{functspec}.}{The inventor of functional specialisation, Bo Dalsgaard, understands the term \sQuote{functional specialisation} to be restricted to the way in which plants are specialised to pollinators. Although I disagree (and think that \sQuote{functional} actually means very little until defined for a given problem), I renamed the \sQuote{functional specialisation index} into \sQuote{node specialisation index}. This is not a particularly clever name, but at least it indicates that the position of nodes in a network is important when it is calculated.}
 		\item{Bug in \code{\link{networklevel}}:}{Call to \code{nestedness.corso} overwrote results of \code{link{nestedness}}.}
 		\item{Various changes related to the analysis of very small webs.}{Very small webs should probably not be used at all for testing theories! Indices are usually VERY sensitive to the exact number of species, number of observations etc. Still, sometimes we simply want to calculate some index, and then \pkg{bipartite} should handle such small networks, too. So, when going through several dozens of very small webs (sometimes only containing one species in one of the two trophic levels), several functions did not perform correctly (usually to such minor programming issues such as matrices being converted to vectors when \code{[} was used with \option{drop=TRUE}, i.e. the default). Changes affected the functions \code{discrepancy}, \code{nestedness.corso}, \code{shuffle.web}, \code{compart} and \code{empty}. Their output remains identical, only they now also work for small webs.}
-		\item{Changes to \code{\link{nestedness.corso}} with \option{weighted=TRUE}}{Galeano et al. do not describe how to deal with ties, nor do they make clear if the packed matrix should be sorted by marginal sum of links or marginal sum of interactions! Previously, we used marginal sum of interactions (because it is a weighted index), but now we moved to marginal sum of links, because that is how I interpret their paper after a third (or forth) re-reading. Furthermore, because the real maximum chaos cannot be derived (to my knowledge) algorithmically, we use the 95\% quantile of 500 randomisations as maximum. This will lead to a consistently overestimated nestedness, but it is less sensitive to the number of replicates than the max. (Also, there was an error in the description of the value returned: 0 is nested, 1 is chaos!)}
+		\item{Changes to \code{nestedness.corso} with \option{weighted=TRUE}}{Galeano et al. do not describe how to deal with ties, nor do they make clear if the packed matrix should be sorted by marginal sum of links or marginal sum of interactions! Previously, we used marginal sum of interactions (because it is a weighted index), but now we moved to marginal sum of links, because that is how I interpret their paper after a third (or forth) re-reading. Furthermore, because the real maximum chaos cannot be derived (to my knowledge) algorithmically, we use the 95\% quantile of 500 randomisations as maximum. This will lead to a consistently overestimated nestedness, but it is less sensitive to the number of replicates than the max. (Also, there was an error in the description of the value returned: 0 is nested, 1 is chaos!)}
 	}
 
 	\item 0.8 (release date: 21-Dec-2008)
@@ -86,7 +93,7 @@ License: \tab GPL \cr
 	\describe{
 		\item{functional specialisation (\code{\link{functspec}}) bug fix}{Paths were double the true length, hence minimum was 2, rather than 1.}
 		\item{\code{\link{H2fun}} bug fix}{Since the search for H2min is heuristic, H2uncorr can sometimes be lower than H2min; in that case, H2fun returned a value greater 1, while it should be one exactly.}
-		\item{new function \code{\link{nestedness.corso}} }{Calculates (weighted) nestedness according to Corso et al. (2008) and Galeano et al. (2008).}
+		\item{new function \code{nestedness.corso} }{Calculates (weighted) nestedness according to Corso et al. (2008) and Galeano et al. (2008).}
 		\item{new function \code{\link{discrepancy}}}{Calculates discrepancy according to Brualdi & Sanderson (1999), deemed to be best ever measure of nestedness; also gives an example for a binary null model analysis based on \pkg{vegan}'s \code{commsimulator}.}
 		\item{other}{Correction of several minor typos on the help pages; removal of "~" in help files; same citation style throughout; new cross references (especially for the nestedness functions); in \code{\link{networklevel}}, nestedness is now calculated using \pkg{vegan}'s \code{nestedtemp} due to matrix inversion problems reported for binmatnest.}
 	}

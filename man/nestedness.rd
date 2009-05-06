@@ -56,7 +56,7 @@ In the meantime, use \code{nestedtemp} in \pkg{vegan} (as we do in \code{network
 data(vazarr)
 nestedness(vazarr) # null models are calculated
 nestedness(vazarr, null.models=FALSE) # no null models, much faster for bigger matrices
-nestedness(vazarr, n.nulls=300, n.gen=3000, )
+nestedness(vazarr, n.nulls=300, n.gen=300)
 }
 
 \keyword{ package}

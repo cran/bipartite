@@ -8,7 +8,7 @@ Calculates a variety of indices and values for a bipartite network.
 }
 \usage{
 networklevel(web, index="ALL", ISAmethod="Bluethgen", SAmethod = "Bluethgen",
-    extinctmethod = "r", nrep = 100, plot.it.extinction = FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn", normalise=TRUE, nest.weighted=FALSE, empty.web=TRUE, intereven="prod")
+    extinctmethod = "r", nrep = 100, plot.it.extinction = FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn", normalise=TRUE, empty.web=TRUE, intereven="prod")
 }
 
 \arguments{
@@ -17,7 +17,7 @@ networklevel(web, index="ALL", ISAmethod="Bluethgen", SAmethod = "Bluethgen",
   \dQuote{links per species}, \dQuote{connectance}, \dQuote{linkage density},\dQuote{web asymmetry},
   \dQuote{number of compartments}, \dQuote{generality},\dQuote{vulnerability},
   \dQuote{interaction evenness},\dQuote{compartment diversity}, \dQuote{cluster coefficient},
-  \dQuote{H2},\dQuote{ISA},\dQuote{SA},\dQuote{extinction slope}, \dQuote{degreedistribution},
+  \dQuote{H2},\dQuote{ISA},\dQuote{SA},\dQuote{extinction slope}, \dQuote{robustness}, \dQuote{degreedistribution},
   \dQuote{niche overlap}, \dQuote{mean number of shared hosts}, \dQuote{togetherness},
   \dQuote{C-score}, \dQuote{V-ratio}, \dQuote{nestedness}, \dQuote{nestedness.corso},\dQuote{discrepancy}. \dQuote{ALL} (default) calculates all indices.}
   \item{ISAmethod}{Method to use for calculating interaction strength (= dependence)
@@ -37,7 +37,6 @@ networklevel(web, index="ALL", ISAmethod="Bluethgen", SAmethod = "Bluethgen",
   \item{CCfun}{Method to use when calculating the clustering coefficient. Originally proposed as mean of cluster coefficients for each node. Defaults to \dQuote{median}, because cluster coefficients are strongly skewed. }
   \item{dist}{Distance metric to be used to calculate niche overlap; defaults to Horn's index, which is the recommendation of Krebs (Ecological Methodology); for other options see \code{vegdist} in \pkg{vegan}.}
   \item{normalise}{Logical; shall the C-score and togetherness metrics be normalised to a range of 0 to 1? Defaults to \code{TRUE}.}
-  \item{nest.weighted}{Shall the interaction-weighted nestedness be calculated (see \code{\link{nestedness.corso}} for details)? Defaults to \code{FALSE}.}
   \item{empty.web}{Shall the empty columns and rows be deleted? Defaults to TRUE.}
   \item{intereven}{Shall all cells of the matrix be used to calculate the interaction evenness (as we recommend and default: \option{intereven="prod"})? Or, as given by Bersier et al. (2002) and Tylianakis et al. (2007), should only the realised links be used (\option{intereven="sum"})? Prod and sum refer to using the log of the product of matrix dimensions (i.e. all cells) or the log of the sum of non-zero cells (i.e. number of links)  as denominator in the evenness formula.}
 }
@@ -72,14 +71,15 @@ Depending on the selected indices, some or all of the below:
   \item{specialisation asymmetry}{Asymmetry (higher vs. lower trophic level) of specialisation now based on d' (see \code{\link{dfun}}), which is insensitive to the dimensions of the web. Again, two options of calculation are available: the one proposed by Blüthgen et al. (2007), where they weight the specialisation value for each species by its abundance (\option{SAmethod="Bluethgen"}) or where d'-values are log-transformed (argueing that d'-values are indeed log-normally distributed: \option{SAmethod="log"}). Since the mean d-value for the lower trophic level is subtracted from that of the higher, positive values indicate a higher specialisation of the higher trophic level.}
   \item{extinction slope higher trophic level}{Slope of the secondary extinction sequence in the higher trophic level, following extermination of species in the lower trophic level; see details.}
   \item{extinction slope lower trophic level}{Slope of the secondary extinction sequence in the lower trophic level, following extermination of species in the higher trophic level; see details.}
+  \item{robustness}{Calculates the area below the extinction curve; see \code{\link{robustness}} for details.}
   \item{degree distribution}{Coefficients and fits for three different functions to degree distributions: exponential, power law and truncated power law. See \code{\link{degreedistr}} for details and references.}
   \item{niche overlap}{Mean similarity in interaction pattern between species of the same trophic level, calculated by default as Horn's index. Values near 0 indicate no common use of niches, 1 indicates perfect niche overlap. (In how far it makes sense for hosts of predators to call their commonness in enemies \dQuote{niche overlap} is a different issue. There are people calling predators \dQuote{negative resources} (couldn't be asked to look up the reference). I would probably rather call it similarity in predators.)}
   \item{mean number of shared hosts}{The simplest measure of co-occurrence and hence similarity in host preferences; based on Roberts \& Stone (1990) and Stone \& Roberts (1992).}
   \item{togetherness}{Mean number of co-occupancies across all species-host-combinations; the whole matrix is scanned for submatrices of the form c(0,0,1,1), representing perfect matches of co-presences and co-absences. These are counted for each pairwise species combination, and averaged. Based on Stone \& Roberts (1992).}
   \item{C-score}{Mean (normalised) number of checkerboard combinations across all higher trophic level species. Values close to 1 indicate that there is evidence for disaggregation, e.g.~through competition. Value close to 0 indicate aggregation of species (i.e.~no repelling forces between species). See Stone and Roberts (1990) for details.}
   \item{V-ratio}{Variance-ratio of species numbers to individual numbers within species for the higher trophic level. Values larger than 1 indicate positive aggregation, values between 0 and 1 indicate disaggregation of species. See Schluter (1984) for details.}
-  \item{nestedness}{Nestedness-temperature of the matrix. For details see \code{\link{nestedness}} and Rodríguez-Gironés \& Santamaria (2002). Notice that the function \code{\link{nestedness}}, as called by \code{networklevel}, does not calculate any null model, simply because it is too computer-intensive. If you are interested in the different null models, please use the function \code{\link{nestedness}} or \code{nestedtemp} in \pkg{vegan} directly.}
-  \item{nestedness.corso}{Another way to calculate nestedness, proposed by Corso et al. (2007). A version that considers interaction frequencies (and is hence weighted) has been proposed (Galeano et al. 2007), and its value is returned for option \option{nest.weighted=TRUE}. Both range between 0 (perfect nestedness) and 1 (perfect chaos) and have not been properly evaluated!}
+  \item{nestedness}{Nestedness temperature of the matrix (0 means cold, i.e.~high nestedness, 100 means hot, i.e.~chaos). For details see \code{\link{nestedness}} and Rodríguez-Gironés \& Santamaria (2002). Notice that the function \code{\link{nestedness}} does not calculate any null model, simply because it is too computer-intensive. \code{networklevel} calls \code{nestedtemp}! If you are interested in the different null models, please use the function \code{\link{nestedness}} or \code{nestedtemp} in \pkg{vegan} directly.}
+  \item{weighted nestedness}{A nestedness version that considers interaction frequencies (and is hence weighted), proposed by Galeano et al. (2007) and implemented in \code{\link{wine}}. It ranges between 1 (perfect nestedness) and 0 (perfect chaos). Note that this is the OPPOSITE interpretation of nestedness temperature!}
   \item{discrepancy}{Discrepancy as proposed by Brualdi \& Sanderson (1999); see \code{[\link{discrepancy}} for details.}
 }
 
@@ -91,6 +91,8 @@ Bascompte, J., Jordano, P. and Olesen, J. M. 2006 Asymmetric coevolutionary netw
 Bersier, L. F., Banasek-Richter, C. and Cattin, M. F. (2002) Quantitative descriptors of food-web matrices. \emph{Ecology} \bold{83}, 2394--2407
 
 Blüthgen, N., Menzel, F., Hovestadt, T., Fiala, B. and Blüthgen N. 2007 Specialization, constraints and conflicting interests in mutualistic networks. \emph{Current Biology} \bold{17}, 1--6
+
+Burgos, E., H. Ceva, R.P.J. Perazzo, M. Devoto, D. Medan, M. Zimmermann, and A. Maria Delbue (2007) Why nestedness in mutualistic networks? \emph{Journal of Theoretical Biology} \bold{249}, 307--313
 
 Corso G, de Araújo AIL, de Almeida AM (2008) A new nestedness estimator in community networks. \emph{arXiv} 0803.0007v1 [physics.bio-ph]
 

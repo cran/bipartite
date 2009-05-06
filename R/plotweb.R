@@ -42,14 +42,12 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
         } else { #works fine for webs with only one compartment
           ca <- cca(web[rs, cs])
           row.seq <- c(row.seq, rs[order(summary(ca)$sites[,1], decreasing=TRUE)])
-          col.seq <- c(col.seq, cs[order(summary(ca)$species[,2], decreasing=TRUE)])
-
+          col.seq <- c(col.seq, cs[order(summary(ca)$species[,1], decreasing=TRUE)])
         }
-
       }
       web <- web[row.seq, col.seq]
-       prey.order <- row.seq
-       pred.order <- col.seq
+      prey.order <- row.seq
+      pred.order <- col.seq
     } else {
       ca <- cca(web)
       web <- web[order(summary(ca)$sites[,1], decreasing=TRUE), order(summary(ca)$species[,1], decreasing=TRUE)]
@@ -160,7 +158,7 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
         hoehe <- strheight(colnames(web)[1], cex = 0.6)
         for (i in 1:n.pred) {
             rect(pred_x, pred_y - y_width, pred_x + pred_prop[i],
-                pred_y + y_width, col = col.pred[(pred.order[i]-1) %% (length(col.pred))+1], border=bor.col.pred)
+                pred_y + y_width, col = col.pred[(pred.order[i]-1) %% (length(col.pred))+1], border=bor.col.pred[(pred.order[i]-1) %% (length(bor.col.pred))+1])
             #### coloured boxes at the end if highfreq is given
             if (!is.null(high.abun))
               {

@@ -27,20 +27,25 @@ function(web, participant="higher", method="abun", nrep=10, details=FALSE){
         {
             # extinct a species and count secondary extinctions:
             n <- extinction(m2, participant=participant, method=method)
-            dead <- rbind(dead, c(i, attributes(m2<-empty(n, count=TRUE))$empty))
+            dead <- rbind(dead, c(i, attributes(m2 <- empty(n, count=TRUE))$empty))
             i <- i+1
         }
-        dead <- rbind(dead, c(NROW(dead)+1, attributes(empty(m2, count=TRUE))$empty)) # counts extinction knock-on for the last species
+        dead2 <- rbind(dead, c(NROW(dead)+1, attributes(empty(m2, count=TRUE))$empty)) # counts extinction knock-on for the last species
 
-        # sometimes several species survive until the last mutualist is gone;
-        # then we need to correct the length of the "dead"-data.frame:
-        ci <- which(sapply(1:3, function(x) all(dead[-nrow(dead),x]==1))==TRUE)
-        dead2 <- matrix(0, nrow=ifelse(ci==2, nrow(web), ncol(web)), ncol=3)
-        colnames(dead2) <- colnames(dead)
-        dead2[,1] <- 1:nrow(dead2)
-        if (nrow(dead)!=nrow(dead2)) {for (m in 1:nrow(dead)) dead2[m,2:3] <- dead[m,2:3]} else dead2=dead
+      # If I use a random sequence, sometimes it takes only 23 steps to let all pollinators go extinct, sometimes 24. So, the matrix "dead" will have different dimensions. Correct this:
+        if (nrow(dead)!=nrow(dead2)) { # Is dead of the right length?
+          # ci <- which(sapply(1:3, function(x) all(dead[-nrow(dead),x]==1))==TRUE)  # a clumsy way to find out the participant subject to primary extinction: for this column, there is a 1 in every row;
+          # BETTER: 
+            ci <- pmatch(participant, c("both", "lower", "higher")) 
+            dead2 <- matrix(0, nrow=ifelse(ci==2, nrow(web), ncol(web)), ncol=3)  # new dead-matrix
+            colnames(dead2) <- colnames(dead) #use names from "dead"
+            dead2[,1] <- 1:nrow(dead2) # step numbers
+            dead2[1:nrow(dead),2:3] <- dead[1:nrow(dead),2:3] # plug matrix "dead" into "dead2", leaving the potentially longer matrix dead2 filled with zeros below nrow(dead).
 
-        dead2
+        } else dead2=dead
+       dead2
+
+#        dead
     }
 
     if (is.vector(method)) sequence = method
