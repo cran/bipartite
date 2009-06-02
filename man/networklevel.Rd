@@ -19,7 +19,7 @@ networklevel(web, index="ALL", ISAmethod="Bluethgen", SAmethod = "Bluethgen",
   \dQuote{interaction evenness},\dQuote{compartment diversity}, \dQuote{cluster coefficient},
   \dQuote{H2},\dQuote{ISA},\dQuote{SA},\dQuote{extinction slope}, \dQuote{robustness}, \dQuote{degreedistribution},
   \dQuote{niche overlap}, \dQuote{mean number of shared hosts}, \dQuote{togetherness},
-  \dQuote{C-score}, \dQuote{V-ratio}, \dQuote{nestedness}, \dQuote{nestedness.corso},\dQuote{discrepancy}. \dQuote{ALL} (default) calculates all indices.}
+  \dQuote{C-score}, \dQuote{V-ratio}, \dQuote{nestedness}, \dQuote{weighted nestedness},\dQuote{discrepancy}. \dQuote{ALL} (default) calculates all indices.}
   \item{ISAmethod}{Method to use for calculating interaction strength (= dependence)
   asymmetry; original by \dQuote{Bascompte}  is biased for singletons and few interactions
   (range 0 to infty); \dQuote{Bluethgen} (default) excludes singletons and corrects

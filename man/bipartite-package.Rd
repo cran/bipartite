@@ -29,8 +29,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 0.91\cr
-Date: \tab 2009-05-06\cr
+Version: \tab 0.92\cr
+Date: \tab 2009-06-02\cr
 License: \tab GPL \cr
 }
 }
@@ -38,7 +38,15 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
-  \item 0.91 (release data: 06-May-2009)
+  \item 0.92 (release date: 02-Jun-2009)
+    \describe{
+      \item{more colour options in \code{\link{visweb}}:}{the arguments \option{box.border} and \option{box.col} now allow a specification of the colour of the boxes and their borders.}
+      \item{bug fix \code{\link{empty}}:}{the function returned 0 for a 1x1 matrix. Although not written for such a case, it should still do what it says on the tin. Thanks to Mariano Devoto for spotting and reporting!}
+      \item{bug fix \code{\link{wine}}:}{returned NA for square matrices.}
+      \item{bug fix \code{\link{plot.wine}}:}{gave decimal places for row and column names for very small networks.}
+    }
+
+  \item 0.91 (release date: 06-May-2009)
   \describe{
     \item{new function \code{\link{wine}}:}{This function replaces the (now deprecated) function \code{nestedness.corso} in calculating a (weighted) nestedness for bipartite networks. It was developed and implemented by Marcelino de la Cruz, Juan M. Pastor, Javier Galeano and Jose Iriondo. It is also called by \code{\link{networklevel}}. A plotting function is also available, depicting the contributions of each observed link to the web's nestedness. - \code{nestedness.corso} is now removed from the package. The main reason is that it served as an interim solution for \code{\link{wine}}, and the Corso-way of calculating nestedness is just one more of already too many. If you intend to use \code{\link{wine}} on binary data and interpret that as a Corso-equivalent, beware of the following two main differences (thanks to Jose Iriondo for summarising them): \emph{First, the nestedness of Corso et al. varies between 0 and 1, with the highest nestedness is reached at 0 and 1 corresponds to random, whereas in \code{\link{wine}} is just the opposite (this is because the Manhattan distances are calculated with regard to opposite sides of the matrix). Secondly, the \sQuote{d} in the nestedness of Corso is the sums of the \sQuote{dij}s whereas in \code{\link{wine}}, the \sQuote{d} (= \sQuote{win} value of the object produced by \code{\link{wine}}) is the average of the \sQuote{dij}s above 0.} So, we recommend NOT to use wine for calculating Corso's nestedness, but rather download the source code for \code{nestedness.corso} from an older version of \pkg{bipartite}.}
     \item{new function \code{\link{robustness}}:}{A better way to quantify the effect of species loss on the extinctions in the other trophic level; kindly provided by Mariano Devoto. This index is also part of \code{\link{networklevel}}.}

@@ -28,10 +28,18 @@ wine <- function(web, nreps=1){
                 M<- as.matrix(M)
                 values <- M[which(M>0)] 
                 lvalues <- length(values) 
-                dims <- which(dim(M)==min(dim(M))) 
-                vdims <- dim(M)[dims] 
-                dimb <- which(dim(M)==max(dim(M))) 
-                vdimb <- dim(M)[dimb] 
+                if(identical(dim(M)[1],dim(M)[2])){
+                    vdims <-dim(M)[1]
+                    vdimb <-dim(M)[1]
+                  
+                }                    
+                    
+                if(!identical(dim(M)[1],dim(M)[2])){
+                    dims <- which(dim(M)==min(dim(M))) 
+                    vdims <- dim(M)[dims] 
+                    dimb <- which(dim(M)==max(dim(M))) 
+                    vdimb <- dim(M)[dimb]
+                }                    
 
                 MR <- matrix(0, vdims, vdimb)  
                 lMR <- vdims * vdimb  
@@ -90,8 +98,12 @@ wine <- function(web, nreps=1){
 
       # Compute WIN et al 
       M <- web
-      if((any(colSums(M)==0) | any(rowSums(M)==0))) stop("some row or column is completely 0")
-
+          c0 <- colSums(M)==0
+          r0 <- rowSums(M)==0
+          if(sum(c0,r0) > 0) {
+              M<- as.matrix(M[!r0,!c0])
+              warning("one or more rows and/or columns are completely made out of 0s and have been removed")
+          }   
       
       Nr  <- dim(M)[1]
       Nc <- dim(M)[2]
@@ -124,14 +136,19 @@ wine <- function(web, nreps=1){
     return(result)
 }
 
-plot.wine <- function(x,...){
+#-------------------------------------------------------------------------------
+
+plot.wine<- function(x,...){
           require(fields)
           w <- t(x$dij.w)
           dim1 <- dim(w)[1]
           dim2 <- dim(w)[2]
           image.plot(x=1:dim1, y=1:dim2, z=w[,dim2:1], 
-            main="Weighted distances matrix", xlab="Column", ylab="Row", yaxt="n", ...)  
-          ticks_y <- axTicks(2)
-          abline(v=0)
-          axis(2, at=ticks_y, labels=rev(ticks_y), las=2) 
+            main="Weighted distances matrix",xlab="Column",ylab="Row",yaxt="n",xaxt="n",...)
+            ticks_x<-1:dim1  
+            ticks_y<-1:dim2
+            abline(h=0)
+            axis(1, at= ticks_x, labels=ticks_x) 
+            abline(v=0)
+            axis(2, at= ticks_y, labels=rev(ticks_y), las=2) 
 }

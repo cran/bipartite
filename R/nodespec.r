@@ -1,4 +1,4 @@
-require(sna)
+
 
 nodespec <- function(web, inf.replace=NA){
   # an index to describe the functional specialisation of pollinators
@@ -11,7 +11,7 @@ nodespec <- function(web, inf.replace=NA){
   # here we ignore these values (default), thus heavily underestimating distances!
   # The common alternative is to give unconnected paths the value of max(pathlength)+1, 
   # for no other reason than that it has to have some non-infinity value.
-
+  require(sna)
   rr <- nrow(web)
   cc <- ncol(web)
 

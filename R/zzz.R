@@ -1,6 +1,6 @@
 .First.lib <- function(lib, pkg) {
 
-library.dynam("bipartite",pkg,lib)
+library.dynam("bipartite", pkg, lib)
 
 vers <- paste(sessionInfo()$otherPkg$bipartite$Version,".",sep="")
 
@@ -9,6 +9,6 @@ cat(paste("----------------------------------------------------------\nThis is b
 
 .Last.lib <- function() {
 
-library.dynam.unload("bipartite", paste(.libPaths(),"/bipartite",sep=""))
+  library.dynam.unload("bipartite", paste(.libPaths(),"/bipartite",sep=""))
 
 }

@@ -3,9 +3,10 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
     ##
     ## web         interaction matrix, with lower trophic level in rows, higher in columns
     ##
+
     if(empty.web) {web <- empty(web)}
     web.e <- empty(web) # emptied web for some indices 
-    if (nrow(web) < 2 | ncol(web) <2) warning("Web is really too small to calculate any reasonable index. You will get the values nonetheless, but I wouldn't put any faith in them!")
+    if (NROW(web) < 2 | NCOL(web) <2) warning("Web is really too small to calculate any reasonable index. You will get the values nonetheless, but I wouldn't put any faith in them!")
 
     if (any(index %in% "ALL")) index <- c("number of species", "links per species",
           "connectance", "linkage density", "web asymmetry",
