@@ -38,6 +38,10 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+  \item 0.93 (release date: 30-Jun-2009)
+    \describe{
+      \item{bug fix in \code{\link{slope.bipartite}} and \code{\link{robustness}}:}{The function always selected column 3 of the object, instead of 2 for lower and 3 for higher trophic level; thanks to Antonio Rivera for spotting and reporting this error! Notice that this error must have slipped in somewhere around version 0.90/0.91, because I checked and the results reported in the Open Ecology Journal paper are valid! I seem to remember that I (CFD) modified \code{\link{slope.bipartite}} when \code{\link{robustness}} was added: never change a wining team!}
+    }
   \item 0.92 (release date: 02-Jun-2009)
     \describe{
       \item{more colour options in \code{\link{visweb}}:}{the arguments \option{box.border} and \option{box.col} now allow a specification of the colour of the boxes and their borders.}
@@ -56,11 +60,11 @@ License: \tab GPL \cr
   \item 0.90 (release date: 24-Mar-2009)
   \describe{
     \item{example \code{vazquez.example}:}{We added several new functionalities mainly to be able to analysis data and use network statistics as suggested by Vazquez et al. 2009. You can access this example by typing \code{?vazquez.example}.}
-    \item{new feature in \code{visweb}:}{Can now plot different sized circles to represent interactions, as proposed by Vazquez et al. (2009).}
-    \item{new feature in \code{networklevel}:}{We added an option to calculate interaction evenness either based on all possible links or just on realized links.}
-    \item{new function \code{sortweb}:}{Can be used to sort webs in different ways.}
+    \item{new feature in \code{\link{visweb}}:}{Can now plot different sized circles to represent interactions, as proposed by Vazquez et al. (2009).}
+    \item{new feature in \code{\link{networklevel}}:}{We added an option to calculate interaction evenness either based on all possible links or just on realized links.}
+    \item{new function \code{\link{sortweb}}:}{Can be used to sort webs in different ways.}
     \item{data set \code{inouye1988}:}{Another pollination network from the NCEAS database (see \code{\link{inouye1988}}).}
-    \item{Function \code{compart}:}{We replaced the CA-based approach to detecting compartments by a comprehensive and recursive approach. The latter is not affected by ties in the data set (i.e. species with the same number of links). In quantitative webs and for the networks included in bipartite, the old function was working fine, but in more recent trials it failed to detect 2-species compartments. In turn, we had to adapt \code{networklevel} and \code{plotweb}.}
+    \item{Function \code{\link{compart}}:}{We replaced the CA-based approach to detecting compartments by a comprehensive and recursive approach. The latter is not affected by ties in the data set (i.e. species with the same number of links). In quantitative webs and for the networks included in bipartite, the old function was working fine, but in more recent trials it failed to detect 2-species compartments. In turn, we had to adapt \code{\link{networklevel}} and \code{\link{plotweb}}.}
   }
 
 	\item 0.85 (release date: 10-Mar-2009)
@@ -83,7 +87,7 @@ License: \tab GPL \cr
 	\item 0.81 (release date: 06-Jan-2009)
 	\describe{
 		\item{Function \code{\link{nodespec}} replaces the now obsolete function \code{functspec}.}{The inventor of functional specialisation, Bo Dalsgaard, understands the term \sQuote{functional specialisation} to be restricted to the way in which plants are specialised to pollinators. Although I disagree (and think that \sQuote{functional} actually means very little until defined for a given problem), I renamed the \sQuote{functional specialisation index} into \sQuote{node specialisation index}. This is not a particularly clever name, but at least it indicates that the position of nodes in a network is important when it is calculated.}
-		\item{Bug in \code{\link{networklevel}}:}{Call to \code{nestedness.corso} overwrote results of \code{link{nestedness}}.}
+		\item{Bug in \code{\link{networklevel}}:}{Call to \code{nestedness.corso} overwrote results of \code{\link{nestedness}}.}
 		\item{Various changes related to the analysis of very small webs.}{Very small webs should probably not be used at all for testing theories! Indices are usually VERY sensitive to the exact number of species, number of observations etc. Still, sometimes we simply want to calculate some index, and then \pkg{bipartite} should handle such small networks, too. So, when going through several dozens of very small webs (sometimes only containing one species in one of the two trophic levels), several functions did not perform correctly (usually to such minor programming issues such as matrices being converted to vectors when \code{[} was used with \option{drop=TRUE}, i.e. the default). Changes affected the functions \code{discrepancy}, \code{nestedness.corso}, \code{shuffle.web}, \code{compart} and \code{empty}. Their output remains identical, only they now also work for small webs.}
 		\item{Changes to \code{nestedness.corso} with \option{weighted=TRUE}}{Galeano et al. do not describe how to deal with ties, nor do they make clear if the packed matrix should be sorted by marginal sum of links or marginal sum of interactions! Previously, we used marginal sum of interactions (because it is a weighted index), but now we moved to marginal sum of links, because that is how I interpret their paper after a third (or forth) re-reading. Furthermore, because the real maximum chaos cannot be derived (to my knowledge) algorithmically, we use the 95\% quantile of 500 randomisations as maximum. This will lead to a consistently overestimated nestedness, but it is less sensitive to the number of replicates than the max. (Also, there was an error in the description of the value returned: 0 is nested, 1 is chaos!)}
 	}

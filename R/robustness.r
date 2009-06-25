@@ -7,7 +7,7 @@ robustness<- function (object)
     if (class(object) != "bipartite")
         stop("This function cannot be meaningfully applied to objects of this class.")
     N <- colSums(object)
-    if (all(object[, 2] == 1)) #this IF selects the appropriate column from the data file
+    if (all(object[-nrow(object), 2] == 1)) #this IF selects the appropriate column from the data file
         y <- -object[, 3]
     else y <- -object[, 2]
     y <- (sum(y) - cumsum(y))/sum(y) #calculates the proportional cumulative sum of secondary extinctions
