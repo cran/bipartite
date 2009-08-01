@@ -29,8 +29,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 0.92\cr
-Date: \tab 2009-06-02\cr
+Version: \tab 0.94\cr
+Date: \tab 2009-08-01\cr
 License: \tab GPL \cr
 }
 }
@@ -38,6 +38,12 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+  \item 0.94 (release date: 01-Aug-2009)
+    \describe{
+      \item{New function \code{\link{nullmodel}}:}{A convenience wrapper function to generate different types of null models.}
+      \item{Small changes to \code{\link{networklevel}}:}{This function returns a list of indices. If we exclude the computation of degree distribution fits, this would be coerced to a vector. We added the option \option{index="ALLBUTDD"} to calculate all indices BUT degree distributions. The output is then returned as vector. This is much more convenient when using networklevel on many data sets (using \code{sapply}).}
+    }
+
   \item 0.93 (release date: 30-Jun-2009)
     \describe{
       \item{bug fix in \code{\link{slope.bipartite}} and \code{\link{robustness}}:}{The function always selected column 3 of the object, instead of 2 for lower and 3 for higher trophic level; thanks to Antonio Rivera for spotting and reporting this error! Notice that this error must have slipped in somewhere around version 0.90/0.91, because I checked and the results reported in the Open Ecology Journal paper are valid! I seem to remember that I (CFD) modified \code{\link{slope.bipartite}} when \code{\link{robustness}} was added: never change a wining team!}

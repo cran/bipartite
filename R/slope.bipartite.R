@@ -24,7 +24,7 @@ function(object, plot.it=TRUE, ...){
         par(mar=c(5, 5, 1, 1))
         plot(x, y, xlab="proportion of primary extinctions", ylab="proportion of species in other trophic level still alive",
             axes=TRUE, type="n", cex.lab=1.5)
-        text(0, 0, paste("   killed: ", attr(object, "exterminated"), ""), font=2, cex=2, adj=0)#, line=-3)
+        legend("bottomleft", legend=paste("killed: ", attr(object, "exterminated"), ""), cex=2, bty="n")
         abline(h=1)
         abline(v=1)
         points(x, y, ...)

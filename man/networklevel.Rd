@@ -19,7 +19,7 @@ networklevel(web, index="ALL", ISAmethod="Bluethgen", SAmethod = "Bluethgen",
   \dQuote{interaction evenness},\dQuote{compartment diversity}, \dQuote{cluster coefficient},
   \dQuote{H2},\dQuote{ISA},\dQuote{SA},\dQuote{extinction slope}, \dQuote{robustness}, \dQuote{degreedistribution},
   \dQuote{niche overlap}, \dQuote{mean number of shared hosts}, \dQuote{togetherness},
-  \dQuote{C-score}, \dQuote{V-ratio}, \dQuote{nestedness}, \dQuote{weighted nestedness},\dQuote{discrepancy}. \dQuote{ALL} (default) calculates all indices.}
+  \dQuote{C-score}, \dQuote{V-ratio}, \dQuote{nestedness}, \dQuote{weighted nestedness},\dQuote{discrepancy}. \dQuote{ALL} (default) calculates all indices, \dQuote{ALLBUTDD} calculates all indices except degree distribution fits. This latter has the advantage that the output can be simplified to a vector, while \dQuote{ALL} will return a list (since degree distribution fits are a table within this list and cannot be simplified).}
   \item{ISAmethod}{Method to use for calculating interaction strength (= dependence)
   asymmetry; original by \dQuote{Bascompte}  is biased for singletons and few interactions
   (range 0 to infty); \dQuote{Bluethgen} (default) excludes singletons and corrects
@@ -50,7 +50,7 @@ Most indices are straightforward, one-line formulae; some, such as H2', also req
 }
 
 \value{
-Depending on the selected indices, some or all of the below:
+Depending on the selected indices, some or all of the below (returned as vector is \dQuote{degreedistribution} was not requested, otherwise as list):
   \item{number of higher trophic species}{Number of species in the higher trophic level, i.e. \code{ncol(web)}.}
   \item{number of lower trophic species }{Number of species in the lower trophic level, i.e. \code{nrow(web)}.}
   \item{links per species}{Mean number of links per species (qualitative): sum of links divided by number of species.}
@@ -130,6 +130,7 @@ Watts, D. J. and Strogatz, S. 1998 Collective dynamics of \sQuote{small-world} n
 \examples{
 data(Safariland)
 networklevel(Safariland)
+networklevel(Safariland, index="ALLBUTDD") #excludes degree distribution fits
 }
 
 \keyword{ package }

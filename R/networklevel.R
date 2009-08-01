@@ -8,11 +8,18 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
     web.e <- empty(web) # emptied web for some indices 
     if (NROW(web) < 2 | NCOL(web) <2) warning("Web is really too small to calculate any reasonable index. You will get the values nonetheless, but I wouldn't put any faith in them!")
 
-    if (any(index %in% "ALL")) index <- c("number of species", "links per species",
+    allindex <- c("number of species", "links per species",
           "connectance", "linkage density", "web asymmetry",
-          "number of compartments", "generality", "vulnerability", "interaction evenness",
-          "compartment diversity", "cluster coefficient", "H2", "ISA", "SA",
-          "extinction slope", "robustness", "degreedistribution", "niche overlap", "mean number of shared hosts",  "C-score", "togetherness", "V-ratio", "nestedness", "weighted nestedness", "discrepancy")
+          "number of compartments", "generality", "vulnerability", 
+          "interaction evenness", "compartment diversity", 
+          "cluster coefficient", "H2", "ISA", "SA",
+          "extinction slope", "robustness", "degreedistribution", 
+          "niche overlap", "mean number of shared hosts",  "C-score",
+          "togetherness", "V-ratio", "nestedness", "weighted nestedness",
+          "discrepancy")
+          
+    if (any(index %in% "ALL")) index <- allindex
+    if (any(index %in% "ALLBUTDD")) index <- allindex[-which(allindex=="degreedistribution")] 
     out <- list()
 
     # set up enough panals for plotting:
@@ -308,7 +315,10 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
       out$discrepancy <- unname(discrepancy(web))
     }
 
+    if (!("degreedistribution" %in% index)) out <- unlist(out)
+
     return(out)
 }
 #networklevel(Safariland, index="H2")
 #networklevel(Safariland, plot.it.dd=TRUE, plot.it.extinction=TRUE)
+#networklevel(Safariland, index="ALLBUTDD")

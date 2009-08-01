@@ -1,3 +1,5 @@
+* use Nils' C++-code for H2fun and dfun 
+
 * include all quantitative host-parasitoid webs
 
 * compartments (implement more lax definition: Dicks/Corbet/Fryxell 2002? Set threshold to 1-5% of observations and ignore those?); 	compartment-test, including comparison to null-model?
