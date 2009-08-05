@@ -8,13 +8,14 @@ This function first calculates degrees for each species, then constructs a cumul
 }
 
 \usage{
-degreedistr(web, plot.it=TRUE, pure.call=TRUE)
+degreedistr(web, plot.it=TRUE, pure.call=TRUE, silent=TRUE)
 }
 
 \arguments{
   \item{web}{A bipartite network matrix.}
   \item{plot.it}{Logical; returns graphs of fits when set to TRUE (default).}
-  \item{pure.call}{logical; adjusts par for two panels (for TRUE) or leaves this to the wrapper function (FALSE).}
+  \item{pure.call}{Logical; adjusts par for two panels (for TRUE) or leaves this to the wrapper function (FALSE).}
+  \item{silent}{Logical; suppresses error reporting in the \code{try}-function around \code{nls}; defaults to TRUE.}
 }
 
 \details{

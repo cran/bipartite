@@ -23,10 +23,19 @@ C.score <- function(web, normalise=TRUE, FUN=mean, ...){
     if (normalise){
 #      L <- ncol(t(web))
       maxD <- designdist(t(web), method="ifelse(P<(A+B),(P-A)*(P-B), (A*B))", terms="minimum")
-      D <- D/maxD
+      nonzeros <- which(maxD != 0)                                
+      if (length(nonzeros) > 0){
+          use <- seq_along(D)[nonzeros] # if maxD is 0, then D/maxD is non-sense!
+          D <- D[use]/maxD[use]
+      } else { 
+          D <- D/maxD
+      }
     }
     FUN(D, ...)
 }
 # example:
 #m <- matrix(c(1,0,0, 1,1,0, 1,1,0, 0,1,1, 0,0,1), 5,3,TRUE)
 #C.score(m)
+
+
+# corrected 2 Aug 2009: if maxD contained 0s, then C.score failed!

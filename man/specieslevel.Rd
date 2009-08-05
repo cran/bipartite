@@ -11,29 +11,27 @@ specifically. Various simple numbers and indices are calculated and returned.
 }
 
 \usage{
-specieslevel(web, index="ALL")
+specieslevel(web, index="ALL", logbase="e")
 }
 
 \arguments{
   \item{web}{ Web is a matrix representing the interactions observed between higher
   trophic level species (columns) and lower trophic level species (rows). Usually this will be number of pollinators on each species of plants or number of parasitoids on each species of prey.}
   \item{index}{Vector of indices to be calculated for each trophic level of the web;
-            options are: \dQuote{specs} for number of species, \dQuote{species degree},
-            \dQuote{dependence},
-            \dQuote{d} for Blüthgen's d, \dQuote{species strength} as sum of dependencies,
-            \dQuote{interaction} for interaction push/pull (our version of dependence
-            asymmetry: see details), \dQuote{PSI} for pollination service index (or pollinator
+            options are: \dQuote{species number} for number of species, 
+            \dQuote{degree},  \dQuote{dependence}, \dQuote{interaction} for interaction push/pull (our version of dependence asymmetry: see details), 
+            \dQuote{PSI} for pollination service index (or pollinator
             support index, depending on the trophic level), \dQuote{NS} for node
-            specialisation index, or \dQuote{ALL} for all the aforementioned (default).}
+            specialisation index, \dQuote{Fisher} for Fisher's alpha index, \dQuote{diversity} for Shannon diversity of interactions of that species, \dQuote{effective partners} for the effective number of interacting partners (e.g. predators/pollinators or hosts/plants),  \dQuote{d} for Blüthgen's d, \dQuote{strength} as sum of dependencies or \dQuote{ALL} for all the aforementioned (default). \dQuote{ALLBUTD} excludes only the dependence matrix and leads to the output being simplified to a matrix per trophic level.}
+  \item{logbase}{Shall the various diversity indices be calculated to the base of e (default) or 2? Log2 is the proposal for generality and vulnerability by Bersier et al. (2002), while Shannon uses ln. The choice of the base will not affect the results qualitatively, only by a scaling factor.}
 }
+
 \details{
 This function implements a variety of the many (and still procreating) indices describing
 species properties. Some are embaracingly simple (such as number of interacting species for each species).
 Others are variations on Shannon's diversity index applied to within species.
 
-Most indices are straightforward, one-line formulae; some, such as d', also require a re-arranging of
-the matrix. We (Dormann, Blüthgen, Gruber) came up with a new one, called \dQuote{Pollination Service Index} or psi,
-for which a few more details seem appropriate.
+Most indices are straightforward, one-line formulae; some, such as d', also require a re-arranging of the matrix. We (Dormann, Blüthgen, Gruber) came up with a new one, called \dQuote{Pollination Service Index} or psi, for which a few more details seem appropriate.
 
 %PSI calculates the average contribution per visit for each pollinator species (which in itself depends
 %on the specialisation and abundance of the bees, as well as the abundance of the plant species). It is hence a measure
@@ -66,24 +64,19 @@ and/or lost during foraging flights, and the true exponent remains elusive.
 For both the \dQuote{higher trophic level} and the \dQuote{higher trophic level} a list with the following components:
 
   \item{number of species}{Sic.}
-  \item{d}{Specialisation of each species based on its discrimination from random selection of
-        partners. More specifically, it returns d', which is calculated based on the
-        raw \code{d}, \code{dmin} and \code{dmax} for each species (see \code{\link{dfun}}. See Blüthgen et al. (2006) for details.}
-  \item{Pollination Service Index PSI}{for the higher trophic level, and the equivalent Pollinator Support Index for the
-        lower trophic level. Expresses the value of, say, a pollinator for all plant species as the sum (across
-        all plant species) of the proportion of pollen deposited per visit. The more specialised the pollinator
-        and the fewer pollinators the plants it pollinates, the higher is its value for the plant community.
-        It is a really cool measure, but it's not easy to get one's head around it. Alternatively, one can
-        see it as the inverse of redundancy of the species for the web: the higher the value, the less
-        redundant.}
-  \item{node specialisation index}{Another measure of specialisation, based on the path length between any two 
-        higher-trophic level species. Species sharing hosts/prey have an FS-value of 1. See specific function
-        \code{\link{nodespec}} for details, problems and reference.}
   \item{species degree}{Sum of interactions per species.}
   \item{dependence}{Web entry divided by column totals (for higher trophic level) or row totals (for lower
         trophic level). Expresses the proportion of interactions with each species, and sums to 1 for each.}
   \item{strength}{Sum of dependencies of each species (proposed in Bascompte et al. 2006).}
-  \item{interaction push/pull}{Direction of interaction asymmetry: positive values indicate that a species affects the 			species of the other level it interacts with stronger then they affect it (\dQuote{pusher}); negative values 			indicate that a species is, on average, on the receiving end of the stick (\dQuote{being pulled}); formula based 	 	 on Vazquez et al (2007), but push/pull is our own nomenclature. Values are highly correlated with 	species 			strengths (see below), but standardised to fall between -1 (being pulled) and 1 (pushing).}
+  \item{interaction push/pull}{Direction of interaction asymmetry: positive values indicate that a species affects the species of the other level it interacts with stronger then they affect it (\dQuote{pusher}); negative values indicate that a species is, on average, on the receiving end of the stick (\dQuote{being pulled}); formula based on Vazquez et al (2007), but push/pull is our own nomenclature. Values are highly correlated with	species strengths (see below), but standardised to fall between -1 (being pulled) and 1 (pushing).}
+  \item{Pollination Service Index PSI}{for the higher trophic level, and the equivalent Pollinator Support Index for the lower trophic level. Expresses the value of, say, a pollinator for all plant species as the sum (across all plant species) of the proportion of pollen deposited per visit. The more specialised the pollinator and the fewer pollinators the plants it pollinates, the higher is its value for the plant community. It is a really cool measure, but it's not easy to get one's head around it. Alternatively, one can see it as the inverse of redundancy of the species for the web: the higher the value, the less redundant.}
+  \item{node specialisation index}{Another measure of specialisation, based on the path length between any two higher-trophic level species. Species sharing hosts/prey have an FS-value of 1. See specific function \code{\link{nodespec}} for details, problems and reference.}
+  \item{Fisher alpha}{Fisher's alpha diversity for each species (see \code{fisher.alpha} in \pkg{vegan} for details).}
+  \item{Partner diversity}{Shannon diversity (when using \option{logbase="e"}) or per-species generality/vulnerability (when using \option{logbase=2}) of the interactions of each species. See also \code{\link{networklevel}} for the aggregated version of this index (i.e. averaged across all species in a trophic level).}
+  \item{effective partners}{\option{logbase} to the power of \dQuote{partner.diversity}: Bersier et al. (2002) interpret this as the effective number of partners, if each partner was equally common. Note that \dQuote{partner} is a bit euphemistic when it comes to predator-prey or host-parasitoid networks.}
+  \item{d}{Specialisation of each species based on its discrimination from random selection of
+        partners. More specifically, it returns d', which is calculated based on the
+        raw \code{d}, \code{dmin} and \code{dmax} for each species (see \code{\link{dfun}}. See Blüthgen et al. (2006) for details.}
 }
 
 \references{
@@ -102,11 +95,12 @@ Dependencies are still an open field of debate. Dependencies are calculated as t
 We here provide the code to calculate the strength of a species (i.e. sum of its dependencies), based on the current proposal by Bascompte et al. (2006). It may be a good idea to remove all singletons from the web before calculating this index, to investigate whether it is indeed driven by those scarce observations.
 }
 
-\seealso{ \code{\link{networklevel}} for some further comments; \code{\link{dfun}}, which is called by this function }
+\seealso{ \code{\link{networklevel}} for some further comments; \code{\link{dfun}}, \code{\link{nodespec}}, which are called by this function }
 
 \examples{
 data(Safariland)
 specieslevel(Safariland)
+specieslevel(Safariland, index="ALLBUTD")[[2]]
 }
 
 

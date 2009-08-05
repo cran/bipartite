@@ -16,7 +16,7 @@ Analysis of bipartite ecological webs.
 Bipartite provides functions to viualise webs and calculate a series of indices commonly used to describe pattern in ecological webs. It focusses on webs consisting of only two trophic levels, e.g. pollination webs or predator-prey-webs. Visualisation is important to get an idea of what we are actually looking at, while the indices summarise different aspects of the webs topology.}
 
 \details{
-We only had three types of bipartite webs in mind when writing this package: seed-disperser, plant-pollinator and predator-prey systems. In how far it makes sense to use these functionalities for other systems (or indeed for these systems) lies in the hands of the user. Please refer to the literature cited for details on the theory behind the indices.
+We only had three types of bipartite webs in mind when writing this package: seed-disperser, plant-pollinator and host-parasitoid systems. In how far it makes sense to use these functionalities for other systems (or indeed for these systems) lies in the hands of the user. Please refer to the literature cited for details on the theory behind the indices.
 
 Input for most analyses is an interaction matrix of m higher level species with n lower level species, i.e. an n x m matrix, where higher trophic level species are in columns, lower level in rows. Column and row names can be provided. This is fundamentally different from multi-dimensional webs, which are organised as k x k matrix, i.e. each species against each other. Such a format is incompatible with the functions we provide here.
 
@@ -29,8 +29,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 0.94\cr
-Date: \tab 2009-08-01\cr
+Version: \tab 1.00\cr
+Date: \tab 2009-08-05\cr
 License: \tab GPL \cr
 }
 }
@@ -38,6 +38,15 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+  \item 1.00 (release date: 06-Aug-2009)
+    \describe{
+      \item{Complete overhaul of \code{\link{networklevel}}:}{After a workshop on bipartite networks in ecology, a few more indices were added (Fisher's alpha diversity of interactions, mean interaction diversity, mean number of predators) and the whole output reorganised. It now follows a gradient from less to more interesting (in our view) indices, and from indices for binary to those for quantitative networks. Also, I added several options for which indices to report (\option{index="info", "binary", "quantitative", "topology"}). Most interestingly, perhaps, there is now a quantitative, Shannon-based series of indices. Starting with the \dQuote{mean interaction diversity} (i.e. the Shannon-diversity of interactions of a species, averaged across all species in that trophic level), over \dQuote{Shannon diversity} of interactions, to H2 (i.e. Shannon diversity scaled between max and min possible for this web characteristics).}
+      \item{Additions to, and overhaul of \code{\link{specieslevel}}:}{Similar to the above item, some indices were added, and the output simplified when calling the option \option{index="ALLBUTD"} (only one D here!): a list with two matrices is now returned. Fisher's alpha for each species, vulnerability/generality and effective number of species for each target species are also now included. Index sequence has changed.}
+      \item{New function \code{\link{PAC}}:}{Calculates the Potential for Apparent Competition following the formula in Müller et al. (1999) and Morris et al. (2005) and the suggestion by Becky Morris and Owen Lewis. More than a theoretical concept, it was experimentally shown to be relevant (Morris et al. 2004).}
+      \item{Bug fix in \code{\link{H2fun}} and \code{\link{dfun}}:}{A line of code went missing at some point, so the maximum packing density was not optimal (but still good) in these functions. As a result, reported H2- and d-values were sometimes 0 when they should be only very close to 0.}
+      \item{Switch for error reporting in \code{\link{degreedistr}}:}{By default now suppresses error reporting when \code{nls} fails to fit a degree distribution due to too few data points. This leaves the user of \code{\link{networklevel}} somewhat less confused. Warning message now also indicates for which trophic level there were too few data points.}
+      \item{Bug fix in \code{\link{C.score}}:}{Failed when the web was very dense or very sparse, because the maximum number of checkerboard patterns was 0 then.}
+    }
   \item 0.94 (release date: 01-Aug-2009)
     \describe{
       \item{New function \code{\link{nullmodel}}:}{A convenience wrapper function to generate different types of null models.}
@@ -152,11 +161,17 @@ Corso G., de Araújo A.I.L. and de Almeida A.M. (2008) A new nestedness estimator
 
 Dalsgaard, B., A. M. Martín González, J. M. Olesen, A. Timmermann, L. H. Andersen, and J. Ollerton. (2008) Pollination networks and functional specialization: a test using Lesser Antillean plant-hummingbird assemblages. \emph{Oikos} \bold{117}, 789--793
 
-Dormann, C.F., Fründ, J., Blüthgen, N., and Gruber, B. (2009) Indices, graphs and null models: analysing bipartite ecological networks. \emph{The Open Ecology Journal} \bold{2}, 7--24..
+Dormann, C.F., Fründ, J., Blüthgen, N., and Gruber, B. (2009) Indices, graphs and null models: analysing bipartite ecological networks. \emph{The Open Ecology Journal} \bold{2}, 7--24.
 
 Galeano J., Pastor J.M. and Iriondo J.M. (2008) Weighted-Interaction Nestedness Estimator (WINE): A new estimator to calculate over frequency matrices. \emph{arXiv} 0808.3397v1 [physics.bio-ph]
 
 Memmott, J., Waser, N. M. and Price, M. V. (2004) Tolerance of pollination networks to species extinctions. \emph{Proceedings of the Royal Society B} \bold{271}, 2605--2611
+
+Morris, R. J., Lewis, O. T. and Godfray, H. C. J. 2004. Experimental evidence for apparent competition in a tropical forest food web. \emph{Nature} \bold{428}, 310--313.
+
+Morris, R. J., Lewis, O. T. and Godfray, H. C. J. 2005. Apparent competition and insect community structure: towards a spatial perspective. \emph{Annales Zoologica Fennici} \bold{42}, 449--462.
+
+Müller, C. B., Adriaanse, I. C. T., Belshaw, R. and Godfray, H. C. J. 1999 The structure of an aphid-parasitoid community. \emph{Journal of Animal Ecology} \bold{68}, 346--370.
 
 Tylianakis, J. M., Tscharntke, T. and Lewis, O. T. (2007) Habitat modification alters the structure of tropical host-parasitoid food webs. \emph{Nature} \bold{445}, 202--205
 

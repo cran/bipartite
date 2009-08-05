@@ -86,6 +86,7 @@ function(web, abundances=NULL){
       newweb=expec
       webfull <- matrix("no", nrow(web), ncol(web)) # makes boolean web, set to 0
       while (restuse>0){
+          difexp <- exexpec - newweb
           replaceindex <- match(difexp, sort(difexp, decreasing=TRUE))[1]
           webfull[which(rowSums(newweb)==rs),]="yes" # sets columns/rows with correct cs/rs to 1
           webfull[,which(colSums(newweb)==cs)]="yes"

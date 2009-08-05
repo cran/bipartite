@@ -1,5 +1,5 @@
 'degreedistr' <-
-function(web, plot.it=TRUE, pure.call=TRUE){
+function(web, plot.it=TRUE, pure.call=TRUE, silent=TRUE){
 
     # calculates cumulative degree distributions and fits exponential, power law
     # and truncated power law functions to it
@@ -13,18 +13,18 @@ function(web, plot.it=TRUE, pure.call=TRUE){
 
     Plo <- sapply(sort(unique(ddlower)), function(x) sum(ddlower>=x))
     Plower <- cbind.data.frame(k=sort(unique(ddlower)), P=Plo/max(Plo))
-    if (nrow(Plower)<5) warning("Too few data points (< 5)! Fitting makes no sense!")
+    if (nrow(Plower)<5) warning("Too few data points (< 5) for lower trophic level! Fitting makes no sense!")
     Phi <- sapply(sort(unique(ddhigher)), function(x) sum(ddlower>=x))
     Phigher <- cbind.data.frame(k=sort(unique(ddhigher)), P=Phi/max(Phi))
-    if (max(Phigher)<5) warning("Too few data levels of degrees (< 5)! Fitting makes no sense!")
+    if (max(Phigher)<5) warning("Too few data levels of degrees (< 5) for higher trophic level! Fitting makes no sense!")
 
     fitdd <- function(...){
         # exponential
-        EXP <- try(nls(P ~ exp(-gamma*k), start=list(gamma=1), ...))
+        EXP <- try(nls(P ~ exp(-gamma*k), start=list(gamma=1), ...), silent=silent)
         # power law
-        PL <- try(nls(P ~ k^(-gamma), start=list(gamma=1), ...))
+        PL <- try(nls(P ~ k^(-gamma), start=list(gamma=1), ...), silent=silent)
         # truncated power law
-        TPL <- try(nls(P ~ (k^(-gamma))*exp(-k/kx), start=list(gamma=1, kx=1), ...))
+        TPL <- try(nls(P ~ (k^(-gamma))*exp(-k/kx), start=list(gamma=1, kx=1), ...), silent=silent)
         list(EXP, PL, TPL)
     }
 

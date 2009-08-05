@@ -1,5 +1,5 @@
 `specieslevel` <-
-function(web, index="ALL") {
+function(web, index="ALL", logbase="e") {
     # function to calculate bipartite web indices at the species level
     #
     # web    interaction matrix, with higher trophic level as columns
@@ -25,30 +25,60 @@ function(web, index="ALL") {
 
     # m <- matrix(c(4,7,0,0,9,1,2,0,5), 3, byrow=TRUE)
 
-    if (index=="ALL") index <- c("specs", "species degree", "dependence", "d", "species strength",
-              "interaction", "PSI", "niche overlap", "FS")
+    allindex <- c("species number", "degree", "dependence", "strength", "interaction", "PSI", "NS", "Fisher", "diversity", "effective partners", "d")
+
+    if (index=="ALL") index <- allindex
+    if (index=="ALLBUTD") index <- allindex[-3]
 #    out <- list("higher trophic level"=1, "lower trophic level"=1)
     out <- list()
 
    #----------------------------------------------------------------------------
    # species number
-    if ("specs" %in% index) {
+    if ("species number" %in% index) {
         spH <- c("number of species"=NCOL(web))
         spL <- c("number of species"=NROW(web))
         out$"higher trophic level"$"number of species" <- spH
         out$"lower trophic level"$"number of species" <- spL
     }
 
-   #----------------------------------------------------------------------------
-   # species-level standardised diversity index d
-   # di represents the lower level's partner diversity, correcting for their relative
-   # abundances; a common pollinator, e.g., will thus have to be more overrepresented than
-   # a rare pollinator to have the same contribution to the index
-    if ("d" %in% index){
-        dsL <- dfun(web)[[1]]
-        dsH <- dfun(t(web))[[1]]
-        out$"higher trophic level"$d <- dsH
-        out$"lower trophic level"$d <- dsL
+    #----------------------------------------------------------------------------
+    # species degrees:
+    if ("degree" %in% index){
+      sdL <- rowSums(web>0)
+      sdH <- colSums(web>0)
+      out$"higher trophic level"$"species degree" <- sdH
+      out$"lower trophic level"$"species degree" <- sdL
+    }
+
+    #----------------------------------------------------------------------------
+    # dependence values, following the lead by Bascompte et al. 2006 (Science) and
+    # modifications suggested by Blüthgen et al. 2007 (Current Biology)
+
+    if (any(c("strength", "dependence", "interaction") %in% index)){
+      depL <- web/matrix(rowSums(web), nrow=NROW(web), ncol=NCOL(web), byrow=FALSE)
+      depH <- web/matrix(colSums(web), nrow=NROW(web), ncol=NCOL(web), byrow=TRUE)
+      if ("dependence" %in% index){
+          out$"higher trophic level"$"dependence" <- depH
+          out$"lower trophic level"$"dependence" <- depL
+      }
+
+      if ("strength" %in% index){
+          # strength = sum of dependences for a species (referenced in Bascompte et al. 2006)
+          SL <- rowSums(depH) # a plant's strength are the sum of the dependencies of all its pollinators
+          SH <- colSums(depL) # accordingly ...
+          out$"higher trophic level"$strength <- SH
+          out$"lower trophic level"$strength <- SL
+      } 
+
+      #----------------------------------------------------------------------------
+      # Interaction asymmetry (Vazquez et al. 2007, Oikos); rather similar to dependence above, really
+      if ("interaction" %in% index) {
+        Dij <- depH-depL  # positive values indicate a stronger effect of i (=plants) on j (bees) than vice versa
+        Ailow <- rowSums(Dij)/rowSums(web>0)
+        Aihigh <- colSums(-Dij)/colSums(web>0)
+        out$"higher trophic level"$"interaction push/pull" <- Aihigh
+        out$"lower trophic level"$"interaction push/pull" <- Ailow
+      }
     }
 
     #----------------------------------------------------------------------------
@@ -84,48 +114,76 @@ function(web, index="ALL") {
     }
     
     #----------------------------------------------------------------------------
-    if ("FS" %in% index){
+    if ("NS" %in% index){
 #      require(sna) # which brings the function geodist used in functspec
-      FS <- functspec(web)
-      out$"higher trophic level"$"functional specialisation index"=FS$higher
-      out$"lower trophic level"$"functional specialisation index"=FS$lower
+      NS <- nodespec(web)
+      out$"higher trophic level"$"node specialisation index" <- NS$higher
+      out$"lower trophic level"$"node specialisation index" <- NS$lower
     }
 
     #----------------------------------------------------------------------------
-    # species degrees:
-    if ("species degree" %in% index){
-      sdL <- rowSums(web>0)
-      sdH <- colSums(web>0)
-      out$"higher trophic level"$"species degree" <- sdH
-      out$"lower trophic level"$"species degree" <- sdL
+    if ("Fisher" %in% index){
+#      require(sna) # which brings the function geodist used in functspec
+      ff.low <- suppressWarnings(fisher.alpha(web, MARGIN=1))
+      ff.high <- suppressWarnings(fisher.alpha(web, MARGIN=2))
+      out$"higher trophic level"$"Fisher alpha" <- ff.high
+      out$"lower trophic level"$"Fisher alpha" <- ff.low
     }
 
-    #----------------------------------------------------------------------------
-    # dependence values, following the lead by Bascompte et al. 2006 (Science) and
-    # modifications suggested by Blüthgen et al. 2007 (Current Biology)
 
-    if ("dependence" %in% index){
-      depL <- web/matrix(rowSums(web), nrow=NROW(web), ncol=NCOL(web), byrow=FALSE)
-      depH <- web/matrix(colSums(web), nrow=NROW(web), ncol=NCOL(web), byrow=TRUE)
-      out$"higher trophic level"$"dependence" <- depH
-      out$"lower trophic level"$"dependence" <- depL
+    #----------------------------------------------------------------------------    
+    if (any(c("diversity", "effective partners") %in% index)){
+        preytot.mat <- matrix(rep(colSums(web), NROW(web)), NROW(web), byrow=TRUE)
+        preyprop.mat <- web/preytot.mat  # = b_ik/b_.k in the first formula
+        #H_Nk is the diversity index of inflow (diversity of flower visits for each pollinator)
+        predtot.mat <- matrix(rep(rowSums(web), NCOL(web)), NROW(web), byrow=FALSE)
+        predprop.mat <- web/predtot.mat  # = b_kj/b_.k in the second formula
 
-      # strength = sum of dependences for a species (referenced in Bascompte et al. 2006)
-      SL <- rowSums(depH) # a plant's strength are the sum of the dependencies of all its pollinators
-      SH <- colSums(depL) # accordingly ...
-      out$"higher trophic level"$strength <- SH
-      out$"lower trophic level"$strength <- SL
+        if (logbase==2 | logbase=="2"){
+           H_Nk <- apply(preyprop.mat, 2, function(x) -sum(x*log2(x), na.rm=TRUE))
+           #H_Pk is the diversity index of pollinators for each plant species
+           H_Pk <- apply(predprop.mat, 1, function(x) -sum(x*log2(x), na.rm=TRUE))
+           # next, we need the reciprocals of this
+           # note that the ifelse is only needed if the web contains prey that is
+           # not eaten or predators that don't eat ...
+           n_Nk <- ifelse(colSums(web)!=0, 2^H_Nk, 0)
+           n_Pk <- ifelse(rowSums(web)!=0, 2^H_Pk, 0)
+        }
+        if (logbase=="e"){ # same code as above, just with "e"
+             H_Nk <- apply(preyprop.mat, 2, function(x) -sum(x*log(x), na.rm=TRUE))
+             H_Pk <- apply(predprop.mat, 1, function(x) -sum(x*log(x), na.rm=TRUE))
+             n_Nk <- ifelse(colSums(web)!= 0, exp(H_Nk), 0)
+             n_Pk <- ifelse(rowSums(web)!= 0, exp(H_Pk), 0)
+        }
+        if ("diversity" %in% index){
+              out$"higher trophic level"$"partner diversity" <- H_Nk
+              out$"lower trophic level"$"partner diversity" <- H_Pk
+        }
+        
+        if ("effective partners" %in% index){
+              out$"higher trophic level"$"effective partners" <- n_Nk
+              out$"lower trophic level"$"effective partners" <- n_Pk
+        }
     }
 
-    #----------------------------------------------------------------------------
-    # Interaction asymmetry (Vazquez et al. 2007, Oikos); rather similar to dependence above, really
-    if ("interaction" %in% index) {
-      Dij <- depH-depL  # positive values indicate a stronger effect of i (=plants) on j (bees) than vice versa
-      Ailow <- rowSums(Dij)/rowSums(web>0)
-      Aihigh <- colSums(-Dij)/colSums(web>0)
-      out$"higher trophic level"$"interaction push/pull" <- Aihigh
-      out$"lower trophic level"$"interaction push/pull" <- Ailow
+   #----------------------------------------------------------------------------
+   # species-level standardised diversity index d
+   # di represents the lower level's partner diversity, correcting for their relative
+   # abundances; a common pollinator, e.g., will thus have to be more overrepresented than
+   # a rare pollinator to have the same contribution to the index
+    if ("d" %in% index){
+        dsL <- dfun(web)[[1]]
+        dsH <- dfun(t(web))[[1]]
+        out$"higher trophic level"$d <- dsH
+        out$"lower trophic level"$d <- dsL
     }
+
+    #---------------------------------------------------------------------------
+    if (!("dependence" %in% index)) {
+        out[[1]] <- as.data.frame(out[[1]][-1])
+        out[[2]] <- as.data.frame(out[[2]][-1])
+    }
+    
     out
 }
 

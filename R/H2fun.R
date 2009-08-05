@@ -28,31 +28,49 @@ function(web){
     exexpec <- outer(rs, cs/tot) # non-integer optimal web
     expec <- matrix(0, nrow(web), ncol(web)) # empty web
     difexp <- exexpec-expec # where are differences between non-integer and 0-web greatest?
-    newweb <- expec  # start new web
+    newweb <- floor(exexpec)  # start new web
     webfull <- matrix("no", nrow(web), ncol(web)) # makes boolean web, set to 0
-    while (sum(newweb)<tot) {
-       webfull[which(rowSums(newweb)==rs),]="yo" # sets columns/rows with correct cs/rs to 1
-       webfull[,which(colSums(newweb)==cs)]="yo"
+    while (sum(newweb) < tot) {
+       webfull[which(rowSums(newweb)==rs),] <- "yo" # sets columns/rows with correct cs/rs to 1
+       webfull[,which(colSums(newweb)==cs)] <- "yo"
        OK <- webfull=="no" # matrix of potential cells
        smallestpossible <- newweb==min(newweb[OK])  # find cell with lowest number of interactions (e.g. 0)
        greatestdif <- max(difexp[smallestpossible & OK]) # find cell value with largest different between "is" and "should"
        bestone <- which(OK & smallestpossible & difexp==greatestdif ) # find cell for all three conditions
        if (length(bestone)>1) bestone <- sample(bestone,1) # select randomly a cell, if different are possible
-       newweb[bestone] <- newweb[bestone]+1 # put an interaction into that cell
+       newweb[bestone] <- newweb[bestone] + 1 # put an interaction into that cell
+       difexp <- exexpec - newweb
     }
-    
+        
+#    ## what may happen is that their are very few too-high-entries, but many too-low-entries!!
+#    difweb <- newweb - exexpec #positive values indicate too-high-entries
+#    H2_max <- -sum(newweb/tot*log(newweb/tot), na.rm=TRUE)
+#
+#    while (range(difweb)[1] < -.5){    # CFD, 2 Aug 2009
+#        difweb <- newweb - exexpec #positive values indicate too-high-entries
+#        range(difweb)
+#        ## now we need to allocate entries from towards the too-low-slots:
+#        towards <- which.min(difweb)
+#        from <- which.max(difweb)[1]
+#        newweb[towards] <- newweb[towards] + 1
+#        newweb[from] <- newweb[from] - 1
+#        H2_max_proposal <- -sum(newweb/tot*log(newweb/tot), na.rm=TRUE)
+#        H2_max <- ifelse (H2_max_proposal > H2_max, H2_max_proposal, H2_max)
+#    }
+# VIOLATES MARGINAL TOTALS!! NOT USEFUL AS IT IS!!!
+
     
 #  # Hmaxfind     IMPROVED CODE FROM JOCHEN ------------------------------------
-  if (max(exexpec)>0.3679*tot) {                     # 0.3679 is the proportion yielding maximal contribution
+  if (max(exexpec)>0.3679*tot) {    # 0.3679 is the proportion yielding maximal contribution
     # warning("one cell dominates too extremely, H2max can probably not be estimated correctly")
     # further modification to match expected values even better... ; great advance, but can get caught!!  introduce random step if this happens
-    for (tries in 1:50) {
+    for (tries in 1:500) {# reduces overfits, but NOT underfits!!
       newmx <- newweb                         # "hin- und herschieben"
-      difexp<-exexpec-newmx #newmx=newweb!
-      greatestdif = difexp==min(difexp)
+      difexp <- exexpec - newmx #newmx=newweb!
+      greatestdif <- difexp==min(difexp)
       if (length(which(greatestdif))>1) {
           largestvalue = newmx==max(newmx[greatestdif])  # evtl den größten auswählen
-          first=greatestdif & largestvalue
+          first <- greatestdif & largestvalue
       } else {first=greatestdif}   # "first" is a boolean matrix
       newmx[first][1] <-  newmx[first][1] - 1                                    # remove one interaction from one cell (with largest difference to expected values; "too large")
       throw = which(rowSums(first)>0)[1] ;  thcol = which(colSums(first)>0)[1]  # find row- and column-number of removed cell (not elegant!!)
@@ -106,3 +124,7 @@ function(web){
 }
 
 #H2fun(r2dtable(1, r=rowSums(Safariland), c=colSums(Safariland))[[1]])
+
+
+# This is still a bit unsatisfactory: First, we build a web which contains too many too-high-values, then we correct it. Ideally, the check for BOTH, too-high and too-low values would be done in the building of the web. That would certainly save computational time!!
+# Currently, the build-up is relatively complicated and slow because marginal totals need to be observed.
