@@ -12,8 +12,10 @@ discrepancy <- function(mat){
     P <- A
     P[,] <- 0
     rs <- rowSums(A)
-    for (i in 1:nrow(A)){
-        P[i,1:rs[i]] <- 1
+    if (suppressWarnings(any(rs) != 0)){
+      for (i in 1:nrow(A)){
+          P[i,1:rs[i]] <- 1
+      }
     }
     # this matrix P has the same row sums as A!
        

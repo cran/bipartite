@@ -1,130 +1,62 @@
-`dfun` <-
-function(web, abundances=NULL){
-    # The abundance vector allows to incorporate independent estimates of the
-    # abundances of the HIGHER trophic level. In a pollination web, pollinator abundances
-    # may be very different from those estimated by the interaction matrix column sums.
-    # This has also, obviously, large consequences for the specialisation: A plant
-    # being pollinated by a bee that is common on this plant, but very rare in general,
-    # will show a low specialisation unless bee abundances are corrected for.
-    # Data given in the abundance vector are here used in replacement for the row sums,
-    # both in the d-function itself, as well as in the calculation of the minimum ds.
+dfun <- function(web, abuns=NULL){     # abuns is external data on supply of "resources", e.g. abundance of higher trophic level
+  web <- empty(web)
+  if (!is.null(abuns) & length(abuns)!= ncol(web)) stop("Length of abundance vector and number of higher trophic level species do not match!")
+  if (is.null(abuns)) {q <- colSums(web) / sum(web)} else {q <- abuns / sum(abuns)}                 # q[j], the proportion of each "resource"
+  cs <- colSums(web)
 
-    web <- empty(web)
-    if (!is.null(abundances) & length(abundances)!= ncol(web)) stop("Length of abundance vector and number of higher trophic level species do not match!")
-    #-- -- -- -- -- -- --
-    # d uncorrected:
-    d <- function(web, abundances=NULL){#
-      #calculates the uncorrected d for the LOWER trophic level of a web
+  # function for d
+  d <- function(x,q=q){                      # q = normalized abuns
+    p <- x/sum(x)                            # p'[ij], m cancels out of the formula
+    sum(p[p!=0]*log(p[p!=0]/q[p!=0]))
+  }
 
-      Pprime <- web/rowSums(web, na.rm=TRUE) #observed proportions of each higher species on each lower species
-      
-      if (is.null(abundances)){
-          #expected proportion of higher trophic level attributed to each species (availability of higher trophic level):
-          Q <- colSums(web, na.rm=TRUE)/sum(web)
-      } else {
-          # if independent abundances for lower trophic level are given:
-          Q <- abundances/sum(abundances)
+  # function for dmin
+  dminfind <- function(x, q){               # x is the actual vector of resource utilization (one row of the web)
+    expec <- floor(q * (sum(x)))                # fill in downrounded expected values
+    restuse <- sum(x) - sum(expec)
+    x.new <- expec                              # new vector/distribution of x
+    if (!is.null(abuns)) {i.vec <- length(x)}   # i.vec will be used in the below (cells which are not "full")
+    for (j in 1:restuse) {                      # add rest in single steps
+      if (is.null(abuns)) {i.vec <- which(x.new < cs)}    # i.vec will be used in the next step (cells which are not "full" due to colSums reached)
+      # looking for the cell where 1 can be added with the smallest increase in KLD = d
+      d.check <- numeric(0)
+      xsum <- sum(x.new)
+      p.0 <- x.new / xsum
+      p.1 <- x.new / (xsum + 1)
+      dstep.1 <- ifelse(x.new!=0, p.1 * log(p.1 / q), 0)         # all elements of new d except the one were 1 is added
+      for (i in i.vec) {
+        pi.1 <-  (x.new[i] + 1) / (xsum + 1)
+        d.check[i] <- pi.1 * log(pi.1 / q[i]) + sum(dstep.1[-i])
       }
-
-      Qmat <- matrix(rep(Q, NROW(web)), nrow=NROW(web), byrow=TRUE)
-      rowSums(Pprime * log(Pprime/Qmat), na.rm=TRUE)  #Spezialisierung von Art i; formula is KL-distance
-
+      i.best <- which.min(d.check)[1]
+      x.new[i.best] <- x.new[i.best] + 1          # add 1 on the first possible cell with smallest KLD = d
     }
-    duncorr <- d(web, abundances=abundances)
-    #-- -- -- -- -- -- --
-    # d min: (Variation on Jochen's way)
-      if (is.null(abundances)){
-          #same number of interactions as web, but now as expected from marginal sums:
-          exexpec <- outer(rowSums(web), colSums(web)/sum(web))
-      } else {exexpec <- outer(rowSums(web), abundances/sum(abundances))}
-      expec <- floor(exexpec)           # down-rounded expectation values
+    return(d(x.new, q))
+  }
 
-# Jochen's version (from H2max)
-#      rs <- rowSums(web)
-#      cs <- colSums(web)
-#      newweb <- expec  # start new web
-#      webfull <- matrix("nö", nrow(web), ncol(web)) # makes boolean web, set to 0
-#      while (sum(newweb)<sum(web)) {
-#         difexp <- exexpec-expec               #use for allocation ranking
-#         webfull[which(rowSums(newweb)==rs),]="yo" # sets columns/rows with correct cs/rs to 1
-#         webfull[,which(colSums(newweb)==cs)]="yo"
-#         OK <- webfull=="nö" # matrix of potential cells
-#         smallestpossible <- newweb==min(newweb[OK])  # find cell with lowest number of interactions (e.g. 0)
-#         greatestdif <- max(difexp[smallestpossible & OK]) # find cell value with largest different between "is" and "should"
-#         bestone <- which(OK & smallestpossible & difexp==greatestdif ) # find cell for all three conditions
-#         if (length(bestone)>1) bestone <- sample(bestone,1) # select randomly a cell, if different are possible
-#         newweb[bestone] <- newweb[bestone]+1 # put an interaction into that cell
-#      }
-#
-      restuse <- sum(web) - sum(expec)  #number of interactions left to allocate
-      #find empty cols/rows:
-      emptycols <- which(colSums(expec)==0)
-      emptyrows <- which(rowSums(expec)==0)
-      if ((length(emptycols)+length(emptyrows))>restuse) warning("There are more empty cols/rows than spare interactions.")
-      difexp <- exexpec-expec               #use for allocation ranking
-      # put 1s into empty cols/rows (to keep the same number of species as in web):
-      #PROBLEM: when all entries are identical, the first column will always be selected!
-      #SOLUTION: start with empty matrix, not with one already containing values.
-      #This problem will only occur in binary matrices, particularly those manually created.
-      #Changes from version 0.5 should not make any difference for analysis of the 19 webs provided.
-      #In function H2fun this was implemented since the beginning!
-      #
-      #replaceindexC <- apply(as.matrix(difexp[,emptycols]), 2, which.max) 
-      #expec[replaceindexC, emptycols] <- 1
-      #replaceindexR <- apply(as.matrix(difexp[emptyrows,]), 1, which.max)
-      #expec[emptyrows, replaceindexR] <- 1
-      #restuse <- sum(web) - sum(expec)  #number of interactions left to allocate
-      #difexp <- exexpec-expec               #use for allocation ranking
-#      if (restuse>0) {
-#          # this is not very elegant: it now allocates more interactions than it
-#          # actually has (but at least returns a warning)
-#          replaceindex <- which(difexp %in% sort(difexp, decreasing=TRUE)[1:restuse])
-#          expec[replaceindex[1:restuse]] <- expec[replaceindex[1:restuse]] + 1  # this is the Dmin matrix
-#      }
-#
-      rs <- rowSums(web); cs <- colSums(web)
-      newweb=expec
-      webfull <- matrix("no", nrow(web), ncol(web)) # makes boolean web, set to 0
-      while (restuse>0){
-          difexp <- exexpec - newweb
-          replaceindex <- match(difexp, sort(difexp, decreasing=TRUE))[1]
-          webfull[which(rowSums(newweb)==rs),]="yes" # sets columns/rows with correct cs/rs to 1
-          webfull[,which(colSums(newweb)==cs)]="yes"
-          OK <- webfull=="no" # matrix of potential cells
-          smallestpossible <- (expec==min(expec[OK]))  # find cell with lowest number of interactions (e.g. 0)
-          greatestdif <- max(difexp[smallestpossible & OK]) # find cell value with largest different between "is" and "should"
-          bestone <- which(OK & smallestpossible & difexp==greatestdif ) # find cell for all three conditions
-          if (length(bestone)>1) bestone <- sample(bestone,1) # select randomly a cell, if different are possible
-          newweb[bestone] <- newweb[bestone]+1 # put an interaction into that cell
-          restuse <- restuse - 1
-      }
-      
-      #expec <- expec[rowSums(expec)!=0, colSums(expec)!=0]
-      #newweb=expec
-      dmin <- ifelse(duncorr<d(newweb), duncorr, d(newweb))
-     # if (any(duncorr < d(newweb))) warning("This is one of the extremely rare occassions when duncorr is for rounding reasons smaller than dmin (not to worry).")
+  # function for dmax (two cases)
+  dmaxfind <- function(x, q) {
+      dmax <- ifelse(is.null(abuns), log(sum(web)/sum(x)), log(1/min(q)))
+      return(dmax)
+  }
+  # Here is the problem:
+  # Consider a matrix n2 like this:
+  # (n2 <- matrix(c(8,3,1,6,2,0,2,0,0,1,0,0,1,0,0,0,0,1), ncol=3, byrow=T)  )
+  # with marginal totals
+  # rowSums(n2); colSums(n2)
+  # Now consider species [,1]: We need to allocate 18 interactions, but there is no combination of row totals to yield this number. That means, at least one interaction has to go into a row in which also another higher-level species has interactions. Thus, species [,1] cannot be perfectly specialised.
+  # (Perfect specialisation would mean that it monopolises the species it interacts with.)
+  # Another problem:
+  # In the transposed matrix t(n2), species [,6] has only interaction, but the minimum marginal total is 2. Thus, again, [,6] doesn't have enough interactions to monopolise its partner.
+  # As a consequence of both problems, the dmax calculate above does not hold! dmax is actually lower.
+  # We could not come up with a heuristic way to create a maximally specialised web, so we leave dfun as it is.
+  # (Nico found and Jochen explained this problem to me (CFD). Jochen also implemented the correct dmax when abundances are given.)
+  
 
-    #-- -- -- -- -- -- --
-    # d max:
-    dmax <- log(sum(web)/rowSums(web))
-    #ifelse(duncorr>log(sum(web)/rowSums(web)), duncorr, log(sum(web)/rowSums(web)))
+  d.raw <- apply(web, 1, d, q)
+  d.min <- apply(web, 1, dminfind, q)
+  d.max <- apply(web, 1, dmaxfind, q)
 
-    # This is NOT solved satisfactorily!!
-    # Problem here is that dmax for cases when abundances are given are calculated
-    # very differently to simply log(sum(web)/rowSums(web)) [as given in Blüthgen et al. 2006].
-    # I simply do not know how to get to the correct maximum d-values for the different species!
-
-    #-- -- -- -- -- -- --
-    # d max:
-    dcorr <- (duncorr-dmin)/(dmax-dmin)
-    list("dprime"=dcorr, "d"=duncorr, "dmin"=dmin, "dmax"=dmax)
+  d.prime <- (d.raw - d.min)/(d.max - d.min)
+  list("dprime"=d.prime, "d"=d.raw, "dmin"=d.min, "dmax"=d.max)
 }
-
-# dfun(Safariland, abundances=runif(ncol(Safariland)))
-
-#
-#m <- matrix(1:18, nrow=3)
-#ablow <- c(70, 22, 3) # do not add to 100
-#abhigh <- c(10, 5, 10, 5, 10, 5)
-#dfun(m, abhigh)
-#dfun(t(m), ablow)

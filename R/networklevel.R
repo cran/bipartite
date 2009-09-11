@@ -26,7 +26,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
     if (!all(index %in% allindex)){                        
       index <- switch(index,
           "ALL" = allindex,
-          "ALLBUTDD" = allindex[-which(allindex=="degreedistribution")],
+          "ALLBUTDD" = allindex[-which(allindex=="degree distribution")],
           "info" = c("number of species", "connectance", "web asymmetry", "links per species", "number of compartments"),
           # logic: only rough information on the network's general structure
           "quantitative" = c("weighted nestedness", "H2", "diversity", "mean interaction diversity", "linkage density"),
@@ -118,7 +118,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
     #--------------------------
     # degree distribution fits:
     if ("degree distribution" %in% index){
-        dd <- try(degreedistr(web.e, plot.it=plot.it.dd, pure.call=FALSE))
+        dd <- try(degreedistr(web, plot.it=plot.it.dd, pure.call=FALSE))
         if (class(dd)=="try-error"){
           dd$"lower trophic level dd fits" <- NA
           dd$"higher trophic level dd fits" <- NA

@@ -11,7 +11,7 @@ specifically. Various simple numbers and indices are calculated and returned.
 }
 
 \usage{
-specieslevel(web, index="ALL", logbase="e")
+specieslevel(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL)
 }
 
 \arguments{
@@ -24,6 +24,8 @@ specieslevel(web, index="ALL", logbase="e")
             support index, depending on the trophic level), \dQuote{NS} for node
             specialisation index, \dQuote{Fisher} for Fisher's alpha index, \dQuote{diversity} for Shannon diversity of interactions of that species, \dQuote{effective partners} for the effective number of interacting partners (e.g. predators/pollinators or hosts/plants),  \dQuote{d} for Blüthgen's d, \dQuote{strength} as sum of dependencies or \dQuote{ALL} for all the aforementioned (default). \dQuote{ALLBUTD} excludes only the dependence matrix and leads to the output being simplified to a matrix per trophic level.}
   \item{logbase}{Shall the various diversity indices be calculated to the base of e (default) or 2? Log2 is the proposal for generality and vulnerability by Bersier et al. (2002), while Shannon uses ln. The choice of the base will not affect the results qualitatively, only by a scaling factor.}
+  \item{low.abun}{Optional vector of independent abundances of the \emph{lower} trophic level to be passed on to \code{\link{dfun}}.}
+  \item{high.abun}{Optional vector of independent abundances of the \emph{higher} trophic level to be passed on to \code{\link{dfun}}.}
 }
 
 \details{
@@ -93,6 +95,8 @@ For both the \dQuote{higher trophic level} and the \dQuote{higher trophic level}
 Dependencies are still an open field of debate. Dependencies are calculated as the value in a matrix divided by the \code{rowSums} (for the lower trophic level) or the \code{colSums} (for the higher trophic level). As such, any pollinator observed only once will receive a dependency-value of 1, indicating perfect dependence on this plant species. That may or may not be true. In any case it is based on a sample size of 1, that is why the dependency asymmetry (which is based on the dependencies for both trophic levels) has come under criticism and may be rather sensitive to singletons.
 
 We here provide the code to calculate the strength of a species (i.e. sum of its dependencies), based on the current proposal by Bascompte et al. (2006). It may be a good idea to remove all singletons from the web before calculating this index, to investigate whether it is indeed driven by those scarce observations.
+
+The maximum value of the uncorrected d is not a trivial issue. We treat it here in the same way as given in the BMC Ecology paper, but please have a look at the (raw) code for further comments.
 }
 
 \seealso{ \code{\link{networklevel}} for some further comments; \code{\link{dfun}}, \code{\link{nodespec}}, which are called by this function }

@@ -9,12 +9,12 @@ This function returns the specialisation index d', which expresses how specialis
 }
 
 \usage{
-dfun(web, abundances=NULL)
+dfun(web, abuns=NULL)
 }
 
 \arguments{
   \item{web}{ Web is a matrix representing the interactions observed between higher trophic level species (columns) and lower trophic level species (rows). Usually this will be number of pollinators on each species of plants or number of parasitoids on each species of prey.}
-  \item{abundances}{A vector of abundances for the HIGHER trophic level, usually from additional information. If none is given (default) marginal sums are used.}
+  \item{abuns}{A vector of abundances for the HIGHER trophic level, usually from additional information. If none is given (default) marginal sums are used.}
 }
 
 \details{
@@ -31,6 +31,8 @@ dfun returns the d' values for the lower trophic level. Use \code{fun(t(web))} t
 d' is one of several species-level network indices. It's generalisation to the entire interaction web is called H2'.
 
 The \code{abundances} vector allows to incorporate independent estimates of the abundances of the HIGHER trophic level. In a pollination web, pollinator abundances may be very different from those estimated by the interaction matrix column sums. This has also, obviously, large consequences for the specialisation: A plant being pollinated by a bee that is common on this plant, but very rare in general, will show a low specialisation unless bee abundances are corrected for. Data given in the abundance vector are here used in replacement for the row sums, both in the d-function itself, as well as in the calculation of the minimum ds.
+
+In contrast to \code{\link{H2fun}}, finding the minimum value of d violates marginal totals. The idea is that we look at each species in turn. Then, we estimate how its observed number of interactions can be distributed, given the marginal totals (i.e. if 5 interactions were observed, they cannot be put into a link that only has 3 interactions across all species). So, for each species the number of interactions never exceeds the total across all species, but if we would put the web together from this sequential scan, it may well do so. In our view, this is irrelevant, because we are interested in the potential of each species separately to be perfectly specialised (given the marginal totals), not for the entire web. We leave this to \code{\link{H2fun}}.
 }
 
 \value{
@@ -44,10 +46,9 @@ The \code{abundances} vector allows to incorporate independent estimates of the 
 Blüthgen, N., Menzel, F. and Blüthgen, N. (2006) Measuring specialization in species interaction networks. \emph{BMC Ecology} \bold{6}, 12
  }
 
-\author{Carsten F. Dormann and Jochen Fründ}
+\author{Jochen Fründ and Carsten F. Dormann}
 \note{ 
 As detailed above, deriving the dmin-values \sQuote{heuristically} leaves room to some variation. We are very happy with this implementation, but you may want to program something yourself ...
-Furthermore, incorporating independent measures of abundance are straightforward for most of the code. However, I (CFD) do not know how to calculated the maximum d values in this case. So for the time being we have implemented a quick-fix.
 }
 
 \seealso{ \code{\link{H2fun}} for a similar function for the entire network. \code{\link{specieslevel}} for a method that, amongst other indices, calls \code{dfun}. }
@@ -56,7 +57,7 @@ Furthermore, incorporating independent measures of abundance are straightforward
 data(Safariland)
 dfun(Safariland) # gives d-values for the lower trophic level
 # now using independent abundance estimates for higher trophic level:
-dfun(Safariland, abundances=runif(ncol(Safariland)))
+dfun(Safariland, abuns=runif(ncol(Safariland)))
 
 dfun(t(Safariland)) #gives d-values for the higher trophic level
 }

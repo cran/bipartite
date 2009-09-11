@@ -1,5 +1,5 @@
 `specieslevel` <-
-function(web, index="ALL", logbase="e") {
+function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
     # function to calculate bipartite web indices at the species level
     #
     # web    interaction matrix, with higher trophic level as columns
@@ -172,8 +172,8 @@ function(web, index="ALL", logbase="e") {
    # abundances; a common pollinator, e.g., will thus have to be more overrepresented than
    # a rare pollinator to have the same contribution to the index
     if ("d" %in% index){
-        dsL <- dfun(web)[[1]]
-        dsH <- dfun(t(web))[[1]]
+        dsL <- dfun(web, abuns=high.abun)[[1]]
+        dsH <- dfun(t(web), abuns=low.abun)[[1]]
         out$"higher trophic level"$d <- dsH
         out$"lower trophic level"$d <- dsL
     }

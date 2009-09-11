@@ -29,8 +29,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 1.00\cr
-Date: \tab 2009-08-05\cr
+Version: \tab 1.02\cr
+Date: \tab 2009-09-11\cr
 License: \tab GPL \cr
 }
 }
@@ -38,6 +38,14 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+  \item 1.02 (release date: 11-Sep-2009)
+    \describe{
+      \item{Function \code{\link{plotweb}}:}{Now more trophic networks can be plotted by staggering bipartite networks on top of each other. See multitrophic examples in \code{\link{plotweb}}.} 
+      \item{Minor corrections to \code{\link{dfun}}:}{This function did not return ßemph{exactly} the values of the website-version. Jochen Fründ corrected this. Please read the help of the function (final paragraph) for details.}
+      \item{New function \code{\link{nested}}:}{This convenience function collects the various ways to calculate nestedness of a network in order to facilitate comparison of nestedness analyses. To do so, it heavily borrows from \pkg{vegan}.}
+      \item{Bug fix to \code{\link{discrepancy}}:}{Would return a silly value (half of the number of rows) for empty matrices. This had no effect when called by \code{\link{networklevel}}, since the matrix would have been emptied. Thanks to Roberto Molowny for reporting!}
+      \item{Bug fix to \code{\link{networklevel}}:}{Due to a missing space, the option \option{ALLBUTDD} did not work properly. Thanks to Etienne Laliberté for reporting!}
+    }
   \item 1.00 (release date: 06-Aug-2009)
     \describe{
       \item{Complete overhaul of \code{\link{networklevel}}:}{After a workshop on bipartite networks in ecology, a few more indices were added (Fisher's alpha diversity of interactions, mean interaction diversity, mean number of predators) and the whole output reorganised. It now follows a gradient from less to more interesting (in our view) indices, and from indices for binary to those for quantitative networks. Also, I added several options for which indices to report (\option{index="info", "binary", "quantitative", "topology"}). Most interestingly, perhaps, there is now a quantitative, Shannon-based series of indices. Starting with the \dQuote{mean interaction diversity} (i.e. the Shannon-diversity of interactions of a species, averaged across all species in that trophic level), over \dQuote{Shannon diversity} of interactions, to H2 (i.e. Shannon diversity scaled between max and min possible for this web characteristics).}
