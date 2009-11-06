@@ -29,8 +29,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 1.02\cr
-Date: \tab 2009-09-11\cr
+Version: \tab 1.03\cr
+Date: \tab 2009-11-06\cr
 License: \tab GPL \cr
 }
 }
@@ -38,10 +38,16 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+  \item 1.03 (release date: 06-Nov-2009)
+    \describe{
+      \item{Bug fix in \code{\link{V.ratio}}:}{A small mistake for a human, but a huge bug for mankind. Sorry. (Detail: I forgot to square sigma.i, leading to strange results.) Thanks to Giorgio Mancinelli for reporting!}
+      \item{Error message for non-existent indices in \code{\link{networklevel}}:}{So far, \code{\link{networklevel}} returned \code{NULL} when an index was selected that does not exist (e.g. \code{"shannon diversity"} instead of \code{"diversity"}). Now, a helpful (?) error message is returned.}
+      \item{Change in defaults to index \code{"interaction evenness"} in \code{\link{networklevel}}:}{After a fruiful discussion with Becky Morris and Jason Tylianakis, I changed the default to \code{"sum"}. I also reproduce some of our communication in the help to this function, under details, to make the ecological assumptions behind either option a bit more transparent. There are good reasons for either option.}
+    }
   \item 1.02 (release date: 11-Sep-2009)
     \describe{
       \item{Function \code{\link{plotweb}}:}{Now more trophic networks can be plotted by staggering bipartite networks on top of each other. See multitrophic examples in \code{\link{plotweb}}.} 
-      \item{Minor corrections to \code{\link{dfun}}:}{This function did not return ßemph{exactly} the values of the website-version. Jochen Fründ corrected this. Please read the help of the function (final paragraph) for details.}
+      \item{Minor corrections to \code{\link{dfun}}:}{This function did not return \emph{exactly} the values of the website-version. Jochen Fründ corrected this. Please read the help of the function (final paragraph) for details.}
       \item{New function \code{\link{nested}}:}{This convenience function collects the various ways to calculate nestedness of a network in order to facilitate comparison of nestedness analyses. To do so, it heavily borrows from \pkg{vegan}.}
       \item{Bug fix to \code{\link{discrepancy}}:}{Would return a silly value (half of the number of rows) for empty matrices. This had no effect when called by \code{\link{networklevel}}, since the matrix would have been emptied. Thanks to Roberto Molowny for reporting!}
       \item{Bug fix to \code{\link{networklevel}}:}{Due to a missing space, the option \option{ALLBUTDD} did not work properly. Thanks to Etienne Laliberté for reporting!}

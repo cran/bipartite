@@ -1,5 +1,5 @@
 `networklevel` <-
-function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctmethod="r", nrep=100, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn", normalise=TRUE, empty.web=TRUE, logbase="e", intereven="prod"){
+function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctmethod="r", nrep=100, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn", normalise=TRUE, empty.web=TRUE, logbase="e", intereven="sum"){
     ##
     ## web         interaction matrix, with lower trophic level in rows, higher in columns
     ##
@@ -33,8 +33,9 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
           # logic: the "quantitative series"
           "binary" = c("connectance", "links per species", "nestedness", "cluster coefficient",  "C-score"),
           # logic: metrics for binary networks
-          "topology" = c("connectance", "cluster coefficient", "degree distribution", "togetherness", "nestedness")
+          "topology" = c("connectance", "cluster coefficient", "degree distribution", "togetherness", "nestedness"),
           # logic: more abstract, topological metrics for binary networks
+          stop("Your index is not recognised! Typo? Check help for options!", call.=FALSE) #default for all non-matches
           )
     }
     

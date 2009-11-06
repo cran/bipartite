@@ -11,7 +11,7 @@ networklevel(web, index="ALL", ISAmethod="Bluethgen",
     SAmethod = "Bluethgen", extinctmethod = "r", nrep = 100, 
     plot.it.extinction = FALSE, plot.it.dd=FALSE, CCfun=median, 
     dist="horn", normalise=TRUE, empty.web=TRUE, logbase="e", 
-    intereven="prod")
+    intereven="sum")
 }
 
 \arguments{
@@ -26,7 +26,7 @@ networklevel(web, index="ALL", ISAmethod="Bluethgen",
     \dQuote{info} returns more general information on the network,
     \dQuote{binary} returns a best-of selection of indices based on a binary network,
     \dQuote{quantitative} returns a best-of selection of indices based on quantitative networks,
-    \dQuote{topology} returns indices more abstractly describing network properties.
+    \dQuote{topology} returns indices more abstractly describing network properties. Also CHECK details below!
     }
   \item{ISAmethod}{Method to use for calculating interaction strength (= dependence)
   asymmetry; original by \dQuote{Bascompte} is biased for singletons and few interactions
@@ -47,15 +47,22 @@ networklevel(web, index="ALL", ISAmethod="Bluethgen",
   \item{normalise}{Logical; shall the C-score and togetherness metrics be normalised to a range of 0 to 1? Defaults to \code{TRUE}.}
   \item{empty.web}{Shall the empty columns and rows be deleted? Defaults to TRUE.}
   \item{logbase}{Shall the various diversity indices be calculated to the base of e (default) or 2? Log2 is the proposal for generality and vulnerability by Bersier et al. (2002), while Shannon uses ln. The choice of the base will not affect the results qualitatively, only by a scaling factor.}
-  \item{intereven}{Shall all cells of the matrix be used to calculate the interaction evenness (as we recommend and default: \option{intereven="prod"})? Or, as given by Bersier et al. (2002) and Tylianakis et al. (2007), should only the realised links be used (\option{intereven="sum"})? Prod and sum refer to using the log of the product of matrix dimensions (i.e. all cells) or the log of the sum of non-zero cells (i.e. number of links)  as denominator in the evenness formula.}
+  \item{intereven}{Shall all cells of the matrix be used to calculate the interaction evenness (\option{intereven="prod"})? Or, as given by Bersier et al. (2002) and Tylianakis et al. (2007), should only the realised links be used (\option{intereven="sum"}; default)? Prod and sum refer to using the log of the product of matrix dimensions (i.e. all cells) or the log of the sum of non-zero cells (i.e. number of links)  as denominator in the evenness formula. See last paragraph of the details-section for views on these two options!}
 }
 
 \details{
 This function implements a variety of the many (and still procreating) indices describing network topography. Some are embaracingly simple and mere descriptors of a network's outer appearance (such as number of species in each trophic level or the number of links (= non-zero cells) in the web). Others are variations on Shannon's diversity index applied to within column or within rows. Only extinction slope is newly implemented here, and hence described in a bit more detail.
 
+ Note that Bersier et al. (2002) have three levels of values for some of their indices: qualitative (i.e. based on binary networks), quantitative (based on networks with information on the number of interactions observed for each link), and weighted-quantitative (where also independent information on the abundances of the participants is fed into the formula). At present, we implement only qualitative and quantitative indices! One exception is d', which can be called with an abundance vector (in function \code{\link{dfun}}). You can also get the qualitative version of quantitative indices (such as vulnerability) by simply calling networklevel on ``binarised'' data: \code{networklevel(Safariland>0, index="vulnerability")}. (Why you would want to do that, however, is currently beyond me.)(Thanks to Jason Tylianakis for proposing to put this clarification into the help!)
+
 Extinction slope works on a repeated random sequence of species extinctions (within one trophic level), and calculates the number of secondary extinctions (in the other level). These values are then averaged (over the \option{nrep} runs) and plotted against the number of species exterminated. The proportion still recent (on the y-axis) regressed against the proportion exterminated (on the x-axis) is hence standardised to values between 0 and 1 each. Through this plot, a hyperbolic regression is fitted, and the slope of this regression line is returned as an index of extinction sensitivity. The larger the slope, the later the extinction takes its toll on the other trophic level, and hence the higher the redundancy in the trophic level under consideration. Using \option{plot.it=F} also returns the graphs (set history to recording in the plotting window). Changing the \option{extinctionmethod} to \dQuote{abundance} will always result in the same sequence (by increasing abundance) and hence does not require replication.
 
 Most indices are straightforward, one-line formulae; some, such as H2', also require a re-arranging of the matrix; and one, secondary extinction slope, internally requires iterative runs, making the function relatively slow. If you are not interested in the secondary extinction slopes, simply set \option{nrep=1} to make it much faster.
+
+Sum or Prod: How to calculate interaction evenness? I shall first put down my argument for ``prod'' and then Jason Tylianakis' arguments for ``sum''. 
+Carsten: ``I do not want to defend a position I cannot hold against the flood of qualified criticism, and shall be happy to change the default to option ``sum'' (i.e. Jason's proposal). Nevertheless, I shall make a very brief attempt to defend my (and Nico's point of view). Imagine a completely different situation: I have ``counted'' birds in a landscape. From a more meticulous colleague I know that there are 27 bird species breeding at the moment, but on that two morning that I went out, I could only hear 15. Now I want to calculate the Shannon diversity (and evenness) of birds in that landscape. The ``normal'' (in the sense of established) approach to use the data from my 15 species. But hold on: I KNOW there are more species out there. I don't know how many (i.e. there may be more than the 27 my colleague has found), but there are at least 27. If I only use the data from my 15 species, I will get a higher evenness value than when I also include the 12 zeros. My conclusion would be: I don't want to overestimate evenness only because I couldn't look long enough, thus I use all 27 values.''
+Jason: ``I would disagree because what you ``know'' is based on your meticulous colleague's `sampling', which will also have its limits. If all you wanted was to know the total number of species there (assuming none have gone extinct), then what you propose is fine. However, the problem comes when you want to compare sites, and then sampling effort should be standardised. In most cases we know we don't have a full representation of the diversity (or food web) of an area, but we know for a given spatial or temporal sampling scale that one site differs from another in certain ways, and to me that is the most important. Anyway, it is all a question of scale and the precise question being asked. So what about making it an option in bipartite that you can either choose to divide by the realised links (give our 2007 paper as a ref, so people know it's comparable to that) or divide by the number of potential links, if that's the question people want to ask?''
+There you go: it's your choice!
 }
 
 \value{
@@ -89,7 +96,8 @@ Depending on the selected indices, some or all of the below (returned as vector 
   \item{Fisher's alpha}{An alternative measure of interaction diversity (using \code{fisherfit} from \pkg{vegan}).}
   \item{HTL mean interaction diversity}{Mean diversity of prey per predator. HTL refers to Higher Trophic Level. HTLmid is analog to Shannon's diversity index for interactions (see below), but calculated for each species in the HTL, then averaged.}
   \item{LTL mean interaction diversity}{Mean diversity of predators per prey. LTL refers to Lower Trophic Level. LTLmid is analog to Shannon's diversity index for interactions (see below), but calculated for each species in the LTL, then averaged.}
-  \item{interaction evenness}{Shannon's evenness for the web entries, treating zeros as no data.}
+  \item{interaction evenness}{Shannon's evenness for the web entries, treating zeros as no data. Note that the two options are rather different. Here a brief attempt to justify our default \code{"prod"}: By definition, IE = H/Hmax; H = -sum(p.i.mat*log(p.i.mat)), where p.i.mat = matrix/sum(entries in matrix). This means, when calculating H, we treat the matrix cells (=links) as species, and the interactions (cell values) as measure of their abundance. By definition, Hmax = ln(N). The key question is: What is the right value for N? Since we treat the matrix cells as species, it is (clearly?) the number of matrix cells, i.e. number of higher trophic level species x number of lower trophic level species. What else?
+ Were we to use the interpretation of Tylianakis et al. (2007), then Hmax = ln(sum of entries in matrix). This means, we equate ``number of interactions'' (another phrase for sum of matrix entries) = ``number of species''. That means, each interaction is a species. What should that mean? Why should that measure ``interactions evenness''? Why should we move from a view of ``cells are species'' when calculating H to a view of ``interactions are species'' when calculating N? To say the least, it doesn't seem consistent.}
   \item{Alatalo interaction evenness}{A different measure for web entry evenness, as proposed by Müller et al. (1999). }
   \item{Shannon diversity}{Shannon's diversity of interactions (i.e. network entries).}
   \item{H2}{H2' is a network-level measure of specialisation. It ranges between 0 (no specialisation) and 1 (complete specialisation). H2' is a measure of discrimination, i.e. calculated in comparison of no specialisation (see \code{\link{H2fun}} for details. To avoid confusion of keys (apostrophe vs. accent), we call the H2' only H2 here.}
