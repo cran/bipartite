@@ -19,7 +19,7 @@ Calculates the potential for apparent competition (Holt 1977), following the for
 }
 
 \value{
- Returns a k x k matrix with entries d.ij, where k is the number of species in the lower trophic level and i and j are lower trophic level species. Entries in the upper triangle represent the effect of the species j on species i (d.ij), i.e. the effect of the species in the column onto that in the row. In analogy, the lower triangle represent the inverse direction (d.ji), i.e. the effect of the row species onto the column species. Diagonal entries are \dQuote{apparent intraspecific competition}.
+ Returns a k x k matrix with entries d.ij, where k is the number of species in the lower trophic level and i and j are lower trophic level species. The matrix represents the effect of column species on row species. Diagonal entries are \dQuote{apparent intraspecific competition}.
 }
 
 \note{

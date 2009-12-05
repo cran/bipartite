@@ -29,8 +29,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 1.03\cr
-Date: \tab 2009-11-06\cr
+Version: \tab 1.05\cr
+Date: \tab 2009-12-05\cr
 License: \tab GPL \cr
 }
 }
@@ -38,11 +38,18 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+  \item 1.05 (release date: 05-Dec-2009)
+    \describe{
+      \item{Help description for \code{\link{PAC}} was convoluted and its suggestions for the interpretation downright wrong.}{Thanks to Matthew Wainhouse for reporting and simplifying it!}
+      \item{Resolved a long-standing issue of a warning message.}{This occurred when detaching the package (\code{detach(package:bipartite)}) and was caused by somehow wrongly using \code{.Last.lib}. Deleting it solved the problem.}
+      \item{Fixed bug in \code{\link{specieslevel}}:}{Calling this function with only one index caused it to return empty lists. Simple mistake, but better without it.}		
+    }
+  
   \item 1.03 (release date: 06-Nov-2009)
     \describe{
       \item{Bug fix in \code{\link{V.ratio}}:}{A small mistake for a human, but a huge bug for mankind. Sorry. (Detail: I forgot to square sigma.i, leading to strange results.) Thanks to Giorgio Mancinelli for reporting!}
       \item{Error message for non-existent indices in \code{\link{networklevel}}:}{So far, \code{\link{networklevel}} returned \code{NULL} when an index was selected that does not exist (e.g. \code{"shannon diversity"} instead of \code{"diversity"}). Now, a helpful (?) error message is returned.}
-      \item{Change in defaults to index \code{"interaction evenness"} in \code{\link{networklevel}}:}{After a fruiful discussion with Becky Morris and Jason Tylianakis, I changed the default to \code{"sum"}. I also reproduce some of our communication in the help to this function, under details, to make the ecological assumptions behind either option a bit more transparent. There are good reasons for either option.}
+      \item{Change in defaults to index \code{"interaction evenness"} in \code{\link{networklevel}}:}{After a fruitful discussion with Becky Morris and Jason Tylianakis, I changed the default to \code{"sum"}. I also reproduce some of our communication in the help to this function, under details, to make the ecological assumptions behind either option a bit more transparent. There are good reasons for either option.}
     }
   \item 1.02 (release date: 11-Sep-2009)
     \describe{
@@ -132,7 +139,7 @@ License: \tab GPL \cr
 
 	\item 0.74 (release date: 24-Oct-2008)
 	\describe{
-		\item{functional specialisation (\code{\link{functspec}}) bug fix}{Paths were double the true length, hence minimum was 2, rather than 1.}
+		\item{functional specialisation (\code{functspec}) bug fix}{Paths were double the true length, hence minimum was 2, rather than 1.}
 		\item{\code{\link{H2fun}} bug fix}{Since the search for H2min is heuristic, H2uncorr can sometimes be lower than H2min; in that case, H2fun returned a value greater 1, while it should be one exactly.}
 		\item{new function \code{nestedness.corso} }{Calculates (weighted) nestedness according to Corso et al. (2008) and Galeano et al. (2008).}
 		\item{new function \code{\link{discrepancy}}}{Calculates discrepancy according to Brualdi & Sanderson (1999), deemed to be best ever measure of nestedness; also gives an example for a binary null model analysis based on \pkg{vegan}'s \code{commsimulator}.}
@@ -147,7 +154,7 @@ License: \tab GPL \cr
 
 	\item 0.72 (release date: 12-June-2008)
 	\describe{
-		\item{new function: functional specialisation with \code{\link{functspec}}}{See Dalgaard et al. (2008).}
+		\item{new function: functional specialisation with \code{functspec}}{See Dalgaard et al. (2008).}
 		\item{new function: interface to \pkg{sna} through \code{\link{as.one.mode}}}{Allows calculation of path lengths, centrality, betweenness and other indices developed for one-mode networks.}
 		\item{bug-fix}{Error in \code{\link{plotweb}} when no species labels were given.}
 	}

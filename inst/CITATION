@@ -3,21 +3,21 @@ citHeader("To cite bipartite in publications please use:")
 citEntry(entry="Article",
          title = "Indices, graphs and null models: analyzing bipartite ecological networks.",
          author = personList(as.person("C. F. Dormann"),
-                             as.person("J. Fründ"),
-                             as.person("N. Blüthgen"),
+                             as.person("J. Fr\"und"),
+                             as.person("N. Bl\"uthgen"),
                              as.person("B. Gruber")),
  journal="The Open Ecology Journal",
  volume= "2",
  pages="7-24",
  year="2009",
 
- textVersion="Dormann, C.F., Fründ, J., Blüthgen, N. & Gruber B. 2009. Indices, graphs and null models: analyzing bipartite ecological networks. The Open Ecology Journal, 2, 7-24.")
+ textVersion="Dormann, C.F., Fr\"und, J., Bl\"uthgen, N. & Gruber B. 2009. Indices, graphs and null models: analyzing bipartite ecological networks. The Open Ecology Journal, 2, 7-24.")
 
 citEntry(entry="Article",
          title = "Introducing the bipartite Package: Analysing Ecological Networks.",
          author = personList(as.person("C. F. Dormann"),
                              as.person("B. Gruber"),
-                             as.person("J. Fründ")),
+                             as.person("J. Fr\"und")),
 
  journal="R news",
  volume= "8",
@@ -25,5 +25,5 @@ citEntry(entry="Article",
  pages="8-11",
  year="2008",
 
- textVersion="Dormann, C.F., Gruber B. & Fründ, J. (2008). Introducing the bipartite Package: Analysing Ecological Networks. R news Vol 8/2, 8 - 11."
+ textVersion="Dormann, C.F., Gruber B. & Fr\"und, J. (2008). Introducing the bipartite Package: Analysing Ecological Networks. R news Vol 8/2, 8 - 11."
 )

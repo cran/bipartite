@@ -36,7 +36,7 @@ as.one.mode(web, fill = 0)
   \code{degree}, \code{kpath.census} and so forth). Furthermore, \code{gplot} in that package also provides cool
   network depictions well worth checking out.
   
-  With respect to \pkg{bipartite}, \code{as.one.mode} is employed in the function \code{\link{functspec}}, which 
+  With respect to \pkg{bipartite}, \code{as.one.mode} is employed in the function \code{\link{nodespec}}, which 
   itself uses the \pkg{sna}-function \code{geodist}.
 }
 

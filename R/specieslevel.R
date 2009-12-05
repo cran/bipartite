@@ -27,8 +27,8 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
 
     allindex <- c("species number", "degree", "dependence", "strength", "interaction", "PSI", "NS", "Fisher", "diversity", "effective partners", "d")
 
-    if (index=="ALL") index <- allindex
-    if (index=="ALLBUTD") index <- allindex[-3]
+    if ("ALL" %in% index) index <- allindex
+    if ("ALLBUTD" %in% index) index <- allindex[-c(1,3)]
 #    out <- list("higher trophic level"=1, "lower trophic level"=1)
     out <- list()
 
@@ -115,7 +115,7 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
     
     #----------------------------------------------------------------------------
     if ("NS" %in% index){
-#      require(sna) # which brings the function geodist used in functspec
+#      require(sna) # which brings the function geodist used in nodespec
       NS <- nodespec(web)
       out$"higher trophic level"$"node specialisation index" <- NS$higher
       out$"lower trophic level"$"node specialisation index" <- NS$lower
@@ -123,7 +123,6 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
 
     #----------------------------------------------------------------------------
     if ("Fisher" %in% index){
-#      require(sna) # which brings the function geodist used in functspec
       ff.low <- suppressWarnings(fisher.alpha(web, MARGIN=1))
       ff.high <- suppressWarnings(fisher.alpha(web, MARGIN=2))
       out$"higher trophic level"$"Fisher alpha" <- ff.high
@@ -174,14 +173,14 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
     if ("d" %in% index){
         dsL <- dfun(web, abuns=high.abun)[[1]]
         dsH <- dfun(t(web), abuns=low.abun)[[1]]
-        out$"higher trophic level"$d <- dsH
+        out$"higher trophic level"$"d" <- dsH
         out$"lower trophic level"$d <- dsL
     }
 
     #---------------------------------------------------------------------------
     if (!("dependence" %in% index)) {
-        out[[1]] <- as.data.frame(out[[1]][-1])
-        out[[2]] <- as.data.frame(out[[2]][-1])
+        out[[1]] <- as.data.frame(out[[1]])
+        out[[2]] <- as.data.frame(out[[2]])
     }
     
     out
