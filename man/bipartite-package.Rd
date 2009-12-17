@@ -29,8 +29,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 1.05\cr
-Date: \tab 2009-12-05\cr
+Version: \tab 1.06\cr
+Date: \tab 2009-12-17\cr
 License: \tab GPL \cr
 }
 }
@@ -38,6 +38,14 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+  \item 1.06 (release date: 18-Dec-2009)
+  \describe{
+    \item{New functions \code{\link{ND}}, \code{\link{BC}} and \code{\link{CC}}:}{Simple functions to calculate normalised degree, betweenness centrality and closeness centrality. These functions and the example allows a reproduction of the type of analysis carried out in Martín González et al. (2009).}
+    \item{Changes to \code{\link{specieslevel}}}{, which now calls \code{\link{ND}}, \code{\link{BC}} and \code{\link{CC}}, too.}
+    \item{Bug fix in \code{\link{as.one.mode}}:}{now allows also data.frames to be turned into one-mode-style representations. Previously, only matrices could be used.}
+    \item{Suppression of errors and warnings in \code{\link{networklevel}}:}{When used on a full network (i.e. one without zeros), some indices in \code{\link{networklevel}} are undefined (e.g. extinction slopes). This led to a long output of warning and error messages, although internally I used the try-function to capture errors. Now, these messages are suppressed.}
+  }
+  
   \item 1.05 (release date: 05-Dec-2009)
     \describe{
       \item{Help description for \code{\link{PAC}} was convoluted and its suggestions for the interpretation downright wrong.}{Thanks to Matthew Wainhouse for reporting and simplifying it!}
@@ -186,6 +194,8 @@ Dormann, C.F., Fründ, J., Blüthgen, N., and Gruber, B. (2009) Indices, graphs an
 
 Galeano J., Pastor J.M. and Iriondo J.M. (2008) Weighted-Interaction Nestedness Estimator (WINE): A new estimator to calculate over frequency matrices. \emph{arXiv} 0808.3397v1 [physics.bio-ph]
 
+Martín Gonzáles, A.M., Dalsgaard, B. and Olesen, J.M. (2009) Centrality measures and the importance of generalist species in pollination networks. \emph{Ecological Complexity}, in press (doi:10.1016/j.ecocom.2009.03.008)
+
 Memmott, J., Waser, N. M. and Price, M. V. (2004) Tolerance of pollination networks to species extinctions. \emph{Proceedings of the Royal Society B} \bold{271}, 2605--2611
 
 Morris, R. J., Lewis, O. T. and Godfray, H. C. J. 2004. Experimental evidence for apparent competition in a tropical forest food web. \emph{Nature} \bold{428}, 310--313.
@@ -196,10 +206,11 @@ Müller, C. B., Adriaanse, I. C. T., Belshaw, R. and Godfray, H. C. J. 1999 The s
 
 Tylianakis, J. M., Tscharntke, T. and Lewis, O. T. (2007) Habitat modification alters the structure of tropical host-parasitoid food webs. \emph{Nature} \bold{445}, 202--205
 
-Vazquez, D. P. and Aizen, M. A. (2004) Asymmetric specialization: A pervasive feature of plant-pollinator interactions. \emph{Ecology} \bold{85}, 1251--1257
+Vázquez, D. P. and Aizen, M. A. (2004) Asymmetric specialization: A pervasive feature of plant-pollinator interactions. \emph{Ecology} \bold{85}, 1251--1257
 
-Vazquez, P.D., Chacoff, N.,P. and  Cagnolo, L. (2009) Evaluating multiple determinants of the structure of plant-animal mutualistic networks. \emph{Ecology} in press.
+Vázquez, P.D., Chacoff, N.,P. and  Cagnolo, L. (2009) Evaluating multiple determinants of the structure of plant-animal mutualistic networks. \emph{Ecology} \bold{90}, 2039--2046.
 }
+
 \keyword{ package }
 
 \examples{

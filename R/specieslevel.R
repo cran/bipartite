@@ -25,10 +25,10 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
 
     # m <- matrix(c(4,7,0,0,9,1,2,0,5), 3, byrow=TRUE)
 
-    allindex <- c("species number", "degree", "dependence", "strength", "interaction", "PSI", "NS", "Fisher", "diversity", "effective partners", "d")
+    allindex <- c("species number", "degree", "ND", "dependence", "strength", "interaction", "PSI", "NS", "BC", "CC", "Fisher", "diversity", "effective partners", "d")
 
     if ("ALL" %in% index) index <- allindex
-    if ("ALLBUTD" %in% index) index <- allindex[-c(1,3)]
+    if ("ALLBUTD" %in% index) index <- allindex[-c(1,4)]
 #    out <- list("higher trophic level"=1, "lower trophic level"=1)
     out <- list()
 
@@ -48,6 +48,12 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
       sdH <- colSums(web>0)
       out$"higher trophic level"$"species degree" <- sdH
       out$"lower trophic level"$"species degree" <- sdL
+    }
+    
+    if ("ND" %in% index){
+      nds <- ND(web)
+      out$"higher trophic level"$"normalised degree" <- nds[[2]]
+      out$"lower trophic level"$"normalised degree" <- nds[[1]]
     }
 
     #----------------------------------------------------------------------------
@@ -120,6 +126,17 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
       out$"higher trophic level"$"node specialisation index" <- NS$higher
       out$"lower trophic level"$"node specialisation index" <- NS$lower
     }
+    if ("BC" %in% index){
+      bcs <- BC(web)
+      out$"higher trophic level"$"betweenness" <- bcs[[2]]
+      out$"lower trophic level"$"betweenness" <- bcs[[1]]
+    }
+    if ("CC" %in% index){
+      ccs <- CC(web)
+      out$"higher trophic level"$"closeness" <- ccs[[2]]
+      out$"lower trophic level"$"closeness" <- ccs[[1]]
+    }
+
 
     #----------------------------------------------------------------------------
     if ("Fisher" %in% index){

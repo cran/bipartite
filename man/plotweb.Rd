@@ -57,10 +57,10 @@ plotweb(web,
   \item{high.lablength}{number of characters of upper labels that should be plotted. If zero no labels are shown, default is NULL which plots the complete labels.}
   \item{low.lablength}{number of characters of lower labels that should be plotted. If zero no labels are shown, default is NULL which plots the complete labels.}
   \item{sequence}{list of two with two names vectors: \code{seq.pred} and \code{seq.prey}, which specify the order in which species are plotted. Cannot be set for \option{method="cca"}. Defaults to \code{NULL}, where the sequence remains as given or is determined by the CCA internally.}
-  \item{low.abun}{Vector with independent abundance estimates for the lower trophic level, NULL if none exists.}
+  \item{low.abun}{\bold{Named} vector with independent abundance estimates for the lower trophic level, NULL if none exists.}
   \item{low.abun.col}{Colour for depicting the abundance estimates for the lower trophic level; defaults to green.}
   \item{bor.low.abun.col}{border color for depicting the abundance estimates for the lower trophic level, default is black}
-  \item{high.abun}{Vector with independent abundance estimates for the higher trophic level, NULL if none exists.}
+  \item{high.abun}{\bold{Named} vector with independent abundance estimates for the higher trophic level, NULL if none exists.}
   \item{high.abun.col}{Colour for depicting the abundance estimates for the lower trophic level; defaults to red.}
   \item{bor.high.abun.col}{border color for depicting the abundance estimates for the higher trophic level, default is black}
   \item{text.rot}{orientation of labels in the plot (to avoid overlapping of horizontal labels if dimension of the webs are high), default is 0 for horizontal labels, use text.rot=90 for vertical labels.}

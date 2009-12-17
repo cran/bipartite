@@ -34,7 +34,7 @@ Describes how to use bipartite to calculate the statistics presented in Vazquez 
 
 }
 
-\references{Vazquez, P.D., Chacoff, N.,P. and  Cagnolo, L. (2009) Evaluating multiple determinants of the structure of plant-animal mutualistic networks. \emph{Ecology}in press.
+\references{Vazquez, P.D., Chacoff, N.,P. and  Cagnolo, L. (2009) Evaluating multiple determinants of the structure of plant-animal mutualistic networks. \emph{Ecology} \bold{90}, 2039--2046.
 }
 
 \author{ Carsten F. Dormann <carsten.dormann@ufz.de> based on code and ideas of Diego Vazquez, Natacha P. Chacoff and Luciano Cagnolo}

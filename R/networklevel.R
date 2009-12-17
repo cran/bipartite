@@ -78,7 +78,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
           CD
         }
        
-        comps <- compart(web.e)
+        comps <- try(compart(web.e), silent=TRUE)
         if (class(comps)=="try-error") {
             ncompart <- compdiv <- NA
         } else  {
@@ -119,8 +119,9 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
     #--------------------------
     # degree distribution fits:
     if ("degree distribution" %in% index){
-        dd <- try(degreedistr(web, plot.it=plot.it.dd, pure.call=FALSE))
+        dd <- suppressWarnings(try(degreedistr(web, plot.it=plot.it.dd, pure.call=FALSE), silent=TRUE))
         if (class(dd)=="try-error"){
+          dd <- list()
           dd$"lower trophic level dd fits" <- NA
           dd$"higher trophic level dd fits" <- NA
         }
@@ -155,7 +156,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
     }
     #-------------------
     if ("nestedness" %in% index){
-      nest <- try(nestedtemp(web)$statistic)
+      nest <- try(nestedtemp(web)$statistic, silent=TRUE)
       out$nestedness <- ifelse(class(nest)=="try-error", NA, nest)
       # a fast implementation of nestedness by Jari Oksanen
       #old: nestedness(web, null.models=FALSE)$temperature
@@ -225,20 +226,24 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
     #--------------------------
     # species extinction curve:
     if (any(c("extinction slope", "robustness") %in% index)){
-        extL <- try(second.extinct(web=web, method=extinctmethod, nrep=nrep, participant="lower"))       
-        extH <- try(second.extinct(web=web, method=extinctmethod, nrep=nrep, participant="higher"))
+        extL <- try(second.extinct(web=web, method=extinctmethod, nrep=nrep, participant="lower"), silent=TRUE)       
+        extH <- try(second.extinct(web=web, method=extinctmethod, nrep=nrep, participant="higher"), silent=TRUE)
         if ("extinction slope" %in% index){
-            slopeL <- try(slope.bipartite(extL, col="green", pch=16, type="b", plot.it=plot.it.extinction))
-            out$"extinction slope lower trophic level"=as.numeric(slopeL)
+            slopeL <- try(slope.bipartite(extL, col="green", pch=16, type="b", plot.it=plot.it.extinction), silent=TRUE)
+            out$"extinction slope lower trophic level"=suppressWarnings(as.numeric(slopeL))
             
-            slopeH <- try(slope.bipartite(extH, col="green", pch=16, type="b", plot.it=plot.it.extinction))
-            out$"extinction slope higher trophic level"=as.numeric(slopeH)
+            slopeH <- try(slope.bipartite(extH, col="green", pch=16, type="b", plot.it=plot.it.extinction), silent=TRUE)
+            out$"extinction slope higher trophic level"=suppressWarnings(as.numeric(slopeH))
         }
     
         if ("robustness" %in% index) {
-            robustL <- robustness(extL)
+            if (inherits(extL, "try-error")){
+              robustL <- robustH <- NA
+            } else {
+              robustL <- robustness(extL)
+              robustH <- robustness(extH)
+            }
             out$"robustness lower exterminated" = as.numeric(robustL)
-            robustH <- robustness(extH)
             out$"robustness higher exterminated" = as.numeric(robustH)
         }
     }

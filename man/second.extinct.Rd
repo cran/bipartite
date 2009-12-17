@@ -18,14 +18,14 @@ second.extinct(web, participant = "higher", method = "abun", nrep = 10,
   trophic level species (columns) and lower trophic level species (rows). Usually
   this will be number of pollinators on each species of plants or number of parasitoids
   on each species of prey.}
-  \item{participant}{\dQuote{\code{high}} (default) or \dQuote{\code{low}} or \dQuote{\code{both}},
+  \item{participant}{\code{high} (default) or \code{low} or \code{both},
   depending if you want to exterminate higher trophic level species, lower trophic
   level species, or a randomly chosen species of both levels; partial matching.}
-  \item{method}{Random deletion of a species (\dQuote{\code{random}}) or according
-  to its abundance, with least abundant going extinct first (\dQuote{\code{abundance}}; default). }
+  \item{method}{Random deletion of a species (\code{random}) or according
+  to its abundance, with least abundant going extinct first (\code{abundance}; default). }
   \item{nrep}{Number of replicates of extermination sequence. Will not be considered
   for method abundance.}
-  \item{details}{Logical; returns details, i.e.~for each replicate the sequence of
+  \item{details}{Logical; returns details, i.e. for each replicate the sequence of
   secondary extinctions. If set to \code{FALSE} (default), replicated runs will be averaged. }
 }
 \details{

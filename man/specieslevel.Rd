@@ -19,10 +19,12 @@ specieslevel(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL)
   trophic level species (columns) and lower trophic level species (rows). Usually this will be number of pollinators on each species of plants or number of parasitoids on each species of prey.}
   \item{index}{Vector of indices to be calculated for each trophic level of the web;
             options are: \dQuote{species number} for number of species, 
-            \dQuote{degree},  \dQuote{dependence}, \dQuote{interaction} for interaction push/pull (our version of dependence asymmetry: see details), 
-            \dQuote{PSI} for pollination service index (or pollinator
-            support index, depending on the trophic level), \dQuote{NS} for node
-            specialisation index, \dQuote{Fisher} for Fisher's alpha index, \dQuote{diversity} for Shannon diversity of interactions of that species, \dQuote{effective partners} for the effective number of interacting partners (e.g. predators/pollinators or hosts/plants),  \dQuote{d} for Blüthgen's d, \dQuote{strength} as sum of dependencies or \dQuote{ALL} for all the aforementioned (default). \dQuote{ALLBUTD} excludes only the dependence matrix and leads to the output being simplified to a matrix per trophic level.}
+            \dQuote{degree}, \option{ND} for normalised degrees, \dQuote{dependence}, \dQuote{interaction} for interaction push/pull (our version of dependence asymmetry: see details),  \dQuote{PSI} for pollination service index (or pollinator
+            support index, depending on the trophic level), 
+            \dQuote{NS} for node  specialisation index, \option{BC} for betweenness, \option{CC} for closeness,
+            \dQuote{Fisher} for Fisher's alpha index, \dQuote{diversity} for Shannon diversity of interactions of that species, \dQuote{effective partners} for the effective number of interacting partners (e.g. predators/pollinators or hosts/plants),  \dQuote{d} for Blüthgen's d, 
+            \dQuote{strength} as sum of dependencies or \dQuote{ALL} for all the aforementioned (default). 
+            \dQuote{ALLBUTD} excludes only the dependence matrix and leads to the output being simplified to a matrix per trophic level.}
   \item{logbase}{Shall the various diversity indices be calculated to the base of e (default) or 2? Log2 is the proposal for generality and vulnerability by Bersier et al. (2002), while Shannon uses ln. The choice of the base will not affect the results qualitatively, only by a scaling factor.}
   \item{low.abun}{Optional vector of independent abundances of the \emph{lower} trophic level to be passed on to \code{\link{dfun}}.}
   \item{high.abun}{Optional vector of independent abundances of the \emph{higher} trophic level to be passed on to \code{\link{dfun}}.}
@@ -67,26 +69,31 @@ For both the \dQuote{higher trophic level} and the \dQuote{higher trophic level}
 
   \item{number of species}{Sic.}
   \item{species degree}{Sum of interactions per species.}
+  \item{normalised degree}{As degree, but scaled by the number of possible partners; see \code{\link{ND}}.}
   \item{dependence}{Web entry divided by column totals (for higher trophic level) or row totals (for lower
         trophic level). Expresses the proportion of interactions with each species, and sums to 1 for each.}
   \item{strength}{Sum of dependencies of each species (proposed in Bascompte et al. 2006).}
   \item{interaction push/pull}{Direction of interaction asymmetry: positive values indicate that a species affects the species of the other level it interacts with stronger then they affect it (\dQuote{pusher}); negative values indicate that a species is, on average, on the receiving end of the stick (\dQuote{being pulled}); formula based on Vazquez et al (2007), but push/pull is our own nomenclature. Values are highly correlated with	species strengths (see below), but standardised to fall between -1 (being pulled) and 1 (pushing).}
   \item{Pollination Service Index PSI}{for the higher trophic level, and the equivalent Pollinator Support Index for the lower trophic level. Expresses the value of, say, a pollinator for all plant species as the sum (across all plant species) of the proportion of pollen deposited per visit. The more specialised the pollinator and the fewer pollinators the plants it pollinates, the higher is its value for the plant community. It is a really cool measure, but it's not easy to get one's head around it. Alternatively, one can see it as the inverse of redundancy of the species for the web: the higher the value, the less redundant.}
   \item{node specialisation index}{Another measure of specialisation, based on the path length between any two higher-trophic level species. Species sharing hosts/prey have an FS-value of 1. See specific function \code{\link{nodespec}} for details, problems and reference.}
-  \item{Fisher alpha}{Fisher's alpha diversity for each species (see \code{fisher.alpha} in \pkg{vegan} for details).}
+  \item{betweenness}{A value describing the centrality of a species in the network by its position between other nodes; see \code{\link{BC}} and \code{betweenness} in \pkg{sna}.}
+  \item{closeness}{A value describing the centrality of a species in the network by its path lengths to other nodes; see \code{\link{CC}} and \code{closeness} in \pkg{sna}.}
+  \item{Fisher alpha}{Fisher's alpha diversity for each species (see \code{fisher.alpha} in
+   \pkg{vegan} for details).}
   \item{Partner diversity}{Shannon diversity (when using \option{logbase="e"}) or per-species generality/vulnerability (when using \option{logbase=2}) of the interactions of each species. See also \code{\link{networklevel}} for the aggregated version of this index (i.e. averaged across all species in a trophic level).}
   \item{effective partners}{\option{logbase} to the power of \dQuote{partner.diversity}: Bersier et al. (2002) interpret this as the effective number of partners, if each partner was equally common. Note that \dQuote{partner} is a bit euphemistic when it comes to predator-prey or host-parasitoid networks.}
-  \item{d}{Specialisation of each species based on its discrimination from random selection of
-        partners. More specifically, it returns d', which is calculated based on the
-        raw \code{d}, \code{dmin} and \code{dmax} for each species (see \code{\link{dfun}}. See Blüthgen et al. (2006) for details.}
+  \item{d}{Specialisation of each species based on its discrimination from random selection of partners. More specifically, it returns d', which is calculated based on the
+ raw \code{d}, \code{dmin} and \code{dmax} for each species (see \code{\link{dfun}}. See Blüthgen et al. (2006) for details.}
 }
 
 \references{
-  Bascompte, J., Jordano, P. and Olesen, J. M. (2006) Asymmetric coevolutionary networks facilitate biodiversity maintenance. \emph{Science} \bold{312}, 431--433
+ Bascompte, J., Jordano, P. and Olesen, J. M. (2006) Asymmetric coevolutionary networks facilitate biodiversity maintenance. \emph{Science} \bold{312}, 431--433
 
-  Blüthgen, N., Menzel, F. and Blüthgen, N. (2006) Measuring specialization in species interaction networks. \emph{BMC Ecology} \bold{6}, 9
+ Blüthgen, N., Menzel, F. and Blüthgen, N. (2006) Measuring specialization in species interaction networks. \emph{BMC Ecology} \bold{6}, 9
 
-  Vázquez, D. P., Melián, C. J., Williams, N. M., Blüthgen N., Krasnov B. R. and Poulin, R. (2007) Species abundance and asymmetric interaction strength in ecological networks. \emph{Oikos} \bold{116}, 1120--1127
+ Martín Gonzáles, A.M., Dalsgaard, B. and Olesen, J.M. 2009. Centrality measures and the importance of generalist species in pollination networks. \emph{Ecological Complexity}, in press (doi:10.1016/j.ecocom.2009.03.008)
+
+Vázquez, D. P., Melián, C. J., Williams, N. M., Blüthgen N., Krasnov B. R. and Poulin, R. (2007) Species abundance and asymmetric interaction strength in ecological networks. \emph{Oikos} \bold{116}, 1120--1127
 }
 
 \author{ Carsten F. Dormann \email{carsten.dormann@ufz.de}}

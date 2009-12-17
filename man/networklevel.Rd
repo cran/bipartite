@@ -17,32 +17,32 @@ networklevel(web, index="ALL", ISAmethod="Bluethgen",
 \arguments{
   \item{web}{Web is a matrix representing the interactions observed between higher trophic level species (columns) and lower trophic level species (rows). Usually this will be number of pollinators on each species of plants or number of parasitoids on each species of prey.}
   \item{index}{One or more of the following (exact match only!):
-    \dQuote{number of species}, \dQuote{connectance}, \dQuote{web asymmetry}, \dQuote{links per species}, 
-    \dQuote{number of compartments}, \dQuote{compartment diversity}, \dQuote{cluster coefficient}, \dQuote{degree distribution}, \dQuote{mean number of shared partners}, \dQuote{togetherness}, \dQuote{C score}, \dQuote{V ratio}, \dQuote{discrepancy}, \dQuote{nestedness}, \dQuote{weighted nestedness}, \dQuote{extinction slope}, \dQuote{robustness},
-    \dQuote{ISA},\dQuote{SA}, \dQuote{niche overlap},
-    \dQuote{generality},\dQuote{vulnerability}, \dQuote{linkage density}, \dQuote{Fisher alpha}, \dQuote{mean interaction diversity}, \dQuote{interaction evenness}, \dQuote{Alatalo interaction evenness}, \dQuote{diversity}, \dQuote{H2};
-    \dQuote{ALL} (default) calculates all indices (returning a list (since degree distribution fits are a table within this list and cannot be simplified)), 
-    \dQuote{ALLBUTDD} calculates all indices except degree distribution fits. This latter has the advantage that the output can be simplified to a vector; 
-    \dQuote{info} returns more general information on the network,
-    \dQuote{binary} returns a best-of selection of indices based on a binary network,
-    \dQuote{quantitative} returns a best-of selection of indices based on quantitative networks,
-    \dQuote{topology} returns indices more abstractly describing network properties. Also CHECK details below!
+    \option{number of species}, \option{connectance}, \option{web asymmetry}, \option{links per species}, 
+    \option{number of compartments}, \option{compartment diversity}, \option{cluster coefficient}, \option{degree distribution}, \option{mean number of shared partners}, \option{togetherness}, \option{C score}, \option{V ratio}, \option{discrepancy}, \option{nestedness}, \option{weighted nestedness}, \option{extinction slope}, \option{robustness},
+    \option{ISA},\option{SA}, \option{niche overlap},
+    \option{generality},\option{vulnerability}, \option{linkage density}, \option{Fisher alpha}, \option{mean interaction diversity}, \option{interaction evenness}, \option{Alatalo interaction evenness}, \option{diversity}, \option{H2};
+    \option{ALL} (default) calculates all indices (returning a list (since degree distribution fits are a table within this list and cannot be simplified)), 
+    \option{ALLBUTDD} calculates all indices except degree distribution fits. This latter has the advantage that the output can be simplified to a vector; 
+    \option{info} returns more general information on the network;
+    \option{binary} returns a best-of selection of indices based on a binary network;
+    \option{quantitative} returns a best-of selection of indices based on quantitative networks;
+    \option{topology} returns indices more abstractly describing network properties. Also CHECK details below!
     }
   \item{ISAmethod}{Method to use for calculating interaction strength (= dependence)
-  asymmetry; original by \dQuote{Bascompte} is biased for singletons and few interactions
-  (range 0 to infty); \dQuote{Bluethgen} (default) excludes singletons and corrects
+  asymmetry; original by \option{Bascompte} is biased for singletons and few interactions
+  (range 0 to infty); \option{Bluethgen} (default) excludes singletons and corrects
   for low number of interactions (range -1 to 1); see Bascompte et al. (2006) and
   Blüthgen et al. (2007).}
   \item{SAmethod}{Which method to use to calculate the specification asymmetry: mean
-  of log-transformed dependencies (\dQuote{log}) or Blüthgen's abundance-weighted mean
+  of log-transformed dependencies (\option{log}) or Blüthgen's abundance-weighted mean
   (default); see Blüthgen et al. (2007).}
-  \item{extinctmethod}{Specifies how species are removed from matrix: \dQuote{random}
-  or \dQuote{abundance} (partial matching), where abundance removes species in the
+  \item{extinctmethod}{Specifies how species are removed from matrix: \option{random}
+  or \option{abundance} (partial matching), where abundance removes species in the
   order of increasing abundance (i.e. rarest first); see Memmott et al. (2004).}
   \item{nrep}{Number of replicates for the extinction sequence analysis.}
   \item{plot.it.extinction}{logical; plot the extinction sequence graph; defaults to FALSE. }
   \item{plot.it.dd}{logical; plot the degree distribution fits?; defaults to FALSE. }
-  \item{CCfun}{Method to use when calculating the clustering coefficient. Originally proposed as mean of cluster coefficients for each node. Defaults to \dQuote{median}, because cluster coefficients are strongly skewed. }
+  \item{CCfun}{Method to use when calculating the clustering coefficient. Originally proposed as mean of cluster coefficients for each node. Defaults to \option{median}, because cluster coefficients are strongly skewed. }
   \item{dist}{Distance metric to be used to calculate niche overlap; defaults to Horn's index, which is the recommendation of Krebs (Ecological Methodology); for other options see \code{vegdist} in \pkg{vegan}.}
   \item{normalise}{Logical; shall the C-score and togetherness metrics be normalised to a range of 0 to 1? Defaults to \code{TRUE}.}
   \item{empty.web}{Shall the empty columns and rows be deleted? Defaults to TRUE.}
@@ -59,7 +59,7 @@ Extinction slope works on a repeated random sequence of species extinctions (wit
 
 Most indices are straightforward, one-line formulae; some, such as H2', also require a re-arranging of the matrix; and one, secondary extinction slope, internally requires iterative runs, making the function relatively slow. If you are not interested in the secondary extinction slopes, simply set \option{nrep=1} to make it much faster.
 
-Sum or Prod: How to calculate interaction evenness? I shall first put down my argument for ``prod'' and then Jason Tylianakis' arguments for ``sum''. 
+\bold{Sum or Prod: How to calculate interaction evenness?} I shall first put down my argument for ``prod'' and then Jason Tylianakis' arguments for ``sum''. 
 Carsten: ``I do not want to defend a position I cannot hold against the flood of qualified criticism, and shall be happy to change the default to option ``sum'' (i.e. Jason's proposal). Nevertheless, I shall make a very brief attempt to defend my (and Nico's point of view). Imagine a completely different situation: I have ``counted'' birds in a landscape. From a more meticulous colleague I know that there are 27 bird species breeding at the moment, but on that two morning that I went out, I could only hear 15. Now I want to calculate the Shannon diversity (and evenness) of birds in that landscape. The ``normal'' (in the sense of established) approach to use the data from my 15 species. But hold on: I KNOW there are more species out there. I don't know how many (i.e. there may be more than the 27 my colleague has found), but there are at least 27. If I only use the data from my 15 species, I will get a higher evenness value than when I also include the 12 zeros. My conclusion would be: I don't want to overestimate evenness only because I couldn't look long enough, thus I use all 27 values.''
 Jason: ``I would disagree because what you ``know'' is based on your meticulous colleague's `sampling', which will also have its limits. If all you wanted was to know the total number of species there (assuming none have gone extinct), then what you propose is fine. However, the problem comes when you want to compare sites, and then sampling effort should be standardised. In most cases we know we don't have a full representation of the diversity (or food web) of an area, but we know for a given spatial or temporal sampling scale that one site differs from another in certain ways, and to me that is the most important. Anyway, it is all a question of scale and the precise question being asked. So what about making it an option in bipartite that you can either choose to divide by the realised links (give our 2007 paper as a ref, so people know it's comparable to that) or divide by the number of potential links, if that's the question people want to ask?''
 There you go: it's your choice!
@@ -103,7 +103,10 @@ Depending on the selected indices, some or all of the below (returned as vector 
   \item{H2}{H2' is a network-level measure of specialisation. It ranges between 0 (no specialisation) and 1 (complete specialisation). H2' is a measure of discrimination, i.e. calculated in comparison of no specialisation (see \code{\link{H2fun}} for details. To avoid confusion of keys (apostrophe vs. accent), we call the H2' only H2 here.}
 }
 
-\note{Some indices require rather long computation times on large webs. Particularly slow (for large webs) are: \dQuote{extinction slope} and \dQuote{nestedness}. For ordinary-sized webs (tens by tens), \code{networklevel} is reasonably fast. An example of a large web is \code{kato1990}: try it, possibly using \code{system.time} as a wrapper, and prepare to do some reading on the side ...
+\note{
+All error and warning messages are (or at least should be) suppressed! If your web returns and NA for some of the indices, this can be because the index cannot be computed. For example, if the web is full (i.e. no 0-cells), extinction slopes cannot be fitted (singularity of gradient). Check if you can expect the index to be computable! If it is, and networklevel doesn't do it, let me know.
+
+Some indices require rather long computation times on large webs. Particularly slow (for large webs) are: \dQuote{extinction slope} and \dQuote{nestedness}. For ordinary-sized webs (tens by tens), \code{networklevel} is reasonably fast. An example of a large web is \code{kato1990}: try it, possibly using \code{system.time} as a wrapper, and prepare to do some reading on the side ...
 
  If you want to increase the speed by omitting some indices, here a rough guide: Ask only for the indices you are interested in! Otherwise, here is the sequence of most time-consuming indices: 1. The slowest function is related to extinction slopes and robustness. Excluding both makes the function faster. 2. Degree distributions are somewhat time consuming. 3. Fisher's alpha is computed iteratively and hence time consuming. 3. Nestedness and weighted nestedness are not the fastest of routines. 4. Number (and diversity) of compartments calls a recursive and hence relatively slow algorithm. 5. H2 and specialisation asymmetry require an iterative, heuristic search algorithm. Finally, excluding discrepancy can also moderately decrease computation time.
 }
