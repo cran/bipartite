@@ -29,8 +29,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 1.06\cr
-Date: \tab 2009-12-17\cr
+Version: \tab 1.07\cr
+Date: \tab 2010-02-18\cr
 License: \tab GPL \cr
 }
 }
@@ -38,6 +38,12 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+  \item 1.07 (release date: 18-Feb-2010)
+  \describe{
+    \item{New function \code{\link{vaznull}}:}{Null model with constrained totals and connectance proposed by Diego Vázquez, similar to \code{\link{swap.web}}, but "better". See notes in \code{\link{swap.web}}-help for justification of this statement. We recommend this null model for constraining both marginal totals and connectance.}
+    \item{Added a new option to calculate extinction slopes:}{So far, random extinction sequences and the rarest-to-commenest sequence were implemented. Now, \code{\link{second.extinct}} also includes the option \option{method="degree"} to build a sequence from the best-to-least connected species. This is the most extreme case, where the most generalist species goes extinct first (see Memmott et al. 1998). (In response to request by Simone Bazarian.)}
+    \item{Adaptations of \code{\link{nullmodel}}:}{Now includes the new vaznull as a method (3). This leads to changes in the sequence of methods! Old code may hence have to be adapted accordingly!}
+  }
   \item 1.06 (release date: 18-Dec-2009)
   \describe{
     \item{New functions \code{\link{ND}}, \code{\link{BC}} and \code{\link{CC}}:}{Simple functions to calculate normalised degree, betweenness centrality and closeness centrality. These functions and the example allows a reproduction of the type of analysis carried out in Martín González et al. (2009).}

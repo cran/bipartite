@@ -51,6 +51,7 @@ BC <- function(web, rescale=TRUE, ...){
 #(cci <- CC(olesen2002flores))
 #(bci <- BC(olesen2002flores))
 #
+#
 #cor.test(bci[[1]], ndi[[1]], method="spear") # 0.779
 #cor.test(cci[[1]], ndi[[1]], method="spear") # 0.826
 #
@@ -66,12 +67,29 @@ BC <- function(web, rescale=TRUE, ...){
 #summary(nls(cc ~ c*nd^d, start=list(c=0.02,d=2))) 
 ## BC:
 #summary(nls(bc ~ a*nd+b, start=list(a=1,b=1)))
-#summary(nls(bc ~ c*nd^d, start=list(c=0.02,d=2))) # lower RSE
+#summary(nls(bc ~ c*nd^d, start=list(c=-0.02,d=2))) # lower RSE
 #
 ### ANIMALS:
 #bc <- bci[[2]]
 #cc <- cci[[2]]
 #nd <- ndi[[2]]
+#
+#plot(bc ~ nd)
+#lognd <- log(nd)
+#newx <- seq(min(log(nd)), max(log(nd)), length=10)
+#
+#fm <- lm(log(bc) ~ lognd)
+#plot(log(bc) ~ log(nd))
+#preds <- predict(fm, interval="confidence", newdata=data.frame(lognd=newx))
+#matlines(newx, preds, col=c("black", "grey", "grey"), lty=1)
+#cbind(obs=log(bc), predict(fm, interval="confidence")[,c(2,3)])
+## outside the 95% CI:
+#out <- which(log(bc) > predict(fm, interval="confidence")[,c(3)] | log(bc) < predict(fm, interval="confidence")[,c(2)])
+## now fit a straight line:
+#straight <- lm(bc[-out] ~ nd[-out]) # y = mx+b; y=0 --> x = -b/m
+#(xintercept <- -coef(straight)[1]/coef(straight)[2])
+#
+
 ## CC:
 #summary(nls(cc ~ a*nd+b, start=list(a=1,b=1))) 
 #summary(nls(cc ~ c*nd^d, start=list(c=0.2,d=2))) # lower RSE
@@ -83,3 +101,5 @@ BC <- function(web, rescale=TRUE, ...){
 ##see also, for whole web measures:
 #centralization(web, "degree")
 #centralization(web, "betweenness")
+
+

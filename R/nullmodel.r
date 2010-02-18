@@ -4,14 +4,14 @@ nullmodel <- function(web, N=1000, method="r2d", ...){
     #
     # web   a binary or quantitative network
     # N     number of null model replicates wanted
-    # method  number or name of the null model type: 1/"r2dtable", 2/swap.web, 3/shuffle.web, 4/mgen; partial match of names; methods 1 to 3 work for quantitative webs, 3 and 4 for binary.
+    # method  number or name of the null model type: 1/"r2dtable", 2/swap.web, 3/vaznull, 4/shuffle.web, 5/mgen; partial match of names; methods 1 to 4 work for quantitative webs, 4 and 5 for binary.
     # ...   arguments to be passed on to null model function (see e.g. ?swap.web)
     #
     # shuffle.web can be used for binary and quantitative webs: for binary, it uses the function commsimulator with method "quasiswap", for quantitative, it uses the function shuffle.web.
     #
     # by Carsten F. Dormann 31-Jul-2008
     
-    methods <- c("r2dtable", "swap.web", "shuffle.web", "mgen")
+    methods <- c("r2dtable", "swap.web", "vaznull", "shuffle.web", "mgen")
     if (is.numeric(method)){
         m <- method 
     } else {
@@ -31,12 +31,17 @@ nullmodel <- function(web, N=1000, method="r2d", ...){
         out <- swap.web(N, web, ...)
     }
     
-    if (m == 3){ #shuffle.web
+    if (m == 3){ #vaznull
+        if (all(web < 2)) stop("This is a binary web. Only methods shuffle.web and mgen should be used!")
+        out <- vaznull(N, web)
+    }
+    
+    if (m == 4){ #shuffle.web
         if (any(web > 1)) out <- shuffle.web(web, N)
         if (all(web < 2)) out <- replicate(n=N, expr=unname(commsimulator(web, method="quasiswap", ...)), simplify=FALSE) 
     }
 
-    if (m == 4){ #mgen
+    if (m == 5){ #mgen
        if (any(web > 1)) warning("Discarding quantitative information! Using only the binary version of the web!")
        binweb <- web > 0
        pweb <- outer(rowSums(binweb)/sum(binweb), colSums(binweb)/sum(binweb), FUN="*")
@@ -50,7 +55,7 @@ nullmodel <- function(web, N=1000, method="r2d", ...){
        out <- replicate(n=N, unname(mgen.web(binweb, pweb)))    
     }
     
-    if (!(m %in% 1:4)) stop("Please choose a valid method.")
+    if (!(m %in% 1:5)) stop("Please choose a valid method.")
 
     return(out)
 

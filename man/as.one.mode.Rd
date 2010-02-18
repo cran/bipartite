@@ -32,12 +32,10 @@ as.one.mode(web, fill = 0)
   Hence, pollinator 2 becomes species number r+2, where r is the number of rows of the network matrix.
   
   The benefit of this conversion is access to the wonderful R-package Social Network Analysis (\pkg{sna}), 
-  with its many one-mode indices (such as \code{betweenness}, \code{closeness}, \code{centralization}, 
-  \code{degree}, \code{kpath.census} and so forth). Furthermore, \code{gplot} in that package also provides cool
-  network depictions well worth checking out.
+  with its many one-mode indices (such as \code{\link[sna]{betweenness}}, \code{\link[sna]{closeness}}, \code{\link[sna]{centralization}}, 
+  \code{degree}, \code{kpath.census} and so forth). Furthermore, \code{\link[sna]{gplot}} in that package also provides cool network depictions well worth checking out.
   
-  With respect to \pkg{bipartite}, \code{as.one.mode} is employed in the function \code{\link{nodespec}}, which 
-  itself uses the \pkg{sna}-function \code{geodist}.
+  With respect to \pkg{bipartite}, \code{as.one.mode} is employed in the function \code{\link{nodespec}}, which itself uses the \pkg{sna}-function \code{\link[sna]{geodist}}.
 }
 
 \value{

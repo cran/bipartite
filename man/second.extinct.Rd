@@ -21,8 +21,8 @@ second.extinct(web, participant = "higher", method = "abun", nrep = 10,
   \item{participant}{\code{high} (default) or \code{low} or \code{both},
   depending if you want to exterminate higher trophic level species, lower trophic
   level species, or a randomly chosen species of both levels; partial matching.}
-  \item{method}{Random deletion of a species (\code{random}) or according
-  to its abundance, with least abundant going extinct first (\code{abundance}; default). }
+  \item{method}{Random deletion of a species (\option{random}); according
+  to its abundance, with least abundant going extinct first (\option{abundance}; default) or \option{"degree"} to build a sequence from the best-to-least connected species. This is the most extreme case, where the most generalist species goes extinct first (see Memmott et al. 1998). }
   \item{nrep}{Number of replicates of extermination sequence. Will not be considered
   for method abundance.}
   \item{details}{Logical; returns details, i.e. for each replicate the sequence of

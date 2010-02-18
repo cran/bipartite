@@ -49,7 +49,7 @@ function(web, participant="higher", method="abun", nrep=10, details=FALSE){
     }
 
     if (is.vector(method)) sequence = method
-    if (pmatch(method, c("abundance", "random"))==1)
+    if (pmatch(method, c("abundance", "random", "degree"))==1)
     {
         out <- one.second.extinct(web=web, participant=participant, method=method)
     } else
@@ -70,4 +70,4 @@ function(web, participant="higher", method="abun", nrep=10, details=FALSE){
 
 
 }
-
+# second.extinct(Safariland, "higher", "d")
