@@ -67,18 +67,18 @@ cc <- cci[[1]]
 nd <- ndi[[1]]
 # CC:
 summary(nls(cc ~ a*nd+b, start=list(a=1,b=1))) # lower RSE
-summary(nls(cc ~ c*nd^d, start=list(c=0.02,d=2))) 
+summary(nls(cc ~ c*nd^d, start=list(c=0.072,d=0.2))) 
 # BC:
 summary(nls(bc ~ a*nd+b, start=list(a=1,b=1)))
-summary(nls(bc ~ c*nd^d, start=list(c=0.02,d=2))) # lower RSE
+summary(nls(bc ~ c*nd^d, start=list(c=0.2,d=2))) # lower RSE
 
 ## ANIMALS:
 bc <- bci[[2]]
 cc <- cci[[2]]
 nd <- ndi[[2]]
 # CC:
-summary(nls(cc ~ a*nd+b, start=list(a=1,b=1))) 
-summary(nls(cc ~ c*nd^d, start=list(c=0.2,d=2))) # lower RSE
+summary(nls(cc ~ a*nd+b, start=list(a=1,b=1)))  # lower RSE
+summary(nls(cc ~ c*nd^d, start=list(c=0.2,d=2))) 
 # BC:
 summary(nls(bc ~ a*nd+b, start=list(a=1,b=1)))
 summary(nls(bc ~ c*nd^d, start=list(c=0.2,d=2))) # lower RSE

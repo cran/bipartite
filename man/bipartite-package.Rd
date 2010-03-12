@@ -29,8 +29,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 1.07\cr
-Date: \tab 2010-02-18\cr
+Version: \tab 1.08\cr
+Date: \tab 2010-03-12\cr
 License: \tab GPL \cr
 }
 }
@@ -38,6 +38,11 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+  \item 1.08 (release date: ??-Mar-2010)
+  \describe{
+    \item{Bug fix in \code{\link{ND}}:}{Rows and columns were mixed up and a +1 was missing- oh dear. (Thanks to Marco Mello for reporting!)}
+  }
+  
   \item 1.07 (release date: 18-Feb-2010)
   \describe{
     \item{New function \code{\link{vaznull}}:}{Null model with constrained totals and connectance proposed by Diego Vázquez, similar to \code{\link{swap.web}}, but "better". See notes in \code{\link{swap.web}}-help for justification of this statement. We recommend this null model for constraining both marginal totals and connectance.}
