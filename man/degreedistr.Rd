@@ -20,7 +20,11 @@ degreedistr(web, plot.it=TRUE, pure.call=TRUE, silent=TRUE)
 
 \details{
 Jordano et al. (2003) proposed that plant-animal networks may show scale invariance, as indicated by the presence of a power law in species degrees. They report on consistently better fits of the truncated power law, hypothesising that such patterns may arise from morphological mismatch or phenological uncoupling.
+
 Most problematic with the use of this particular approach is the extreme demand for data. The example web \code{Safariland} in this package is large (1130 interactions), but it provides only 5 different degree levels (for plants, only 4 for pollinators). Hence fitting three different non-linear functions to these few points is stretching it a bit.
+
+Furthermore, the least-square-fit to the cumulative distribution is not ideal. While the most common approach, it has a bias (albeit much less so than a fit to the probability density function: see Clauset et al. 2009). In an ideal world, we would want to fit the power law properly. This would require a) an estimation of the lower bound of the power law (xmin) and b) the maximum likelihood fit to the remaining data (x > xmin). The data demand is however such that is unlikely that any ecological bipartite network in the near future will match it. Clauset et al. state that hundreds to thousands of data points are required to yield satisfactory estimates for xmin and the slope itself. If you happen to have this much data, please consult the software they provide (even in R!).
+
 }
 
 \value{
@@ -30,6 +34,7 @@ Most problematic with the use of this particular approach is the extreme demand 
 }
 
 \references{
+Clauset, A., Shalizi, C. R., & Newman, M. E. (2009). Power-law distributions in empirical data. SIAM Review, 51(4), 661-703.
 Jordano, P., Bascompte, J. and Olesen, J. M. (2003) Invariant properties in coevolutionary networks of plant-animal interactions. \emph{Ecology Letters} \bold{6}, 69-81  }
 
 \author{ Carsten F. Dormann \email{carsten.dormann@ufz.de} }

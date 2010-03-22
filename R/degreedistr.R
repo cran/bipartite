@@ -4,7 +4,7 @@ function(web, plot.it=TRUE, pure.call=TRUE, silent=TRUE){
     # calculates cumulative degree distributions and fits exponential, power law
     # and truncated power law functions to it
     # return fits
-
+ 	 web <- empty(web)
     web <- (web>0)*1 #turns it into a qualitative network
     k <- sum(web) # number of links in network
     S <- sum(dim(web)) # number of species in network
@@ -13,23 +13,40 @@ function(web, plot.it=TRUE, pure.call=TRUE, silent=TRUE){
 
     Plo <- sapply(sort(unique(ddlower)), function(x) sum(ddlower>=x))
     Plower <- cbind.data.frame(k=sort(unique(ddlower)), P=Plo/max(Plo))
-    if (nrow(Plower)<5) warning("Too few data points (< 5) for lower trophic level! Fitting makes no sense!")
-    Phi <- sapply(sort(unique(ddhigher)), function(x) sum(ddlower>=x))
+    if (nrow(Plower) < 5) warning("Too few data points (< 5) for lower trophic level! Fitting makes no sense! The truncated fit is the first to fail because it has a parameter more.")
+    Phi <- sapply(sort(unique(ddhigher)), function(x) sum(ddhigher>=x))
     Phigher <- cbind.data.frame(k=sort(unique(ddhigher)), P=Phi/max(Phi))
-    if (max(Phigher)<5) warning("Too few data levels of degrees (< 5) for higher trophic level! Fitting makes no sense!")
+    if (max(Phigher) < 5) warning("Too few data levels of degrees (< 5) for higher trophic level! Fitting makes no sense! The truncated fit is the first to fail because it has a parameter more.")
 
     fitdd <- function(...){
+    	 # Obviously, an intercept "b" has to be fitted, too.
+    	 # This was wrongly omitted in the versions <1.09!
+        start.trials.b <- c(0.01, .5, 1, 2, 4, 10, 100, 1000)
+        start.trials.gamma <- c(0.01, 0.1, 1, 10)
+        starts <- expand.grid(start.trials.b, start.trials.gamma)
         # exponential
-        EXP <- try(nls(P ~ exp(-gamma*k), start=list(gamma=1), ...), silent=silent)
+        for (i in 1:nrow(starts)){
+        	EXP <- try(nls(P ~ b*exp(-gamma*k), start=list(gamma=starts[i,2], b=starts[i,2]), ...), silent=silent)
+        	if (!inherits(EXP, "try-error")) break;
+        }
         # power law
-        PL <- try(nls(P ~ k^(-gamma), start=list(gamma=1), ...), silent=silent)
+        for (i in 1:nrow(starts)){
+   		    PL <- try(nls(P ~ b*k^(-gamma), start=list(gamma=starts[i,2], b=starts[i,2]), ...), silent=silent)
+        	if (!inherits(PL, "try-error")) break;
+        }
         # truncated power law
-        TPL <- try(nls(P ~ (k^(-gamma))*exp(-k/kx), start=list(gamma=1, kx=1), ...), silent=silent)
+        if (!inherits(PL, "try-error")){ # try only if PL converged!
+        	for (kx.try in 10^c(-4:4)){
+        		TPL <- try(nls(P ~ b*(k^(-gamma))*exp(-k/kx), start=list(gamma=coef(PL)[1], b=coef(PL)[2], kx=kx.try), ...), silent=silent)
+        		if (!inherits(TPL, "try-error")) break;
+         } 
+        } else {TPL <- try(sqrt("w"))} #only to produce an error!
+        
         list(EXP, PL, TPL)
     }
 
-    fitl <- fitdd(data=Plower)
-    fith <- fitdd(data=Phigher)
+    fitl <- fitdd(data=Plower, nls.control(maxiter=1000))
+    fith <- fitdd(data=Phigher, nls.control(maxiter=1000))
 
     indexl <- which(sapply(fitl, function(x) !inherits(x, "try-error"))!=0)
     fitnew <- fitl[indexl]
@@ -48,12 +65,12 @@ function(web, plot.it=TRUE, pure.call=TRUE, silent=TRUE){
           abline(h=1, lty=2)
       }
       if (pure.call) par(mfrow=c(1,2), mar=c(5,5,4,1))
-      plotfit(data=Plower, fit=fitnew, lwd=2, cex=1.8, cex.lab=1.5, ylim=c(0.1, 1), main="lower trophic level")
-      plotfit(data=Phigher, fit=fithnew, lwd=2, cex=1.8, cex.lab=1.5, ylim=c(0.1, 1), main="higher trophic level")
+      plotfit(data=Plower, fit=fitnew, lwd=2, cex=1.8, cex.lab=1.5, main="lower trophic level")
+      plotfit(data=Phigher, fit=fithnew, lwd=2, cex=1.8, cex.lab=1.5, main="higher trophic level")
     }
 
     res.out <- matrix(ncol=5, nrow=3)
-    rownames(res.out) <- c("exponential", "power law", "truncated power law [slope]")
+    rownames(res.out) <- c("exponential", "power law", "truncated power law")
     colnames(res.out) <- c("Estimate", "Std. Error", "Pr(>|t|)", "R2", "AIC")
 
     # lower trophic level:

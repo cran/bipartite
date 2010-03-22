@@ -29,8 +29,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 1.08\cr
-Date: \tab 2010-03-12\cr
+Version: \tab 1.09\cr
+Date: \tab 2010-03-22\cr
 License: \tab GPL \cr
 }
 }
@@ -38,7 +38,12 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
-  \item 1.08 (release date: ??-Mar-2010)
+  \item 1.09 (release date: 22-Mar-2010)
+  \describe{
+    \item{Bug fix in \code{\link{degreedistr}}:}{Degree distributions for the higher trophic level were calculated incorrectly. The main problem was that the scaling constant was omitted, leading to ridiculous fits. (Thanks to Roberto Molowny for reporting, correction proposal and discussion!) On improving this, I also ventured to provide multiple starting values and hence the function returns a fit for all three curves more often (but not always).}
+  }
+  
+  \item 1.08 (release date: 16-Mar-2010)
   \describe{
     \item{Bug fix in \code{\link{ND}}:}{Rows and columns were mixed up and a +1 was missing- oh dear. (Thanks to Marco Mello for reporting!)}
   }
