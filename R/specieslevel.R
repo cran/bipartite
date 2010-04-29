@@ -25,6 +25,8 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
 
     # m <- matrix(c(4,7,0,0,9,1,2,0,5), 3, byrow=TRUE)
 
+    web <- empty(web) # delete unobserved species
+
     allindex <- c("species number", "degree", "ND", "dependence", "strength", "interaction", "PSI", "NS", "BC", "CC", "Fisher", "diversity", "effective partners", "d")
 
     if ("ALL" %in% index) index <- allindex
@@ -140,10 +142,11 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
 
     #----------------------------------------------------------------------------
     if ("Fisher" %in% index){
-      ff.low <- suppressWarnings(fisher.alpha(web, MARGIN=1))
-      ff.high <- suppressWarnings(fisher.alpha(web, MARGIN=2))
-      out$"higher trophic level"$"Fisher alpha" <- ff.high
-      out$"lower trophic level"$"Fisher alpha" <- ff.low
+      ff.low <- try(suppressWarnings(fisher.alpha(web, MARGIN=1)), silent=TRUE)
+      ff.high <- try(suppressWarnings(fisher.alpha(web, MARGIN=2)), silent=TRUE)
+      out$"lower trophic level"$"Fisher alpha" <- if (!inherits(ff.low, "try-error")) ff.low else rep(NA, times=NROW(web))
+      out$"higher trophic level"$"Fisher alpha" <- if (!inherits(ff.high, "try-error")) ff.high else rep(NA, times=NCOL(web))
+
     }
 
 

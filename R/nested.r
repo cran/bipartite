@@ -30,7 +30,7 @@ nested <- function(web, method="binmatnest2", ..., rescale=FALSE){
   
   if (rescale & ! "ALL" %in% method) warning("You requested rescaling, but you won't get it (unless you use method='ALL')!") 
   
-  if (rescale & "ALL" %in% method) out <- abs(c(100,100,0,0,0,0,0,0,0 ) - out)
+  if (rescale & "ALL" %in% method) out <- abs(c(100,100,0,0,0,0,100,100,0 ) - out)
   
   out
   

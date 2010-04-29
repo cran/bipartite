@@ -31,7 +31,7 @@ function(web, plot.it=TRUE, pure.call=TRUE, silent=TRUE){
         }
         # power law
         for (i in 1:nrow(starts)){
-   		    PL <- try(nls(P ~ b*k^(-gamma), start=list(gamma=starts[i,2], b=starts[i,2]), ...), silent=silent)
+   		    PL <- try(nls(P ~ b*k^(-gamma), start=list(gamma=starts[i,2], b=starts[i,1]), ...), silent=silent)
         	if (!inherits(PL, "try-error")) break;
         }
         # truncated power law

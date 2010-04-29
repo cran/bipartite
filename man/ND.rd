@@ -28,6 +28,9 @@ CC(web, cmode="suminvdir", rescale=TRUE, ...)
 
 \details{
   These functions are convinience functions to enable easy reproduction of the type of analyses by Martín González et al. (2009). BC and CC are wrappers calling two functions from \pkg{sna}, which uses one-mode, rather than bipartite data. 
+  BE AWARE that there are two definitions of closeness centrality, one being the inverse of the other! The networkX homepage defines CC as the inverse of the average distange from the focal node to all other nodes (\url{http://networkx.lanl.gov/reference/generated/networkx.closeness_centrality.html#networkx.closeness_centrality}), while Wikipedia defines CC simply as the average distance itself (\url{http://en.wikipedia.org/wiki/Centrality}). In \pkg{sna} the first definition is implemented, and this makes also more sense to me: closeness should be higher for central nodes.
+
+ Both BC and CC are normalised to range between 0 and 1. The interested user may want to also have a look at the networkX homepage (\url{http://networkx.lanl.gov}) for an excellent, open, Python-based tool to analyse, depict and manipulate (one-mode) networks. It is not specifically meant for bipartite networks such as this package, though.
 }
 
 \value{

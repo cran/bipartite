@@ -29,8 +29,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 1.09\cr
-Date: \tab 2010-03-22\cr
+Version: \tab 1.10\cr
+Date: \tab 2010-05-02\cr
 License: \tab GPL \cr
 }
 }
@@ -38,6 +38,14 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+  \item 1.10 (release date: 02-May-2010)
+  \describe{
+    \item{New function \code{\link{null.distr}}:}{Fits a lognormal or negative binomial distribution to the marginal totals of a network and then draws random values from the thus specified distribution. These values represent the marginal totals to be used for constructing a null model network. The function thus serves as a way to produce null models without maintaining exactly the marginal totals, but only their distribution. Please refer to the help for some cautionary remarks on its use! In particular, nullmodel networks are likely to be smaller than the original and there is obviously no guarantee that the marginal totals are actually distributed in the specified way!}
+    \item{Polishing the Vazquez pollination networks:}{All species in these 8 networks are now consistently named (rather than numbered).}
+    \item{Polish to \code{\link{specieslevel}}:}{Requestion Fisher's alpha sometimes causes convergence problems in the underlying function. This is now caught by a try, returning NA.}
+    \item{Rescale in \code{\link{nested}} gave wrong scaling for NODF:}{Fixed.}
+  }
+
   \item 1.09 (release date: 22-Mar-2010)
   \describe{
     \item{Bug fix in \code{\link{degreedistr}}:}{Degree distributions for the higher trophic level were calculated incorrectly. The main problem was that the scaling constant was omitted, leading to ridiculous fits. (Thanks to Roberto Molowny for reporting, correction proposal and discussion!) On improving this, I also ventured to provide multiple starting values and hence the function returns a fit for all three curves more often (but not always).}

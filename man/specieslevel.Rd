@@ -18,12 +18,12 @@ specieslevel(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL)
   \item{web}{ Web is a matrix representing the interactions observed between higher
   trophic level species (columns) and lower trophic level species (rows). Usually this will be number of pollinators on each species of plants or number of parasitoids on each species of prey.}
   \item{index}{Vector of indices to be calculated for each trophic level of the web;
-            options are: \option{species number} for number of species, 
-            \option{degree}, \option{ND} for normalised degrees, \option{dependence}, \option{interaction} for interaction push/pull (our version of dependence asymmetry: see details),  \option{PSI} for pollination service index (or pollinator
+            options are: \code{species number} for number of species, 
+            \code{degree}, \code{ND} for normalised degrees, \code{dependence}, \code{interaction} for interaction push/pull (our version of dependence asymmetry: see details),  \code{PSI} for pollination service index (or pollinator
             support index, depending on the trophic level), 
-            \option{NS} for node  specialisation index, \option{BC} for betweenness, \option{CC} for closeness,
-            \option{Fisher} for Fisher's alpha index, \option{diversity} for Shannon diversity of interactions of that species, \option{effective partners} for the effective number of interacting partners (e.g. predators/pollinators or hosts/plants),  \option{d} for Blüthgen's d, \option{strength} as sum of dependencies or \option{ALL} for all the aforementioned (default). 
-            \option{ALLBUTD} excludes only the dependence matrix and leads to the output being simplified to a matrix per trophic level.}
+            \code{NS} for node  specialisation index, \code{BC} for betweenness, \code{CC} for closeness,
+            \code{Fisher} for Fisher's alpha index, \code{diversity} for Shannon diversity of interactions of that species, \code{effective partners} for the effective number of interacting partners (e.g. predators/pollinators or hosts/plants),  \code{d} for Blüthgen's d, \code{strength} as sum of dependencies or \code{ALL} for all the aforementioned (default). 
+            \code{ALLBUTD} excludes only the dependence matrix and leads to the output being simplified to a matrix per trophic level.}
   \item{logbase}{Shall the various diversity indices be calculated to the base of e (default) or 2? Log2 is the proposal for generality and vulnerability by Bersier et al. (2002), while Shannon uses ln. The choice of the base will not affect the results qualitatively, only by a scaling factor.}
   \item{low.abun}{Optional vector of independent abundances of the \emph{lower} trophic level to be passed on to \code{\link{dfun}}.}
   \item{high.abun}{Optional vector of independent abundances of the \emph{higher} trophic level to be passed on to \code{\link{dfun}}.}
