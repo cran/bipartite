@@ -38,6 +38,12 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+  \item 1.11 (release date: 10-May-2010)
+  \describe{   
+    \item{Changes to function \code{\link{as.one.mode}}:}{Gains options to do projections of the bipartite (=two-mode) into the one-mode modus required e.g. by \pkg{sna}. In most publications, one focusses on only one trophic level (e.g. the pollinators) and represents the bipartite network as a one-mode, pollinators-only network. This can now be achieved using the various options in the function. See its help for details. }
+    \item{Bug fixes in \code{\link{BC}} and \code{\link{CC}}:}{Upon re-reading the paper motivating the inclusion of these functions, I noticed an error in the previous implementation. The key point, and one that is contentious in network theory, is that there is no standard best way to project a two-mode (bipartite) network onto a one-mode network. Up until know, I used the default of \code{\link{as.one.mode}}. However, Martín Gonzales et al. (2010) use the more common projection (``higher'' and ``lower'', respectively), and this is also now implemented in \code{\link{BC}} and \code{\link{CC}}. The interested reader may want to follow this problem up by reading the pre-print of Tore Opsahl (``Triadic closure in two-mode networks'') to see that this one-mode projection actually distorts the statistics employed on them.}
+  }
+  
   \item 1.10 (release date: 02-May-2010)
   \describe{
     \item{New function \code{\link{null.distr}}:}{Fits a lognormal or negative binomial distribution to the marginal totals of a network and then draws random values from the thus specified distribution. These values represent the marginal totals to be used for constructing a null model network. The function thus serves as a way to produce null models without maintaining exactly the marginal totals, but only their distribution. Please refer to the help for some cautionary remarks on its use! In particular, nullmodel networks are likely to be smaller than the original and there is obviously no guarantee that the marginal totals are actually distributed in the specified way!}

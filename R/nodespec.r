@@ -1,5 +1,4 @@
 
-
 nodespec <- function(web, inf.replace=NA){
   # an index to describe the functional specialisation of pollinators
   # proposed by Dalgaard et al. 2008 in Oikos
@@ -11,6 +10,10 @@ nodespec <- function(web, inf.replace=NA){
   # here we ignore these values (default), thus heavily underestimating distances!
   # The common alternative is to give unconnected paths the value of max(pathlength)+1, 
   # for no other reason than that it has to have some non-infinity value.
+
+  # actually, nodespec is the inverse of closeness. Just apparently nobody has noticed ...
+
+
   require(sna)
   rr <- nrow(web)
   cc <- ncol(web)
@@ -25,9 +28,8 @@ nodespec <- function(web, inf.replace=NA){
     # di is a vector of path lengths take from the geodist-matrix
     # the 0 in this vector receives a weight of 0
     
-    # divide by two! (Fig. 1c shows that they want the two steps (pollinator to plant than on to next pollinator) as one step.
-     
-    zero.position <- which(di==0)
+    # divide by two! (Fig. 1c shows that they want the two steps (pollinator to plant than on to next pollinator) as one step.    
+    zero.position <- which(di==0)                             
     w[zero.position] <- 0
     weighted.mean(di, w=w, na.rm=TRUE)/2
   }
@@ -41,7 +43,9 @@ nodespec <- function(web, inf.replace=NA){
   # Hence, we have to allocate the remaining n-k pollinator species to the k plants.
   # To achieve maximum specialisation, we dump all remaining interactions on one pollinator,
   # whose value hence is: (n-k)+1
-  # This is NOT right. I don't know how to calculate maximum specialisation...
+
+  # In a maximally specialised (but not compartmented) network, the bipartite plot looks like a zigzag-line. Hence, each pollinator is connected to two others (to the right and left of it), except the two final ones, which have only one. Thus, there are (n-2)*2+2 links in total. The mean distance for any species is thus dependent on its position in the zigzag. Terminal species have mean distance (1+2+3+...+(n-1))/(n-1). The central species will have (1+2+3+..+(n-1)/2) * 2. 
+
 
 #  if (quantitative) {  # the quantitative version according to CFD
 #    # here the "solution" for compartments is to replace infinite path lengths by max.length+1

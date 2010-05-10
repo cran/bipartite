@@ -27,6 +27,8 @@ nodespec(web, inf.replace = NA)
  This index aims to describe the functional specialisation of pollinators and was proposed by Dalgaard et al. (2008). It is a purely qualitative measure. 
  
  After calculating the geodesic distances between species, i.e. the minimum number of steps from one species to another, these values are averaged for each species. This mean geodesic distance is interpreted as functional specialisation (Dalgaard et al. 2008).
+ 
+ Notice that this ``new'' index is in fact little else than the inverse of (unscaled) closeness centrality in (poor) disguise.
 }
 
 \value{
