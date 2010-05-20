@@ -20,20 +20,28 @@ nullmodel <- function(web, N=1000, method="r2d", ...){
     if (is.na(m)) stop("Abbreviated name does not uniquely identify method.")
     
     if (m == 1){ #r2dtable nullmodel
-        if (all(web < 2)) stop("This is a binary web. Only methods shuffle.web and mgen should be used!")
-        rs <- rowSums(web)
-        cs <- colSums(web)
-        out <- r2dtable(N, r=rs, c=cs)
+        if (all(web < 2)){
+            warning("This is a binary web. Only methods shuffle.web and mgen should be used!\n  I proceeded by using mgen!")
+            m <- 5
+        } else {
+           rs <- rowSums(web)
+           cs <- colSums(web)
+           out <- r2dtable(N, r=rs, c=cs)
+	}
     }
     
     if (m == 2){# swap.web
-        if (all(web < 2)) stop("This is a binary web. Only methods shuffle.web and mgen should be used!")
-        out <- swap.web(N, web, ...)
+        if (all(web < 2)){
+            warning("This is a binary web. Only methods shuffle.web and mgen should be used!\n  I proceeded by using mgen!")
+            m <- 5
+        } else { out <- swap.web(N, web, ...)     }
     }
     
     if (m == 3){ #vaznull
-        if (all(web < 2)) stop("This is a binary web. Only methods shuffle.web and mgen should be used!")
-        out <- vaznull(N, web)
+        if (all(web < 2)){
+            warning("This is a binary web. Only methods shuffle.web and mgen should be used!\n  I proceeded by using mgen!")
+            m <- 5
+        } else { out <- vaznull(N, web) }
     }
     
     if (m == 4){ #shuffle.web
@@ -52,7 +60,7 @@ nullmodel <- function(web, N=1000, method="r2d", ...){
           #if (dim(out) < dim(web)) warning("Some null models are rank-deficient! See ?mgen for details.")
           out
        }
-       out <- replicate(n=N, unname(mgen.web(binweb, pweb)))    
+       out <- replicate(n=N, unname(mgen.web(binweb, pweb)), simplify=FALSE)    
     }
     
     if (!(m %in% 1:5)) stop("Please choose a valid method.")

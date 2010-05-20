@@ -13,7 +13,7 @@ Analysis of bipartite ecological webs.
 }
 
 \description{
-Bipartite provides functions to viualise webs and calculate a series of indices commonly used to describe pattern in ecological webs. It focusses on webs consisting of only two trophic levels, e.g. pollination webs or predator-prey-webs. Visualisation is important to get an idea of what we are actually looking at, while the indices summarise different aspects of the webs topology.}
+Bipartite provides functions to visualise webs and calculate a series of indices commonly used to describe pattern in ecological webs. It focusses on webs consisting of only two trophic levels, e.g. pollination webs or predator-prey-webs. Visualisation is important to get an idea of what we are actually looking at, while the indices summarise different aspects of the webs topology.}
 
 \details{
 We only had three types of bipartite webs in mind when writing this package: seed-disperser, plant-pollinator and host-parasitoid systems. In how far it makes sense to use these functionalities for other systems (or indeed for these systems) lies in the hands of the user. Please refer to the literature cited for details on the theory behind the indices.
@@ -29,8 +29,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 1.10\cr
-Date: \tab 2010-05-02\cr
+Version: \tab 1.12\cr
+Date: \tab 2010-05-21\cr
 License: \tab GPL \cr
 }
 }
@@ -38,6 +38,12 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+  \item 1.12 (release date: 21-May-2010)
+  \describe{   
+    \item{Bug fix in \code{\link{vaznull}}:}{In very poorly sampled networks, \code{\link{vaznull}} could fail because after the initial filling there were no more interactions to distribute. How an if-statement can sometimes make a difference.}
+    \item{Error message in \code{\link{nullmodel}} changed to a warning.}{Up to this release, the function created null models as specified. However, when a supposedly quantitative network was in fact binary, it returned an error. Now it proceeds, using the null model generating algorithm ``mgen'', and returns a warning. This is useful when analyzing many networks of which only one or two are binary.}
+  }	
+  
   \item 1.11 (release date: 10-May-2010)
   \describe{   
     \item{Changes to function \code{\link{as.one.mode}}:}{Gains options to do projections of the bipartite (=two-mode) into the one-mode modus required e.g. by \pkg{sna}. In most publications, one focusses on only one trophic level (e.g. the pollinators) and represents the bipartite network as a one-mode, pollinators-only network. This can now be achieved using the various options in the function. See its help for details. }

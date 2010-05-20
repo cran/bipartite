@@ -4,7 +4,7 @@
 
 \title{Generates null models for network analysis}
 \description{
-A function for convinient generation of null models for quantitative and binary networks.
+A function for convenient generation of null models for quantitative and binary networks.
 }
 \usage{
 nullmodel(web, N=1000, method="r2d", ...)
@@ -19,6 +19,8 @@ nullmodel(web, N=1000, method="r2d", ...)
 
 \details{
   This is only a wrapper function to facilitate and standardise the generation of null models.
+
+  \option{mgen} is used when options 1, 2 or 3 are applied to a binary network. A warning is than returned, too.
 }
 
 \value{
