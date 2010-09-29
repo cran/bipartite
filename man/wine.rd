@@ -1,4 +1,5 @@
 \encoding{latin1}
+
 \name{wine}
 \alias{wine}
 \alias{plot.wine}
@@ -38,7 +39,7 @@ WINE calculates a nestedness value that approaches zero when the nestedness patt
 is close that of equivalent random matrices, and it approaches one as it gets closer to the nestedness 
 of the maximal nestedness matrix. Thus, this estimator evaluates the relative position of the data matrix
 between the corresponding random matrices and the maximal nestedness matrix. Negatives values for this estimator
-can be found in some synthetic matrices that have been described as 'anti-nestedness' matrices (Almeida-Neto et al. 2007).
+can be found in some synthetic matrices that have been described as `anti-nestedness' matrices (Almeida-Neto et al. 2007).
 
 The calculation of the weighted-interaction nestedness estimator starts with the matrix containing the number of events
 of each interaction, Mij. The matrix is packed by arranging rows and columns from top to bottom and from left to right,
@@ -71,16 +72,10 @@ The S3 plot method for wine displays dij.w in a coloured image plot where red ce
 }
 \references{
 
-\enc{Barrat, A., Barthélemy, M., Pastor-Satorras, R., and Vespignani, A. (2004) 
-      The architecture of complex weighted networks.  \emph{PNAS} 101, 3747-3752}{Barrat,
-      A., Barthelemy, M., Pastor-Satorras, R., and Vespignani, A. (2004) 
-      The architecture of complex weighted networks. \emph{PNAS} 101, 3747-3752}
+Barrat, A., Barthelemy, M., Pastor-Satorras, R., and Vespignani, A. (2004)  The architecture of complex weighted networks.  \emph{PNAS} \bold{101}, 3747--3752
 
-
-\enc{Corso G, de Araújo AIL, de Almeida AM (2008) A new nestedness estimator in community networks.
-     \emph{arXiv} 0803.0007v1 [physics.bio-ph]}{Corso G, de Araujo AIL, de Almeida AM (2008) 
-      A new nestedness estimator in community networks. \emph{arXiv} 0803.0007v1 [physics.bio-ph]}  
-
+Corso G, de Araujo AIL, de Almeida AM (2008) A new nestedness estimator in community networks.
+     \emph{arXiv} 0803.0007v1 [physics.bio-ph]
 
 Galeano J, Pastor JM, Iriondo JM (2008) Weighted-Interaction Nestedness Estimator (WINE): A new 
    estimator to calculate over frequency matrices. \emph{arXiv} 0808.3397v2 [physics.bio-ph] 

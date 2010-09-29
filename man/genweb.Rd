@@ -16,9 +16,7 @@ genweb(N1 = 10, N2 = 30, dens = 2)
   \item{dens}{ Interaction density, i.e.~how many interactions there shall be, on average, for each species. Defaults to 2 (the median observed interaction density in the NCEAS pollination webs).}
 }
 \details{
-  This function can be used to create simple, but not necessarily realistic, bipartite 
-  webs for given dimensionality and interaction density. Marginal distributions are 
-  assumed to be lognormal, mean and standard deviation are calculated from \option{N1}, \option{N2} and 
+  This function can be used to create simple, but not necessarily realistic, bipartite webs for given dimensionality and interaction density. Marginal distributions are  assumed to be lognormal, mean and standard deviation are calculated from \option{N1}, \option{N2} and 
   \option{dens} (see code for details).
 }
 \value{
@@ -26,8 +24,7 @@ genweb(N1 = 10, N2 = 30, dens = 2)
 }
 \author{ Jochen Fründ and Carsten F. Dormann}
 
-\note{ Can be a bit time-consuming for large webs, because the absolute values for both 
-dimensions have to match perfectly. This involves a rather unelegant \code{while}-loop.}
+\note{ Can be a bit time-consuming for large webs, because the absolute values for both dimensions have to match perfectly. This involves a rather inelegant \code{while}-loop.}
 
 \examples{
 genweb()

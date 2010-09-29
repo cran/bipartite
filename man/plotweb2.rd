@@ -30,7 +30,7 @@ plotweb2(web, web2, method = "cca", empty = FALSE, labsize = 1, ybig = 1,
   \item{col.interaction}{color of interaction, default is grey80. }
   \item{col.pred}{color of upper boxes, default is grey10.}
   \item{col.prey}{color of lower boxes, default is grey10.}
-  \item{lab.space}{sometimes it is neccessary to add additional space for labels below und above of the boxes, so all labes are shown, default is 1.}
+  \item{lab.space}{sometimes it is neccessary to add additional space for labels below and above of the boxes, so all labels are shown, default is 1.}
   \item{lablength}{number of characters of labels that should be plotted. If zero no labels are shown, default is NULL which plots the complete labels.}
   \item{sequence}{list of two with two names vectors: \code{seq.pred} and \code{seq.prey}, which specify the order in which species are plotted. Cannot be set for \option{method="cca"}. Defaults to \code{NULL}, where the sequence remains as given or is determined by the CCA internally.}
   \item{low.abun}{Vector with independent abundance estimates for the lower trophic level, NULL if none exists.}
@@ -53,13 +53,13 @@ plotweb2(web, web2, method = "cca", empty = FALSE, labsize = 1, ybig = 1,
   \item{high.abun.col2}{Colour for depicting the abundance estimates for the lower trophic level; defaults to red.}
 }
 \value{
-  Returns a window with a tripartite graph of a foodweb.
+  Returns a window with a tripartite graph of a food web.
 }
 \references{
 }
 \author{ Bernd Gruber \email{bernd.gruber@ufz.de} }
 
-\seealso{ For a different plot of foodwebs see  \code{\link{visweb}} and \code{\link{plotweb}}}
+\seealso{ For a different plot of food webs see  \code{\link{visweb}} and \code{\link{plotweb}}}
 \examples{
 
 }

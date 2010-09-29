@@ -1,5 +1,5 @@
 `networklevel` <-
-function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctmethod="r", nrep=100, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn", normalise=TRUE, empty.web=TRUE, logbase="e", intereven="sum"){
+function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctmethod="r", nrep=100, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn", normalise=TRUE, empty.web=TRUE, logbase="e", intereven="sum", H2_integer=TRUE){
     ##
     ## web         interaction matrix, with lower trophic level in rows, higher in columns
     ##
@@ -18,7 +18,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
       #miscelleneous:
       "ISA", "SA", "extinction slope", "robustness", "niche overlap",   
       #quantitative series:
-      "generality", "vulnerability", "linkage density", "Fisher alpha",
+      "weighted cluster coefficient", "generality", "vulnerability", "linkage density", "Fisher alpha",
       "mean interaction diversity", "interaction evenness", 
       "Alatalo interaction evenness", "diversity", "H2" )
 
@@ -29,7 +29,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
           "ALLBUTDD" = allindex[-which(allindex=="degree distribution")],
           "info" = c("number of species", "connectance", "web asymmetry", "links per species", "number of compartments"),
           # logic: only rough information on the network's general structure
-          "quantitative" = c("weighted nestedness", "H2", "diversity", "mean interaction diversity", "linkage density"),
+          "quantitative" = c("weighted cluster coefficient", "weighted nestedness", "H2", "diversity", "mean interaction diversity", "linkage density"),
           # logic: the "quantitative series"
           "binary" = c("connectance", "links per species", "nestedness", "cluster coefficient",  "C-score"),
           # logic: metrics for binary networks
@@ -56,7 +56,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
         out$connectance <- sum(web>0)/prod(dim(web))
     }
     #--------------------
-    if ("web asymmetry" %in% index) out$"web asymmetry" <- (NCOL(web)-NROW(web))/sum(dim(web))     # web asymmetry (Blüthgen et al. 2007, Fig. S2)
+    if ("web asymmetry" %in% index) out$"web asymmetry" <- (NCOL(web)-NROW(web))/sum(dim(web))     # web asymmetry (BlÂ¬âˆthgen et al. 2007, Fig. S2)
     ###---###---###---###---###---###---###---###---###---###---###---###---###
     #--------------------
     if ("links per species" %in% index){
@@ -106,6 +106,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
         #
         # Literature: Watts DJ, Strogatz S (1998) Collective dynmics of 'small-world' networks. Nature 393:440-442
 
+		# notice that this CC differs from the binary version of Tore Opsahl's. This here is the same as the one-mode cluster coefficient, Tore's is the "corrected" two-mode!
         web <- as.matrix(web)
         Ci.high <- colSums((web>0))/nrow(web)
         Ci.low <- rowSums((web>0))/ncol(web)
@@ -116,6 +117,14 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
       }
       out$"cluster coefficient"=as.numeric(cluster.coef(web, FUN=CCfun, full=FALSE))
     }
+    
+    if ("weighted cluster coefficient" %in% index){  
+      # compute the weighted cluster coefficient using tnet:
+		edgelist <- web2edges(web, return=TRUE)
+      	wcc <- unname(clustering_tm(edgelist)["am"]) #uses arithmetic mean!
+      	out$"weighted cluster coefficient" <- wcc
+    }
+    
     #--------------------------
     # degree distribution fits:
     if ("degree distribution" %in% index){
@@ -167,7 +176,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
     }
     ###---###---###---###---###---###---###---###---###---###---###---###---###
     if ("ISA" %in% index){
-    # Dependence asymmetry (Bascompte et al. 2006; Blüthgen et al. 2007, Fig. S2)
+    # Dependence asymmetry (Bascompte et al. 2006; BlÂ¬âˆthgen et al. 2007, Fig. S2)
         depL <- web.e/matrix(rowSums(web.e), nrow=NROW(web.e), ncol=NCOL(web.e), byrow=FALSE)
         depH <- web.e/matrix(colSums(web.e), nrow=NROW(web.e), ncol=NCOL(web.e), byrow=TRUE)
 
@@ -200,9 +209,9 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
     }
     
     #---------------------------------------------------------
-    # Specialisation asymmetry (Blüthgen et al. 2007, Fig. S2)
+    # Specialisation asymmetry (BlÂ¬âˆthgen et al. 2007, Fig. S2)
     # 2 options for calculating the "mean" SA:
-    # either as Blüthgen et al: average weighted by number of interactions in the 
+    # either as BlÂ¬âˆthgen et al: average weighted by number of interactions in the 
     # cell or as mean of logarithms (since the dependencies follow a lognormal
     # distribution)
     if ("SA" %in% index){
@@ -305,7 +314,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
         }
     }
     #----------------------------- evenness & diversity ----------------------
-    if (any(c("interaction evenness", "Alatalo interaction diversity", "diversity") %in% index)){
+    if (any(c("interaction evenness", "Alatalo interaction evenness", "diversity") %in% index)){
         # interaction evenness
         p_i.mat <- web/sum(web)
         SH <- -sum(p_i.mat*log(p_i.mat), na.rm=TRUE)
@@ -316,7 +325,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
         if ("Alatalo interaction evenness" %in% index){
           evenness <- function(web){
           # calculates evenness of the numbers of individual of different species in
-          # a community, NOT according to formula in Müller et al. (1999, 
+          # a community, NOT according to formula in MÃ¼ller et al. (1999, 
           # J. Anim. Ecol), but according to the original formula in Alatalo 
           # (1981, Oikos) 
           # can be extended at some point to more indices ...
@@ -332,9 +341,9 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
 
     }
     #---------------
-    # Blüthgen's H2'
+    # BlâˆšÂºthgen's H2'
     if ("H2" %in% index){
-        H2 <- as.numeric(H2fun(web)[1]) #1.element is the standardised H2 prime
+        H2 <- as.numeric(H2fun(web, H2_integer=H2_integer)[1]) #1.element is the standardised H2 prime
         out$"H2"= ifelse(H2<0, 0, H2)
     }
 
@@ -347,4 +356,4 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
 #networklevel(Safariland, plot.it.dd=TRUE, plot.it.extinction=TRUE)
 #networklevel(Safariland, index="ALLBUTDD")
 #networklevel(Safariland, index="info")
-#networklevel(Safariland, index=c("Fisher alpha", "vulnerability", "H2")
+#networklevel(Safariland, index=c("Fisher alpha", "vulnerability", "H2")        

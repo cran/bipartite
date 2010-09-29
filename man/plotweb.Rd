@@ -74,22 +74,22 @@ plotweb(web,
   \item{add}{if set to TRUE a new bipartite network can be added to the previous plot. So multitrophic webs can be plotted, see examples below. Defaults to FALSE}
   \item{y.lim}{To set limits for y-axis. Useful if labels are plotted outside the plotting region and for multitrophic plots, see examples below }
   \item{x.lim}{To set limits for x-axis. Useful if labels are plotted outside the plotting region and for multitrophic plots, see examples below }
-  \item{low.plot}{Defines if lower boxes should be drawn. Use in multitrophic plots to avoid plotting boxes of some trophis - see examples below. Defaults to TRUE}
-  \item{high.plot}{Defines if higher boxes should be drawn. Use in multitrophic plots to avoid plotting boxes of some trophis - see examples below. Defaults to TRUE}
-  \item{high.xoff}{allows to set an offset to upper boxes. Useful if high.spacing is used to center boxes manually. Use plot.axes=TRUE for easy centering}
-  \item{low.xoff}{allows to set an offset to lower boxes. Useful if low.spacing is used to center boxes manually. Use plot.axes=TRUE for easy centering}
-  \item{high.lab.dis}{normally labels are staggered to avoid plotting over themselves. if set to 0, higher labels are all on one horizontal line. By using ad.low the position of the labels can be adjusted. If set to any other value labels are staggerd with this distance. Defaults to NULL}
-  \item{low.lab.dis}{normally labels are staggered to avoid plotting over themselves. if set to 0, lower labels are all on one horizontal line. By using ad.low the position of the labels can be adjusted. If set to any other value labels are staggerd with this distance. Defaults to NULL}
+  \item{low.plot}{Defines if lower boxes should be drawn. Use in multitrophic plots to avoid plotting boxes of some trophic levels - see examples below. Defaults to TRUE}
+  \item{high.plot}{Defines if higher boxes should be drawn. Use in multitrophic plots to avoid plotting boxes of some trophic levels - see examples below. Defaults to TRUE}
+  \item{high.xoff}{allows to set an offset to upper boxes. Useful if high.spacing is used to centre boxes manually. Use plot.axes=TRUE for easy centring}
+  \item{low.xoff}{allows to set an offset to lower boxes. Useful if low.spacing is used to centre boxes manually. Use plot.axes=TRUE for easy centring}
+  \item{high.lab.dis}{normally labels are staggered to avoid plotting over themselves. if set to 0, higher labels are all on one horizontal line. By using ad.low the position of the labels can be adjusted. If set to any other value labels are staggered with this distance. Defaults to NULL}
+  \item{low.lab.dis}{normally labels are staggered to avoid plotting over themselves. if set to 0, lower labels are all on one horizontal line. By using ad.low the position of the labels can be adjusted. If set to any other value labels are staggered with this distance. Defaults to NULL}
 }
 \value{
-  Returns a window with a bipartite graph of a foodweb.  For all colours vectors can be used (which are recycled if length differs. Now more trophic webs can be plotted by using plotweb and the add switch, which allows to add more webs and staggering them on top of each other. Prefered option is here to order webs by yourself and use method="normal" to keep your prefered order. See examples on three and four trophic networks.
+  Returns a window with a bipartite graph of a food web.  For all colours vectors can be used (which are recycled if length differs. Now more trophic webs can be plotted by using \code{plotweb} and the \option{add} switch, which allows to add more webs and staggering them on top of each other. Preferred option is here to order webs by yourself and use \option{method="normal"} to keep your preferred order. See examples on three and four trophic networks.
 }
 \references{
 Tylianakis, J. M., Tscharntke, T. and Lewis, O. T. (2007) Habitat modification alters the structure of tropical host-parasitoid food webs. \emph{Nature} \bold{445}, 202--205
  }
 \author{ Bernd Gruber \email{bernd.gruber@ufz.de} }
 
-\seealso{ For a different plot of foodwebs see  \code{\link{visweb}} }
+\seealso{ For a different plot of food webs see  \code{\link{visweb}} }
 \examples{
 data(Safariland)
 plotweb(Safariland)

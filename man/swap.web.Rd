@@ -14,27 +14,27 @@ totals are identical to those observed (as in \code{r2dtable}), 2. connectance i
 \usage{swap.web(N, web, verbose=FALSE, c.crit=1e4)}
 
 \arguments{
-  \item{N}{ Number of desired nullmodel matrices. }
+  \item{N}{ Number of desired null model matrices. }
   \item{web}{An interaction matrix.}
   \item{verbose}{Should various verbal outputs of this function be shown? Defaults to FALSE, since it was
   mainly used during the debugging period.}
-  \item{c.crit}{Sometimes the algorithm gets stuck in a very sparse matrix. Then c.crit sets the number of
-  swaps it shall attempt before giving up and starting over on a new random matrix. Defauls to 10000.}
+  \item{c.crit}{Sometimes the algorithm gets stuck in a very sparse matrix. Then \option{c.crit} sets the number of
+  swaps it shall attempt before giving up and starting over on a new random matrix. Defaults to 10000.}
 }
 
 \details{
  This function is designed to behave similar to \code{r2dtable}, i.e. it returns a list of randomised matrices. 
  In addition to \code{r2dtable} is also keeps the connectance constant! 
  
- This function is thought of as a very constrained nullmodel for the analysis of bipartite webs. 
+ This function is thought of as a very constrained null model for the analysis of bipartite webs. 
  It keeps two web properties constant: The marginal totals (as in \code{r2dtable} and the 
  number of links (and hence connectance). A comparison of \code{swap.web}- and \code{r2dtable}-based 
- webs allows to elucidate the effect of evolutionary specialisation, since the non-realised connections may
+ webs allows to elucidate the effect of evolutionary specialisation, since the unrealised connections may
  represent \dQuote{forbidden links}. 
  
- This nullmodel is similar to the one employed by Vazquez et al. But while Vazquez starts by assigning 1s to the 
+ This null model is similar to the one employed by Vazquez et al. But while Vazquez starts by assigning 1s to the 
  allowed connections and then fills the web, \code{swap.web} starts with an \code{r2dtable}-web and successively 
- \dQuote{empties} it. The two approaches should result in very similar nullmodels, since both constrain marginal 
+ \dQuote{empties} it. The two approaches should result in very similar null models, since both constrain marginal 
  totals and connectance.
  
  A few words on the way \code{swap.web} works. It starts with a random web created by \code{r2dtable}. Then, it finds,
@@ -54,11 +54,11 @@ totals are identical to those observed (as in \code{r2dtable}), 2. connectance i
 
 \references{
 
- Vázquez, D. P., and M. A. Aizen (2003) Null model analyses of specialization in plant-pollinator interactions. \emph{Ecology} \bold{84} 2493-2501
+ Vazquez, D. P., and M. A. Aizen (2003) Null model analyses of specialization in plant-pollinator interactions. \emph{Ecology} \bold{84} 2493-2501
 
- Vázquez, D. P., C. J. Melián, N. M. Williams, N. Blüthgen, B. R. Krasnov, and R. Poulin (2007) Species abundance and asymmetric interaction strength in ecological networks. \emph{Oikos} \bold{116}, 1120--1127
+ Vazquez, D. P., C. J. Melian, N. M. Williams, N. Blüthgen, B. R. Krasnov, and R. Poulin (2007) Species abundance and asymmetric interaction strength in ecological networks. \emph{Oikos} \bold{116}, 1120--1127
 
- For a very nice and thorough overview of nullmodels in general see:
+ For a very nice and thorough overview of null models in general see:
 
  Gotelli, N. J., and G. R. Graves (1996) Null Models in Ecology. Smithsonian Institution Press, Washington D.C.
  
@@ -70,10 +70,10 @@ totals are identical to those observed (as in \code{r2dtable}), 2. connectance i
 \note{ 
   Long stories can be told about the swap algorithm. I am not the right person to do so, but for a much more detailed coverage of the topic, for many more ways to implement null models for \bold{binary} matrices, with various flavours of the swap and possible alternatives, first brew yourself a cup of tea and then check out the help pages of \code{commsimulator} in \pkg{vegan}. (As usual, Jari Oksanen has spend considerable care to implement even the most bizarr and abstruse way to move 0s and 1s around. His ecological advise between the lines make his package worthwhile already! I, personally, would use \code{method="quasiswap"}, as is done in the example to \code{\link{discrepancy}}.)
   
- When comparing the \code{swap.web} algorithm with that proposed by Vazquez et al. (2007, implemented in \code{\link{vaznull}}), we found that \code{swap.web} contains a certain bias. The subtraction of the swap will reduce the value of low-value cells, and increase that of high-value cells. As a consequence, it produces somewhat of a dichotomy between very high and very low values. Using e.g. H2' to quantify this pattern, \code{swap.web} will produce very specialised networks (around 0.5), while Vazquez-algorithm yields lower H2' values and a more even distribution of interactions within cells.
+ When comparing the \code{swap.web} algorithm with that proposed by Vazquez et al. (2007, implemented in \code{\link{vaznull}}), we found that \code{swap.web} contains a certain bias. The subtraction of the swap will reduce the value of low-value cells, and increase that of high-value cells. As a consequence, it produces somewhat of a dichotomy between very high and very low values. Using e.g. H2' to quantify this pattern, \code{swap.web} will produce very specialised networks (around 0.5), while the Vazquez-algorithm yields lower H2' values and a more even distribution of interactions within cells.
  The ramifications are that \code{swap.web} will predict higher-than-necessary expectations. (Date of this entry: 15.1.2010)
 
-  \code{swap.web} is a very constraint nullmodel. You need to consider if it is the right one for your application!
+  \code{swap.web} is a very constraint null model. You need to consider if it is the right one for your application!
 }
 
 \seealso{ \code{\link{r2dtable}}, \code{\link{vaznull}} and \code{\link{shuffle.web}}}

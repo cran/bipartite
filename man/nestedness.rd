@@ -4,8 +4,11 @@
 
 \title{Calculates nestedness temperature of presence/absence matrices}
 
-\description{Calculates matrix temperature using the binmatnest programm of Miguel Rodríguez-Gironés
-by calling a tweaked version of the C++ program binmatnest. For a full description what it does please refer to the paper of Miguel. In principle nestedness temperature is calculated by using a line of perfect order (using a genetic algorithm) to determine the reordering of rows and columns that leads to minimum matrix temperature of given size and fills. The deviation from this minimun temperature is the matrix temperature. In addition nestedness uses there different null models to check for statistical significance of the matrix temperature.}
+\description{Calculates matrix temperature using the binmatnest programm of Miguel Rodriguez-Girones
+by calling a tweaked version of the C++ program binmatnest. For a full description what it does please refer to the paper of Miguel. In principle nestedness 
+temperature is calculated by using a line of perfect order (using a genetic algorithm) to determine the reordering of rows and columns that leads to minimum 
+matrix temperature of given size and fills. The deviation from this minimun temperature is the matrix temperature. In addition nestedness uses there different 
+null models to check for statistical significance of the matrix temperature.}
 
 \usage{
 nestedness(m, null.models = TRUE, n.nulls = 100, popsize = 30, n.ind = 7, 
@@ -14,7 +17,8 @@ n.gen = 2000, binmatnestout=FALSE)
 
 \arguments{
   \item{m}{ \code{m} is the matrix object for which the temperature is calculated. \code{m} will be converted to a binary matrix as temperature is only based on binary data}
-  \item{null.models}{Logical; shall the three different null models to check for significance of the matrix temperature be calculated? The null models procedure is quite time consuming and therefore we added this switch. Defaults to \code{null.models}=TRUE.}
+  \item{null.models}{Logical; shall the three different null models to check for significance of the matrix temperature be calculated? The null models procedure is 
+quite time consuming and therefore we added this switch. Defaults to \code{null.models}=TRUE.}
   \item{n.nulls}{How many null models should be calculated. Defaults to \code{n.nulls=100}.}
   \item{popsize}{For the genetic algorithm some parameters have to be initialised. First is \code{popsize}, default is 30}
   \item{n.ind}{Second is number of individuals picked for the next generation. Default of \code{n.ind} is 7.}
@@ -23,11 +27,14 @@ n.gen = 2000, binmatnestout=FALSE)
 }
 
 \details{
-There are several implementations of nestedness-calculators, most noticeably NTC (nestedness temperature calculator), BINMATNEST and aninhado (check Wikipedia's entry on the subject: \url{http://en.wikipedia.org/wiki/Nestedness}). While we here use BINMATNEST, this does not disqualify any of the others. Miguel was simply the first we contacted and he was readily willing to share his code (applause).
+There are several implementations of nestedness-calculators, most noticeably NTC (nestedness temperature calculator), BINMATNEST and aninhado 
+(check Wikipedia's entry on the subject: \url{http://en.wikipedia.org/wiki/Nestedness}). While we here use BINMATNEST, this does not disqualify any of the 
+others. Miguel was simply the first we contacted and he was readily willing to share his code (applause).
 
 For details on what BINMATNEST does different, and better, than the original NTC see reference below. 
 
-Notice also that the original software BINMATNEST is available as a stand-alone application, too. Check out Miguel's homepage: \url{http://www.eeza.csic.es/eeza/personales/rgirones.aspx} or download directly: \url{http://www.eeza.csic.es/eeza/personales/rgirones/File/BINMATNEST3.zip}.
+Notice also that the original software BINMATNEST is available as a stand-alone application, too. Check out Miguel's homepage: 
+\url{http://www.eeza.csic.es/eeza/personales/rgirones.aspx} or download directly: \url{http://www.eeza.csic.es/eeza/personales/rgirones/File/BINMATNEST3.zip}.
 }
 
 \value{
@@ -40,14 +47,16 @@ Notice also that the original software BINMATNEST is available as a stand-alone 
 }
 
 \references{
-Rodríguez-Gironés M.A., and Santamaría L. 2006. A new algorithm to calculate the nestedness temperature of presence-absence matrices. \emph{Journal of Biogeography} \bold{33}, 924--935
+Rodriguez-Girones M.A., and Santamaria L. 2006. A new algorithm to calculate the nestedness temperature of presence-absence matrices. \emph{Journal of Biogeography} \bold{33}, 924--935
 }
 
-\author{Bernd Gruber, based on C++-code by Miguel Rodríguez-Gironés.}
+\author{Bernd Gruber, based on C++-code by Miguel Rodriguez-Girones.}
 
-\note{ Make sure matrix \code{m} is valid, as error proofing in the C++ function does not fully work, and therefore it is possible that R may crash when using strange types of matrices, such as matrices with only one entry.
+\note{ Make sure matrix \code{m} is valid, as error proofing in the C++ function does not fully work, and therefore it is possible that R may crash when using 
+strange types of matrices, such as matrices with only one entry.
 
-Also, while this function returns exactly the same values as binmatnest, there seems to be the occassional glitch in the software, in that in unexplicable circumstances the matrix is inverted before calculating nestedness. We are currently trying to find the cause of this problem. Sorry!
+Also, while this function returns exactly the same values as binmatnest, there seems to be the occasional glitch in the software, in that in inexplicable 
+circumstances the matrix is inverted before calculating nestedness. We are currently trying to find the cause of this problem. Sorry!
 
 In the meantime, use \code{nestedtemp} in \pkg{vegan} (as we do in \code{networklevel})!
 }

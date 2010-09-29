@@ -9,7 +9,7 @@ The authors recorded their data by counting the number of individual flower visi
 }
 \usage{data(kato1990)}
 \references{
-Kato, M., T. Makutani, T. Inoue, and T. Itino. 1990. Insect-flower relationship in the primary beech forest of Ashu, Kyoto: an overview of the flowering phenology and seasonal pattern of insect visits. Contr. Biol. Lab. Kyoto Univ. 27:309-375.
+Kato, M., T. Makutani, T. Inoue, and T. Itino. 1990. Insect-flower relationship in the primary beech forest of Ashu, Kyoto: an overview of the flowering phenology and seasonal pattern of insect visits. \emph{Contr. Biol. Lab. Kyoto Univ.} \bold{27}, 309--375
 }
 \examples{
 data(kato1990)

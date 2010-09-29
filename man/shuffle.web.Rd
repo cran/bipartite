@@ -19,7 +19,7 @@ shuffle.web(web, N)
  This function is designed to behave similar to \code{r2dtable}, i.e. it returns a list of randomised matrices. 
  In contrast to \code{r2dtable} is does not keep marginal sums constant! 
  
- This function is thought of as a nullmodel for the analysis of bipartite webs. It keeps two web properties
+ This function is thought of as a null model for the analysis of bipartite webs. It keeps two web properties
  constant: The number of interactions and the number of links (and hence connectance). A comparison of
  \code{shuffle.web}- and \code{r2dtable}-based webs allows to elucidate the effect of marginal sums.
 }
@@ -28,19 +28,20 @@ shuffle.web(web, N)
 }
 
 \references{
- This nullmodel can be thought of as a quantitative version of Fortuna & Bascompte (2006) \dQuote{null model 1}:
+ This null model can be thought of as a quantitative version of Fortuna & Bascompte (2006) \dQuote{null model 1}:
 
  Fortuna, M. A., and J. Bascompte. 2006. Habitat loss and the structure of plant-animal mutualistic networks. Ecology Letters 9: 281-286.
 
- For a very nice and thorough overview of nullmodels in general see:
+ For a very nice and thorough overview of null models in general see:
 
  Gotelli, N. J., and G. R. Graves. 1996. Null Models in Ecology. Smithsonian Institution Press, Washington D.C.
  
- For nullmodels and their application to webs/networks see, e.g.:
+ For null models and their application to webs/networks see, e.g.:
 
- Vázquez, D. P., and M. A. Aizen. 2003. Null model analyses of specialization in plant-pollinator interactions. Ecology 84: 2493-2501.
+ Vazquez, D. P., and M. A. Aizen. 2003. Null model analyses of specialization in plant-pollinator interactions. Ecology 84: 2493-2501.
 
- Vázquez, D. P., C. J. Melián, N. M. Williams, N. Blüthgen, B. R. Krasnov, and R. Poulin. 2007. Species abundance and asymmetric interaction strength in ecological networks. Oikos 116: 1120-1127.
+ Vazquez, D. P., C. J. Melian, N. M. Williams, N. Blüthgen, B. R. Krasnov, and R. Poulin. 2007. Species abundance and asymmetric interaction 
+strength in ecological networks. Oikos 116: 1120-1127.
 
 }
 

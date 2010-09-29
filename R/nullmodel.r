@@ -20,28 +20,32 @@ nullmodel <- function(web, N=1000, method="r2d", ...){
     if (is.na(m)) stop("Abbreviated name does not uniquely identify method.")
     
     if (m == 1){ #r2dtable nullmodel
-        if (all(web < 2)){
-            warning("This is a binary web. Only methods shuffle.web and mgen should be used!\n  I proceeded by using mgen!")
-            m <- 5
-        } else {
+        if (all(web < 2))#{
+            warning("This seems to be a binary web. Only methods shuffle.web and mgen should be used!\n  I proceeded nonetheless. Read the note in the help file!")
+#            m <- 5
+#        } else {
            rs <- rowSums(web)
            cs <- colSums(web)
            out <- r2dtable(N, r=rs, c=cs)
-	}
+#	}
     }
     
     if (m == 2){# swap.web
-        if (all(web < 2)){
-            warning("This is a binary web. Only methods shuffle.web and mgen should be used!\n  I proceeded by using mgen!")
-            m <- 5
-        } else { out <- swap.web(N, web, ...)     }
+        if (all(web < 2))#{
+            warning("This seems to be a binary web. Only methods shuffle.web and mgen should be used!\n  I proceeded nonetheless. Read the note in the help file!")
+#            m <- 5
+#        } else { 
+		out <- swap.web(N, web, ...)     
+#		}
     }
     
     if (m == 3){ #vaznull
-        if (all(web < 2)){
-            warning("This is a binary web. Only methods shuffle.web and mgen should be used!\n  I proceeded by using mgen!")
-            m <- 5
-        } else { out <- vaznull(N, web) }
+        if (all(web < 2))#{
+            warning("This seems to be a binary web. Only methods shuffle.web and mgen should be used!\n  I proceeded nonetheless. Read the note in the help file!")
+#            m <- 5
+#        } else { 
+			out <- vaznull(N, web)
+#		 }
     }
     
     if (m == 4){ #shuffle.web

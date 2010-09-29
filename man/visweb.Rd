@@ -2,8 +2,8 @@
 \name{visweb}
 \alias{visweb}
 
-\title{ Plotfunction to visualize a bipartite foodweb }
-\description{ This function draws a foodweb as a grid using a matrix. Colnames and rownames are used as labels and entries in the matrix are visualized by text and colours. It can also be used to plot bipartite webs in the style of Vázquez et al. (2009).
+\title{ Plotting function to visualize a bipartite food web }
+\description{ This function draws a food web as a grid using a matrix. Colnames and rownames are used as labels and entries in the matrix are visualized by text and colours. It can also be used to plot bipartite webs in the style of Vazquez et al. (2009).
 
 }
 
@@ -66,11 +66,11 @@ visweb(web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1,
 
 \note{If labels don't fit, resize window by hand!}
 
-\references{ Vazquez, P.D., Chacoff, N.,P. and  Cagnolo, L. (in press, 2009. Evaluating multiple determinants of the structure of plant-animal mutualistic networks. Ecology.  }
+\references{Vázquez, P.D., Chacoff, N.,P. and  Cagnolo, L. (in press, 2009. Evaluating multiple determinants of the structure of plant-animal mutualistic networks. Ecology.  }
 
 \author{ Bernd Gruber }
 
-\seealso{ For a different plot on foodweb see \code{\link{plotweb}} }
+\seealso{ For a different plot on food web see \code{\link{plotweb}}. }
 
 \examples{
 

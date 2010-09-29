@@ -1,3 +1,5 @@
+\encoding{latin1}
+
 \name{vazquez.example}
 \alias{vazquez.example}
 \alias{confint}

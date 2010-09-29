@@ -5,7 +5,7 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
     # web    interaction matrix, with higher trophic level as columns
     # index  vector of indices to be calculated for each trophic level of the web;
     #        options are: "specs" for number of species, "species degree", "dependence",
-    #        "d" for Blüthgen's d, "species strength" as sum of dependencies,
+    #        "d" for BlÂ¸thgen's d, "species strength" as sum of dependencies,
     #        "interaction" for interaction push/pull (our version of dependence
     #        asymmetry: see details), "PSI" for pollination service index (or pollinator
     #        support index, depending on the trophic level), "niche overlap" or "ALL"
@@ -15,12 +15,12 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
     #        for other options see vegdist {vegan}
     # indices to be calculated:
     # "specs" for number of species,
-    # "d" for Blüthgen's species-level diversity,
+    # "d" for BlÂ¸thgen's species-level diversity,
     # "species degree" for the sum of interactions per species,
     # "species strength" for Bascompte's summed dependence values per species (i.e. quantitative species degree),
     # "PSI" for pollination service index (only for plants in pollination webs).
     #
-    # Carsten Dormann, Jochen Fründ & Denis Lippok, April/May 2007
+    # Carsten Dormann, Jochen FrÂ¸nd & Denis Lippok, April/May 2007
 
 
     # m <- matrix(c(4,7,0,0,9,1,2,0,5), 3, byrow=TRUE)
@@ -60,7 +60,7 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
 
     #----------------------------------------------------------------------------
     # dependence values, following the lead by Bascompte et al. 2006 (Science) and
-    # modifications suggested by Blüthgen et al. 2007 (Current Biology)
+    # modifications suggested by BlÂ¸thgen et al. 2007 (Current Biology)
 
     if (any(c("strength", "dependence", "interaction") %in% index)){
       depL <- web/matrix(rowSums(web), nrow=NROW(web), ncol=NCOL(web), byrow=FALSE)
@@ -103,7 +103,7 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
             #       value of 2 (default) assumes independent spacing of the plants; a value
             #       of 1 implies infinitely storing pollen from source to sink plant
             #
-            # developed by Dormann, Blüthgen & Gruber, 3 May 2007
+            # developed by Dormann, BlÂ¸thgen & Gruber, 3 May 2007
             #
             # example:
             # m <- matrix(c(4,4,0,4,1,7), nrow=3, byrow=TRUE)
@@ -122,6 +122,46 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
     }
     
     #----------------------------------------------------------------------------
+    #
+    
+   	 BCC_weighted <- function(web, method="sum", level="higher", index="betweenness"){
+		# computes weighted betweenness as proportion of shorted paths through this species
+		# notice that these results are identical to the function "BC" when using binary data (web>)!
+		# In weighted networks, some paths are actually LOST!
+		#
+		# Will return a warning when web is comparted!
+	
+		if (level == "higher") web <- t(web)
+		el <- web2edges(web, return=TRUE)
+		proj <- projecting_tm(el, method=method) 
+		if (index == "betweenness") {
+			b <- betweenness_w(proj)[,2]
+			names(b) <- rownames(web)
+			out <- b/sum(b)
+		}
+		if (index == "closeness") {
+			## closeness returns only the larger compartment, thus I first find the largest compartment and only compute the stuff for that;
+			# the problem with closeness_w is that the names are lost!
+			# find which is the largest compartment:
+			CO <- compart(web)
+			which.is.where <- apply(CO[[1]], 1, function(x) sort(unique(x))[1] )			
+			group <- names(sort(table(which.is.where), decreasing=TRUE))[1]
+			keep <- which(CO[[1]] == group, arr.ind=TRUE)
+			subweb <- web[unique(keep[,1]), unique(keep[,2])]
+			# now compute closeness_w for that:
+			el2 <- web2edges(subweb, return=TRUE)
+			proj2 <- projecting_tm(el2, method=method)
+			cc <- closeness_w(proj2, directed=TRUE)[,2]
+			# now pad these results with NAs:
+			cc.full <- rep(NA, NROW(web))
+			names(cc.full) <- rownames(web)
+			cc.full[match(rownames(subweb), names(cc.full)) ] <- cc
+			out <- cc.full
+		}
+	
+		out
+	}
+    
     if ("NS" %in% index){
 #      require(sna) # which brings the function geodist used in nodespec
       NS <- nodespec(web)
@@ -132,12 +172,20 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
       bcs <- BC(web)
       out$"higher trophic level"$"betweenness" <- bcs[[2]]
       out$"lower trophic level"$"betweenness" <- bcs[[1]]
+	    
+   	   out$"higher trophic level"$"weighted betweeness" <- BCC_weighted(web, level="higher") 
+   	   out$"lower trophic level"$"weighted betweeness" <- BCC_weighted(web, level="lower") 
     }
     if ("CC" %in% index){
       ccs <- CC(web)
       out$"higher trophic level"$"closeness" <- ccs[[2]]
       out$"lower trophic level"$"closeness" <- ccs[[1]]
+	    
+   	  out$"higher trophic level"$"weighted closeness" <- BCC_weighted(web, level="higher", index="closeness") 
+   	  out$"lower trophic level"$"weighted closeness" <- BCC_weighted(web, level="lower", index="closeness") 
     }
+    
+  
 
 
     #----------------------------------------------------------------------------
@@ -205,4 +253,3 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
     
     out
 }
-

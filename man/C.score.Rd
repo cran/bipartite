@@ -47,8 +47,6 @@ The minimum is set to 0.
 
 }
 
-\seealso{\code{\link{V.ratio}} for another measure of species associations, \code{nestedchecker} in \pkg{vegan}, which also calculates the C-score (even yielding the same value), but not its normalised version}
-
 \examples{
 m <- matrix(c(1,0,0, 1,1,0, 1,1,0, 0,1,1, 0,0,1), 5,3,TRUE)
 C.score(m)

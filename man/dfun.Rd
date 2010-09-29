@@ -26,7 +26,7 @@ The way this function is implemented, it calculates expected values for each cel
 
 Simple rounding of expected values would lead to empty columns or rows, i.e. the dmin-web would be of lower dimension than the original web.
 
-dfun returns the d' values for the lower trophic level. Use \code{fun(t(web))} to get the d'-values for the higher trophic level (as does 'specieslevel').
+dfun returns the d' values for the lower trophic level. Use \code{fun(t(web))} to get the d'-values for the higher trophic level (as does \code{specieslevel}).
 
 d' is one of several species-level network indices. It's generalisation to the entire interaction web is called H2'.
 

@@ -16,7 +16,7 @@ The author recorded her data by counting the number of visits of each flower vis
 NCEAS
 }
 \references{
-Memmott, J. 1999. The structure of a plant-pollinator food web. Ecology Letters 2:276-280.
+Memmott, J. 1999. The structure of a plant-pollinator food web. \emph{Ecology Letters}\bold{2}, 276--280.
 }
 \examples{
 data(memmott1999)

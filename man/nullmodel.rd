@@ -11,26 +11,38 @@ nullmodel(web, N=1000, method="r2d", ...)
 }
 
 \arguments{
-  \item{web}{Web is a matrix representing the interactions observed between higher trophic level species (columns) and lower trophic level species (rows). Usually this will be number of pollinators on each species of plants or number of parasitoids on each species of prey.}
+  \item{web}{Web is a matrix representing the interactions observed between higher trophic level species (columns) and lower trophic level species (rows). 
+Usually this will be number of pollinators on each species of plants or number of parasitoids on each species of prey.}
   \item{N}{number of null models to be generated; defaults to 1000 (more might be better, less probably not).}
-  \item{method}{Null model type. Can be given as an integer or name: 1/"r2dtable", 2/"swap.web", 3/"vaznull", 4/"shuffle.web", 5/"mgen"; allows for partial match of names; methods 1 to 4 works for quantitative webs, 4 and 5 for binary.}
+  \item{method}{Null model type. Can be given as an integer or name: 1/"r2dtable", 2/"swap.web", 3/"vaznull", 4/"shuffle.web", 5/"mgen"; allows for partial 
+match of names; methods 1 to 4 works for quantitative webs, 4 and 5 for binary.}
   \item{...}{arguments to be passed to the function generating the specific null models}
 }
 
 \details{
   This is only a wrapper function to facilitate and standardise the generation of null models.
+  
+  These null models assume that integers represent frequencies that are 'individually' counted, not decimal numbers. Multiplication by 1000 (say) and rounding 
+does NOT necessarily make your value frequencies satisfy this assumption. Null models for 'continuously quantitative' webs still have to be developed!
 
-  \option{mgen} is used when options 1, 2 or 3 are applied to a binary network. A warning is than returned, too.
+%  \option{mgen} is used when options 1, 2 or 3 are applied to a binary network.
+  A warning is than returned when all entries in a quantitative network are 0 or 1 (which suggests a binary network).
 }
 
 \value{
   Returns a list of \code{N} null model-generated networks. Species names are (obviously) dropped.
 }
 
+\note{
+When a quantitative network contains only 1s (as may happen when sampling intensity is low), the quantitative null model will be extremely similar (often 
+identical) to the observed network. This is no error. It is reflecting the fact that this network contains little (no) information beyond the abundances.
+}
+
 
 \author{ Carsten F. Dormann \email{carsten.dormann@ufz.de}}
 
-\seealso{ For the functions generating the null model network: \code{\link{shuffle.web}}, \code{\link{swap.web}}, \code{\link{vaznull}}, \code{\link{mgen}}, \code{commsimulator} and \code{r2dtable}
+\seealso{ For the functions generating the null model network: \code{\link{shuffle.web}}, \code{\link{swap.web}}, \code{\link{vaznull}}, \code{\link{mgen}}, 
+\code{commsimulator} and \code{r2dtable}
 }
 
 \examples{
