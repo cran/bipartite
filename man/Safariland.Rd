@@ -1,15 +1,13 @@
-\encoding{latin1}
-
+\encoding{UTF-8}
 \name{Safariland}
 
 \alias{Safariland}
 
 \docType{data}
 
-\title{ Pollination web in Argentina.}
+\title{ A pollination web from Argentina}
 \description{
-This pollination web was published by Vazquez and Simberloff (2003). See there for
-details on how it was measured.
+This pollination web was published by Vázquez and Simberloff (2003). See there for details on how it was measured.
 }
 
 \usage{data(Safariland)}
@@ -31,11 +29,11 @@ These data can be downloaded, together with the other datasets, on the NCEAS int
 }
 
 \references{
-Vazquez, D. P. 2002 Interactions among Introduced Ungulates, Plants, and Pollinators: A Field Study in the Temperate Forest of the Southern Andes. Doctoral Dissertation Thesis, University of Tennessee, Knoxville, Tennessee, USA.
+Vázquez, D. P. 2002 Interactions among Introduced Ungulates, Plants, and Pollinators: A Field Study in the Temperate Forest of the Southern Andes. Doctoral Dissertation Thesis, University of Tennessee, Knoxville, Tennessee, USA.
 
-Vazquez, D. P., and D. Simberloff. 2002 Ecological specialization and susceptibility to disturbance: conjectures and refutations. \emph{American Naturalist} \bold{159}, 606--623.
+Vázquez, D. P., and D. Simberloff. 2002 Ecological specialization and susceptibility to disturbance: conjectures and refutations. \emph{American Naturalist} \bold{159}, 606--623.
 
-Vazquez, D. P., and D. Simberloff. 2003 Changes in interaction biodiversity induced by an introduced ungulate. \emph{Ecology Letters}, \bold{6}, 1077--1083.
+Vázquez, D. P., and D. Simberloff. 2003 Changes in interaction biodiversity induced by an introduced ungulate. \emph{Ecology Letters}, \bold{6}, 1077--1083.
 }
 
 \examples{

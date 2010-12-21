@@ -1,7 +1,7 @@
 \name{kato1990}
 \alias{kato1990}
 \docType{data}
-\title{ No. of individuals caught in a pollination web of a Japanese beech forest.}
+\title{ No. of individuals caught in a pollination web of a Japanese beech forest}
 \description{
 The study took place at the Kyoto University Forest of Ashu, at the northeastern boundry of the Kyoto Prefecture in Japan, between 1984 and 1987. The paper deals with the flowering phenology of 91 plant species, the community structure of flower-visiting insects, and the spectrum of floral hosts for flower visitors. The emphasis is laid on the pattern of community organization of flower-visiting insects in a primary forest ecosystem of western Japan.
 

@@ -1,4 +1,4 @@
-\encoding{latin1}
+\encoding{UTF-8}
 \name{dfun}
 
 \alias{dfun}
@@ -20,7 +20,7 @@ dfun(web, abuns=NULL)
 \details{
 The d' index is derived from Kulback-Leibler distance (as is Shannon's diversity index), and calculates how strongly a species deviates from a random sampling of interacting partners available. It ranges from 0 (no specialisation) to 1 (perfect specialist). In the case of a pollination web, a pollinator may be occurring only on one plant species, but if this species is the most dominant one, there is limited evidence for specialisation. Hence this pollinator would receive a low value. In contrast, a pollinator that occurs only on the two rarest plants would have a very high value of d'.
 
-The idea of this index is laid out in Blüthgen et al. (2006). It basically calculates the Shannon-diversity for each column (delivering the raw d-values) and re-ranges them between the theoretical maximum and minimum (yielding values between 0 and 1). dmax is given analytically (see paper or code), but dmin must be found `heuristically', since the web can only contain integers. The idea behind the heuristic minimum is that d will be minimal when observed values differ least from expected values based on marginal distributions.
+The idea of this index is laid out in BlÂ¸thgen et al. (2006). It basically calculates the Shannon-diversity for each column (delivering the raw d-values) and re-ranges them between the theoretical maximum and minimum (yielding values between 0 and 1). dmax is given analytically (see paper or code), but dmin must be found `heuristically', since the web can only contain integers. The idea behind the heuristic minimum is that d will be minimal when observed values differ least from expected values based on marginal distributions.
 
 The way this function is implemented, it calculates expected values for each cell based on the product of observed marginal sums (i.e. column and row sums) times \code{sum(web)}. Then it rounds off to integers and allocates the remaining interactions in two steps: First, all columns and rows with marginal sums of 0 obtain one interaction into the cell with the highest expected value. Secondly, all remaining interactions are distributed according to difference between present and expected value: those cells with highest discrepancy receive an interaction until the sum of all entries in the new web equals those in the original web. Now the d-values for this web are calculated and used as dmin.
 
@@ -43,10 +43,10 @@ In contrast to \code{\link{H2fun}}, finding the minimum value of d violates marg
 }
 
 \references{ 
-Blüthgen, N., Menzel, F. and Blüthgen, N. (2006) Measuring specialization in species interaction networks. \emph{BMC Ecology} \bold{6}, 12
+BlÃ¼thgen, N., Menzel, F. and BlÃ¼thgen, N. (2006) Measuring specialization in species interaction networks. \emph{BMC Ecology} \bold{6}, 12
  }
 
-\author{Jochen Fründ and Carsten F. Dormann}
+\author{Jochen FrÃ¼nd and Carsten F. Dormann}
 \note{ 
 As detailed above, deriving the dmin-values \sQuote{heuristically} leaves room to some variation. We are very happy with this implementation, but you may want to program something yourself ...
 }

@@ -1,4 +1,4 @@
-\encoding{latin1}
+\encoding{UTF-8}
 \name{nullmodel}
 \alias{nullmodel}
 

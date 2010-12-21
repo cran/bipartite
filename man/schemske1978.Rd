@@ -1,7 +1,7 @@
 \name{schemske1978}
 \alias{schemske1978}
 \docType{data}
-\title{ A pollination network.}
+\title{ A flower visitation network from Urbana, IL, USA}
 \description{
 Populations of seven early flowering, low-growing, perennial woodland herbs were studied in a 24 hectare sit in Brownfield Woods, close to Urbana, Illinois, U.S.A. The sequence and variety of flowers visited by individual insects were recorded for the first foraging insect observed in a randomly selected, 1 m2 quadrat located within a 10x10 m grid that included representatives of several plant species.
 }

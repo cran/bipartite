@@ -5,7 +5,7 @@
 \title{ Calculates the number of identical co-presences and co-absences for species-on-islands }
 
 \description{
-  Togetherness, or T-score, describes the level of similarity in the distributional pattern of two species. Originally proposed by Stone \& Roberts (1992) for biogeographical situations can it also be applied e.g.~to pollinators on different host plants.
+  Togetherness, or T-score, describes the level of similarity in the distributional pattern of two species. Originally proposed by Stone & Roberts (1992) for biogeographical situations can it also be applied e.g. to pollinators on different host plants.
 }
 
 \usage{
@@ -30,7 +30,7 @@ Stone, L. and Roberts, A. (1992) Competitive exclusion, or species aggregation? 
 }
 \author{ Carsten F. Dormann}
 
-\seealso{ \code{\link{C.score}} for another of Stone \& Roberts' indices. }
+\seealso{ \code{\link{C.score}} for another of Stone & Roberts' indices. }
 
 \examples{
 (m <- matrix(c(0,1,0,0,1,1,0,1,1,0), ncol=2, byrow=TRUE))

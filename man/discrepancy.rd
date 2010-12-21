@@ -1,4 +1,4 @@
-\encoding{latin1}
+\encoding{UTF-8}
 \name{discrepancy}
 \alias{discrepancy}
 
@@ -17,11 +17,11 @@ discrepancy(mat)
 }
 
 \details{
- Discrepancy is a way to measure the nestedness of a matrix. In a comparative study, Ulrich \& Gotelli (2007) showed discrepancy to outperform all other measures and hence recommend its use (together with a fixed-columns, fixed-rows null model, such as implemented in \code{commsimulator} in \pkg{vegan}, see example).
+ Discrepancy is a way to measure the nestedness of a matrix. In a comparative study, Ulrich & Gotelli (2007) showed discrepancy to outperform all other measures and hence recommend its use (together with a fixed-columns, fixed-rows null model, such as implemented in \code{commsimulator} in \pkg{vegan}, see example).
 
- This function follows the logic laid out by Brualdi \& Sanderson (1999), although, admittedly, I find their mathematical description highly confusing. Another implementation is given by the function \code{nesteddisc} in \pkg{vegan}. The reason to write a new function is simple: I wasn't aware of \code{nesteddisc}! (I was sitting on a train and I wanted to use this measure later on, so I put it into a function consulting only the orignal paper. When looking for the swap algorithm to create null models, which I somehow knew to exist in \pkg{vegan}, I stumbled across \code{nesteddisc}. If you are interested in the swap algorithm and come across this help page, let me re-direct you to \code{oecosimu} in \pkg{vegan}.)
+ This function follows the logic laid out by Brualdi & Sanderson (1999), although, admittedly, I find their mathematical description highly confusing. Another implementation is given by the function \code{nesteddisc} in \pkg{vegan}. The reason to write a new function is simple: I wasn't aware of \code{nesteddisc}! (I was sitting on a train and I wanted to use this measure later on, so I put it into a function consulting only the orignal paper. When looking for the swap algorithm to create null models, which I somehow knew to exist in \pkg{vegan}, I stumbled across \code{nesteddisc}. If you are interested in the swap algorithm and come across this help page, let me re-direct you to \code{oecosimu} in \pkg{vegan}.)
  
- Now that this function exists, too, I found it to differ in output from \code{nesteddisc}. Jari Oksanen was quick to point out, that our two implementations differ in the way they handle ties in column totals. This function is, I think, closer to the results given in Brualdi \& Sanderson. Jari also went on to implement different strategies to deal with ties, so my guess is that his version may be (slightly) superior to this one. Having said that, values don't differ much between the two implementations. 
+ Now that this function exists, too, I found it to differ in output from \code{nesteddisc}. Jari Oksanen was quick to point out, that our two implementations differ in the way they handle ties in column totals. This function is, I think, closer to the results given in Brualdi & Sanderson. Jari also went on to implement different strategies to deal with ties, so my guess is that his version may be (slightly) superior to this one. Having said that, values don't differ much between the two implementations. 
   
  So what does it do: The matrix is sorted by marginal totals, yielding a matrix \bold{A}. Then, all 1s in \bold{A} are \dQuote{pushed} to the left to maximally compact the matrix, yielding \bold{P}. Discrepancy is now simply the number of disagreements between \bold{A} and \bold{P}, divided by two (to correct for the fact that every \dQuote{wrong} 1 will necessarily generate a \dQuote{wrong} 0).
 }

@@ -1,4 +1,4 @@
-\encoding{latin1}
+\encoding{UTF-8}
 
 \name{shuffle.web}
 \alias{shuffle.web}
@@ -38,9 +38,9 @@ shuffle.web(web, N)
  
  For null models and their application to webs/networks see, e.g.:
 
- Vazquez, D. P., and M. A. Aizen. 2003. Null model analyses of specialization in plant-pollinator interactions. Ecology 84: 2493-2501.
+ Vázquez, D. P., and M. A. Aizen. 2003. Null model analyses of specialization in plant-pollinator interactions. Ecology 84: 2493-2501.
 
- Vazquez, D. P., C. J. Melian, N. M. Williams, N. Bl�thgen, B. R. Krasnov, and R. Poulin. 2007. Species abundance and asymmetric interaction 
+ Vázquez, D. P., C. J. Melian, N. M. Williams, N. Blüthgen, B. R. Krasnov, and R. Poulin. 2007. Species abundance and asymmetric interaction 
 strength in ecological networks. Oikos 116: 1120-1127.
 
 }

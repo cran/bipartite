@@ -1,4 +1,4 @@
-\encoding{latin1}
+\encoding{UTF-8}
 
 \name{null.distr}
 
@@ -21,7 +21,7 @@ Given a network, this function fits a distribution to the marginal totals and th
 \details{
   This package provides several functions to generate null models for the observed data (see \code{\link{nullmodel}}). However, this function deviates from any of these in 
 that it does not hold the marginal totals as constant. Rather, it sees them as a random draw of some underlying distribution. This distribution is fitted (in a very ad hoc 
-manner) to the data.  The inspiration for this function comes from Blüthgen et al. (2008).
+manner) to the data.  The inspiration for this function comes from BlÂ¸thgen et al. (2008).
    
  In the next step, the same number of species is drawn from this distribution randomly, and a new matrix is generated as the cross-product of these new vectors. The 
 matrix is then standardised to sum to 1. It now serves as probability of drawing an interaction for any of its cells. 
@@ -47,7 +47,7 @@ LARGE! As species are lost, relative linkage density goes up automatically, whic
 \seealso{ \code{\link{nullmodel}}}
 
 \references{
-Blüthgen, N., Fründ, J., Vazquez, D. P. and Menzel, F. 2008. What do interaction network metrics tell us about specialisation and biological traits? \emph{Ecology}, \bold{89}, 3387--3399.
+BlÂ¸thgen, N., FrÂ¸nd, J., Vazquez, D. P. and Menzel, F. 2008. What do interaction network metrics tell us about specialisation and biological traits? \emph{Ecology}, \bold{89}, 3387--3399.
 
 Dewdney, A.K. 1998. A general theory of the sampling process with applications to the ``veil line''. \emph{Theoretical Population Biology}, \bold{54}, 294--302.
 }

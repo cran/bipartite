@@ -145,7 +145,7 @@ void nrerror(char error_text[]);
  ***************************************************************** 
  */
 
-int bmn5(int *matrix, int *n_rows, int *n_cols,double *temperature,
+int bmn5(int *matrix, int *n_rows, int *n_cols, double *temperature,
         int *n_nullmodels, int *p_size, int *n_individuals, int *binmatout,
         int *n_generations, int *nullmodels,
         double *p_null1, double *avt_null1, double 	*avv_null1,

@@ -1,10 +1,10 @@
-\encoding{latin1}
+\encoding{UTF-8}
 \name{nestedness}
 \alias{nestedness}
 
 \title{Calculates nestedness temperature of presence/absence matrices}
 
-\description{Calculates matrix temperature using the binmatnest programm of Miguel Rodriguez-Girones
+\description{Calculates matrix temperature using the binmatnest programm of Miguel Rodríguez-Gironés
 by calling a tweaked version of the C++ program binmatnest. For a full description what it does please refer to the paper of Miguel. In principle nestedness 
 temperature is calculated by using a line of perfect order (using a genetic algorithm) to determine the reordering of rows and columns that leads to minimum 
 matrix temperature of given size and fills. The deviation from this minimun temperature is the matrix temperature. In addition nestedness uses there different 
@@ -47,7 +47,7 @@ Notice also that the original software BINMATNEST is available as a stand-alone 
 }
 
 \references{
-Rodriguez-Girones M.A., and Santamaria L. 2006. A new algorithm to calculate the nestedness temperature of presence-absence matrices. \emph{Journal of Biogeography} \bold{33}, 924--935
+Rodríguez-Gironés M.A., and Santamaría L. 2006. A new algorithm to calculate the nestedness temperature of presence-absence matrices. \emph{Journal of Biogeography} \bold{33}, 924--935
 }
 
 \author{Bernd Gruber, based on C++-code by Miguel Rodriguez-Girones.}

@@ -2,7 +2,7 @@
 \alias{elberling1999}
 \docType{data}
 
-\title{ No. of visits in a pollination web of arctic-alpine Sweden.}
+\title{ No. of visits in a pollination web of arctic-alpine Sweden}
 
 \description{
 

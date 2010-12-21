@@ -1,4 +1,4 @@
-\encoding{latin1}
+\encoding{UTF-8}
 \name{H2fun}
 
 \alias{H2fun}
@@ -21,7 +21,7 @@ H2fun(web, H2_integer=TRUE)
 }
 
 \details{
-  H2' is an index describing the level of specialisation, or should one say: selectiveness, of an entire bipartite network (Blüthgen et al. 2006). It describes to which extent observed interactions deviate from those that would be expected given the species marginal sums. The more selective a species, the larger is H2' for the web. 
+  H2' is an index describing the level of specialisation, or should one say: selectiveness, of an entire bipartite network (BlÃ¼thgen et al. 2006). It describes to which extent observed interactions deviate from those that would be expected given the species marginal sums. The more selective a species, the larger is H2' for the web. 
   
   H2' is an extension of d' (see \code{\link{dfun}}) for the entire network. Check there for details on finding maximum and minimum H2 values for a given web.
   
@@ -39,11 +39,11 @@ H2fun(web, H2_integer=TRUE)
 }
 
 \references{ 
-Blüthgen, N., Menzel, F. and Blüthgen, N. (2006) Measuring specialization in species interaction networks. \emph{BMC Ecology} \bold{6}, 9.
+BlÃ¼thgen, N., Menzel, F. and BlÃ¼thgen, N. (2006) Measuring specialization in species interaction networks. \emph{BMC Ecology} \bold{6}, 9.
 
  }
 
-\author{ Carsten F. Dormann and Jochen Fründ }
+\author{ Carsten F. Dormann and Jochen FrÂ¸nd }
 
 \seealso{ \code{\link{dfun}} doing the same for each species in the web matrix. }
 

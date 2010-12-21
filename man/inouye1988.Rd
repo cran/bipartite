@@ -1,7 +1,7 @@
 \name{inouye1988}
 \alias{inouye1988}
 \docType{data}
-\title{ A pollination network.}
+\title{ A pollination network from the Snowy Mountains of New South Wales, Australia}
 \description{
  This data set reports a community-level study of the pollination biology of alpine plants in Kosciusko National Park in the Snowy Mountains of south-eastern New South Wales, Australia. The flora and their associated insect pollinators were observed from December 1983 until March 1984.
 }

@@ -13,15 +13,6 @@
   ..$ : chr [1:8] "X1" "X13" "X4" "X15" ...
   ..$ : chr [1:27] "65" "94" "32" "66" ...
 }
-\details{
-
-}
-\source{
-
-}
-\references{
-
-}
 \examples{
 data(vazquec)
 ## maybe str(vazquec) ; plot(vazquec) ...

@@ -5,8 +5,8 @@ nested <- function(web, method="binmatnest2", ..., rescale=FALSE){
 # \item{rescale}{Should the methods all be transformed, so that higher values mean higher nesting? Only in combination with method "ALL". Defaults to FALSE.}
 #  \item{...}{Arguments passed on the respective method.}
 
-  if (! any(method %in% c("binmatnest", "discrepancy", "binmatnest2", "discrepancy2", "NODF", "NODF2", "wine", "C.score", "checker", "ALL"))) stop("Typo? Unknown method!")
-  if ("ALL" %in% method) index <- c("binmatnest", "discrepancy", "binmatnest2", "discrepancy2", "NODF", "NODF2", "wine", "C.score", "checker") else index <- method
+  if (! any(method %in% c("binmatnest", "discrepancy", "binmatnest2", "discrepancy2", "NODF", "NODF2", "weighted NODF", "wine", "C.score", "checker", "ALL"))) stop("Typo? Unknown method!")
+  if ("ALL" %in% method) index <- c("binmatnest", "discrepancy", "binmatnest2", "discrepancy2", "NODF", "NODF2", "weighted NODF", "wine", "C.score", "checker") else index <- method
 
   out <- NULL
   if ("binmatnest2" %in% index) out <- c(out, "binmatnest2"=nestedtemp(web)$statistic)
@@ -26,11 +26,13 @@ nested <- function(web, method="binmatnest2", ..., rescale=FALSE){
 
   if ("NODF" %in% index) out <- c(out, "NODF"=unname(nestednodf(web, order=FALSE)$statistic[3])) # the "original", as I had implemented it, too (in NODF)
 
+  if ("weighted NODF" %in% index) out <- c(out, "weighted NODF"=unname(nestednodf(web, order=FALSE, weighted=TRUE)$statistic[3]))
+	
   if ("wine" %in% index) out <- c(out, "wine"=wine(web, ...)$wine)
   
   if (rescale & ! "ALL" %in% method) warning("You requested rescaling, but you won't get it (unless you use method='ALL')!") 
   
-  if (rescale & "ALL" %in% method) out <- abs(c(100,100,0,0,0,0,100,100,0 ) - out)
+  if (rescale & "ALL" %in% method) out <- abs(c(100,100,0,0,0,0,0,0,0,0) - out)
   
   out
   
@@ -40,4 +42,4 @@ nested <- function(web, method="binmatnest2", ..., rescale=FALSE){
 #nested(Safariland, "ALL")
 #nested(Safariland, "ALL", rescale=TRUE)
 #
-#nested(Safariland, c("C.score", "checker"), normalise=FALSE)
+#nested(Safariland, c("C.score", "checker"), rescale=FALSE)

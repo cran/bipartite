@@ -35,6 +35,7 @@ Furthermore, the least-square-fit to the cumulative distribution is not ideal. W
 
 \references{
 	Clauset, A., Shalizi, C. R., & Newman, M. E. (2009). Power-law distributions in empirical data. \emph{SIAM Review} \bold{51}, 661--703
+	
 	Jordano, P., Bascompte, J. and Olesen, J. M. (2003) Invariant properties in coevolutionary networks of plant-animal interactions. \emph{Ecology Letters} \bold{6}, 69--81  
 }
 

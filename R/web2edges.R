@@ -1,9 +1,9 @@
-web2edges <- function(web, webName=NULL, quantitative=TRUE, both.directions=FALSE, is.one.mode=FALSE, 
+web2edges <- function(web, webName=NULL, weight.column=TRUE, both.directions=FALSE, is.one.mode=FALSE, 
 	out.files=c("edges", "names", "groups")[1:2], return=FALSE, verbose=FALSE){
 	# function to turn a web-matrix into an edge list
 	#
 	# webName		name under which the files shall be saved
-	# quantitative  returns a three-column file (two for the edges, third for the weights)
+	# weight.column  returns a three-column file (two for the edges, third for the weights)
 	# both.directions represents the edge list in both directions (e.g. 1 2 and 2 1)
 	# out.files     vector of types of files to be written: edges, names, groups
 	# verbose		shall a report be printed on console?
@@ -15,7 +15,7 @@ web2edges <- function(web, webName=NULL, quantitative=TRUE, both.directions=FALS
 		
 	if (is.null(webName)) webName <- "web"	
 	
-	if (quantitative) {
+	if (weight.column) {
 		edges <- cbind(edges, edge.weights);
 	}
 	
@@ -23,7 +23,7 @@ web2edges <- function(web, webName=NULL, quantitative=TRUE, both.directions=FALS
 	# this leads to continuous numbering of species, starting with rows
 	
 	if (both.directions){
-		sequ <- if (quantitative) c(2,1,3) else c(2,1)
+		sequ <- if (weight.column) c(2,1,3) else c(2,1)
 		edges2 <- rbind(edges, edges[,sequ])
 		edges <- edges2
 	}

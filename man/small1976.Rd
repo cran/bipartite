@@ -1,7 +1,7 @@
 \name{small1976}
 \alias{small1976}
 \docType{data}
-\title{ A pollination network.}
+\title{ A flower visitation network from a peat bog in Ottawa, Canada}
 \description{
 The study took place in the Mer Bleue peat bog of Ottawa, Canada in 1973. The paper is a preliminary evaluation of the pollination relationships of the major entomophilous plant species of the Mer Bleue.
 }

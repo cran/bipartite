@@ -1,4 +1,4 @@
-\encoding{latin1}
+\encoding{UTF-8}
 \name{genweb}
 \alias{genweb}
 
@@ -22,7 +22,7 @@ genweb(N1 = 10, N2 = 30, dens = 2)
 \value{
   A matrix with N1 x N2 species.
 }
-\author{ Jochen Fründ and Carsten F. Dormann}
+\author{ Jochen FrÃ¼nd and Carsten F. Dormann}
 
 \note{ Can be a bit time-consuming for large webs, because the absolute values for both dimensions have to match perfectly. This involves a rather inelegant \code{while}-loop.}
 

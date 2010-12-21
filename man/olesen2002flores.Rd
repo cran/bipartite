@@ -1,7 +1,7 @@
 \name{olesen2002flores}
 \alias{olesen2002flores}
 \docType{data}
-\title{ A pollination network.}
+\title{ Another flower visitation network from the Azores}
 \description{
 The structure of pollination networks were investigated for two oceanic islands, the Azorean Flores and the Mauritian Ile aux Aigrettes.
 }

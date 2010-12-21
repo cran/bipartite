@@ -1,4 +1,4 @@
-\encoding{latin1}
+\encoding{UTF-8}
 
 \name{vaznull}
 \alias{vaznull}
@@ -29,7 +29,7 @@ vaznull(N, web)
 
 \references{
   
- Vazquez, D. P., C. J. Melian, N. M. Williams, N. Bl�thgen, B. R. Krasnov, and R. Poulin. 2007. Species abundance and asymmetric interaction strength in ecological networks. Oikos 116: 1120-1127.
+ Vázquez, D. P., C. J. Melian, N. M. Williams, N. Blüthgen, B. R. Krasnov, and R. Poulin. 2007. Species abundance and asymmetric interaction strength in ecological networks. Oikos 116: 1120-1127.
 }
 
 \author{ Bernd Gruber <bernd.gruber@ufz.de> & Carsten F. Dormann <carsten.dormann@ufz.de> }

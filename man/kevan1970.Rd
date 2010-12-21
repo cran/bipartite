@@ -1,7 +1,7 @@
 \name{kevan1970}
 \alias{kevan1970}
 \docType{data}
-\title{ A pollination network.}
+\title{ A pollination network from Northern Ellesmere Island, Canada}
 \description{
 The total number of individuals collected on each plant species provide a rough estimate of the level of visitation that each species received.
 }

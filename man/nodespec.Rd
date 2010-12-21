@@ -1,4 +1,4 @@
-\encoding{latin1}
+\encoding{UTF-8}
 
 \name{nodespec}
 
@@ -36,7 +36,7 @@ This mean geodesic distance is interpreted as functional specialisation (Dalgaar
 
 \references{ 
 
-Dalsgaard, B., Martin Gonzalez, A. M., Olesen, J. M., Timmermann, A., Andersen, L. H. and Ollerton, J. (2008) Pollination networks and functional specialization: a test using Lesser Antillean plant-hummingbird assemblages. \emph{Oikos} \bold{117}, 789--793
+Dalsgaard, B., Martín González, A. M., Olesen, J. M., Timmermann, A., Andersen, L. H. and Ollerton, J. (2008) Pollination networks and functional specialization: a test using Lesser Antillean plant-hummingbird assemblages. \emph{Oikos} \bold{117}, 789--793
 
  }
 

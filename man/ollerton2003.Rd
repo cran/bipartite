@@ -3,7 +3,7 @@
 \docType{data}
 \title{ollerton2003}
 \description{
- A pollination network
+ A flower visitation network from an upland grassland site in the KwaZulu-Natal reagion, South Africa
 }
 \usage{data(ollerton2003)}
 \format{

@@ -1,5 +1,4 @@
-\encoding{latin1}
-
+\encoding{UTF-8}
 \name{bipartite-package}
 
 \alias{bipartite-package}
@@ -42,8 +41,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 1.13\cr
-Date: \tab 2010-09-22\cr
+Version: \tab 1.14\cr
+Date: \tab 2010-11-25\cr
 License: \tab GPL \cr
 }
 }
@@ -51,17 +50,27 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+  \item 1.14 (release date: 21-Dez-2010)
+  \describe{
+  	\item{New function \code{\link{plotPAC}}:}{A plotting function to go with the \code{\link{PAC}}-function, providing a nice circularly arranged bubble plot, which has been copied (in style) from Morris et al. (2005). Various colour options are available.}
+	\item{New index ``weighted NODF'' included in \code{\link{networklevel}} and \code{\link{nestedness}}:}{Gustavo Carvallo has updated the existing function \code{nestednodf} in \pkg{vegan} to compute a weighted (quantitative) version as proposed by Ulrich & Almeida Neto (2010 Env. Mod. Soft). This is now linked into \pkg{bipartite}. Notice that weighted nestednodf requires vegan_1.18-14, which can be installed from R-forge until it is released on CRAN.}
+  	\item{New data set:}{bezerra2009 is a``full'' flower-visitation network of oil-collecting bees in Brazil. See help for details.}
+	\item{Minor bug fix in \code{\link{specieslevel}}:}{The newly (1.13) added functionality for index ``weighted closeness'' did not work for webs without column and row names (such as null models). Also ``weighted betweenness'' was occasionally playing up.}
+	\item{Minor bug fix in \code{\link{specieslevel}}:}{Betweenness and friends cannot be computed for fully compartmented webs (i.e. where each species interacts only with its own partner in the other trophic level). The function then failed instead of returning NA. Thanks to Nadine Sandau for reporting.}
+	\item{Minor bug fix in \code{\link{dfun}}:}{When providing independent abundances, the computation of dmin was sometimes incorrect (particularly for small webs) due to a typo. Fixed by Jochen Fründ.}
+  	\item{Minor time-saving improvement in \code{\link{degreedistr}}:}{When provided with 3 or less point to compute the degree-distribution fit from now immediately returns NA-filled matrices. Saves the time of going through all starting values and still failing.}
+	\item{Change of name of function argument in \code{\link{web2edges}}:}{The former \option{quantitative} did not really reflect what it does, so it was changed to \option{weight.column}.}
+	\item{Minor improvements to \code{\link{networklevel}}:}{Robustness and weighted nestedness were wrapped in \code{try}-functions (for very small networks). }
+    \item{New functionality to find modules in networks.}{This is still experimental and proper references etc. will be added after testing! Please do not use for production yet (at least not without consultation). Thanks to Rouven Strauß for developing this.} 
+}
+
+
   \item 1.13 (release date: 29-Sep-2010)
   \describe{
-    \item{Option added to \code{\link{H2fun}}}{to compute H2' for non-integer web. Thanks to Jochen Fr�nd for providing the inspiration and the code. 
-This option is also now available in \code{\link{networklevel}}.}
-    \item{Changes to \code{\link{nullmodel}}:}{Upon using the modification entered in version 1.12, it turns out this is no improvement but 
-rather a step in the wrong direction. So this function is back to its pre-1.12 working with a little bug fixed in swap.web (the helper function 
-`upswap' got an option too many) that caused the alteration in the 1.12 version. Thanks to Jochen Fr�nd for insisting on rolling this back.}
-    \item{Bug fix in \code{\link{networklevel}}:}{Alatalo interaction evenness could not be called separately due to a change of name within 
-the function. Thanks to Rachel Gibson for reporting!}
-   \item{New index added to \code{\link{networklevel}}:}{In addition to the binary cluster coefficient, the function now also (and automatically) 
-computes the weighted clustering coefficient introduced by Tore Opsahl in his package \pkg{tnet}.}
+    \item{Option added to \code{\link{H2fun}}}{to compute H2' for non-integer web. Thanks to Jochen Fründ for providing the inspiration and the code. This option is also now available in \code{\link{networklevel}}.}
+    \item{Changes to \code{\link{nullmodel}}:}{Upon using the modification entered in version 1.12, it turns out this is no improvement but rather a step in the wrong direction. So this function is back to its pre-1.12 working with a little bug fixed in swap.web (the helper function `upswap' got an option too many) that caused the alteration in the 1.12 version. Thanks to Jochen Fründ for insisting on rolling this back.}
+    \item{Bug fix in \code{\link{networklevel}}:}{Alatalo interaction evenness could not be called separately due to a change of name within the function. Thanks to Rachel Gibson for reporting!}
+   \item{New index added to \code{\link{networklevel}}:}{In addition to the binary cluster coefficient, the function now also (and automatically) computes the weighted clustering coefficient introduced by Tore Opsahl in his package \pkg{tnet}.}
     \item{New function \code{\link{web2edges}}:}{Transforms a web-matrix into an edge list, as used in \pkg{tnet} or other software (e.g. Pajek).}
  }
 
@@ -71,7 +80,7 @@ computes the weighted clustering coefficient introduced by Tore Opsahl in his pa
 more interactions to distribute. How an if-statement can sometimes make a difference.}
     \item{Error message in \code{\link{nullmodel}} changed to a warning.}{Up to this release, the function created null models as specified. However, 
 when a supposedly quantitative network was in fact binary, it returned an error. Now it proceeds, using the null model generating algorithm ``mgen'', and returns a warning.}
-  }	
+}	
   
   \item 1.11 (release date: 10-May-2010)
   \describe{   
@@ -80,11 +89,11 @@ required e.g. by \pkg{sna}. In most publications, one focusses on only one troph
 as a one-mode, pollinators-only network. This can now be achieved using the various options in the function. See its help for details. }
     \item{Bug fixes in \code{\link{BC}} and \code{\link{CC}}:}{Upon re-reading the paper motivating the inclusion of these functions, I noticed an 
 error in the previous implementation. The key point, and one that is contentious in network theory, is that there is no standard best way to project
- a two-mode (bipartite) network onto a one-mode network. Up until know, I used the default of \code{\link{as.one.mode}}. However, Martin Gonzales 
+ a two-mode (bipartite) network onto a one-mode network. Up until know, I used the default of \code{\link{as.one.mode}}. However, Martín Gonzáles 
 et al. (2010) use the more common projection (``higher'' and ``lower'', respectively), and this is also now implemented in \code{\link{BC}} and 
 \code{\link{CC}}. The interested reader may want to follow this problem up by reading the pre-print of Tore Opsahl (``Triadic closure in two-mode 
 networks'') to see that this one-mode projection actually distorts the statistics employed on them.}
-  }
+}
   
   \item 1.10 (release date: 02-May-2010)
   \describe{
@@ -93,7 +102,7 @@ random values from the thus specified distribution. These values represent the m
 function thus serves as a way to produce null models without maintaining exactly the marginal totals, but only their distribution. Please refer to the 
 help for some cautionary remarks on its use! In particular, null model networks are likely to be smaller than the original and there is obviously no 
 guarantee that the marginal totals are actually distributed in the specified way!}
-    \item{Polishing the Vazquez pollination networks:}{All species in these 8 networks are now consistently named (rather than numbered).}
+    \item{Polishing the Vázquez pollination networks:}{All species in these 8 networks are now consistently named (rather than numbered).}
     \item{Polish to \code{\link{specieslevel}}:}{Requesting Fisher's alpha sometimes causes convergence problems in the underlying function. This is now caught by a try, returning NA.}
     \item{Rescale in \code{\link{nested}} gave wrong scaling for NODF:}{Fixed.}
   }
@@ -112,7 +121,7 @@ the scaling constant was omitted, leading to ridiculous fits. (Thanks to Roberto
   
   \item 1.07 (release date: 18-Feb-2010)
   \describe{
-    \item{New function \code{\link{vaznull}}:}{Null model with constrained totals and connectance proposed by Diego Vazquez, similar to \code{\link{swap.web}}, 
+    \item{New function \code{\link{vaznull}}:}{Null model with constrained totals and connectance proposed by Diego Vázquez, similar to \code{\link{swap.web}}, 
 but ``better''. See notes in \code{\link{swap.web}}-help for justification of this statement. We recommend this null model for constraining both marginal totals and connectance.}
     \item{Added a new option to calculate extinction slopes:}{So far, random extinction sequences and the rarest-to-commenest sequence were implemented. Now, 
 \code{\link{second.extinct}} also includes the option \option{method="degree"} to build a sequence from the best-to-least connected species. This is the most 
@@ -123,7 +132,7 @@ may hence have to be adapted accordingly!}
   \item 1.06 (release date: 18-Dec-2009)
   \describe{
     \item{New functions \code{\link{ND}}, \code{\link{BC}} and \code{\link{CC}}:}{Simple functions to calculate normalised degree, betweenness centrality and 
-closeness centrality. These functions and the example allows a reproduction of the type of analysis carried out in Martin Gonzalez et al. (2009).}
+closeness centrality. These functions and the example allows a reproduction of the type of analysis carried out in Martín González et al. (2009).}
     \item{Changes to \code{\link{specieslevel}}}{, which now calls \code{\link{ND}}, \code{\link{BC}} and \code{\link{CC}}, too.}
     \item{Bug fix in \code{\link{as.one.mode}}:}{now allows also data.frames to be turned into one-mode-style representations. Previously, only matrices could be used.}
     \item{Suppression of errors and warnings in \code{\link{networklevel}}:}{When used on a full network (i.e. one without zeros), some indices in 
@@ -152,13 +161,13 @@ ecological assumptions behind either option a bit more transparent. There are go
   \item 1.02 (release date: 11-Sep-2009)
     \describe{
       \item{Function \code{\link{plotweb}}:}{Now more trophic networks can be plotted by staggering bipartite networks on top of each other. See multitrophic examples in \code{\link{plotweb}}.} 
-      \item{Minor corrections to \code{\link{dfun}}:}{This function did not return \emph{exactly} the values of the website-version. Jochen Fr�nd corrected this. Please 
+      \item{Minor corrections to \code{\link{dfun}}:}{This function did not return \emph{exactly} the values of the website-version. Jochen Fründ corrected this. Please 
 read the help of the function (final paragraph) for details.}
       \item{New function \code{\link{nested}}:}{This convenience function collects the various ways to calculate nestedness of a network in order to facilitate 
 comparison of nestedness analyses. To do so, it heavily borrows from \pkg{vegan}.}
       \item{Bug fix to \code{\link{discrepancy}}:}{Would return a silly value (half of the number of rows) for empty matrices. This had no effect when called 
 by \code{\link{networklevel}}, since the matrix would have been emptied. Thanks to Roberto Molowny for reporting!}
-      \item{Bug fix to \code{\link{networklevel}}:}{Due to a missing space, the option \option{ALLBUTDD} did not work properly. Thanks to Etienne Lalibert� for reporting!}
+      \item{Bug fix to \code{\link{networklevel}}:}{Due to a missing space, the option \option{ALLBUTDD} did not work properly. Thanks to Etienne Laliberte for reporting!}
     }
   \item 1.00 (release date: 06-Aug-2009)
     \describe{
@@ -171,7 +180,7 @@ over \dQuote{Shannon diversity} of interactions, to H2 (i.e. Shannon diversity s
       \item{Additions to, and overhaul of \code{\link{specieslevel}}:}{Similar to the above item, some indices were added, and the output simplified when 
 calling the option \option{index="ALLBUTD"} (only one D here!): a list with two matrices is now returned. Fisher's alpha for each species, vulnerability/generality
  and effective number of species for each target species are also now included. Index sequence has changed.}
-      \item{New function \code{\link{PAC}}:}{Calculates the Potential for Apparent Competition following the formula in M�ller et al. (1999) and Morris et al. (2005) 
+      \item{New function \code{\link{PAC}}:}{Calculates the Potential for Apparent Competition following the formula in Müller et al. (1999) and Morris et al. (2005) 
 and the suggestion by Becky Morris and Owen Lewis. More than a theoretical concept, it was experimentally shown to be relevant (Morris et al. 2004).}
       \item{Bug fix in \code{\link{H2fun}} and \code{\link{dfun}}:}{A line of code went missing at some point, so the maximum packing density was not optimal 
 (but still good) in these functions. As a result, reported H2- and d-values were sometimes 0 when they should be only very close to 0.}
@@ -225,8 +234,8 @@ download the source code for \code{nestedness.corso} from an older version of \p
   \item 0.90 (release date: 24-Mar-2009)
   \describe{
     \item{example \code{vazquez.example}:}{We added several new functionalities mainly to be able to analysis data and use network statistics as suggested by 
-V�zquez et al. 2009. You can access this example by typing \code{?vazquez.example}.}
-    \item{new feature in \code{\link{visweb}}:}{Can now plot different sized circles to represent interactions, as proposed by V�zquez et al. (2009).}
+V·zquez et al. 2009. You can access this example by typing \code{?vazquez.example}.}
+    \item{new feature in \code{\link{visweb}}:}{Can now plot different sized circles to represent interactions, as proposed by V·zquez et al. (2009).}
     \item{new feature in \code{\link{networklevel}}:}{We added an option to calculate interaction evenness either based on all possible links or just on realized links.}
     \item{new function \code{\link{sortweb}}:}{Can be used to sort webs in different ways.}
     \item{data set \code{inouye1988}:}{Another pollination network from the NCEAS database (see \code{\link{inouye1988}}).}
@@ -307,40 +316,42 @@ nestedness functions); in \code{\link{networklevel}}, nestedness is now calculat
 }
 
 \item 0.72 (release date: 12-June-2008)
-\describe{
+  \describe{
 	\item{new function: functional specialisation with \code{functspec}}{See Dalgaard et al. (2008).}
 	\item{new function: interface to \pkg{sna} through \code{\link{as.one.mode}}}{Allows calculation of path lengths, centrality, betweenness and other indices developed for one-mode networks.}
 	\item{bug-fix}{Error in \code{\link{plotweb}} when no species labels were given.}
-}
+  }
 
-}
+} % end of itemize
 
-}
+} % end of section versionlog
 
 \author{
-Carsten F. Dormann and Bernd Gruber, with additional code from Jochen Fr{\"u}nd
+Carsten F. Dormann and Bernd Gruber, with additional code from Jochen Fründ
 
 Maintainer: Carsten Dormann \email{carsten.dormann@ufz.de} and Bernd Gruber \email{bernd.gruber@ufz.de}
 
 }
 \references{
+Almeida-Neto M, Ulrich W (2010) A straightforward computational approach for measuring nestedness using quantitative matrices. \emph{Environmental Modelling & Software}, in press.
+
 Bascompte, J., Jordano, P. and Olesen, J. M. (2006) Asymmetric coevolutionary networks facilitate biodiversity maintenance. \emph{Science} \bold{312}, 431--433
 
 Bersier, L. F., Banasek-Richter, C. and Cattin, M. F. (2002) Quantitative descriptors of food-web matrices. \emph{Ecology} \bold{83}, 2394--2407
 
-Bl�thgen, N., Menzel, F. and Bl�thgen, N. (2006) Measuring specialization in species interaction networks. \emph{BMC Ecology} \bold{6}, 12
+Blüthgen, N., Menzel, F. and Blüthgen, N. (2006) Measuring specialization in species interaction networks. \emph{BMC Ecology} \bold{6}, 12
 
-Bl�thgen, N., Menzel, F., Hovestadt, T., Fiala, B. and Bl�thgen, N. (2007) Specialization, constraints, and conflicting interests in mutualistic networks. \emph{Current Biology} \bold{17}, 1--6
+Blüthgen, N., Menzel, F., Hovestadt, T., Fiala, B. and Blüthgen, N. (2007) Specialization, constraints, and conflicting interests in mutualistic networks. \emph{Current Biology} \bold{17}, 1--6
 
-Corso G., de Araujo A.I.L. and de Almeida A.M. (2008) A new nestedness estimator in community networks. \emph{arXiv}, 0803.0007v1 [physics.bio-ph]
+Corso G., de Araújo A.I.L. and de Almeida A.M. (2008) A new nestedness estimator in community networks. \emph{arXiv}, 0803.0007v1 [physics.bio-ph]
 
-Dalsgaard, B., A. M. Martin Gonzalez, J. M. Olesen, A. Timmermann, L. H. Andersen, and J. Ollerton. (2008) Pollination networks and functional specialization: a test using Lesser Antillean plant-hummingbird assemblages. \emph{Oikos} \bold{117}, 789--793
+Dalsgaard, B., A. M. Martín González, J. M. Olesen, A. Timmermann, L. H. Andersen, and J. Ollerton. (2008) Pollination networks and functional specialization: a test using Lesser Antillean plant-hummingbird assemblages. \emph{Oikos} \bold{117}, 789--793
 
-Dormann, C.F., Fr�nd, J., Bl�thgen, N., and Gruber, B. (2009) Indices, graphs and null models: analysing bipartite ecological networks. \emph{The Open Ecology Journal} \bold{2}, 7--24.
+Dormann, C.F., Fründ, J., Blüthgen, N., and Gruber, B. (2009) Indices, graphs and null models: analysing bipartite ecological networks. \emph{The Open Ecology Journal} \bold{2}, 7--24.
 
 Galeano J., Pastor J.M. and Iriondo J.M. (2008) Weighted-Interaction Nestedness Estimator (WINE): A new estimator to calculate over frequency matrices. \emph{arXiv} 0808.3397v1 [physics.bio-ph]
 
-Martin Gonzales, A.M., Dalsgaard, B. and Olesen, J.M. (2009) Centrality measures and the importance of generalist species in pollination networks. \emph{Ecological Complexity}, in press (doi:10.1016/j.ecocom.2009.03.008)
+Martín Gonzáles, A.M., Dalsgaard, B. and Olesen, J.M. (2009) Centrality measures and the importance of generalist species in pollination networks. \emph{Ecological Complexity}, in press (doi:10.1016/j.ecocom.2009.03.008)
 
 Memmott, J., Waser, N. M. and Price, M. V. (2004) Tolerance of pollination networks to species extinctions. \emph{Proceedings of the Royal Society B} \bold{271}, 2605--2611
 
@@ -348,13 +359,13 @@ Morris, R. J., Lewis, O. T. and Godfray, H. C. J. (2004) Experimental evidence f
 
 Morris, R. J., Lewis, O. T. and Godfray, H. C. J. (2005) Apparent competition and insect community structure: towards a spatial perspective. \emph{Annales Zoologica Fennici} \bold{42}, 449--462.
 
-M�ller, C. B., Adriaanse, I. C. T., Belshaw, R. and Godfray, H. C. J. (1999) The structure of an aphid-parasitoid community. \emph{Journal of Animal Ecology} \bold{68}, 346--370.
+Müller, C. B., Adriaanse, I. C. T., Belshaw, R. and Godfray, H. C. J. (1999) The structure of an aphid-parasitoid community. \emph{Journal of Animal Ecology} \bold{68}, 346--370.
 
 Tylianakis, J. M., Tscharntke, T. and Lewis, O. T. (2007) Habitat modification alters the structure of tropical host-parasitoid food webs. \emph{Nature} \bold{445}, 202--205
 
-Vazquez, D. P. and Aizen, M. A. (2004) Asymmetric specialization: A pervasive feature of plant-pollinator interactions. \emph{Ecology} \bold{85}, 1251--1257
+Vázquez, D. P. and Aizen, M. A. (2004) Asymmetric specialization: A pervasive feature of plant-pollinator interactions. \emph{Ecology} \bold{85}, 1251--1257
 
-Vazquez, P.D., Chacoff, N.,P. and  Cagnolo, L. (2009) Evaluating multiple determinants of the structure of plant-animal mutualistic networks. \emph{Ecology} \bold{90}, 2039--2046.
+Vázquez, P.D., Chacoff, N.,P. and  Cagnolo, L. (2009) Evaluating multiple determinants of the structure of plant-animal mutualistic networks. \emph{Ecology} \bold{90}, 2039--2046.
 }
 
 \keyword{ package }

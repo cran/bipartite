@@ -16,7 +16,7 @@ V.ratio(web)
   This is a rather straight-forward index, which is described and evaluated extensively in Schluter (1984). He also warns against overinterpretation of the value. In principle, V-ratios larger than 1 indicate positive, smaller than 1 negative associations. Ecologically, competition can lead to small or large values, depending on their exact effects (see discussion in the Schluter paper).
 }
 \value{
-Returns the V-ratio, i.e.~a single value representing the ratio of variance in species number and variance in individual numbers within species.
+Returns the V-ratio, i.e. a single value representing the ratio of variance in species number and variance in individual numbers within species.
 }
 \references{ 
 Gotelli, N.J. and Rohde, K. (2002) Co-occurrence of ectoparasites of marine fishes: a null model analysis. \emph{Ecology Letters} \bold{5}, 86--94

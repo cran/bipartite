@@ -1,13 +1,13 @@
 dfun <- function(web, abuns=NULL){     # abuns is external data on supply of "resources", e.g. abundance of higher trophic level
-  web <- empty(web)
+  if (is.null(abuns)) web <- empty(web)
   if (!is.null(abuns) & length(abuns)!= ncol(web)) stop("Length of abundance vector and number of higher trophic level species do not match!")
   if (is.null(abuns)) {q <- colSums(web) / sum(web)} else {q <- abuns / sum(abuns)}                 # q[j], the proportion of each "resource"
   cs <- colSums(web)
 
   # function for d
-  d <- function(x,q=q){                      # q = normalized abuns
+  d <- function(x, q=q){                      # q = normalized abuns
     p <- x/sum(x)                            # p'[ij], m cancels out of the formula
-    sum(p[p!=0]*log(p[p!=0]/q[p!=0]))
+    sum(p[p!=0] * log(p[p!=0] / q[p!=0]))
   }
 
   # function for dmin
@@ -15,13 +15,13 @@ dfun <- function(web, abuns=NULL){     # abuns is external data on supply of "re
     expec <- floor(q * (sum(x)))                # fill in downrounded expected values
     restuse <- sum(x) - sum(expec)
     x.new <- expec                              # new vector/distribution of x
-    if (!is.null(abuns)) {i.vec <- length(x)}   # i.vec will be used in the below (cells which are not "full")
+	  if (!is.null(abuns)) {i.vec <- 1:length(x)}   # i.vec will be used in the below (cells which are not "full")
     for (j in 1:restuse) {                      # add rest in single steps
       if (is.null(abuns)) {i.vec <- which(x.new < cs)}    # i.vec will be used in the next step (cells which are not "full" due to colSums reached)
       # looking for the cell where 1 can be added with the smallest increase in KLD = d
       d.check <- numeric(0)
       xsum <- sum(x.new)
-      p.0 <- x.new / xsum
+      #p.0 <- x.new / xsum
       p.1 <- x.new / (xsum + 1)
       dstep.1 <- ifelse(x.new!=0, p.1 * log(p.1 / q), 0)         # all elements of new d except the one were 1 is added
       for (i in i.vec) {

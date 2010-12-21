@@ -1,4 +1,4 @@
-\encoding{latin1}
+\encoding{UTF-8}
 \name{ND}
 
 \alias{ND}
@@ -20,14 +20,14 @@ CC(web, cmode="suminvundir", rescale=TRUE, ...)
 \arguments{
   \item{web}{A matrix with lower trophic level species as rows, higher trophic level species
     as columns and number of interactions as entries.}
-  \item{normalised}{Shall the degrees be normalised? If so (default), the degree for a species is divided by the number of potential partners-1 (see, e.g., Martin Gonzalez et al. 2009).}
+  \item{normalised}{Shall the degrees be normalised? If so (default), the degree for a species is divided by the number of potential partners-1 (see, e.g., Martín González et al. 2010).}
   \item{rescale}{If TRUE (default), centrality scores are rescaled such that they sum to 1.}
   \item{cmode}{String indicating the type of betweenness/closeness centrality being computed (directed or undirected geodesics, or a variant form - see help for \code{closeness} and \code{betweenness} in \pkg{sna} for details). The default, \option{"suminvundir"} for \code{CC} and \option{"undirected"} for \code{BC}, uses a formula that can also be applied to disconnected (=compartmented) graphs. Other cmodes may not.}
   \item{...}{Options passed on to \code{betweenness} and \code{closeness}, respectively.}
 }
 
 \details{
-  These functions are convinience functions to enable easy reproduction of the type of analyses by Martin Gonzalez et al. (2009). BC and CC are wrappers calling two functions from \pkg{sna}, which uses one-mode, rather than bipartite data. 
+  These functions are convenience functions to enable easy reproduction of the type of analyses by Martín González et al. (2010). BC and CC are wrappers calling two functions from \pkg{sna}, which uses one-mode, rather than bipartite data. 
   
   One-mode projections of two-mode networks are carried out by assigning a link to two species that share a interaction with a member of the other set (plant in case of pollinators, or pollinators in case of plants). This projection may well entail artefacts! 
   
@@ -41,13 +41,13 @@ CC(web, cmode="suminvundir", rescale=TRUE, ...)
 }
 
 \references{
- Martin Gonzales, A.M., Dalsgaard, B. and Olesen, J.M. 2009. Centrality measures and the importance of generalist species in pollination networks. \emph{Ecological Complexity}, in press (doi:10.1016/j.ecocom.2009.03.008)
+ Martín Gonzáles, A.M., Dalsgaard, B. and Olesen, J.M. 2010. Centrality measures and the importance of generalist species in pollination networks. \emph{Ecological Complexity} \bold{ 7}, 36--41
 }
 
 \author{ Carsten F. Dormann \email{carsten.dormann@ufz.de} }
 
 \note{ 
-Experimental. Should work most of the time, but not necessarily always. Also, on trials with the same data as those of Martin Gonzalez et al. (2009), numerical values differed. Whether this is due to rounding errors, different non-linear least square fits in JMP and R or whatever I cannot tell. See example for my attempt to reproduce their values for the network ``Azores'' (aka \code{\link{olesen2002flores}}).
+Experimental. Should work most of the time, but not necessarily always. Also, on trials with the same data as those of Martín González et al. (2010), numerical values differed. Whether this is due to rounding errors, different non-linear least square fits in JMP and R or whatever I cannot tell. See example for my attempt to reproduce their values for the network ``Azores'' (aka \code{\link{olesen2002flores}}).
 }
 
 \seealso{

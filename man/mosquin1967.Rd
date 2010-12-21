@@ -2,7 +2,7 @@
 \alias{mosquin1967}
 
 \docType{data}
-\title{ Pollination network.}
+\title{ Flower visitation network from Melville Island, Northwest Territories, Canada}
 \description{
 This study took place on Melville Island, N.W.T., Canada from July 19 to July 31 1965. While collecting plants the authors made some observations on the occurence and behavior of flower visiting insects as well as on the scent and other target characteristics of flowers.
 

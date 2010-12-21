@@ -1,4 +1,4 @@
-\encoding{latin1}
+\encoding{UTF-8}
 \name{networklevel}
 \alias{networklevel}
 
@@ -21,7 +21,7 @@ Usually this will be number of pollinators on each species of plants or number o
     \option{number of species}, \option{connectance}, \option{web asymmetry}, \option{links per species}, 
     \option{number of compartments}, \option{compartment diversity}, \option{cluster coefficient}, \option{weighted cluster coefficient}, \option{degree 
 distribution}, \option{mean number of shared partners}, \option{togetherness}, \option{C score}, \option{V ratio}, \option{discrepancy}, \option{nestedness}, 
-\option{weighted nestedness}, \option{extinction slope}, \option{robustness},
+\option{weighted nestedness}, \option{weighted NODF}, \option{extinction slope}, \option{robustness},
     \option{ISA},\option{SA}, \option{niche overlap},
     \option{generality},\option{vulnerability}, \option{linkage density}, \option{Fisher alpha}, \option{mean interaction diversity}, \option{interaction evenness}, 
 \option{Alatalo interaction evenness}, \option{diversity}, \option{H2};
@@ -34,9 +34,9 @@ distribution}, \option{mean number of shared partners}, \option{togetherness}, \
     }
   \item{ISAmethod}{Method to use for calculating interaction strength (= dependence) asymmetry; original by \option{Bascompte} is biased for singletons and 
 few interactions (range 0 to infty); \option{Bluethgen} (default) excludes singletons and corrects for low number of interactions (range -1 to 1); see Bascompte 
-et al. (2006) and Blüthgen et al. (2007).}
-  \item{SAmethod}{Which method to use to calculate the specification asymmetry: mean of log-transformed dependencies (\option{log}) or Blüthgen's abundance-weighted 
-mean (default); see Blüthgen et al. (2007).}
+et al. (2006) and BlÂ¸thgen et al. (2007).}
+  \item{SAmethod}{Which method to use to calculate the specification asymmetry: mean of log-transformed dependencies (\option{log}) or BlÃ¼thgen's abundance-weighted 
+mean (default); see BlÃ¼thgen et al. (2007).}
   \item{extinctmethod}{Specifies how species are removed from matrix: \option{random} or \option{abundance} (partial matching), where abundance removes species in the 
 order of increasing abundance (i.e. rarest first); see Memmott et al. (2004).}
   \item{nrep}{Number of replicates for the extinction sequence analysis.}
@@ -56,7 +56,7 @@ et al. (2007), should only the realised links be used (\option{intereven="sum"};
 }
 
 \details{
-This function implements a variety of the many (and still procreating) indices describing network topography. Some are embarracingly simple and mere descriptors of a 
+This function implements a variety of the many (and still procreating) indices describing network topography. Some are embarrassingly simple and mere descriptors of a 
 network's outer appearance (such as number of species in each trophic level or the number of links (= non-zero cells) in the web). Others are variations on Shannon's 
 diversity index applied to within column or within rows. Only extinction slope is newly implemented here, and hence described in a bit more detail.
 
@@ -68,7 +68,7 @@ is fed into the formula). At present, we implement only qualitative and quantita
 put this clarification into the help!)
 
 Integers or continuous values - what are the quantities in quantitative webs? Some web metrics expect in their typical formulation that the entries in the web-matrix are integers 
-- e. g. H2' is defined relative to minimum and maximum based on marginal totals. Standard calculation (as in Blüthgen et al. 2006) uses an algorithm assuming values can only 
+- e. g. H2' is defined relative to minimum and maximum based on marginal totals. Standard calculation (as in BlÂ¸thgen et al. 2006) uses an algorithm assuming values can only 
 be integers. If your quantities are not constrained to be integers, the results may be wrong. Multiplication and rounding may or may not give consistent results, depending on
  rounding errors and the factor applied. Multiplication with high numbers such as 10 000 seem to be OK. For H2' a simplified calculation applicable to continuous numbers is 
 available (by declaring option \option{H2_integer=FALSE} in \code{\link{H2fun}}). Note that values of H2' based on integers are not directly comparable to H2' based on continuous 
@@ -108,41 +108,42 @@ Depending on the selected indices, some or all of the below (returned as vector 
   \item{number of higher trophic species}{Number of species in the higher trophic level, i.e. \code{ncol(web)}.}
   \item{number of lower trophic species }{Number of species in the lower trophic level, i.e. \code{nrow(web)}.}
   \item{connectance}{Realised proportion of possible links (Dunne et al. 2002): sum of links divided by number of cells in the matrix (= number of higher times number of lower trophic level 
-species). This is the standardised number of species combinations often used in co-occurrence analyses (Gotelli \& Graves 1996)}  
+species). This is the standardised number of species combinations often used in co-occurrence analyses (Gotelli & Graves 1996)}  
   \item{web asymmetry}{Balance between numbers in the two levels: positive numbers indicate more lower-trophic level species, negative more higher-trophic level species; implemented as 
-\code{(nrow(web)-ncol(web))/sum(dim(web))}; web asymmetry is a null-model for what one might expect in dependence asymmetry: see Blüthgen et al. (2007).}
+\code{(nrow(web)-ncol(web))/sum(dim(web))}; web asymmetry is a null-model for what one might expect in dependence asymmetry: see BlÂ¸thgen et al. (2007).}
   \item{links per species}{Mean number of links per species (qualitative): sum of links divided by number of species.}
   \item{number of compartments}{Compartments are sub-sets of the web which are not connected (through either higher or lower trophic level) to another compartment. Mathematically, 
 they are Jordan blocks, but this implementation is rule-based (and fast). They are also nicely visualised in the \code{\link{visweb}} function.}
   \item{compartment diversity C.D.}{Shannon's diversity index across compartment sizes (i.e. number of participants); see Tylianakis et al. (2007).}
   \item{cluster coefficient}{The CC for a network is the average CC of its members. CC for each node, in turn, is simply the number of realised links devided by the number of possible links.
-	 Introduced by Watts \& Strogatz (1998) and described in Wikipedia under \url{http://en.wikipedia.org/w/index.php?title=Clustering_coefficient}. If you want to use Tore 
+	 Introduced by Watts & Strogatz (1998) and described in Wikipedia under \url{http://en.wikipedia.org/w/index.php?title=Clustering_coefficient}. If you want to use Tore 
 Opsahl's adaptation to two-modes, please see his function \code{clustering_tm} in \pkg{tnet}. To my knowledge, so far every study has used the ``wrong'' one, i.e.~the one used also here.}
   \item{weighted clustering coefficient}{When asking for ``weigthed cluster coefficient'', the (arithmetic mean) weighted version will automatically be returned unless the data are binary. 
 The computation is based on \code{clustering_tm} in \pkg{tnet}. See there (and more on Tore Opsahl's webpages) for help.}
   \item{degree distribution}{Coefficients and fits for three different functions to degree distributions: exponential, power law and truncated power law. See \code{\link{degreedistr}} for details 
 and references.}
-  \item{mean number of shared hosts}{The simplest measure of co-occurrence and hence similarity in host preferences of the higher trophic level; based on Roberts \& Stone (1990) and 
-Stone \& Roberts (1992).}
+  \item{mean number of shared hosts}{The simplest measure of co-occurrence and hence similarity in host preferences of the higher trophic level; based on Roberts & Stone (1990) and 
+Stone & Roberts (1992).}
   \item{mean number of shared predators}{Same as before, only for the lower trophic level.}
   \item{togetherness}{Mean number of co-occupancies across all species-host-combinations; the whole matrix is scanned for submatrices of the form c(0,0,1,1), representing perfect 
-matches of co-presences and co-absences. These are counted for each pairwise species combination, and averaged. Based on Stone \& Roberts (1992).}
+matches of co-presences and co-absences. These are counted for each pairwise species combination, and averaged. Based on Stone & Roberts (1992).}
   \item{C score}{Mean (normalised) number of checkerboard combinations across all higher trophic level species. Values close to 1 indicate that there is evidence for disaggregation, 
 e.g.~through competition. Value close to 0 indicate aggregation of species (i.e.~no repelling forces between species). See Stone and Roberts (1990) for details.}
   \item{V ratio}{Variance-ratio of species numbers to individual numbers within species for the higher trophic level. Values larger than 1 indicate positive aggregation, values between 
 0 and 1 indicate disaggregation of species. See Schluter (1984) for details.}
-  \item{discrepancy}{Discrepancy as proposed by Brualdi \& Sanderson (1999); see \code{[\link{discrepancy}} for details.}
-  \item{nestedness}{Nestedness temperature of the matrix (0 means cold, i.e.~high nestedness, 100 means hot, i.e.~chaos). For details see \code{\link{nestedness}} and Rodriguez-Girones 
-\& Santamaria (2002). Notice that the function \code{\link{nestedness}} does not calculate any null model, simply because it is too computer-intensive. \code{networklevel} calls 
+  \item{discrepancy}{Discrepancy as proposed by Brualdi & Sanderson (1999); see \code{\link{discrepancy}} for details.}
+  \item{nestedness}{Nestedness temperature of the matrix (0 means cold, i.e. high nestedness, 100 means hot, i.e. chaos). For details see \code{\link{nestedness}} and Rodriguez-Girones 
+& SantamarÃ­a (2002). Notice that the function \code{\link{nestedness}} does not calculate any null model, simply because it is too computer-intensive. \code{networklevel} calls 
 \code{nestedtemp}! If you are interested in the different null models, please use the function \code{\link{nestedness}} or \code{nestedtemp} in \pkg{vegan} directly.}
   \item{weighted nestedness}{A nestedness version that considers interaction frequencies (and is hence weighted), proposed by Galeano et al. (2007) and implemented in \code{\link{wine}}. 
 It ranges between 1 (perfect nestedness) and 0 (perfect chaos). Note that this is the OPPOSITE interpretation of nestedness temperature!}
+  \item{weighted NODF}{Another quantitative (=weighted) index for nestedness, building on NODF (see \code{nestednodf} in \pkg{vegan}). High values indicate nestedness. According to the analysis of Almeida-Neto et al. (2008, 2010), NODF is more consistent and ``better'' than usual measures of nestedness.}
   \item{dependence asymmetry/interaction strength asymmetry}{(selected using \option{index="ISA"}) Explaining dependence asymmetry will require more space than just a few lines. 
-In essence, it is also a measure of specialisation, across both trophic levels. Proposed by Bascompte et al. (2006) and critised and alterations proposed by Blüthgen et al. (2007). 
+In essence, it is also a measure of specialisation, across both trophic levels. Proposed by Bascompte et al. (2006) and critised and alterations proposed by BlÃ¼thgen et al. (2007). 
 The latter also show that dependence asymmetry can be almost entirely explained by web asymmetry (see above). Positive values (only possible of \option{DAmethod="Bluethgen"}) 
 indicate higher dependence in the higher trophic level.}
   \item{specialisation asymmetry}{(selected using \option{index="SA"}) Asymmetry (higher vs. lower trophic level) of specialisation now based on d' (see \code{\link{dfun}}), which is
- insensitive to the dimensions of the web. Again, two options of calculation are available: the one proposed by Blüthgen et al. (2007), where they weight the specialisation value for each 
+ insensitive to the dimensions of the web. Again, two options of calculation are available: the one proposed by BlÃ¼thgen et al. (2007), where they weight the specialisation value for each 
 species by its abundance (\option{SAmethod="Bluethgen"}) or where d'-values are log-transformed (arguing that d'-values are indeed log-normally distributed: \option{SAmethod="log"}). 
 Since the mean d-value for the lower trophic level is subtracted from that of the higher, positive values indicate a higher specialisation of the higher trophic level.}
   \item{extinction slope higher trophic level}{Slope of the secondary extinction sequence in the higher trophic level, following extermination of species in the lower trophic level; see details.}
@@ -164,7 +165,7 @@ species, it is (clearly?) the number of matrix cells, i.e. number of higher trop
  Were we to use the interpretation of Tylianakis et al. (2007), then Hmax = ln(sum of entries in matrix). This means, we equate ``number of interactions'' (not links!) = ``number of species''. 
 That means, each interaction is a species. What should that mean? Why should that measure ``interactions evenness''? Why should we move from a view of ``cells are species'' when 
 calculating H to a view of ``interactions are species'' when calculating N? To say the least, it doesn't seem consistent. See details for more on this.}
-  \item{Alatalo interaction evenness}{A different measure for web entry evenness, as proposed by Müller et al. (1999). }
+  \item{Alatalo interaction evenness}{A different measure for web entry evenness, as proposed by MÂ¸ller et al. (1999). }
   \item{Shannon diversity}{Shannon's diversity of interactions (i.e. network entries).}
   \item{H2}{H2' is a network-level measure of specialisation. It ranges between 0 (no specialisation) and 1 (complete specialisation). H2' is a measure of discrimination, i.e. calculated 
 in comparison of no specialisation (see \code{\link{H2fun}} for details. To avoid confusion of keys (apostrophe vs. accent), we call the H2' only H2 here.}
@@ -176,8 +177,7 @@ example, if the web is full (i.e. no 0-cells), extinction slopes cannot be fitte
 doesn't do it, let me know.
 
 Some indices require rather long computation times on large webs. Particularly slow (for large webs) are: \dQuote{extinction slope} and \dQuote{nestedness}. For ordinary-sized webs 
-(tens by tens), \code{networklevel} is reasonably fast. An example of a large web is \code{kato1990}: try it, possibly using \code{system.time} as a wrapper, and prepare to do some 
-reading on the side ...
+(tens by tens), \code{networklevel} is reasonably fast. An example of a large web is \code{kato1990}: try it, possibly using \code{system.time} as a wrapper, and prepare to do some reading on the side ...
 
  If you want to increase the speed by omitting some indices, here a rough guide: Ask only for the indices you are interested in! Otherwise, here is the sequence of most time-consuming 
 indices: 1. The slowest function is related to extinction slopes and robustness. Excluding both makes the function faster. 2. Degree distributions are somewhat time consuming. 
@@ -187,17 +187,21 @@ moderately decrease computation time.
 }
 
 \references{ 
+Almeida-Neto M, Loyola RD, Ulrich W, Guimaraes P, Guimaraes Jr. PR. 2008. A consistent metric for nestedness analysis in ecological systems: reconciling concept and measurement. \emph{Oikos} \bold{117}, 1227--1239
+
+Almeida-Neto M, Ulrich W (2010) A straightforward computational approach for measuring nestedness using quantitative matrices. \emph{Environmental Modelling & Software}, in press.
+
 Bascompte, J., Jordano, P. and Olesen, J. M. 2006 Asymmetric coevolutionary networks facilitate biodiversity maintenance. \emph{Science} \bold{312}, 431--433
 
 Bersier, L. F., Banasek-Richter, C. and Cattin, M. F. (2002) Quantitative descriptors of food-web matrices. \emph{Ecology} \bold{83}, 2394--2407
 
-Blüthgen, N., Menzel, F., Hovestadt, T., Fiala, B. and Blüthgen N. 2007 Specialization, constraints and conflicting interests in mutualistic networks. \emph{Current Biology} \bold{17}, 1--6
+BlÃ¼thgen, N., Menzel, F., Hovestadt, T., Fiala, B. and BlÃ¼thgen N. 2007 Specialization, constraints and conflicting interests in mutualistic networks. \emph{Current Biology} \bold{17}, 1--6
 
 Burgos, E., H. Ceva, R.P.J. Perazzo, M. Devoto, D. Medan, M. Zimmermann, and A. Maria Delbue (2007) Why nestedness in mutualistic networks? \emph{Journal of Theoretical Biology} \bold{249}, 307--313
 
-Corso G, de Araujo AIL, de Almeida AM (2008) A new nestedness estimator in community networks. \emph{arXiv} 0803.0007v1 [physics.bio-ph]
+Corso G, de AraÃºjo AIL, de Almeida AM (2008) A new nestedness estimator in community networks. \emph{arXiv} 0803.0007v1 [physics.bio-ph]
 
-Dormann, C.F., Fründ, J., Blüthgen, N., and Gruber, B. (2009) Indices, graphs and null models: analysing bipartite ecological networks. \emph{The Open Ecology Journal} \bold{2}, 7--24.
+Dormann, C.F., FrÃ¼nd, J., BlÃ¼thgen, N., and Gruber, B. (2009) Indices, graphs and null models: analysing bipartite ecological networks. \emph{The Open Ecology Journal} \bold{2}, 7--24.
 
 Dunne, J. A., R. J. Williams, and N. D. Martinez. 2002 Food-web structure and network theory: the role of connectance and size. \emph{Proceedings of the National Academy of Science USA} \bold{99}, 12917--12922
 
@@ -207,22 +211,21 @@ Gotelli, N. J., and G. R. Graves. 1996 Null Models in Ecology. Smithsonian Insti
 
 Memmott, J., Waser, N. M. and Price M. V. 2004 Tolerance of pollination networks to species extinctions. \emph{Proceedings of the Royal Society B} \bold{271}, 2605--2611
 
-Müller, C. B., Adriaanse, I. C. T., Belshaw, R. and Godfray, H. C. J. 1999 The structure of an aphid-parasitoid community. \emph{Journal of Animal Ecology} \bold{68}, 346--370
+MÃ¼ller, C. B., Adriaanse, I. C. T., Belshaw, R. and Godfray, H. C. J. 1999 The structure of an aphid-parasitoid community. \emph{Journal of Animal Ecology} \bold{68}, 346--370
 
 Roberts, A. and Stone, L. 1990 Island-sharing by archipelago species. \emph{Oecologia} \bold{83}, 560--567
 
-Rodriguez-Girones M.A., and Santamari a L. 2006. A new algorithm to calculate the nestedness temperature of presence-absence matrices. \emph{Journal of Biogeography} \bold{33}, 924--935
+RodrÃ­guez-GirÃ³nes M.A., and SantamarÃ­a L. 2006. A new algorithm to calculate the nestedness temperature of presence-absence matrices. \emph{Journal of Biogeography} \bold{33}, 924--935
 
-Schluter, D. 1984 A variance test for detecting species associations, with some example
-applications. \emph{Ecology} \bold{65}, 998-1005.
+Schluter, D. (1984) A variance test for detecting species associations, with some example applications. \emph{Ecology} \bold{65}, 998-1005.
 
-Stone, L. and Roberts, A. 1990 The checkerboard score and species distributions. \emph{Oecologia} \bold{85}, 74--79.
+Stone, L. and Roberts, A. (1990) The checkerboard score and species distributions. \emph{Oecologia} \bold{85}, 74--79.
 
-Stone, L. and Roberts, A. 1992 Competitive exclusion, or species aggregation? An aid in deciding. \emph{Oecologia} \bold{91}, 419--424
+Stone, L. and Roberts, A. (1992) Competitive exclusion, or species aggregation? An aid in deciding. \emph{Oecologia} \bold{91}, 419--424
 
-Tylianakis, J. M., Tscharntke, T. and Lewis, O. T. 2007 Habitat modification alters the structure of tropical host-parasitoid food webs. \emph{Nature} \bold{445}, 202--205
+Tylianakis, J. M., Tscharntke, T. and Lewis, O.T. (2007) Habitat modification alters the structure of tropical host-parasitoid food webs. \emph{Nature} \bold{445}, 202--205
 
-Watts, D. J. and Strogatz, S. 1998 Collective dynamics of \sQuote{small-world} networks. \emph{Nature} \bold{393}, 440--442
+Watts, D. J. and Strogatz, S. (1998) Collective dynamics of \sQuote{small-world} networks. \emph{Nature} \bold{393}, 440--442
 }
 
 \author{ Carsten F. Dormann \email{carsten.dormann@ufz.de}}
