@@ -44,7 +44,8 @@ totals are identical to those observed (as in \code{r2dtable}), 2. connectance i
  too few 0s (which is I have yet to encounter), then the opposite strategy is applied.
  
  The algorithm in our implementation has some variations on finding the submatrix and constraining the number of 
- successless trials before starting on a new random matrix, but they are only for speeding up the process.
+ unsuccessfull trials before starting on a new random matrix, but they are only for speeding up the process.
+ 
  
 }
 
@@ -53,8 +54,11 @@ totals are identical to those observed (as in \code{r2dtable}), 2. connectance i
 }
 
 \references{
+ Artzy-Randrup, Y., and Stone, L. (2005) Generating uniformly distributed random networks. \emph{Physical Review E} \bold{72}, 1--7
 
- Vázquez, D. P., and M. A. Aizen (2003) Null model analyses of specialization in plant-pollinator interactions. \emph{Ecology} \bold{84} 2493-2501
+ Miklós, I. and Podani, J. (2004) Randomization of presence-absence matrices: comments and new algorithms. \emph{Ecology} \bold{85}, 86--92
+ 
+ Vázquez, D. P., and M. A. Aizen (2003) Null model analyses of specialization in plant-pollinator interactions. \emph{Ecology} \bold{84}, 2493--2501
 
  Vázquez, D. P., C. J. Melian, N. M. Williams, N. Blüthgen, B. R. Krasnov, and R. Poulin (2007) Species abundance and asymmetric interaction strength in ecological networks. \emph{Oikos} \bold{116}, 1120--1127
 
@@ -68,10 +72,12 @@ totals are identical to those observed (as in \code{r2dtable}), 2. connectance i
 \author{ Carsten F. Dormann <carsten.dormann@ufz.de> }
 
 \note{ 
-  Long stories can be told about the swap algorithm. I am not the right person to do so, but for a much more detailed coverage of the topic, for many more ways to implement null models for \bold{binary} matrices, with various flavours of the swap and possible alternatives, first brew yourself a cup of tea and then check out the help pages of \code{commsimulator} in \pkg{vegan}. (As usual, Jari Oksanen has spend considerable care to implement even the most bizarr and abstruse way to move 0s and 1s around. His ecological advise between the lines make his package worthwhile already! I, personally, would use \code{method="quasiswap"}, as is done in the example to \code{\link{discrepancy}}.)
+  Long stories can be told about the swap algorithm. I am not the right person to do so, but for a much more detailed coverage of the topic, for many more ways to implement null models for \bold{binary} matrices, with various flavours of the swap and possible alternatives, first brew yourself a cup of tea and then check out the help pages of \code{commsimulator} in \pkg{vegan}. (As usual, Jari Oksanen has spend considerable care to implement even the most bizarre and abstruse way to move 0s and 1s around. His ecological advise between the lines make his package worthwhile already! I, personally, would use \code{method="quasiswap"}, as is done in the example to \code{\link{discrepancy}}.)
   
  When comparing the \code{swap.web} algorithm with that proposed by Vázquez et al. (2007, implemented in \code{\link{vaznull}}), we found that \code{swap.web} contains a certain bias. The subtraction of the swap will reduce the value of low-value cells, and increase that of high-value cells. As a consequence, it produces somewhat of a dichotomy between very high and very low values. Using e.g. H2' to quantify this pattern, \code{swap.web} will produce very specialised networks (around 0.5), while the Vazquez-algorithm yields lower H2' values and a more even distribution of interactions within cells.
  The ramifications are that \code{swap.web} will predict higher-than-necessary expectations. (Date of this entry: 15.1.2010)
+ 
+ In fact, Artzy-Randrup & Stone (2005) have shown that the swap algorithm is \emph{fundamentally biased}, because some swaps are more likely than others. This applies to this version of the swap as well as to the one implemented in \code{\link{vaznull}}. So, despite heavy citation, the approach of Miklós & Podani (2004) is thus also not ideal, as often claimed.
 
   \code{swap.web} is a very constraint null model. You need to consider if it is the right one for your application!
 }

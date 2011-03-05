@@ -1,4 +1,4 @@
-setClass("moduleWeb", representation(originalWeb="matrix", moduleWeb="matrix", orderA="vector", orderB="vector", modules="matrix"));
+setClass("moduleWeb", representation(originalWeb="matrix", moduleWeb="matrix", orderA="vector", orderB="vector", modules="matrix", likelihood="numeric"));
 
 computeModules = function(web, deep = FALSE, deleteOriginalFiles=TRUE, steps=1000000) {
 
@@ -8,7 +8,7 @@ computeModules = function(web, deep = FALSE, deleteOriginalFiles=TRUE, steps=100
 					  deepCompute=deep, delete=deleteOriginalFiles, steps=steps);
 	result[[4]]	= result[[4]][order(result[[4]][,1]),];
 
-	new("moduleWeb", originalWeb=web, moduleWeb=result[[1]], orderA=result[[2]], orderB=result[[3]], modules=result[[4]]);
+	new("moduleWeb", originalWeb=web, moduleWeb=result[[1]], orderA=result[[2]], orderB=result[[3]], modules=result[[4]], likelihood=result[[5]]);
 }
 
 
@@ -43,7 +43,7 @@ cM = function(web, depth, nrOfModule, ytop, xleft, ybottom, xright, prev_orderA,
 	orderAFile	= data[[1]];
 	orderBFile	= data[[2]];
 	modulesFile	= data[[3]];
-	#infoFile	= data[[4]];
+	infoFile	= data[[4]];
 
 	# Permutation of the graph and therefore actualization of the permutation vectors is necessary
 	# if more than one module are suggested
@@ -60,6 +60,8 @@ cM = function(web, depth, nrOfModule, ytop, xleft, ybottom, xright, prev_orderA,
 		result[[1]] = web[tempA, tempB];
 		result[[2]] = orderAFile;
 		result[[3]] = orderBFile;
+		result[[4]] <- NA
+		result[[5]] = as.numeric(infoFile); # likelihood
 
 		# The matrix M containing the information about the identified modules is formatted in the following way:
 		# Each row i contains the information about one certain module while
@@ -83,8 +85,8 @@ cM = function(web, depth, nrOfModule, ytop, xleft, ybottom, xright, prev_orderA,
 			}
 		}
 
-		modulesFile							= M;
-		result[[4]]							= rbind(modules, M);
+		modulesFile	 = M;
+		result[[4]]	 = rbind(modules, M);
 
 		# Computation of potential modules nested within the ones found until now
 		if(deepCompute) {
@@ -128,6 +130,7 @@ cM = function(web, depth, nrOfModule, ytop, xleft, ybottom, xright, prev_orderA,
 		result[[2]] = prev_orderA;
 		result[[3]] = prev_orderB;
 		result[[4]] = modules;
+		result[[5]] <- infoFile;
 	}
 
 	result;
@@ -140,7 +143,8 @@ readModuleData = function(webName=NULL, deleteOriginalFiles=TRUE) {
 	orderAFile = as.vector(as.matrix(read.table(paste(webName, ".ordA", sep=""), header=TRUE, sep="\t")));
 	orderBFile = as.vector(as.matrix(read.table(paste(webName, ".ordB", sep=""), header=TRUE, sep="\t")));
 	modulesFile = as.matrix(read.table(paste(webName, ".mod", sep=""), header=TRUE, sep="\t"));
-	#infoFile = read.table(paste(webName, ".info", sep=""), header=TRUE, sep="\t");
+	infoFile = strsplit(readLines(paste(webName, ".info", sep=""), n=-1)[15], ": ")[[1]][2]  # reads in only the likelihood!
+	#read.table(paste(webName, ".info", sep=""), header=TRUE, sep="\t");
 
 	if(deleteOriginalFiles) deleteModuleData(webName);
 
@@ -148,7 +152,7 @@ readModuleData = function(webName=NULL, deleteOriginalFiles=TRUE) {
 	result[[1]] = orderAFile;
 	result[[2]] = orderBFile;
 	result[[3]] = modulesFile;
-	#result[[4]] = infoFile;
+	result[[4]] = infoFile;
 
 	result;
 }

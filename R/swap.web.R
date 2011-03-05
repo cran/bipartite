@@ -81,14 +81,18 @@ swap.web <- function(N, web, verbose=FALSE, c.crit=1e4){
             mat <- findmat.full(first)
             cat("New null matrix needed: old one sucked.\n")
         } 
-#        cat("2x2 matrix found")
+        # cat("2x2 matrix found ")
         # swap:
         mat.new <- mat
-        diag(mat.new) <- (diag(mat)-min(diag(mat)))
+        diag(mat.new) <- (diag(mat) - min(diag(mat)))
         diag(mat.new[2:1, ]) <- diag(mat[2:1,]) + min(diag(mat))
-        first[attr(mat, "rows"), attr(mat, "cols")] <- mat.new
-        n <- sum(first > 0)
-#        cat(paste(n, "vs.", m, "\n", sep=""))
+  		# check that we are not downswapping more than interactions still available:  
+        trial <- first
+        trial[attr(mat, "rows"), attr(mat, "cols")] <- mat.new
+		if (sum(trial > 0) < m) next 
+        if (sum(trial > 0) >= m) first[attr(mat, "rows"), attr(mat, "cols")] <- mat.new
+	    n <- sum(first > 0)
+        #cat(paste(n, "vs.", m, "\n", sep=""))
       }
       first
   }
@@ -113,8 +117,9 @@ swap.web <- function(N, web, verbose=FALSE, c.crit=1e4){
     first <- r2dtable(1, r=rowSums(web), c=colSums(web))[[1]] # creates a null web with same marginal totals
     n <- sum(first>0)                         
     if (verbose) if (m > n) cat("Requires filling algorithm!\n") else cat("Requires emptying algorithm!\n")
-    if (m < n) null <- downswap(first, m=m, n=n, c.crit=c.crit)
-    if (m >= n) null <- upswap(first, m=m, n=n)
+    if (m < n)  null <- downswap(first, m=m, n=n, c.crit=c.crit)
+    if (m >= n) null <- upswap(first, m=m, n=n)  
+    # sum(null>0); sum(null) # for testing purposes
     null
   }
 

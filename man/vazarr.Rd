@@ -13,15 +13,6 @@
   ..$ : chr [1:10] "X2" "X1" "X13" "X4" ...
   ..$ : chr [1:29] "78" "65" "94" "66" ...
 }
-\details{
-
-}
-\source{
-
-}
-\references{
-
-}
 \examples{
 data(vazarr)
 ## maybe str(vazarr) ; plot(vazarr) ...

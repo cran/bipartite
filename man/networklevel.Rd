@@ -22,7 +22,7 @@ Usually this will be number of pollinators on each species of plants or number o
     \option{number of compartments}, \option{compartment diversity}, \option{cluster coefficient}, \option{weighted cluster coefficient}, \option{degree 
 distribution}, \option{mean number of shared partners}, \option{togetherness}, \option{C score}, \option{V ratio}, \option{discrepancy}, \option{nestedness}, 
 \option{weighted nestedness}, \option{weighted NODF}, \option{extinction slope}, \option{robustness},
-    \option{ISA},\option{SA}, \option{niche overlap},
+    \option{ISA}, \option{SA}, \option{niche overlap},
     \option{generality},\option{vulnerability}, \option{linkage density}, \option{Fisher alpha}, \option{mean interaction diversity}, \option{interaction evenness}, 
 \option{Alatalo interaction evenness}, \option{diversity}, \option{H2};
     \option{ALL} (default) calculates all indices (returning a list (since degree distribution fits are a table within this list and cannot be simplified)), 
@@ -32,9 +32,7 @@ distribution}, \option{mean number of shared partners}, \option{togetherness}, \
     \option{quantitative} returns a best-of selection of indices based on quantitative networks;
     \option{topology} returns indices more abstractly describing network properties. Also CHECK details below!
     }
-  \item{ISAmethod}{Method to use for calculating interaction strength (= dependence) asymmetry; original by \option{Bascompte} is biased for singletons and 
-few interactions (range 0 to infty); \option{Bluethgen} (default) excludes singletons and corrects for low number of interactions (range -1 to 1); see Bascompte 
-et al. (2006) and Bl¸thgen et al. (2007).}
+  \item{ISAmethod}{Method to use for calculating interaction strength (= dependence) asymmetry; original by \option{Bascompte} is yielding artefact results based only on the asymmetry of the web (as shown by example in Blüthgen et al. 2007 analytically in Blüthgen 2010) and should hence be avoided; \option{Bluethgen} (default) excludes singletons and corrects for low number of interactions (range -1 to 1); see Bascompte et al. (2006) and Blüthgen et al. (2007).}
   \item{SAmethod}{Which method to use to calculate the specification asymmetry: mean of log-transformed dependencies (\option{log}) or Blüthgen's abundance-weighted 
 mean (default); see Blüthgen et al. (2007).}
   \item{extinctmethod}{Specifies how species are removed from matrix: \option{random} or \option{abundance} (partial matching), where abundance removes species in the 
@@ -194,6 +192,8 @@ Almeida-Neto M, Ulrich W (2010) A straightforward computational approach for mea
 Bascompte, J., Jordano, P. and Olesen, J. M. 2006 Asymmetric coevolutionary networks facilitate biodiversity maintenance. \emph{Science} \bold{312}, 431--433
 
 Bersier, L. F., Banasek-Richter, C. and Cattin, M. F. (2002) Quantitative descriptors of food-web matrices. \emph{Ecology} \bold{83}, 2394--2407
+
+Blüthgen, N. (2010) Why network analysis is often disconnected from community ecology: A critique and an ecologist's guide. \emph{Basic and Applied Ecology} \bold{11}, 185--195
 
 Blüthgen, N., Menzel, F., Hovestadt, T., Fiala, B. and Blüthgen N. 2007 Specialization, constraints and conflicting interests in mutualistic networks. \emph{Current Biology} \bold{17}, 1--6
 

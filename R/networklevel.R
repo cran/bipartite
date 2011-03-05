@@ -55,7 +55,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
         out$connectance <- sum(web>0)/prod(dim(web))
     }
     #--------------------
-    if ("web asymmetry" %in% index) out$"web asymmetry" <- (NCOL(web)-NROW(web))/sum(dim(web))     # web asymmetry (Blüthgen et al. 2007, Fig. S2)
+    if ("web asymmetry" %in% index) out$"web asymmetry" <- (NCOL(web)-NROW(web))/sum(dim(web))     # web asymmetry (Bl√ºthgen et al. 2007, Fig. S2)
     ###---###---###---###---###---###---###---###---###---###---###---###---###
     #--------------------
     if ("links per species" %in% index){
@@ -181,7 +181,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
     
     ###---###---###---###---###---###---###---###---###---###---###---###---###
     if ("ISA" %in% index){
-    # Dependence asymmetry (Bascompte et al. 2006; Bl�thgen et al. 2007, Fig. S2)
+    # Dependence asymmetry (Bascompte et al. 2006; Bl¸thgen et al. 2007, Fig. S2)
         depL <- web.e/matrix(rowSums(web.e), nrow=NROW(web.e), ncol=NCOL(web.e), byrow=FALSE)
         depH <- web.e/matrix(colSums(web.e), nrow=NROW(web.e), ncol=NCOL(web.e), byrow=TRUE)
 
@@ -214,9 +214,9 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
     }
     
     #---------------------------------------------------------
-    # Specialisation asymmetry (Bl�thgen et al. 2007, Fig. S2)
+    # Specialisation asymmetry (Bl¸thgen et al. 2007, Fig. S2)
     # 2 options for calculating the "mean" SA:
-    # either as Bl�thgen et al: average weighted by number of interactions in the 
+    # either as Bl¸thgen et al: average weighted by number of interactions in the 
     # cell or as mean of logarithms (since the dependencies follow a lognormal
     # distribution)
     if ("SA" %in% index){
@@ -275,7 +275,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
       out$"lower trophic level niche overlap" <- NOlower
     }
     ###---###---###---###---###---###---###---###---###---###---###---###---###
-    if (any(c("links per species", "linkage density", "vulnerability", "generality") %in% index)){
+    if (any(c("links per species", "linkage density", "vulnerability", "generality", "Fisher alpha", "mean interaction diversity") %in% index)){
        # for formula see Tylianakis et al. (2006), supplement.
        # N refers to prey, P to predators
 
@@ -332,7 +332,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
         if ("Alatalo interaction evenness" %in% index){
           evenness <- function(web){
           # calculates evenness of the numbers of individual of different species in
-          # a community, NOT according to formula in Müller et al. (1999, 
+          # a community, NOT according to formula in M√ºller et al. (1999, 
           # J. Anim. Ecol), but according to the original formula in Alatalo 
           # (1981, Oikos) 
           # can be extended at some point to more indices ...
@@ -348,7 +348,7 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
 
     }
     #---------------
-    # Blüthgen's H2'
+    # Bl√ºthgen's H2'
     if ("H2" %in% index){
         H2 <- as.numeric(H2fun(web, H2_integer=H2_integer)[1]) #1.element is the standardised H2 prime
         out$"H2"= ifelse(H2<0, 0, H2)
@@ -363,4 +363,4 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
 #networklevel(Safariland, plot.it.dd=TRUE, plot.it.extinction=TRUE)
 #networklevel(Safariland, index="ALLBUTDD")
 #networklevel(Safariland, index="info")
-#networklevel(Safariland, index=c("Fisher alpha", "vulnerability", "H2")
+#networklevel(Safariland, index=c("Fisher alpha", "vulnerability", "H2")    

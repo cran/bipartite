@@ -41,8 +41,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 1.14\cr
-Date: \tab 2010-11-25\cr
+Version: \tab 1.15\cr
+Date: \tab 2011-03-05\cr
 License: \tab GPL \cr
 }
 }
@@ -50,10 +50,18 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+  \item 1.15 (release date: 05-Mar-2011)
+  \describe{
+	\item{Bug fix in \code{\link{swap.web}}:}{Occasionally, an interaction too many was swapped, leading to a connectance slightly too low compared to the original matrix. Spotted and reported by Sven Hanoteaux. (For ``normal'' webs, this bug has luckily caused only very small discrepancies between the realised and the intended null web. We thus regard this error to be (luckily) of virtually no influence on the results reported in our Open Ecology Journal paper. Please also note that the help of \code{swap.web} recommends using \code{\link{vaznull}}.)}
+	\item{Bug fix in \code{\link{shuffle.web}}:}{Some interactions were lost when there were more rows than columns. Spotted and reported by Sven Hanoteaux. (Please note that while a shameful mistake, it luckily does not affect the results reported in our Open Ecology Journal paper, where all webs analysed were asymmetric ``in the right way''.)}
+  	\item{Minor bug fix in \code{\link{networklevel}}:}{No output was provided when only index ``Fisher alpha'' or ``mean interaction diversity'' was selected. Thanks to Sven Hanoteaux for reporting and fixing!}
+  }	
+	
   \item 1.14 (release date: 21-Dez-2010)
   \describe{
   	\item{New function \code{\link{plotPAC}}:}{A plotting function to go with the \code{\link{PAC}}-function, providing a nice circularly arranged bubble plot, which has been copied (in style) from Morris et al. (2005). Various colour options are available.}
-	\item{New index ``weighted NODF'' included in \code{\link{networklevel}} and \code{\link{nestedness}}:}{Gustavo Carvallo has updated the existing function \code{nestednodf} in \pkg{vegan} to compute a weighted (quantitative) version as proposed by Ulrich & Almeida Neto (2010 Env. Mod. Soft). This is now linked into \pkg{bipartite}. Notice that weighted nestednodf requires vegan_1.18-14, which can be installed from R-forge until it is released on CRAN.}
+	\item{New index ``weighted NODF'' included in \code{\link{networklevel}} and \code{\link{nestedness}}:}{Gustavo Carvallo has updated the existing function \code{nestednodf} in \pkg{vegan} to compute a weighted (quantitative) version as proposed by Ulrich & Almeida Neto (2010 Env. Mod. Soft). This is now linked into \pkg{bipartite}. }
+	%Notice that weighted nestednodf requires vegan_1.18-14, which can be installed from R-forge until it is released on CRAN.
   	\item{New data set:}{bezerra2009 is a``full'' flower-visitation network of oil-collecting bees in Brazil. See help for details.}
 	\item{Minor bug fix in \code{\link{specieslevel}}:}{The newly (1.13) added functionality for index ``weighted closeness'' did not work for webs without column and row names (such as null models). Also ``weighted betweenness'' was occasionally playing up.}
 	\item{Minor bug fix in \code{\link{specieslevel}}:}{Betweenness and friends cannot be computed for fully compartmented webs (i.e. where each species interacts only with its own partner in the other trophic level). The function then failed instead of returning NA. Thanks to Nadine Sandau for reporting.}
