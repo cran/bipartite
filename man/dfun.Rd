@@ -14,7 +14,7 @@ dfun(web, abuns=NULL)
 
 \arguments{
   \item{web}{ Web is a matrix representing the interactions observed between higher trophic level species (columns) and lower trophic level species (rows). Usually this will be number of pollinators on each species of plants or number of parasitoids on each species of prey.}
-  \item{abuns}{A vector of abundances for the HIGHER trophic level, usually from additional information. If none is given (default) marginal sums are used.}
+  \item{abuns}{A vector of abundances for the HIGHER trophic level, usually from additional information. If none is given (default) marginal sums are used. Note that if a web with rows or columns without any interaction is provided, these will not be purged when an independent abundances vector is given. As a consequence, these species will have a d' of NA (see note below).}
 }
 
 \details{
@@ -48,6 +48,8 @@ Blüthgen, N., Menzel, F. and Blüthgen, N. (2006) Measuring specialization in s
 
 \author{Jochen Fründ and Carsten F. Dormann}
 \note{ 
+When independent abundances were provided, the empty rows/columns are purposefully \emph{not} removed from the web (because they now still contain information). Logically (and as implemented), this leads to d-values for these species of NA. This makes sense: the pollinator, say, has never been observed on any of the flowers, so how can we quantify its specialisation?
+
 As detailed above, deriving the dmin-values \sQuote{heuristically} leaves room to some variation. We are very happy with this implementation, but you may want to program something yourself ...
 }
 

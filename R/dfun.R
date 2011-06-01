@@ -57,6 +57,9 @@ dfun <- function(web, abuns=NULL){     # abuns is external data on supply of "re
   d.min <- apply(web, 1, dminfind, q)
   d.max <- apply(web, 1, dmaxfind, q)
 
+  # sometimes allocating integers will not find the minimal solution; in these cases, dmin will be replaced by the actual value of d.raw, should that be lower:
+  d.min <- ifelse(d.raw < d.min, d.raw, d.min) # (this line added 31-Mar-2011)
+
   d.prime <- (d.raw - d.min)/(d.max - d.min)
   list("dprime"=d.prime, "d"=d.raw, "dmin"=d.min, "dmax"=d.max)
 }

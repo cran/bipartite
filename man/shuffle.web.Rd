@@ -8,12 +8,13 @@
 Shuffles (= relocates) entries in a web matrix whilst maintaining the dimensionality.
 }
 \usage{
-shuffle.web(web, N)
+shuffle.web(web, N, legacy=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{web}{ An interaction matrix.}
   \item{N}{ Number of desired shuffled matrices. }
+  \item{legacy}{Logical; use the old or new algorithm? Defaults to TRUE, i.e. the old algorithm. The new algorithm was written by Paul Rabie and is about 3 times faster (due to avoiding a loop). For consistency reasons, the old, slow algorithm remains the default.}
 }
 \details{
  This function is designed to behave similar to \code{r2dtable}, i.e. it returns a list of randomised matrices. 

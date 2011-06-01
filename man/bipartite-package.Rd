@@ -41,8 +41,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 1.15\cr
-Date: \tab 2011-03-05\cr
+Version: \tab 1.16\cr
+Date: \tab 2011-06-01\cr
 License: \tab GPL \cr
 }
 }
@@ -50,6 +50,12 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
+  \item 1.16 (release date: 01-Jun-2011)
+  \describe{
+  	\item{Bug fix and extended documentation in \code{\link{dfun}}:}{1. Sometimes d.min was larger than d.raw yielding negative d'-values. Since the search for d.min is heuristic, it can sometimes fail to yield lower values than d.raw. In these (rare) cases, d.min is now set to d.raw. 2. Documentation for a specific (but not uncommon or unreasonable) constellation added: When independent abundances were provided, the empty rows/columns are purposefully \emph{not} removed from the web (because they now still contain information). Logically (and as implemented), this leads to d-values for these species of NA. This makes sense: the pollinator, say, has never been observed on any of the flowers, so how can we quantify its specialisation? While reasonable, it was undocumented behaviour. Thanks to Ana María Martín Gonzáles for drawing our attention to it!} 
+	\item{Speed improvement in \code{\link{shuffle.web}}:}{Thanks to Paul Rabie, a faster implementation of the \code{shuffle.web} null model is available. Choosing the option \option{legacy=FALSE} will deliver the null models about 3 times faster.}
+  }
+
   \item 1.15 (release date: 05-Mar-2011)
   \describe{
 	\item{Bug fix in \code{\link{swap.web}}:}{Occasionally, an interaction too many was swapped, leading to a connectance slightly too low compared to the original matrix. Spotted and reported by Sven Hanoteaux. (For ``normal'' webs, this bug has luckily caused only very small discrepancies between the realised and the intended null web. We thus regard this error to be (luckily) of virtually no influence on the results reported in our Open Ecology Journal paper. Please also note that the help of \code{swap.web} recommends using \code{\link{vaznull}}.)}

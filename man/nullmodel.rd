@@ -16,7 +16,7 @@ Usually this will be number of pollinators on each species of plants or number o
   \item{N}{number of null models to be generated; defaults to 1000 (more might be better, less probably not).}
   \item{method}{Null model type. Can be given as an integer or name: 1/"r2dtable", 2/"swap.web", 3/"vaznull", 4/"shuffle.web", 5/"mgen"; allows for partial 
 match of names; methods 1 to 4 works for quantitative webs, 4 and 5 for binary.}
-  \item{...}{arguments to be passed to the function generating the specific null models}
+  \item{...}{arguments to be passed to the function generating the specific null models, see there for options.}
 }
 
 \details{
