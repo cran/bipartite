@@ -58,8 +58,8 @@ function(web, N, legacy=TRUE){
       out
 	} else { # this is the second part of the "legacy"-condition:
 	# Here starts the code by Paul Rabie, 8 April 2011, which is faster than the old.
-    	xdiag.index=matrix(ncol=2, nrow=max(dim(web))-min(dim(web)))
-       xdiag.index[,1]=sample(c(1:(min(dim(web)))), size=max(dim(web))-min(dim(web)), replace=TRUE)
+    	xdiag.index=matrix(ncol=2,nrow=max(dim(web))-min(dim(web)))
+       xdiag.index[,1]=sample(c(1:(min(dim(web)))),size=max(dim(web))-min(dim(web)),replace=TRUE)
        xdiag.index[,2]=(min(dim(web))+1):max(dim(web)) #xdiag is a matrix containing one cell per 'extra' columns (extra, relative to the diagonal)  This removes the need for a loop
        out[xdiag.index]=shuf[nozero.index[(length(diag(web)) + 1):(length(diag(web))+nrow(xdiag.index))]]
        gone <- sum(out > 0)

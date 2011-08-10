@@ -71,7 +71,8 @@ The idea behind this function is to encourage the comparison of different nested
 
 
 \seealso{
-\code{\link{C.score}}, \code{\link{wine}}, \code{\link{nestedness}}, \code{\link{discrepancy}}; and, within \pkg{vegan}: \code{nestedtemp},   \code{nestedchecker}, \code{nesteddisc}, \code{nestednodf}
+\code{\link{C.score}}, \code{\link{wine}}, \code{\link{nestedness}}, \code{\link{discrepancy}}; and, within \pkg{vegan}: \code{nestedtemp},   
+\code{nestedchecker}, \code{nesteddisc}, \code{nestednodf}
 }
 \examples{
 \dontrun{

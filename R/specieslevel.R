@@ -27,7 +27,7 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
 
     web <- empty(web) # delete unobserved species
 
-    allindex <- c("species number", "degree", "ND", "dependence", "strength", "interaction", "PSI", "NS", "BC", "CC", "Fisher", "diversity", "effective partners", "d")
+    allindex <- c("species number", "degree", "ND", "dependence", "strength", "interaction", "PDI", "PSI", "NS", "BC", "CC", "Fisher", "diversity", "effective partners", "d")
 
     if ("ALL" %in% index) index <- allindex
     if ("ALLBUTD" %in% index) index <- allindex[-c(1,4)]
@@ -91,6 +91,12 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
 
     #----------------------------------------------------------------------------
     # Pollination webs only: pollination service index for each pollinator species
+    if ("PDI" %in% index){
+      out$"higher trophic level"$"Paired Differences Index PDI" <- PDI(web, log=FALSE)
+      out$"lower trophic level"$"Paired Differences Index PDI" <- PDI(t(web), log=FALSE)
+    }
+    #----------------------------------------------------------------------------
+    # Pollination webs only: pollination service index for each pollinator species
     if ("PSI" %in% index){
         PSI <- function(web, beta=1){
             # calculates the average contribution per visit for each pollinator species
@@ -144,10 +150,10 @@ function(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL) {
 		proj <- projecting_tm(el, method=method) 
 		if (index == "betweenness") {
 			b <- betweenness_w(proj)[,2]
-			if (!is.null(rownames(web))) names(b) <- rownames(web)
 			if (length(b) != NROW(web)){
 				b <- c(b, rep(NA, (NROW(web) - length(b))))
 			}
+			if (!is.null(rownames(web))) names(b) <- rownames(web)
 			out <- b/sum(b, na.rm=TRUE)
 		}
 		if (index == "closeness") {

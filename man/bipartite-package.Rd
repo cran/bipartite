@@ -41,8 +41,8 @@ See function description for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 1.16\cr
-Date: \tab 2011-06-01\cr
+Version: \tab 1.17\cr
+Date: \tab 2011-08-10\cr
 License: \tab GPL \cr
 }
 }
@@ -50,10 +50,17 @@ License: \tab GPL \cr
 \section{versionlog}{
 
 \itemize{
-  \item 1.16 (release date: 01-Jun-2011)
+  \item 1.17 (release date: 20-AUG-2011)
+  \describe{
+	\item{New specialisation index at the species level in function \code{\link{PDI}}:}{Computes the Paired Differences Index proposed by Poisot et al. (2011a,b). Also automatically now included in \code{\link{specieslevel}}.}
+  	\item{Bug fix in \code{\link{specieslevel}}:}{Computation of betweenness was causing an error when the network was containing a single-link compartment. Thanks to Marco Mello for spotting!}
+	\item{Another PDF is included (Dormann 2011):}{This paper compares specialisation indices, based on the function \code{\link{specieslevel}}. All source code to reproduce these results is included. It can serve as a guide to the \code{\link{specieslevel}} function and its interpretation.}
+  }
+
+  \item 1.16 (release date: 29-May-2011)
   \describe{
   	\item{Bug fix and extended documentation in \code{\link{dfun}}:}{1. Sometimes d.min was larger than d.raw yielding negative d'-values. Since the search for d.min is heuristic, it can sometimes fail to yield lower values than d.raw. In these (rare) cases, d.min is now set to d.raw. 2. Documentation for a specific (but not uncommon or unreasonable) constellation added: When independent abundances were provided, the empty rows/columns are purposefully \emph{not} removed from the web (because they now still contain information). Logically (and as implemented), this leads to d-values for these species of NA. This makes sense: the pollinator, say, has never been observed on any of the flowers, so how can we quantify its specialisation? While reasonable, it was undocumented behaviour. Thanks to Ana María Martín Gonzáles for drawing our attention to it!} 
-	\item{Speed improvement in \code{\link{shuffle.web}}:}{Thanks to Paul Rabie, a faster implementation of the \code{shuffle.web} null model is available. Choosing the option \option{legacy=FALSE} will deliver the null models about 3 times faster.}
+	\item{Speed improvement in \code{\link{shuffle.web}}:}{Thanks to Paul Rabie, a faster implementation of the \code{shuffle.web} null model is available. Choosing the option \option{legacy=TRUE} will deliver the null models about 3 times faster.}
   }
 
   \item 1.15 (release date: 05-Mar-2011)
@@ -66,7 +73,7 @@ License: \tab GPL \cr
   \item 1.14 (release date: 21-Dez-2010)
   \describe{
   	\item{New function \code{\link{plotPAC}}:}{A plotting function to go with the \code{\link{PAC}}-function, providing a nice circularly arranged bubble plot, which has been copied (in style) from Morris et al. (2005). Various colour options are available.}
-	\item{New index ``weighted NODF'' included in \code{\link{networklevel}} and \code{\link{nestedness}}:}{Gustavo Carvallo has updated the existing function \code{nestednodf} in \pkg{vegan} to compute a weighted (quantitative) version as proposed by Ulrich & Almeida Neto (2010 Env. Mod. Soft). This is now linked into \pkg{bipartite}. }
+	\item{New index ``weighted NODF'' included in \code{\link{networklevel}} and \code{\link{nestedness}}:}{Gustavo Carvallo has updated the existing function \code{nestednodf} in \pkg{vegan} to compute a weighted (quantitative) version as proposed by Ulrich & Almeida Neto (2011 Env. Mod. Soft). This is now linked into \pkg{bipartite}. }
 	%Notice that weighted nestednodf requires vegan_1.18-14, which can be installed from R-forge until it is released on CRAN.
   	\item{New data set:}{bezerra2009 is a``full'' flower-visitation network of oil-collecting bees in Brazil. See help for details.}
 	\item{Minor bug fix in \code{\link{specieslevel}}:}{The newly (1.13) added functionality for index ``weighted closeness'' did not work for webs without column and row names (such as null models). Also ``weighted betweenness'' was occasionally playing up.}
@@ -343,11 +350,11 @@ nestedness functions); in \code{\link{networklevel}}, nestedness is now calculat
 \author{
 Carsten F. Dormann and Bernd Gruber, with additional code from Jochen Fründ
 
-Maintainer: Carsten Dormann \email{carsten.dormann@ufz.de} and Bernd Gruber \email{bernd.gruber@ufz.de}
+Maintainer: Carsten Dormann \email{carsten.dormann@ufz.de} and Bernd Gruber
 
 }
 \references{
-Almeida-Neto M, Ulrich W (2010) A straightforward computational approach for measuring nestedness using quantitative matrices. \emph{Environmental Modelling & Software}, in press.
+Almeida-Neto, M. and Ulrich, W. (2011) A straightforward computational approach for measuring nestedness using quantitative matrices. \emph{Environmental Modelling & Software}, \bold{26}, 173--178
 
 Bascompte, J., Jordano, P. and Olesen, J. M. (2006) Asymmetric coevolutionary networks facilitate biodiversity maintenance. \emph{Science} \bold{312}, 431--433
 
@@ -361,19 +368,25 @@ Corso G., de Araújo A.I.L. and de Almeida A.M. (2008) A new nestedness estimato
 
 Dalsgaard, B., A. M. Martín González, J. M. Olesen, A. Timmermann, L. H. Andersen, and J. Ollerton. (2008) Pollination networks and functional specialization: a test using Lesser Antillean plant-hummingbird assemblages. \emph{Oikos} \bold{117}, 789--793
 
-Dormann, C.F., Fründ, J., Blüthgen, N., and Gruber, B. (2009) Indices, graphs and null models: analysing bipartite ecological networks. \emph{The Open Ecology Journal} \bold{2}, 7--24.
+Dormann, C.F., Fründ, J., Blüthgen, N., and Gruber, B. (2009) Indices, graphs and null models: analysing bipartite ecological networks. \emph{The Open Ecology Journal} \bold{2}, 7--24
+
+Dormann, C.F. (2011) How to be a specialist? Quantifying specialisation in pollination networks. \emph{Network Biology} \bold{1}, 1--20
 
 Galeano J., Pastor J.M. and Iriondo J.M. (2008) Weighted-Interaction Nestedness Estimator (WINE): A new estimator to calculate over frequency matrices. \emph{arXiv} 0808.3397v1 [physics.bio-ph]
 
-Martín Gonzáles, A.M., Dalsgaard, B. and Olesen, J.M. (2009) Centrality measures and the importance of generalist species in pollination networks. \emph{Ecological Complexity}, in press (doi:10.1016/j.ecocom.2009.03.008)
+Martín Gonzáles, A.M., Dalsgaard, B. and Olesen, J.M. (2009) Centrality measures and the importance of generalist species in pollination networks. \emph{Ecological Complexity}, \bold{7}, 36--43
 
 Memmott, J., Waser, N. M. and Price, M. V. (2004) Tolerance of pollination networks to species extinctions. \emph{Proceedings of the Royal Society B} \bold{271}, 2605--2611
 
-Morris, R. J., Lewis, O. T. and Godfray, H. C. J. (2004) Experimental evidence for apparent competition in a tropical forest food web. \emph{Nature} \bold{428}, 310--313.
+Morris, R. J., Lewis, O. T. and Godfray, H. C. J. (2004) Experimental evidence for apparent competition in a tropical forest food web. \emph{Nature} \bold{428}, 310--313
 
 Morris, R. J., Lewis, O. T. and Godfray, H. C. J. (2005) Apparent competition and insect community structure: towards a spatial perspective. \emph{Annales Zoologica Fennici} \bold{42}, 449--462.
 
-Müller, C. B., Adriaanse, I. C. T., Belshaw, R. and Godfray, H. C. J. (1999) The structure of an aphid-parasitoid community. \emph{Journal of Animal Ecology} \bold{68}, 346--370.
+Müller, C. B., Adriaanse, I. C. T., Belshaw, R. and Godfray, H. C. J. (1999) The structure of an aphid-parasitoid community. \emph{Journal of Animal Ecology} \bold{68}, 346--370
+
+Poisot, T., Lepennetier, G., Martinez, E., Ramsayer, J., and Hochberg, M.E. (2011a) Resource availability affects the structure of a natural bacteria-bacteriophage community. \emph{Biology Letters} \bold{7}, 201--204
+
+Poisot, T., Bever, J.D., Nemri, A., Thrall, P.H., and Hochberg, M.E. (2011b) A conceptual framework for the evolution of ecological specialisation. \emph{Ecology Letters} \bold{14}, 841--851
 
 Tylianakis, J. M., Tscharntke, T. and Lewis, O. T. (2007) Habitat modification alters the structure of tropical host-parasitoid food webs. \emph{Nature} \bold{445}, 202--205
 

@@ -56,8 +56,10 @@ calculates extinction slopes from the output of \code{second.extinct}.}
 
 \examples{
 data(Safariland)
-(ex <- second.extinct(Safariland, participant="low", method="r", nrep=50, details=TRUE))
-(ex <- second.extinct(Safariland, participant="low", method="r", nrep=50, details=FALSE))
+(ex <- second.extinct(Safariland, participant="low", method="r", nrep=50, 
+	details=TRUE))
+(ex <- second.extinct(Safariland, participant="low", method="r", nrep=50, 
+	details=FALSE))
 }
 
 \keyword{package}

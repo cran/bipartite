@@ -9,8 +9,9 @@
 }
 
 \usage{
-web2edges(web, webName=NULL, weight.column=TRUE, both.directions=FALSE, is.one.mode=FALSE, 
-	out.files=c("edges", "names", "groups")[1:2], return=FALSE, verbose=FALSE)
+web2edges(web, webName=NULL, weight.column=TRUE, both.directions=FALSE, 
+	is.one.mode=FALSE, out.files=c("edges", "names", "groups")[1:2],
+	return=FALSE, verbose=FALSE)
 }
 
 \arguments{

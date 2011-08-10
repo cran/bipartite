@@ -17,7 +17,10 @@ This function takes an object of class "moduleWeb" and plots the modules found b
 }
 
 \usage{
-plotModuleWeb(moduleWebObject, plotModules = TRUE, rank = FALSE, weighted = TRUE, displayAlabels = TRUE, displayBlabels = TRUE, labsize = 1, xlabel = "", ylabel = "", square.border = "white", fromDepth = 0, upToDepth = -1)
+plotModuleWeb(moduleWebObject, plotModules = TRUE, 
+rank = FALSE, weighted = TRUE, displayAlabels = TRUE, 
+displayBlabels = TRUE, labsize = 1, xlabel = "", ylabel = "", 
+square.border = "white", fromDepth = 0, upToDepth = -1)
 }
 
 \arguments{

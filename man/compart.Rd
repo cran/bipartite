@@ -21,7 +21,7 @@ Internal function, to be called by \code{\link{networklevel}}.
 \note{
 Note that up to (and including) version 0.85 we used a code based on correspondence analysis (see Lewinsohn et al. 2006). This is, however, faulty for webs with many same-linked species. Hence we resort to a brute-force search for compartments, which is orders of magnitude slower, but at least works correctly.
 
-For large networks, the recursive call of compartment my cause an error. Use \code{options(expressions=50000)} at the beginning of the script to allow for deeper nesting.
+For large networks, the recursive call of compartment may cause an error. Use \code{options(expressions=50000)} at the beginning of the script to allow for deeper nesting.
 }
 
 \value{

@@ -60,7 +60,8 @@ null.distr(N=2, Safariland, distr="negbin")
 round(networklevel(Safariland, "info"), 3)
 sapply(null.distr(N=5, Safariland), function(x) networklevel(x, index="info"))
 # highly connected
-sapply(null.distr(N=5, Safariland, distr="negbin"), function(x) networklevel(x, index="info")[3])
+sapply(null.distr(N=5, Safariland, distr="negbin"), function(x) networklevel(x, 
+	index="info")[3])
 # similarly highly connected
 }
 

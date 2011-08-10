@@ -19,13 +19,16 @@ networklevel(web, index="ALL", ISAmethod="Bluethgen",
 Usually this will be number of pollinators on each species of plants or number of parasitoids on each species of prey.}
   \item{index}{One or more of the following (exact match only!):
     \option{number of species}, \option{connectance}, \option{web asymmetry}, \option{links per species}, 
-    \option{number of compartments}, \option{compartment diversity}, \option{cluster coefficient}, \option{weighted cluster coefficient}, \option{degree 
-distribution}, \option{mean number of shared partners}, \option{togetherness}, \option{C score}, \option{V ratio}, \option{discrepancy}, \option{nestedness}, 
-\option{weighted nestedness}, \option{weighted NODF}, \option{extinction slope}, \option{robustness},
-    \option{ISA}, \option{SA}, \option{niche overlap},
-    \option{generality},\option{vulnerability}, \option{linkage density}, \option{Fisher alpha}, \option{mean interaction diversity}, \option{interaction evenness}, 
-\option{Alatalo interaction evenness}, \option{diversity}, \option{H2};
-    \option{ALL} (default) calculates all indices (returning a list (since degree distribution fits are a table within this list and cannot be simplified)), 
+    \option{number of compartments}, \option{compartment diversity}, 
+    \option{cluster coefficient}, \option{weighted cluster coefficient},  
+    \option{degree distribution}, \option{mean number of shared partners},  
+    \option{togetherness}, \option{C score}, \option{V ratio}, \option{discrepancy}, 
+    \option{nestedness}, \option{weighted nestedness}, \option{weighted NODF}, 
+    \option{extinction slope}, \option{robustness},  \option{ISA}, \option{SA},
+     \option{niche overlap},  \option{generality},\option{vulnerability},
+     \option{linkage density}, \option{Fisher alpha}, \option{mean interaction diversity}, 
+     \option{interaction evenness}, \option{Alatalo interaction evenness}, 
+     \option{diversity}, \option{H2};  \option{ALL} (default) calculates all indices (returning a list (since degree distribution fits are a table within this list and cannot be simplified)), 
     \option{ALLBUTDD} calculates all indices except degree distribution fits. This latter has the advantage that the output can be simplified to a vector; 
     \option{info} returns more general information on the network;
     \option{binary} returns a best-of selection of indices based on a binary network;
@@ -48,8 +51,8 @@ see \code{vegdist} in \pkg{vegan}.}
   \item{empty.web}{Shall the empty columns and rows be deleted? Defaults to TRUE.}
   \item{logbase}{Shall the various diversity indices be calculated to the base of e (default) or 2? Log2 is the proposal for generality and vulnerability by Bersier et al. (2002), 
 while Shannon uses ln. The choice of the base will not affect the results qualitatively, only by a scaling factor.}
-  \item{intereven}{Shall all cells of the matrix be used to calculate the interaction evenness (\option{intereven="prod"})? Or, as given by Bersier et al. (2002) and Tylianakis 
-et al. (2007), should only the realised links be used (\option{intereven="sum"}; default)? Prod and sum refer to using the log of the \bold{product} of matrix dimensions (i.e. all cells) or the log of the \bold{sum} of non-zero cells (i.e. number of links)  as denominator in the evenness formula. See last paragraph of the details-section for views on these two options!}
+  \item{intereven}{Shall all cells of the matrix be used to calculate the interaction evenness 
+  (\option{intereven="prod"})? Or, as given by Bersier et al. (2002) and Tylianakis et al. (2007), should only the realised links be used (\option{intereven="sum"}; default)? Prod and sum refer to using the log of the \bold{product} of matrix dimensions (i.e. all cells) or the log of the \bold{sum} of non-zero cells (i.e. number of links)  as denominator in the evenness formula. See last paragraph of the details-section for views on these two options!}
   \item{H2_integer}{Logical; indicates whether values in web are integers. Passed on to \code{\link{H2fun}}; see there for details.}
 }
 

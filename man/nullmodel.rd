@@ -54,7 +54,8 @@ obs <- unlist(networklevel(Safariland, index="weighted nestedness"))
 nulls <- nullmodel(Safariland, N=100, method=1)
 null <- unlist(sapply(nulls, networklevel, index="weighted nestedness")) #takes a while ...
 
-plot(density(null), xlim=c(min(obs, min(null)), max(obs, max(null))), main="comparison of observed with null model Patefield")
+plot(density(null), xlim=c(min(obs, min(null)), max(obs, max(null))), 
+	main="comparison of observed with null model Patefield")
 abline(v=obs, col="red", lwd=2)    
 
 praw <- sum(null>obs) / length(null)
@@ -67,9 +68,11 @@ null4 <- unlist(sapply(nulls4, networklevel, index="weighted nestedness"))
 null5 <- unlist(sapply(nulls5, networklevel, index="weighted nestedness"))
 
 
-plot(density(null4), xlim=range(c(null4, null5)), lwd=2, main="comparison of null models")
+plot(density(null4), xlim=range(c(null4, null5)), lwd=2, 
+	main="comparison of null models")
 lines(density(null5), col="red", lwd=2)
-legend("topright", c("shuffle", "mgen"), col=c("black", "red"), lwd=c(2,2), bty="n", cex=1.5)
+legend("topright", c("shuffle", "mgen"), col=c("black", "red"), lwd=c(2,2), 
+	bty="n", cex=1.5)
 abline(v=networklevel(Safariland>0, index="weighted nestedness"))
 }
 

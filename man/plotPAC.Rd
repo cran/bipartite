@@ -53,7 +53,8 @@ data(kevan1970)
 plotPAC(kevan1970)
 
 data(Safariland)
-plotPAC(Safariland, plot.scale=1, fill.col="red", arrow.col="orange", circles=TRUE, radius=1)
+plotPAC(Safariland, plot.scale=1, fill.col="red", arrow.col="orange", 
+	circles=TRUE, radius=1)
 }
 
 \keyword{ package }

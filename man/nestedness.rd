@@ -11,8 +11,8 @@ matrix temperature of given size and fills. The deviation from this minimun temp
 null models to check for statistical significance of the matrix temperature.}
 
 \usage{
-nestedness(m, null.models = TRUE, n.nulls = 100, popsize = 30, n.ind = 7, 
-n.gen = 2000, binmatnestout=FALSE)
+nestedness(m, null.models = TRUE, n.nulls = 100, popsize = 30, 
+n.ind = 7, n.gen = 2000, binmatnestout=FALSE)
 }
 
 \arguments{
@@ -64,7 +64,8 @@ In the meantime, use \code{nestedtemp} in \pkg{vegan} (as we do in \code{network
 \examples{
 data(vazarr)
 nestedness(vazarr) # null models are calculated
-nestedness(vazarr, null.models=FALSE) # no null models, much faster for bigger matrices
+# no null models, much faster for bigger matrices:
+nestedness(vazarr, null.models=FALSE) 
 nestedness(vazarr, n.nulls=300, n.gen=300)
 }
 

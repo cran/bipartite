@@ -2,8 +2,8 @@ Package: bipartite
 Type: Package
 Title: Visualising bipartite networks and calculating some (ecological)
         indices.
-Version: 1.16
-Date: 2011-06-01
+Version: 1.17
+Date: 2011-08-10
 Author: Carsten F. Dormann and Bernd Gruber, with additional code from
         Mariano Devoto, Jochen Fruend, Jose Iriondo, Rouven Strauss and
         Diego Vazquez, also based on C-code developed by Nils
@@ -11,7 +11,7 @@ Author: Carsten F. Dormann and Bernd Gruber, with additional code from
         Rodriguez-Girones.
 Maintainer: Carsten F. Dormann <carsten.dormann@ufz.de>
 Depends: MASS, methods, tnet, vegan
-Suggests: fields, sna, spam
+Suggests: fields, igraph, sna, spam
 Description: Bipartite provides functions to visualise webs and
         calculate a series of indices commonly used to describe pattern
         in ecological webs. It focusses on webs consisting of only two
@@ -21,6 +21,6 @@ Description: Bipartite provides functions to visualise webs and
         aspects of the webs topology.
 Classification: network, plot, graph
 License: GPL
-Packaged: 2011-05-28 20:30:08 UTC; carsten
+Packaged: 2011-08-10 13:33:16 UTC; dormann
 Repository: CRAN
-Date/Publication: 2011-05-29 07:54:48
+Date/Publication: 2011-08-10 16:21:10

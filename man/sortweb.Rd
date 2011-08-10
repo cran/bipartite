@@ -4,7 +4,7 @@
 \alias{sortweb}
 
 \title{ Function to sort bipartite webs }
-\description{ This function sorts bipartite webs by either increasing/decreasing row and  column totals or by a given sequence
+\description{ This function sorts bipartite webs by either increasing/decreasing row and column totals or by a given sequence
 
 }
 
@@ -40,11 +40,14 @@ data(Safariland)
 web <- Safariland
 
 sortweb(Safariland, sort.order="dec") 
-plotweb(sortweb(Safariland, sort.order="inc"), method="normal")   #rarest species first
-visweb(sortweb(Safariland,sort.order="inc"), type="diagonal", square="compartment", text="none", frame=TRUE)
+#rarest species first:
+plotweb(sortweb(Safariland, sort.order="inc"), method="normal")   
+visweb(sortweb(Safariland,sort.order="inc"), type="diagonal", 
+	square="compartment", text="none", frame=TRUE)
 
 # sorted by a given (here random) sequence
-sequence <- list(seq.higher=sample(colnames(Safariland)), seq.lower=sample(rownames(Safariland)))
+sequence <- list(seq.higher=sample(colnames(Safariland)), 
+	seq.lower=sample(rownames(Safariland)))
 web.ordered <- sortweb(web, sort.order="seq", sequence=sequence)
 
 }

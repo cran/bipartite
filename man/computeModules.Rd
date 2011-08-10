@@ -14,7 +14,8 @@ This function takes a bipartite weighted graph and computes modules by applying 
 }
 
 \usage{
-computeModules(web, deep = FALSE, deleteOriginalFiles = TRUE, steps = 1000000)
+computeModules(web, deep = FALSE, deleteOriginalFiles = TRUE, 
+	steps = 1000000)
 }
 
 \arguments{

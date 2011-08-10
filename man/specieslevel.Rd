@@ -11,7 +11,8 @@ specifically. Various simple numbers and indices are calculated and returned.
 }
 
 \usage{
-specieslevel(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL)
+specieslevel(web, index="ALL", logbase="e", low.abun=NULL, 
+	high.abun=NULL)
 }
 
 \arguments{
@@ -20,8 +21,7 @@ specieslevel(web, index="ALL", logbase="e", low.abun=NULL, high.abun=NULL)
   \item{index}{Vector of indices to be calculated for each trophic level of the web;
             options are: \code{species number} for number of species, 
             \code{degree}, \code{ND} for normalised degrees, \code{dependence}, \code{interaction} for interaction push/pull (our version of dependence asymmetry: see details),  
-\code{PSI} for pollination service index (or pollinator
-            support index, depending on the trophic level), 
+            \code{PDI} for Paired Differences Index, \code{PSI} for pollination service index (or pollinator support index, depending on the trophic level), 
             \code{NS} for node  specialisation index, \code{BC} for betweenness, \code{CC} for closeness (both automatically also return their weighted counterparts proposed 
 by Tore Opsahl in package \pkg{tnet}),
             \code{Fisher} for Fisher's alpha index, \code{diversity} for Shannon diversity of interactions of that species, \code{effective partners} for the effective number of 
@@ -83,6 +83,7 @@ For both the \dQuote{higher trophic level} and the \dQuote{higher trophic level}
 the other level it interacts with stronger then they affect it (\dQuote{pusher}); negative values indicate that a species is, on average, 
 on the receiving end of the stick (\dQuote{being pulled}); formula based on Vázquez et al (2007), but push/pull is our own nomenclature. 
 Values are highly correlated with species strengths (see below), but standardised to fall between -1 (being pulled) and 1 (pushing).}
+  \item{Paired Differences Index PDI}{as proposed by Poisot et al. (2011a,b); values of 0 indicate generalists, while 1 indicates a perfect specialist; see \code{\link{PDI}} for details and comments.}
   \item{Pollination Service Index PSI}{for the higher trophic level, and the equivalent Pollinator Support Index for the lower trophic level. 
 Expresses the value of, say, a pollinator for all plant species as the sum (across all plant species) of the proportion of pollen deposited per 
 visit. The more specialised the pollinator and the fewer pollinators the plants it pollinates, the higher is its value for the plant community. 
@@ -112,9 +113,15 @@ number of partners, if each partner was equally common. Note that \dQuote{partne
 
  Blüthgen, N., Menzel, F. and Blüthgen, N. (2006) Measuring specialization in species interaction networks. \emph{BMC Ecology} \bold{6}, 9
 
- Martín Gonzáles, A.M., Dalsgaard, B. and Olesen, J.M. 2009. Centrality measures and the importance of generalist species in pollination networks. \emph{Ecological Complexity}, in press (doi:10.1016/j.ecocom.2009.03.008)
+Dormann, C.F. (2011) How to be a specialist? Quantifying specialisation in pollination networks. \emph{Network Biology} \bold{1}, 1--20
+
+Martín Gonzáles, A.M., Dalsgaard, B. and Olesen, J.M. (2010) Centrality measures and the importance of generalist species in pollination networks. \emph{Ecological Complexity}, \bold{7}, 36--43
 
 Opsahl, T., & Panzarasa, P. (2009). Clustering in weighted networks. Social Networks, 31, 155--163
+
+Poisot, T., Lepennetier, G., Martinez, E., Ramsayer, J., and Hochberg, M.E. (2011a) Resource availability affects the structure of a natural bacteria-bacteriophage community. \emph{Biology Letters} \bold{7}, 201--204
+
+Poisot, T., Bever, J.D., Nemri, A., Thrall, P.H., and Hochberg, M.E. (2011b) A conceptual framework for the evolution of ecological specialisation. \emph{Ecology Letters} \bold{14}, 841--851
 
 Vázquez, D. P., Melian, C. J., Williams, N. M., Blüthgen N., Krasnov B. R. and Poulin, R. (2007) Species abundance and asymmetric interaction strength in ecological networks. \emph{Oikos} \bold{116}, 1120--1127
 }
@@ -122,6 +129,8 @@ Vázquez, D. P., Melian, C. J., Williams, N. M., Blüthgen N., Krasnov B. R. and
 \author{ Carsten F. Dormann \email{carsten.dormann@ufz.de}}
 
 \note{
+A comparison of specialisation indices is provided in Dormann (2011); the PDI is missing (since it was published later).
+
 Dependencies are still an open field of debate. Dependencies are calculated as the value in a matrix divided by the \code{rowSums} (for the lower trophic level) or the \code{colSums} (for the higher trophic level). As such, any pollinator observed only once will receive a dependency-value of 1, indicating perfect dependence on this plant species. That may or may not be true. In any case it is based on a sample size of 1, that is why the dependency asymmetry (which is based on the dependencies for both trophic levels) has come under criticism and may be rather sensitive to singletons.
 
 We here provide the code to calculate the strength of a species (i.e. sum of its dependencies), based on the current proposal by Bascompte et al. (2006). It may be a good idea to remove all singletons from the web before calculating this index, to investigate whether it is indeed driven by those scarce observations.

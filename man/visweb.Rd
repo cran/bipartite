@@ -11,9 +11,9 @@
 visweb(web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1,
   plotsize=12, square="interaction", text="no", frame=NULL, textsize=1,
   textcol="red", pred.lablength=NULL, prey.lablength, clear=TRUE,
-  xlabel="", ylabel="", boxes=TRUE, circles=FALSE, circle.col="black",circle.min=0.2,
-  circle.max=2, outerbox.border="white", outerbox.col="white",
-  box.border="black", box.col="black")
+  xlabel="", ylabel="", boxes=TRUE, circles=FALSE, circle.col="black",
+  circle.min=0.2, circle.max=2, outerbox.border="white", 
+  outerbox.col="white", box.border="black", box.col="black")
 }
 
 \arguments{
@@ -76,13 +76,17 @@ visweb(web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1,
 
 data(Safariland)
 visweb(Safariland)
-visweb(Safariland, type="diagonal", square="compartment", text="none", frame=TRUE)
+visweb(Safariland, type="diagonal", square="compartment", text="none", 
+	frame=TRUE)
 visweb(Safariland, type="nested", text="compartment")
 
 
-visweb(Safariland, circles=TRUE,  boxes=FALSE,  labsize=1, circle.max=3, text="no")
-visweb(Safariland, circles=TRUE,  boxes=FALSE,  labsize=1,  text="no",circle.max=1.8, outerbox.border="black")
-visweb(Safariland, circles=TRUE,  boxes=TRUE, outerbox.col="orange", labsize=1, circle.max=1.8, text="no")
+visweb(Safariland, circles=TRUE,  boxes=FALSE,  labsize=1, circle.max=3, 
+	text="no")
+visweb(Safariland, circles=TRUE,  boxes=FALSE,  labsize=1,  text="no",
+	circle.max=1.8, outerbox.border="black")
+visweb(Safariland, circles=TRUE,  boxes=TRUE, outerbox.col="orange", 
+	labsize=1, circle.max=1.8, text="no")
 
 visweb(Safariland,square="b",box.col="green",box.border="red")
 

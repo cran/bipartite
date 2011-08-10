@@ -47,7 +47,8 @@ Ulrich, W. and Gotelli, N.J. (2007) Disentangling community patterns of nestedne
 \examples{
 data(Safariland)
 require(vegan)
-nulls <- replicate(1000, discrepancy(commsimulator(Safariland, method="quasiswap")))
+nulls <- replicate(1000, discrepancy(commsimulator(Safariland, 
+		method="quasiswap")))
 hist(nulls)
 obs <- discrepancy(Safariland)
 abline(v=obs, lwd=3, col="grey")
