@@ -33,8 +33,15 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
 
   low.order <- 1:dim(web)[1]
   high.order <- 1:dim(web)[2]
-
-
+  
+  # CFD: 
+  if (NROW(web) == 1 | NCOL(web) ==1) {
+  	#stop("Doesn't work with only one species in one of the levels.")
+  	xlim <- low.order
+  	ylim <- high.order
+  	sequence <- NULL#list(seq.high=colnames(web), seq.low=rownames(web))
+  	method="normal"
+  }
 
   meths <- c("normal", "cca")
   meths.match <- pmatch(method, meths)
@@ -80,7 +87,7 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
 
        for (i in 1:dim(web)[2]) high.order[i] <- which(sequence$seq.high[i]==colnames(web))
        for (i in 1:dim(web)[1]) low.order[i] <- which(sequence$seq.low[i]==rownames(web))
-       web <- web[sequence$seq.low[rs], sequence$seq.high[cs]]
+       web <- web[sequence$seq.low[rs], sequence$seq.high[cs], drop=FALSE]
    }
 
    websum <- sum(web)
@@ -88,42 +95,29 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
 
         ###rearrange if lowfreq is set  # lowfreq is a named vector!!!
         if (!is.null(low.abun)) {
-
-        lowfreq = rowSums(web)
-
-        dummy <- lowfreq
-
-        for (i in 1:length(low.abun) )
-        {
-        ind <- which(names(low.abun)[i] == names(dummy))
-
-        lowfreq[ind] <- lowfreq[ind]+low.abun[i]
-
-        }
-        #websum <- sum(lowfreq)
-        difff = (lowfreq-rowSums(web))/websum
+	        lowfreq = rowSums(web)
+    	    dummy <- lowfreq
+        	for (i in 1:length(low.abun) )
+	        {
+    		    ind <- which(names(low.abun)[i] == names(dummy))
+		        lowfreq[ind] <- lowfreq[ind]+low.abun[i]
+	        }
+    	    #websum <- sum(lowfreq)
+        	difff = (lowfreq-rowSums(web))/websum
         }
 
         ###rearrange if highfreq is set  # lowfreq is a named vector!!!
         if (!is.null(high.abun)) {
-
-        highfreq = colSums(web)
-
-        dummy <- highfreq
-
-        for (i in 1:length(high.abun) )
-        {
-        ind <- which(names(high.abun)[i] == names(dummy))
-
-        highfreq[ind] <- highfreq[ind]+high.abun[i]
-
+	        highfreq = colSums(web)
+	        dummy <- highfreq
+	        for (i in 1:length(high.abun) )
+    	    {
+        	ind <- which(names(high.abun)[i] == names(dummy))
+	        highfreq[ind] <- highfreq[ind]+high.abun[i]
+	        }
+    	    #websum <- sum(highfreq)
+        	diffh = (highfreq-colSums(web))/websum
         }
-        #websum <- sum(highfreq)
-        diffh = (highfreq-colSums(web))/websum
-        }
-
-
-
 
 
 
@@ -154,7 +148,9 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
         high_spacing <- high_spacing * 0.05
         low_spacing <- low_spacing * 0.05
 
-        if (n.high>n.low) low_spacing <- high_spacing*(n.high-1)/(n.low-1) else high_spacing<- low_spacing*(n.low-1)/(n.high-1)
+        if (n.high > n.low) low_spacing <- high_spacing*(n.high-1)/(n.low-1) else high_spacing <- low_spacing*(n.low-1)/(n.high-1)
+        if (n.high == 1) high_spacing <- 1# CFD
+        if (n.low == 1) low_spacing <- 1 # CFD
 
         if (!is.null(low.abun)) high_spacing <- high_spacing+sum(difff)/n.high
         if (!is.null(high.abun)) low_spacing <- low_spacing+sum(diffh)/n.low
@@ -163,11 +159,15 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
 
 
         wleft = 0
-        wright = (max(n.high, n.low)) * min(low_spacing,high_spacing) +1+max(sum(diffh),sum(difff))
-        if (!is.null(high.spacing))  high_spacing <- high.spacing
-        if (!is.null(low.spacing))   low_spacing <- low.spacing
-
-
+        # old code:
+        #wright = (max(n.high, n.low)) * min(low_spacing,high_spacing) +1+max(sum(diffh),sum(difff))
+        #if (!is.null(high.spacing))  high_spacing <- high.spacing
+        #if (!is.null(low.spacing))   low_spacing <- low.spacing
+		## new code by Dirk Raetzel, introduced in version 1.18:
+		if (!is.null(high.spacing)) high_spacing <- high.spacing
+		 if (!is.null(low.spacing)) low_spacing <- low.spacing
+		 wright = (max(n.high, n.low)) * min(low_spacing, high_spacing) + 1 + max(sum(diffh), sum(difff))
+		## end new code
         wup <- 1.6 + y.width.high +  0.05 #we need some space for labels
         wdown <- 0.4 - y.width.low -  0.05 #we need some space for labels
         if (is.null(y.lim)) y.lim <- range(wdown/ybig, wup * ybig)
@@ -256,14 +256,20 @@ if (low.plot)
         px <- c(0, 0, 0, 0)
         py <- c(0, 0, 0, 0)
         high_x <- 0
-        zwischenweb <- web
-        XYcoords <- matrix(ncol = 2, nrow = length(zwischenweb))
-        for (i in 1:length(zwischenweb)) {
-            XYcoords[i,1:2 ] <- which(zwischenweb == max(zwischenweb),
-                arr.ind = TRUE)[1, ]
-
-            zwischenweb[XYcoords[i, 1], XYcoords[i, 2]] <- -1
-        }
+        
+        #zwischenweb <- web
+        #XYcoords <- matrix(ncol = 2, nrow = length(zwischenweb))
+        #for (i in 1:length(zwischenweb)) {
+        #    XYcoords[i,1:2 ] <- which(zwischenweb == max(zwischenweb),
+        #        arr.ind = TRUE)[1, ]
+        #    zwischenweb[XYcoords[i, 1], XYcoords[i, 2]] <- -1
+        #}
+        ## new code by Dirk Raetzel, introduced in version 1.18:
+        web.df <- data.frame(row=rep(1:n.low,n.high),col=rep(1:n.high,each=n.low),dat=c(web))
+		 web.df <- web.df[order(-web.df$dat),]
+		 XYcoords <- as.matrix(web.df[,1:2])
+        ## end new code
+        
         y1 <- high.y - y.width.high
         y2 <- y1
         y3 <- low.y + y.width.low
@@ -318,4 +324,6 @@ if (low.plot)
 
 
 
-
+#a <- matrix(c(1,2,3,4), 1, 4)
+#plotweb(a)
+#plotweb(t(a))

@@ -47,10 +47,12 @@ Note also that it CANNOT fit concave curves! The most extreme is a linear declin
 \seealso{ \code{\link{second.extinct}} for generating the required input object. }
 
 \examples{
+\dontrun{
 data(Safariland)
-ex <- second.extinct(Safariland, participant="low", method="ran", nrep=100,
+ex <- second.extinct(Safariland, participant="lower", method="random", nrep=100,
 details=FALSE)
 slope.bipartite(ex)
+}
 }
 
 \keyword{ package }

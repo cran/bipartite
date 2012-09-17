@@ -39,7 +39,7 @@ Furthermore, the least-square-fit to the cumulative distribution is not ideal. W
 	Jordano, P., Bascompte, J. and Olesen, J. M. (2003) Invariant properties in coevolutionary networks of plant-animal interactions. \emph{Ecology Letters} \bold{6}, 69--81  
 }
 
-\author{ Carsten F. Dormann \email{carsten.dormann@ufz.de} }
+\author{ Carsten F. Dormann \email{carsten.dormann@biom.uni-freiburg.de} }
 
 \note{
 The truncated power law fits two coefficients: slope and cut-off. The function only returns the slope.

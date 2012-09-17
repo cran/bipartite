@@ -36,7 +36,7 @@ The benefit of this conversion is access to the wonderful R-package Social Netwo
   A matrix of dimension (n+k) x (n+k), where n and k are the dimensions of the input web. Both dimensions are given the names of the original web (first the lower, then the higher trophic level).
 }
 
-\author{ Carsten F. Dormann \email{carsten.dormann@ufz.de} }
+\author{ Carsten F. Dormann \email{carsten.dormann@biom.uni-freiburg.de} }
 
 \seealso{Function \code{projecting_tm} in package \pkg{tnet} provide smarter ways of converting two-modes into one-modes. This function can be accessed after transforming the web-matrix into an edge list using \code{\link{web2edges}}.}
 

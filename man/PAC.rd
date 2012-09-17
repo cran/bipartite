@@ -1,4 +1,4 @@
-\encoding{latin1}
+\encoding{utf8}
 \name{PAC}
 \alias{PAC}
 
@@ -15,7 +15,7 @@ PAC(web)
 }
 
 \details{
-Calculates the potential for apparent competition (Holt 1977), following the formula given in Müller et al. (1999) and Morris et al. (2005). See also Morris et al. (2004) for an experimental test.
+Calculates the potential for apparent competition (Holt 1977), following the formula given in MÃ¼ller et al. (1999) and Morris et al. (2005). See also Morris et al. (2004) for an experimental test.
 }
 
 \value{
@@ -35,14 +35,11 @@ Morris, R. J., Lewis, O. T. and Godfray, H. C. J. 2004 Experimental evidence for
 
 Morris, R. J., Lewis, O. T. and Godfray, H. C. J. 2005 Apparent competition and insect community structure: towards a spatial perspective. \emph{Annales Zoologica Fennici} \bold{42}, 449--462.
 
-Müller, C. B., Adriaanse, I. C. T., Belshaw, R. and Godfray, H. C. J. 1999 The structure of an aphid-parasitoid community. \emph{Journal of Animal Ecology} \bold{68}, 346--370
+MÃ¼ller, C. B., Adriaanse, I. C. T., Belshaw, R. and Godfray, H. C. J. 1999 The structure of an aphid-parasitoid community. \emph{Journal of Animal Ecology} \bold{68}, 346--370
 
 }
 
-\author{ Carsten F. Dormann \email{carsten.dormann@ufz.de}}
-
-\seealso{
-}
+\author{ Carsten F. Dormann \email{carsten.dormann@biom.uni-freiburg.de}}
 
 \examples{
 data(Safariland)

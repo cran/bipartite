@@ -40,65 +40,67 @@ Describes how to use bipartite to calculate the statistics presented in Vázquez
 Vázquez, P.D., Chacoff, N.,P. and  Cagnolo, L. (2009) Evaluating multiple determinants of the structure of plant-animal mutualistic networks. \emph{Ecology} \bold{90}, 2039--2046.
 }
 
-\author{ Carsten F. Dormann <carsten.dormann@ufz.de> based on code and ideas of Diego Vázquez, Natacha P. Chacoff and Luciano Cagnolo}
+\author{ Carsten F. Dormann <carsten.dormann@biom.uni-freiburg.de> based on code and ideas of Diego Vázquez, Natacha P. Chacoff and Luciano Cagnolo}
 
 \seealso{ See also \code{\link{networklevel}}. }
 
 \examples{
-data(Safariland)
-
-# confint:
-N100 <- sapply(swap.web(100, Safariland), networklevel, index="nestedness")
-quantile(unlist(N100), c(0.025, 0.975))
-# intasymm: extract values for the asymmetry of interactions and the 
-# dependency matrix for pollinators:
-specieslevel(Safariland)$"higher trophic level"$"interaction push/pull"
-specieslevel(Safariland)$"higher trophic level"$"dependence"
-# for plants:
-specieslevel(Safariland)$"lower trophic level"$"interaction push/pull"
-specieslevel(Safariland)$"lower trophic level"$"dependence"
-
-#intereven
-networklevel(Safariland, index="interaction evenness", intereven="sum")[2]
-# or, as we recommend (see help on networklevel):
-networklevel(Safariland, index="interaction evenness", intereven="prod")[2]
-
-# mgen:
-binweb <- Safariland>0 #throw away the information on the number of visits
-# make a matrix with probabilities for each link, based on column and row totals:
-pweb <- outer(rowSums(binweb)/sum(binweb), colSums(binweb)/sum(binweb), FUN="*")
-# make a new, emtpy matrix:
-rbinweb <- matrix(0, nrow=nrow(binweb), ncol=ncol(binweb))
-# put the links into random places, with probability as given by the observed data:
-rbinweb[sample(1:prod(dim(binweb)), size=sum(binweb), prob=pweb)] <- 1
-# this is the new, random realisation given the observed marginal link sums:
-rbinweb
-# for this null-web any of the networklevel indices can be calculated
-
-# mlik:
-# calculates the log-likelihood of observing a network, given a probability  
-# matrix of the same size (pweb):
-dmultinom(Safariland>0, prob=pweb, log=TRUE)
-# AIC (the number of parameters is given by how many constraints are put onto the 
-# null model; here, we constrain 9 rows and 27 columns, i.e. sum(dim(binweb))):
--2*dmultinom(Safariland>0, prob=pweb, log=TRUE) + 2*(sum(dim(binweb)))
-
-# netstats:
-networklevel(Safariland, 
-  index=c("connectance", "interaction evenness", "nestedness", "ISA"))
-mean(specieslevel(Safariland)$"higher trophic level"$"interaction push/pull")
-mean(specieslevel(Safariland)$"lower trophic level"$"interaction push/pull")
-
-#plotmat:
-visweb(t(unname(Safariland)), circles=TRUE, boxes=FALSE)
-
-#sortmatr/sortmatrext:
-sortweb(Safariland, sort.order="inc") #rares species first
-plotweb(sortweb(Safariland, sort.order="dec"), method="normal")
-plotweb(sortweb(web=Safariland, sort.order="seq", 
-  sequence=list(seq.higher=sample(colnames(Safariland)), 
-  seq.lower=sample(rownames(Safariland)))), 
-  method="normal")
+\dontrun{
+	data(Safariland)
+	
+	# confint:
+	N100 <- sapply(swap.web(100, Safariland), networklevel, index="nestedness")
+	quantile(unlist(N100), c(0.025, 0.975))
+	# intasymm: extract values for the asymmetry of interactions and the 
+	# dependency matrix for pollinators:
+	specieslevel(Safariland)$"higher trophic level"$"interaction push/pull"
+	specieslevel(Safariland)$"higher trophic level"$"dependence"
+	# for plants:
+	specieslevel(Safariland)$"lower trophic level"$"interaction push/pull"
+	specieslevel(Safariland)$"lower trophic level"$"dependence"
+	
+	#intereven
+	networklevel(Safariland, index="interaction evenness", intereven="sum")[2]
+	# or, as we recommend (see help on networklevel):
+	networklevel(Safariland, index="interaction evenness", intereven="prod")[2]
+	
+	# mgen:
+	binweb <- Safariland>0 #throw away the information on the number of visits
+	# make a matrix with probabilities for each link, based on column and row totals:
+	pweb <- outer(rowSums(binweb)/sum(binweb), colSums(binweb)/sum(binweb), FUN="*")
+	# make a new, emtpy matrix:
+	rbinweb <- matrix(0, nrow=nrow(binweb), ncol=ncol(binweb))
+	# put the links into random places, with probability as given by the observed data:
+	rbinweb[sample(1:prod(dim(binweb)), size=sum(binweb), prob=pweb)] <- 1
+	# this is the new, random realisation given the observed marginal link sums:
+	rbinweb
+	# for this null-web any of the networklevel indices can be calculated
+	
+	# mlik:
+	# calculates the log-likelihood of observing a network, given a probability  
+	# matrix of the same size (pweb):
+	dmultinom(Safariland>0, prob=pweb, log=TRUE)
+	# AIC (the number of parameters is given by how many constraints are put onto the 
+	# null model; here, we constrain 9 rows and 27 columns, i.e. sum(dim(binweb))):
+	-2*dmultinom(Safariland>0, prob=pweb, log=TRUE) + 2*(sum(dim(binweb)))
+	
+	# netstats:
+	networklevel(Safariland, 
+	  index=c("connectance", "interaction evenness", "nestedness", "ISA"))
+	mean(specieslevel(Safariland)$"higher trophic level"$"interaction push/pull")
+	mean(specieslevel(Safariland)$"lower trophic level"$"interaction push/pull")
+	
+	#plotmat:
+	visweb(t(unname(Safariland)), circles=TRUE, boxes=FALSE)
+	
+	#sortmatr/sortmatrext:
+	sortweb(Safariland, sort.order="inc") #rares species first
+	plotweb(sortweb(Safariland, sort.order="dec"), method="normal")
+	plotweb(sortweb(web=Safariland, sort.order="seq", 
+	  sequence=list(seq.higher=sample(colnames(Safariland)), 
+	  seq.lower=sample(rownames(Safariland)))), 
+	  method="normal")
+	}
 }
 
 \keyword{ package}

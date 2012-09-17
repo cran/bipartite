@@ -61,17 +61,11 @@ Maximal depth of modules which should be plotted. If upToDepth is smaller then f
 }
 }
 
-\details{}
-
 \value{
 A plot window with appropriate size according to the dimensions of the web.
 }
 
-\references{}
-
 \author{Rouven Strauss}
-
-\note{}
 
 \seealso{
 See also function \code{visweb}.

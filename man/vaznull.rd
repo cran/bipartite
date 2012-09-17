@@ -32,7 +32,7 @@ vaznull(N, web)
  Vázquez, D. P., C. J. Melian, N. M. Williams, N. Blüthgen, B. R. Krasnov, and R. Poulin. 2007. Species abundance and asymmetric interaction strength in ecological networks. Oikos 116: 1120-1127.
 }
 
-\author{ Bernd Gruber <bernd.gruber@ufz.de> & Carsten F. Dormann <carsten.dormann@ufz.de> }
+\author{ Bernd Gruber <bernd.gruber@canberra.edu.au> & Carsten F. Dormann <carsten.dormann@biom.uni-freiburg.de> }
 
 \note{ 
   It is clearly difficult to decide when a null model is appropriate. It should, in any case, be correctly implemented. Thus, if a null model produces a systematic bias, it should not be used. This seems to be the case for \code{\link{swap.web}}, which yields more high values than necessary. \code{\link{vaznull}} is currently the best alternative.

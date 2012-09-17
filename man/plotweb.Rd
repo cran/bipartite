@@ -87,7 +87,7 @@ plotweb(web,
 \references{
 Tylianakis, J. M., Tscharntke, T. and Lewis, O. T. (2007) Habitat modification alters the structure of tropical host-parasitoid food webs. \emph{Nature} \bold{445}, 202--205
  }
-\author{ Bernd Gruber \email{bernd.gruber@ufz.de} }
+\author{ Bernd Gruber \email{bernd.gruber@canberra.edu.au} }
 
 \seealso{ For a different plot of food webs see  \code{\link{visweb}} }
 \examples{

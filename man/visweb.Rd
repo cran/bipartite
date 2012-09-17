@@ -1,4 +1,4 @@
-\encoding{latin1}
+\encoding{UTF-8}
 \name{visweb}
 \alias{visweb}
 
@@ -13,7 +13,7 @@ visweb(web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1,
   textcol="red", pred.lablength=NULL, prey.lablength, clear=TRUE,
   xlabel="", ylabel="", boxes=TRUE, circles=FALSE, circle.col="black",
   circle.min=0.2, circle.max=2, outerbox.border="white", 
-  outerbox.col="white", box.border="black", box.col="black")
+  outerbox.col="white", box.border="black", box.col="black", def.col="blue")
 }
 
 \arguments{
@@ -56,17 +56,16 @@ visweb(web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1,
   \item{outerbox.col}{Colour of background if option circles=TRUE}
   \item{box.border}{Colour of border of boxes, if option square=\dQuote{b} is set}
   \item{box.col}{Colour of boxes, if option square=\dQuote{b} is set}
-  
+  \item{def.col}{A user defined color vector for all ranks (starting from low to high) of occurring values in the network}  
 }
-\details{
-}
+
 \value{
   A plot window with appropriate size according to the dimensions of the web.
 }
 
 \note{If labels don't fit, resize window by hand!}
 
-\references{Vázquez, P.D., Chacoff, N.,P. and  Cagnolo, L. (in press, 2009. Evaluating multiple determinants of the structure of plant-animal mutualistic networks. Ecology.  }
+\references{Vázquez, P.D., Chacoff, N.,P. and  Cagnolo, L. (2009) Evaluating multiple determinants of the structure of plant-animal mutualistic networks. \emph{Ecology}}
 
 \author{ Bernd Gruber }
 
@@ -80,7 +79,7 @@ visweb(Safariland, type="diagonal", square="compartment", text="none",
 	frame=TRUE)
 visweb(Safariland, type="nested", text="compartment")
 
-
+\dontrun{
 visweb(Safariland, circles=TRUE,  boxes=FALSE,  labsize=1, circle.max=3, 
 	text="no")
 visweb(Safariland, circles=TRUE,  boxes=FALSE,  labsize=1,  text="no",
@@ -90,6 +89,13 @@ visweb(Safariland, circles=TRUE,  boxes=TRUE, outerbox.col="orange",
 
 visweb(Safariland,square="b",box.col="green",box.border="red")
 
+cols <-0:(length(table(Safariland))-1) #define your colors here,length has to be the numbers of different entries (ranks of values in increasing order) 
+visweb(Safariland, square="defined", def.col=cols) 
+
+cols <-rgb(c(0:7/20,8:14/14),0,0)     #discontinuous color ramp...
+cols[1] <- rgb(1,1,1) #set zero to white
+visweb(Safariland, square="defined", def.col=cols) 
+}
 }
 \keyword{ package }
 

@@ -15,7 +15,7 @@ This function takes a bipartite weighted graph and computes modules by applying 
 
 \usage{
 computeModules(web, deep = FALSE, deleteOriginalFiles = TRUE, 
-	steps = 1000000)
+	steps = 1000000, tolerance = 1e-10, experimental = FALSE)
 }
 
 \arguments{
@@ -31,9 +31,9 @@ If \code{deleteOriginalFiles} is set to TRUE (default), the files mentioned abov
   \item{steps}{
 \code{steps} is the number of steps after which the computation of modules stops if no better division into modules than the current one can be found.
 }
+ \item{tolerance}{How small should the difference between MCMC-swap results be? At some point computer precision fluctuations make the algorithm fail to converge, which is why we choose a (very low) defaults of 1E-10.}
+ \item{experimental}{Logical; using an undescribed and untested version for which no detail is available? (We suggest not yet.)}
 }
-
-\details{}
 
 \value{
 An object of class "moduleWeb" containing information about the computed modules. For details, please refer to the corresponding documentation file.
@@ -43,7 +43,7 @@ An object of class "moduleWeb" containing information about the computed modules
 
 \author{Rouven Strauss}
 
-\note{}
+\note{This function is still EXPERIMENTAL!}
 
 \seealso{
 See also class "moduleWeb", function "listModuleInformation", function "printoutModuleInformation".

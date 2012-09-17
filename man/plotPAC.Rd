@@ -41,7 +41,7 @@ Morris, R. J., Lewis, O. T. and Godfray, H. C. J. 2005 Apparent competition and 
 }
 
 \author{
-Carsten F. Dormann \email{carsten.dormann@ufz.de}
+Carsten F. Dormann \email{carsten.dormann@biom.uni-freiburg.de}
 }
 
 \seealso{

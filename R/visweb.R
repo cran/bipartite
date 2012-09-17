@@ -1,15 +1,17 @@
-
-visweb <- function (web, type = "nested", prednames = TRUE, preynames = TRUE,
+visweb <- function (web, type = "nested", prednames = TRUE, preynames = TRUE, 
     labsize = 1, plotsize = 12, square = "interaction", text = "no", 
     frame = NULL, textsize = 1, textcol = "red", pred.lablength = NULL, 
     prey.lablength = NULL, clear = TRUE, xlabel = "", ylabel = "", 
     boxes = TRUE, circles = FALSE, circle.col = "black", circle.min = 0.2, 
-    circle.max = 2, outerbox.border = "white", outerbox.col = "white",
-    box.border="black", box.col="black") 
+    circle.max = 2, outerbox.border = "white", outerbox.col = "white", 
+    box.border = "black", box.col = "black", def.col="blue") 
 {
     if (!is.matrix(web)) {
         web <- as.matrix(web)
         warning("Object converted to matrix.")
+    }
+    if (length(as.numeric(names(table(web))))!= length(def.col) & substr(square,1,1)=="d") {
+        warning("Defined colors not of equal length to number of levels of interactions")
     }
     if (type != "diagonal" && is.null(frame)) 
         frame <- FALSE
@@ -138,17 +140,21 @@ visweb <- function (web, type = "nested", prednames = TRUE, preynames = TRUE,
                 c = 1 - (w[n.prey - i + 1, ii]) * (1/(max(w)))
             else if (substr(square, 1, 1) == "i") 
                 c = (1 - (which(lev == web[n.prey - i + 1, ii]) - 
-                  1)/nl)
+                  1)/nl) 
             else if (substr(square, 1, 1) == "b") 
                 c = floor((1 - web[n.prey - i + 1, ii]/mcol))
-                
             else c = 1
-#            c = gray(c)
-            if (substr(square, 1, 1) == "b" & c==0) c=box.col else c=gray(c)
+            if (substr(square, 1, 1) == "b" & c == 0) 
+                c = box.col
+            else c = gray(c)
+            
+            if (substr(square, 1, 1) == "d") c=def.col[ which(lev == web[n.prey - i + 1, ii])]
+            
+            
             if (circles == TRUE) 
                 c = outerbox.col
             if (boxes == TRUE) 
-                rect(ii - 1, i - 1, ii, i, col = c, border=box.border)
+                rect(ii - 1, i - 1, ii, i, col = c, border = box.border)
             if (circles == TRUE && web[n.prey - i + 1, ii] > 
                 0) 
                 points(ii - 0.5, i - 0.5, pch = 21, col = circle.col, 

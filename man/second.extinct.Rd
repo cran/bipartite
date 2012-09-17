@@ -10,15 +10,17 @@ Calculates the consequences of removing a species from a bipartite network. With
 
 \usage{
 second.extinct(web, participant = "higher", method = "abun", nrep = 10,
-  details = FALSE)
+  details = FALSE, ext.row=NULL, ext.col=NULL)
 }
 
 \arguments{
   \item{web}{ Web is a matrix representing the interactions observed between higher trophic level species (columns) and lower trophic level species (rows). Usually this will be number of pollinators on each species of plants or number of parasitoids on each species of prey.}
-  \item{participant}{\code{high} (default) or \code{low} or \code{both}, depending if you want to exterminate higher trophic level species, lower trophic level species, or a randomly chosen species of both levels; partial matching.}
-  \item{method}{Random deletion of a species (\option{random}); according to its abundance, with least abundant going extinct first (\option{abundance}; default) or \option{"degree"} to build a sequence from the best-to-least connected species. This is the most extreme case, where the most generalist species goes extinct first (see Memmott et al. 1998). }
+  \item{participant}{\code{high} (default) or \code{low} or \code{both}, depending if you want to exterminate higher trophic level species, lower trophic level species, or a randomly chosen species of both levels.}
+  \item{method}{Random deletion of a species (\option{random}); according to its abundance, with least abundant going extinct first (\option{abundance}; default) or \option{"degree"} to build a sequence from the best-to-least connected species. This is the most extreme case, where the most generalist species goes extinct first (see Memmott et al. 1998). \option{external} will use the externally provided vector to determine extinction sequence.}
   \item{nrep}{Number of replicates of extermination sequence. Will not be considered for method abundance.}
-  \item{details}{Logical; returns details, i.e. for each replicate the sequence of secondary extinctions. If set to \code{FALSE} (default), replicated runs will be averaged. }
+  \item{details}{Logical; returns details, i.e. for each replicate the sequence of secondary extinctions. If set to \code{FALSE} (default), replicated runs will be averaged.  Using anything but \code{FALSE} will not yield the correct object for further analysis. This switch is really only for understanding what \code{second.extinct} does and for possible debugging.}
+  \item{ext.row}{Optional vector giving the sequence in which lower-level species are to be deleted.}
+  \item{ext.col}{Optional vector giving the sequence in which higher-level species are to be deleted.}
 }
 \details{
 The procedure of this function is simple. For example imagine the web to represent a pollination web, in which pollinators die one by one. Set all entries of a  column to zero, see how may rows are now also all-zero (i.e. species that are now not pollinated any more), and count these as secondary extinctions of the primary exterminated pollinator. 
@@ -55,11 +57,13 @@ and \code{\link{empty}} are internal helper functions, and \code{\link{slope.bip
 calculates extinction slopes from the output of \code{second.extinct}.}
 
 \examples{
+\dontrun{
 data(Safariland)
-(ex <- second.extinct(Safariland, participant="low", method="r", nrep=50, 
+(ex <- second.extinct(Safariland, participant="lower", method="random", nrep=50, 
 	details=TRUE))
-(ex <- second.extinct(Safariland, participant="low", method="r", nrep=50, 
+(ex <- second.extinct(Safariland, participant="lower", method="random", nrep=50, 
 	details=FALSE))
+}
 }
 
 \keyword{package}

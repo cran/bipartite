@@ -16,8 +16,6 @@ listModuleInformation(moduleWebObject)
   \item{moduleWebObject}{Object of class "moduleWeb"}
 }
 
-\details{}
-
 \value{
 The value of the function is a list of lists of lists of vectors representing the names of the nodes involved in a certain module.
 
@@ -25,13 +23,9 @@ The value of the function is a list of lists of lists of vectors representing th
 \item{value[[x]][[y]][[2]]}{vector with the names of the "column nodes" comprised by the z.th module in depth x-1 (sic!)}
 }
 
-\references{}
-
 \author{Rouven Strauss}
 
-\note{}
 
-\seealso{}
 \examples{
 \dontrun{
 require(bipartite);

@@ -54,6 +54,10 @@ prepareWebForPlottingModules = function(moduleWebObject, fromDepth=0, upToDepth=
 
 
 addEmptyRowToMatrix = function(matrix, x) {
+	if (is.na(x)) { # added by CFD 23-Sep-2011
+		warning("Error in addEmptyRowToMatrix: counter j is NA.")
+		return(matrix)
+	}
 	if(x == 1) {
 		rbind(0, matrix);
 	}
@@ -76,6 +80,10 @@ addEmptyRowToMatrix = function(matrix, x) {
 
 
 addEmptyColToMatrix = function(matrix, x) {
+	if (is.na(x)) { # added by CFD 23-Sep-2011
+		warning("Error in addEmptyRowToMatrix: counter j is NA.")
+		return(matrix)
+	}
 	if(x == 1) {
 		cbind(0, matrix);
 	}

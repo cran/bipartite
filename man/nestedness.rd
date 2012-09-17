@@ -62,11 +62,13 @@ In the meantime, use \code{nestedtemp} in \pkg{vegan} (as we do in \code{network
 }
 
 \examples{
-data(vazarr)
-nestedness(vazarr) # null models are calculated
-# no null models, much faster for bigger matrices:
-nestedness(vazarr, null.models=FALSE) 
-nestedness(vazarr, n.nulls=300, n.gen=300)
+	\dontrun{
+	data(vazarr)
+	nestedness(vazarr) # null models are calculated
+	# no null models, much faster for bigger matrices:
+	nestedness(vazarr, null.models=FALSE) 
+	nestedness(vazarr, n.nulls=300, n.gen=300)
+	}
 }
 
 \keyword{ package}

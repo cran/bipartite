@@ -42,7 +42,7 @@ LARGE! As species are lost, relative linkage density goes up automatically, whic
 
 \value{A list of N new matrices with the same number of interactions, but possibly different dimensions.}
 
-\author{Carsten F. Dormann <carsten.dormann@ufz.de>}
+\author{Carsten F. Dormann <carsten.dormann@biom.uni-freiburg.de>}
 
 \seealso{ \code{\link{nullmodel}}}
 
@@ -53,6 +53,7 @@ Dewdney, A.K. 1998. A general theory of the sampling process with applications t
 }
 
 \examples{
+\dontrun{
 data(Safariland)
 null.distr(N=2, Safariland)
 null.distr(N=2, Safariland, distr="negbin")
@@ -63,6 +64,7 @@ sapply(null.distr(N=5, Safariland), function(x) networklevel(x, index="info"))
 sapply(null.distr(N=5, Safariland, distr="negbin"), function(x) networklevel(x, 
 	index="info")[3])
 # similarly highly connected
+}
 }
 
 \keyword{package}

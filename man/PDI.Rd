@@ -43,7 +43,7 @@ Poisot, T., Lepennetier, G., Martinez, E., Ramsayer, J., and Hochberg, M.E. (201
 Poisot, T., Bever, J.D., Nemri, A., Thrall, P.H., and Hochberg, M.E. (2011b) A conceptual framework for the evolution of ecological specialisation. \emph{Ecology Letters} \bold{14}, 841--851
 }
 
-\author{ Carsten F. Dormann <carsten.dormann@ufz.de> }
+\author{ Carsten F. Dormann <carsten.dormann@biom.uni-freiburg.de> }
 
 \seealso{ See also \code{\link{specieslevel}}. }
 

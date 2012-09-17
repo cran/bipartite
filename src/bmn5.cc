@@ -1,3 +1,4 @@
+#include <R.h>
 #include <math.h>
 #include <stdlib.h>
 #include <iostream>
@@ -139,7 +140,7 @@ double **matrix(long nrl, long nrh, long ncl, long nch);
 
 void free_matrix(double **m, long nrl, long nrh, long ncl, long nch);
 
-void nrerror(char error_text[]);
+//void Rf_error(char error_text[]);
 
 /*
  ***************************************************************** 
@@ -315,11 +316,11 @@ for (int j=1; j<=ncols;j++)
 	rowOrder = ivector(1,nrows);
 	tInt = matrixTemperature(success,1,interactMat,colOrder,rowOrder,nrows,ncols,idum);
  if (bmo==1)   { //save binmatnest in output file
-	out = fopen(OUTFILE.c_str(),"a");
-	fprintf(out,"Matrix temperature: T = %11.5f\n",tInt);
-	fprintf(out,"\n\n");
-//	fprintf(stdout,"Matrix temperature = %11.5f\n",tInt);
-	fclose(out);
+	// out = fopen(OUTFILE.c_str(),"a");
+	Rprintf("Matrix temperature: T = %11.5f\n",tInt); //deleted: out, before "Matrix
+	Rprintf("\n\n");
+	Rprintf("Matrix temperature = %11.5f\n",tInt);
+	//fclose(out);
 }
  	*temperature = tInt;
   // return packing order by pointers (tor and toc via poc and por)
@@ -370,11 +371,11 @@ if (*nullmodels==1) {  //should nullmodels be calculated??
 	*avt_null1 = ave;
 	*avv_null1 = var;
  if (bmo==1)  { //save binmatnest in output file
-	out = fopen(OUTFILE.c_str(),"a");
-	fprintf(out,"  Null model     p-value   Average T    Variance\n");
-	fprintf(out,"       First %11.5f %11.5f %11.5f\n",p1,ave,var);
-	fprintf(stdout,"First null model:  p1 = %11.5f\n",p1);
-	fclose(out);
+	//out = fopen(OUTFILE.c_str(),"a");
+	Rprintf("  Null model     p-value   Average T    Variance\n"); // was: fprintf
+	Rprintf("       First %11.5f %11.5f %11.5f\n",p1,ave,var);
+	Rprintf("First null model:  p1 = %11.5f\n",p1);
+	//fclose(out);
 }
 	//	Second null model:
 	p2 = 0.0;
@@ -417,10 +418,10 @@ if (*nullmodels==1) {  //should nullmodels be calculated??
 	*avt_null2 = ave;
 	*avv_null2 = var;
 if (bmo==1)  { //save binmatnest in output file
-	out = fopen(OUTFILE.c_str(),"a");
-	fprintf(out,"      Second %11.5f %11.5f %11.5f\n",p2,ave,var);
-	fprintf(stdout,"Second null model: p2 = %11.5f\n",p2);
-	fclose(out);
+	//out = fopen(OUTFILE.c_str(),"a");
+	Rprintf("      Second %11.5f %11.5f %11.5f\n",p2,ave,var); //CFD
+	Rprintf("Second null model: p2 = %11.5f\n",p2);
+	//fclose(out);
 }
 	//	Third null model:
 	p3 = 0.0;
@@ -464,10 +465,10 @@ if (bmo==1)  { //save binmatnest in output file
 	*avv_null3 = var;
 
 if (bmo==1)  { //save binmatnest in output file
-	out = fopen(OUTFILE.c_str(),"a");
-	fprintf(out,"       Third %11.5f %11.5f %11.5f\n",p3,ave,var);
-	fprintf(stdout,"Third null model:  p3 = %11.5f\n",p3);
-	fclose(out);
+	//out = fopen(OUTFILE.c_str(),"a");
+	Rprintf("       Third %11.5f %11.5f %11.5f\n",p3,ave,var);
+	Rprintf("Third null model:  p3 = %11.5f\n",p3);
+	//fclose(out);
 }
 	free_ivector(rowOrder,1,nrows);
 	free_ivector(colOrder,1,ncols);
@@ -496,7 +497,7 @@ void matrixSize(string inputFile, int& nrows, int& ncols, int& skip)
 
 	/*abro*/
 	if( fopen(inputFile.c_str(),"r")==NULL)
-		nrerror((char*)"Error trying to open input file\n\n");
+		Rf_error((char*)"Error trying to open input file\n\n");
 
 	endnote(f);   /*me trago la nota */
 
@@ -508,7 +509,7 @@ void matrixSize(string inputFile, int& nrows, int& ncols, int& skip)
 	while (b!=CE && b!=UN)
 	{
 		b=fgetc(f);
-		if (b==EOF) nrerror((char*)"no data found in input matrix\n\n");
+		if (b==EOF) Rf_error((char*)"no data found in input matrix\n\n");
 	} 
 
 	/*leo la primera fila y asi ya se cuantas columnas hay*/
@@ -536,7 +537,7 @@ void matrixSize(string inputFile, int& nrows, int& ncols, int& skip)
 	for (j=2;j<=ncols;j++)
 	{
 		b=fgetc(f);
-		if ((b != CE) && (b !=UN)) nrerror((char*)"all rows must have the same number of columns\n\n");
+		if ((b != CE) && (b !=UN)) Rf_error((char*)"all rows must have the same number of columns\n\n");
 	}
 	nrows++;  
 
@@ -565,7 +566,7 @@ void matrixSize(string inputFile, int& nrows, int& ncols, int& skip)
 		for (j=2;j<=ncols;j++)
 		{
 			b=fgetc(f);
-			if ((b != CE) && (b !=UN)) nrerror((char*)"all rows must have the same number of columns\n\n");
+			if ((b != CE) && (b !=UN)) Rf_error((char*)"all rows must have the same number of columns\n\n");
 		}
 		nrows++;
 		/*aumento el contador de filas e intenta leer otra*/
@@ -582,7 +583,7 @@ void readMatrix(string inputFile, int nrows, int ncols, int skip, int **m)
 
 	/*abro*/
 	if( fopen(inputFile.c_str(),"r")==NULL)
-		nrerror((char*)"Error trying to open input file\n\n");
+		Rf_error((char*)"Error trying to open input file\n\n");
 
 	endnote(f);   /*me trago la nota y ya estoy situado en el inicio de la matriz*/
 
@@ -592,7 +593,7 @@ void readMatrix(string inputFile, int nrows, int ncols, int skip, int **m)
 	while (b!=CE && b!=UN)
 	{
 		b=fgetc(f);
-		if (b==EOF) nrerror((char*)"no data found in input matrix\n\n");
+		if (b==EOF) Rf_error((char*)"no data found in input matrix\n\n");
 	} 
 	m[1][1] = (b==CE ? 0 : 1);
 	for (j=2;j<=ncols;j++)
@@ -606,14 +607,14 @@ void readMatrix(string inputFile, int nrows, int ncols, int skip, int **m)
 		for (k=1;k<=skip;k++)
 		{
 			b=fgetc(f);
-			if (b == EOF) nrerror((char*)"Error reading data");
+			if (b == EOF) Rf_error((char*)"Error reading data");
 		}
 
 		/*ahora leo la fila*/
 		for (j=1;j<=ncols;j++)
 		{
 			b=fgetc(f);
-			if ((b != CE) && (b !=UN)) nrerror((char*)"all rows must have the same number of columns\n\n");
+			if ((b != CE) && (b !=UN)) Rf_error((char*)"all rows must have the same number of columns\n\n");
 			m[i][j] = (b==CE ? 0 : 1);
 		}
 	}
@@ -650,7 +651,7 @@ void endnote(FILE *f)
 			c[7]=fgetc(f);		/* y lee otro caracter al final */
 		}
 	}
-	nrerror((char*)"The word endnotes must appear in the input file before the matrix\n\n");
+	Rf_error((char*)"The word endnotes must appear in the input file before the matrix\n\n");
 }
 /***
  *****************************************
@@ -743,13 +744,13 @@ double matrixTemperature(bool &success,int sp, int **dataMat, int *c_ord, int *r
 	}
 	else 
 	{
-		if (sp) nrerror((char*)"input matrix must have more than two rows and columns after removing blancks");
+		if (sp) Rf_error((char*)"input matrix must have more than two rows and columns after removing blancks");
 		else
 		{
 			tMat = 0;
 			success = false;
 			count++;
-			if (count>1000) nrerror((char*)"random matrix has less than two rows or columns too often");
+			if (count>1000) Rf_error((char*)"random matrix has less than two rows or columns too often");
 		}
 	}
 	
@@ -1206,14 +1207,14 @@ double packMatrix(int sp, int **dataMat, int **intMat, double **d, int *c_ord, i
 		}
 	}
 	
-if (bmo==1) 	out = fopen(OUTFILE.c_str(),"a");
+//if (bmo==1) 	out = fopen(OUTFILE.c_str(),"a");
 	
 if (bmo==1) {
 	if (sp)
 	{
 	//	out = fopen(OUTFILE.c_str(),"a");
 
-		fprintf(out,"Packed matrix:\n");
+		fprintf(out,"Packed matrix:\n"); //CFD
 
 		for (i=1;i<=nr;i++)
 		{
@@ -1223,7 +1224,7 @@ if (bmo==1) {
 			}
 			fprintf(out,"\n");
 		}
-		fprintf(out,"\n");
+		fprintf(out,"\n");   //CFD
 
 		fclose(out);
 
@@ -1568,13 +1569,13 @@ void calcIdiosyncTemp(double **d, int **mat, int indr[], int indc[], int nr, int
 	double tIdiosync;
 	FILE *out;
 if (bmo==1) {
-	out = fopen(OUTFILE.c_str(),"a");
+	//out = fopen(OUTFILE.c_str(),"a");
 	//	Idiosyncratic temperature for rows:
-	fprintf(out,"Idiosyncratic temperature for rows:\n");
-	fprintf(out,"Row:                       ");
+	Rprintf("Idiosyncratic temperature for rows:\n");
+	Rprintf("Row:                       ");
 	for (i=1;i<=nr;i++) fprintf(out,"%10i",i);
-	fprintf(out,"\n");
-	fprintf(out,"Idiosyncratic temperature: ");
+	Rprintf("\n");
+	Rprintf("Idiosyncratic temperature: ");
 	for (i=1;i<=nr;i++)
 	{
 		unex = 0.0;
@@ -1589,16 +1590,16 @@ if (bmo==1) {
 		}
 		unex /= nc;
 		tIdiosync = 100*unex/UMAX;
-		fprintf(out,"%10.5f",tIdiosync);
+		Rprintf("%10.5f",tIdiosync);
 	}
-	fprintf(out,"\n\n");
+	Rprintf("\n\n");
 
 	//	Idiosyncratic temperature for columns:
-	fprintf(out,"Idiosyncratic temperature for columns:\n");
-	fprintf(out,"Column:                    ");
-	for (j=1;j<=nc;j++) fprintf(out,"%10i",j);
-	fprintf(out,"\n");
-	fprintf(out,"Idiosyncratic temperature: ");
+	Rprintf("Idiosyncratic temperature for columns:\n");
+	Rprintf("Column:                    ");
+	for (j=1;j<=nc;j++) Rprintf("%10i",j);
+	Rprintf("\n");
+	Rprintf("Idiosyncratic temperature: ");
 	for (j=1;j<=nc;j++)
 	{
 		unex = 0.0;
@@ -1613,11 +1614,11 @@ if (bmo==1) {
 		}
 		unex /= nr;
 		tIdiosync = 100*unex/UMAX;
-		fprintf(out,"%10.5f",tIdiosync);
+		Rprintf("%10.5f",tIdiosync);
 	}
-	fprintf(out,"\n\n");
+	Rprintf("\n\n");
 
-	fclose(out);
+	//fclose(out);
 }
 }
 /***
@@ -1677,7 +1678,7 @@ void choosePlayers(long& idum, int n,int m,int arr[])
 	int *index;
 
 	index = ivector(1,m);
-	if (n>m) nrerror((char*)"n too large in choosePlayers");
+	if (n>m) Rf_error((char*)"n too large in choosePlayers");
 	else if (n==m)
 	{
 		for (i=1;i<=n;i++) arr[i] = i;
@@ -1746,7 +1747,7 @@ void crossOver(long& idum, int nr, int nc, int pr[], int pc[], int or_new[], int
 				{
 					if (or_new[i]==0)
 					{
-						if (m<=0) nrerror((char*)"problem in crossOver, rows");
+						if (m<=0) Rf_error((char*)"problem in crossOver, rows");
 						or_new[i] = ind[m];
 						m--;
 					}
@@ -1787,7 +1788,7 @@ void crossOver(long& idum, int nr, int nc, int pr[], int pc[], int or_new[], int
 				{
 					if (oc[j]==0)
 					{
-						if (m<=0) nrerror((char*)"problem in crossOver, columns");
+						if (m<=0) Rf_error((char*)"problem in crossOver, columns");
 						oc[j] = ind[m];
 						m--;
 					}
@@ -1851,7 +1852,7 @@ void indexx(int n, int arr[], int indx[])
 			indx[l+1]=indx[j];
 			indx[j]=indxt;
 			jstack += 2;
-			if (jstack > NSTACK) nrerror((char*)"NSTACK too small in indexx.");
+			if (jstack > NSTACK) Rf_error((char*)"NSTACK too small in indexx.");
 			if (ir-i+1 >= j-l) {
 				istack[jstack]=ir;
 				istack[jstack-1]=i;
@@ -1915,7 +1916,7 @@ void indexxD(int n, double arr[], int indx[])
 			indx[l+1]=indx[j];
 			indx[j]=indxt;
 			jstack += 2;
-			if (jstack > NSTACK) nrerror((char*)"NSTACK too small in indexx.");
+			if (jstack > NSTACK) Rf_error((char*)"NSTACK too small in indexx.");
 			if (ir-i+1 >= j-l) {
 				istack[jstack]=ir;
 				istack[jstack-1]=i;
@@ -1946,7 +1947,7 @@ double zbrent(int nr, int nc, double u1, double v1, double z)
    
 	if ((fa > 0.0 && fb > 0.0) || (fa < 0.0 && fb < 0.0))
 	{
-		nrerror((char*)"Root must be bracketed in zbrent");
+		Rf_error((char*)"Root must be bracketed in zbrent");
 	}
 	fc=fb;
 	for (iter=1;iter<=ITMAX;iter++) {
@@ -2000,7 +2001,7 @@ double zbrent(int nr, int nc, double u1, double v1, double z)
 			b += SIGN(tol1,xm);
 		fb=func(b,nr,nc,u1,v1,z);
 	}
-	nrerror((char*)"Maximum number of iterations exceeded in zbrent");
+	Rf_error((char*)"Maximum number of iterations exceeded in zbrent");
 	return 0.0;
 }
 /***
@@ -2076,7 +2077,7 @@ int *ivector(long nl, long nh)
 	int *v;
    
 	v=(int *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(int)));
-	if (!v) nrerror((char*)"allocation failure in ivector()");
+	if (!v) Rf_error((char*)"allocation failure in ivector()");
 	return v-nl+NR_END;
 }
 /***
@@ -2088,7 +2089,7 @@ double *vector(long nl, long nh)
 	double *v;
    
 	v=(double *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(double)));
-	if (!v) nrerror((char*)"allocation failure in dvector()");
+	if (!v) Rf_error((char*)"allocation failure in dvector()");
 	return v-nl+NR_END;
 }
 /***
@@ -2118,13 +2119,13 @@ int **imatrix(long nrl, long nrh, long ncl, long nch)
    
 	/* allocate pointers to rows */
 	m=(int **) malloc((size_t)((nrow+NR_END)*sizeof(int*)));
-	if (!m) nrerror((char*)"allocation failure 1 in imatrix()");
+	if (!m) Rf_error((char*)"allocation failure 1 in imatrix()");
 	m += NR_END;
 	m -= nrl;
    
 	/* allocate rows and set pointers to them */
 	m[nrl]=(int *) malloc((size_t)((nrow*ncol+NR_END)*sizeof(int)));
-	if (!m[nrl]) nrerror((char*)"allocation failure 2 in imatrix()");
+	if (!m[nrl]) Rf_error((char*)"allocation failure 2 in imatrix()");
 	m[nrl] += NR_END;
 	m[nrl] -= ncl;
    
@@ -2144,13 +2145,13 @@ double **matrix(long nrl, long nrh, long ncl, long nch)
    
 	/* allocate pointers to rows */
 	m=(double **) malloc((size_t)((nrow+NR_END)*sizeof(double*)));
-	if (!m) nrerror((char*)"allocation failure 1 in matrix()");
+	if (!m) Rf_error((char*)"allocation failure 1 in matrix()");
 	m += NR_END;
 	m -= nrl;
    
 	/* allocate rows and set pointers to them */
 	m[nrl]=(double *) malloc((size_t)((nrow*ncol+NR_END)*sizeof(double)));
-	if (!m[nrl]) nrerror((char*)"allocation failure 2 in matrix()");
+	if (!m[nrl]) Rf_error((char*)"allocation failure 2 in matrix()");
 	m[nrl] += NR_END;
 	m[nrl] -= ncl;
    
@@ -2180,8 +2181,8 @@ void free_matrix(double **m, long nrl, long nrh, long ncl, long nch)
 /***
  *****************************************
  ***/
-void nrerror(char error_text[])
-/* Numerical Recipes standard error handler */
+/* void Rf_error(char error_text[])
+    // Numerical Recipes standard error handler 
 {
 	fprintf(stderr,"\n");
 	fprintf(stderr,"\n");
@@ -2194,8 +2195,9 @@ void nrerror(char error_text[])
         cin >> TOURSIZE;
 
 	exit(1);
-}
-/***
+}   */
+
+    /***
  *****************************************
  ***/
 

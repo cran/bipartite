@@ -5,7 +5,6 @@
 
 \title{ Function to sort bipartite webs }
 \description{ This function sorts bipartite webs by either increasing/decreasing row and column totals or by a given sequence
-
 }
 
 \usage{
@@ -24,8 +23,7 @@ sorted. To be able to sort by names obviously the given web must be a NAMED matr
 an unnamed web, you can either order it by row/column totals are you have to simply specify the sequence as follows (example puts last row/column to the front):
 web[c(9, 1:8), c(27, 1:26)]}
 }
-\details{
-}
+
 \value{
   Returns an ordered bipartite web.
 }
@@ -34,8 +32,8 @@ web[c(9, 1:8), c(27, 1:26)]}
 \author{ Bernd Gruber }
 
 \seealso{ For plotting and ordered web see  \code{\link{plotweb}}, \option{method="normal"} or  \code{\link{visweb}}, \option{type="none"}.}
-\examples{
 
+\examples{
 data(Safariland)
 web <- Safariland
 

@@ -3,9 +3,11 @@
 \alias{plotweb2}
 
 \title{Visualize a tripartite interaction matrix (e.g. a tritrophic foodweb)}
+
 \description{
 Two two dimensional matrix are plotted as a tripartite graph.
 }
+
 \usage{
 plotweb2(web, web2, method = "cca", empty = FALSE, labsize = 1, ybig = 1,
     y_width = 0.1, spacing = 0.05, arrow="no", col.interaction="grey80",
@@ -55,14 +57,11 @@ plotweb2(web, web2, method = "cca", empty = FALSE, labsize = 1, ybig = 1,
 \value{
   Returns a window with a tripartite graph of a food web.
 }
-\references{
-}
-\author{ Bernd Gruber \email{bernd.gruber@ufz.de} }
+
+\author{ Bernd Gruber \email{bernd.gruber@canberra.edu.au} }
 
 \seealso{ For a different plot of food webs see  \code{\link{visweb}} and \code{\link{plotweb}}}
-\examples{
 
-}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{ package }

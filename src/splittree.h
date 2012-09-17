@@ -414,8 +414,8 @@ bool splittree::insertItem(string newKey, double newValue) {
 	if (current != NULL) {
 		// Add weight to the existing item's weight
 		if (current->weight > total_weight) {
-			cout << "ERROR: " << current->weight << " > " << total_weight << endl;
-			cout << "for split " << current->split << endl;
+//			cout << "ERROR: " << current->weight << " > " << total_weight << endl;
+//          cout << "for split " << current->split << endl;
 			return false;
 		}
 		current->weight += 1.0;
@@ -674,8 +674,8 @@ void splittree::rotateRight(elementsp *y) {
 // ******** Display Functions *****************************************************************************
 // public
 void splittree::printTree() {
-	cout << "\nTREE SIZE = " << support << "\t" << total_weight << "\t" << total_count << endl;
-	cout << "# "; printSubTree(root);
+//	cout << "\nTREE SIZE = " << support << "\t" << total_weight << "\t" << total_count << endl;
+//	cout << "# "; printSubTree(root);
 	return;
 }
 
@@ -683,9 +683,9 @@ void splittree::printTree() {
 void splittree::printSubTree(elementsp *z) {
 	if (z==leaf) { return; }
 	else {
-		cout << "(" << z->split << " " << z->weight << " " << z->count << " " << z->color << ")"<<endl;
-		cout << "L "; printSubTree(z->left); cout << endl;
-		cout << "R "; printSubTree(z->right); cout << endl;
+//		cout << "(" << z->split << " " << z->weight << " " << z->count << " " << z->color << ")"<<endl;
+//		cout << "L "; printSubTree(z->left); cout << endl;
+//		cout << "R "; printSubTree(z->right); cout << endl;
 	}
 	return;
 }
@@ -697,19 +697,19 @@ void	splittree::printTreeAsList() {
 	int temp = 0;
 	while (curr != NULL) {
 		if (curr->y > 5) {
-			cout << curr->x;
-			if (curr->y >= 0.5*total_weight) { cout << "\t* "; temp++; } else { cout << "\t  "; }
-			cout << curr->y << "\t" << curr->c / total_weight << "\n";
+//			cout << curr->x;
+//			if (curr->y >= 0.5*total_weight) { cout << "\t* "; temp++; } else { cout << "\t  "; }
+//			cout << curr->y << "\t" << curr->c / total_weight << "\n";
 		}
 		prev = curr;
 		curr = curr->next;
 		delete prev; prev = NULL;
 	}
 	curr = NULL;
-	cout << "total_count   = " << total_count  << endl;
-	cout << "total_weight  = " << total_weight << endl;
-	cout << "total_size    = " << support << endl;
-	cout << "weight >= 1/2 = " << temp << endl;
+//	cout << "total_count   = " << total_count  << endl;
+//	cout << "total_weight  = " << total_weight << endl;
+//	cout << "total_size    = " << support << endl;
+//	cout << "weight >= 1/2 = " << temp << endl;
 
 	return;
 }
@@ -717,21 +717,21 @@ void	splittree::printTreeAsList() {
 void	splittree::printTreeAsShortList() {
 	keyValuePairSplit *curr, *prev;
 	curr = returnTreeAsList();
-	cout << "numSplits = " << support << endl;
+//	cout << "numSplits = " << support << endl;
 	int temp = 0;
 	while (curr != NULL) {
 		if (curr->y / total_weight >= 0.5) {
-			cout << curr->x << "\t* ";
+//			cout << curr->x << "\t* ";
 			temp++;
-			cout << curr->y << "\t" << curr->y / total_weight << "\n";
+//			cout << curr->y << "\t" << curr->y / total_weight << "\n";
 		}
 		prev = curr;
 		curr = curr->next;
 		delete prev; prev = NULL;
 	}
 	curr = NULL;
-	cout << "maximum = " << total_weight << endl;
-	cout << "weight >= 1/2 = " << temp << endl;
+//	cout << "maximum = " << total_weight << endl;
+//	cout << "weight >= 1/2 = " << temp << endl;
 	
 	return;
 }

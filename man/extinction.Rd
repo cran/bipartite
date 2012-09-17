@@ -9,14 +9,16 @@
 }
 
 \usage{
-extinction(web, participant = "both", method = "random")
+extinction(web, participant = "both", method = "random", ext.row=NULL, ext.col=NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 
 \arguments{
   \item{web}{ A matrix representing the interactions observed between higher trophic level species (columns) and lower trophic level species (rows). Usually this will be number of pollinators on each species of plants or number of parasitoids on each species of prey. }
-  \item{participant}{Which level of participant to remove: \option{lower} removes a row, \option{higher} removes a row, \option{both} randomly picks either row or column. Partial matching of strings implemented. }
-  \item{method}{Determines sequence of extinctions: \option{random} removes a random participant, while \option{abundance} removes the least abundant species first. Partial matching of strings implemented.}
+  \item{participant}{Which level of participant to remove: \option{lower} removes a row, \option{higher} removes a row, \option{both} randomly picks either row or column.}
+  \item{method}{Determines sequence of extinctions: \option{random} removes a random participant, while \option{abundance} removes the least abundant species first. \option{external} will use the externally provided vector to determine extinction sequence.}
+   \item{ext.row}{Optional vector giving the sequence in which lower-level species are to be deleted.}
+   \item{ext.col}{Optional vector giving the sequence in which higher-level species are to be deleted.}
 }
 
 \details{
@@ -36,9 +38,11 @@ Memmott, J., Waser, N. M. and Price, M. V. 2004 Tolerance of pollination network
 \seealso{ \code{\link{second.extinct}} }
 
 \examples{
-data(Safariland)
-(w <- extinction(Safariland, participant="low", method="abun"))
-empty(w, count=TRUE)
+\dontrun{
+	data(Safariland)
+	(w <- extinction(Safariland, participant="lower", method="abun"))
+	empty(w, count=TRUE)
+}
 }
 
 \keyword{ package }

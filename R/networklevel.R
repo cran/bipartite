@@ -1,5 +1,5 @@
 `networklevel` <-
-function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctmethod="r", nrep=100, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn", normalise=TRUE, empty.web=TRUE, logbase="e", intereven="sum", H2_integer=TRUE){
+function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctmethod="r", nrep=100, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn", normalise=TRUE, empty.web=TRUE, logbase="e", intereven="sum", H2_integer=TRUE, fdweighted=TRUE, fddist="euclidean"){
     ##
     ## web         interaction matrix, with lower trophic level in rows, higher in columns
     ##
@@ -19,16 +19,16 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
       "ISA", "SA", "extinction slope", "robustness", "niche overlap",   
       #quantitative series:
       "weighted cluster coefficient", "weighted NODF", "generality", "vulnerability", "linkage density", "Fisher alpha", "mean interaction diversity", "interaction evenness", 
-      "Alatalo interaction evenness", "diversity", "H2" )
+      "Alatalo interaction evenness", "diversity", "functional diversity", "H2" )
 
     # only if indices are not given explicitly:
-    if (!all(index %in% allindex)){                        
+    if (length(index)==1 & !all(index %in% allindex)){                        
       index <- switch(index,
           "ALL" = allindex,
           "ALLBUTDD" = allindex[-which(allindex=="degree distribution")],
           "info" = c("number of species", "connectance", "web asymmetry", "links per species", "number of compartments"),
           # logic: only rough information on the network's general structure
-          "quantitative" = c("weighted cluster coefficient", "weighted nestedness", "weighted NODF", "H2", "diversity", "mean interaction diversity", "linkage density"),
+          "quantitative" = c("weighted cluster coefficient", "weighted nestedness", "weighted NODF", "functional diversity", "H2", "diversity", "mean interaction diversity", "linkage density"),
           # logic: the "quantitative series"
           "binary" = c("connectance", "links per species", "nestedness", "cluster coefficient",  "C-score"),
           # logic: metrics for binary networks
@@ -348,7 +348,14 @@ function(web, index="ALL", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctm
 
     }
     #---------------
-    # Bl√ºthgen's H2'
+	# Devoto's fd:
+	if (any(c("fd", "functional diversity") %in% index)){
+		out$"LTL FD" <- fd(t(web), dist=fddist, method="average", weighted=fdweighted)		
+		out$"HTL FD" <- fd(web, dist=fddist, method="average", weighted=fdweighted)
+	}
+	
+    #---------------
+    # Blüthgen's H2'
     if ("H2" %in% index){
         H2 <- as.numeric(H2fun(web, H2_integer=H2_integer)[1]) #1.element is the standardised H2 prime
         out$"H2"= ifelse(H2<0, 0, H2)

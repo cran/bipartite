@@ -40,7 +40,7 @@ Dalsgaard, B., Martín González, A. M., Olesen, J. M., Timmermann, A., Andersen
 
  }
 
-\author{ Carsten F. Dormann \email{carsten.dormann@ufz.de}}
+\author{ Carsten F. Dormann \email{carsten.dormann@biom.uni-freiburg.de}}
 
 \note{
 This index is as yet unevaluated. We don't know how it responds to true specialisation at all. In fact, it is a rather good example of how to get a new thing published 

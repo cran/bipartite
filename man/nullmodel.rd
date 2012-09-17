@@ -39,41 +39,43 @@ identical) to the observed network. This is no error. It is reflecting the fact 
 }
 
 
-\author{ Carsten F. Dormann \email{carsten.dormann@ufz.de}}
+\author{ Carsten F. Dormann \email{carsten.dormann@biom.uni-freiburg.de}}
 
 \seealso{ For the functions generating the null model network: \code{\link{shuffle.web}}, \code{\link{swap.web}}, \code{\link{vaznull}}, \code{\link{mgen}}, 
 \code{commsimulator} and \code{r2dtable}
 }
 
 \examples{
-data(Safariland)
-nullmodel(Safariland, N=2, method=1)
-nullmodel(Safariland>0, N=2, method=4)
-# analysis example:
-obs <- unlist(networklevel(Safariland, index="weighted nestedness"))
-nulls <- nullmodel(Safariland, N=100, method=1)
-null <- unlist(sapply(nulls, networklevel, index="weighted nestedness")) #takes a while ...
-
-plot(density(null), xlim=c(min(obs, min(null)), max(obs, max(null))), 
-	main="comparison of observed with null model Patefield")
-abline(v=obs, col="red", lwd=2)    
-
-praw <- sum(null>obs) / length(null)
-ifelse(praw > 0.5, 1-praw, praw)    # P-value
-
-# comparison of null model 4 and 5 for binary:
-nulls4 <- nullmodel(Safariland>0, N=100, method=4)
-nulls5 <- nullmodel(Safariland>0, N=100, method=5)
-null4 <- unlist(sapply(nulls4, networklevel, index="weighted nestedness"))
-null5 <- unlist(sapply(nulls5, networklevel, index="weighted nestedness"))
-
-
-plot(density(null4), xlim=range(c(null4, null5)), lwd=2, 
-	main="comparison of null models")
-lines(density(null5), col="red", lwd=2)
-legend("topright", c("shuffle", "mgen"), col=c("black", "red"), lwd=c(2,2), 
-	bty="n", cex=1.5)
-abline(v=networklevel(Safariland>0, index="weighted nestedness"))
+\dontrun{
+	data(Safariland)
+	nullmodel(Safariland, N=2, method=1)
+	nullmodel(Safariland>0, N=2, method=4)
+	# analysis example:
+	obs <- unlist(networklevel(Safariland, index="weighted nestedness"))
+	nulls <- nullmodel(Safariland, N=100, method=1)
+	null <- unlist(sapply(nulls, networklevel, index="weighted nestedness")) #takes a while ...
+	
+	plot(density(null), xlim=c(min(obs, min(null)), max(obs, max(null))), 
+		main="comparison of observed with null model Patefield")
+	abline(v=obs, col="red", lwd=2)    
+	
+	praw <- sum(null>obs) / length(null)
+	ifelse(praw > 0.5, 1-praw, praw)    # P-value
+	
+	# comparison of null model 4 and 5 for binary:
+	nulls4 <- nullmodel(Safariland>0, N=100, method=4)
+	nulls5 <- nullmodel(Safariland>0, N=100, method=5)
+	null4 <- unlist(sapply(nulls4, networklevel, index="weighted nestedness"))
+	null5 <- unlist(sapply(nulls5, networklevel, index="weighted nestedness"))
+	
+	
+	plot(density(null4), xlim=range(c(null4, null5)), lwd=2, 
+		main="comparison of null models")
+	lines(density(null5), col="red", lwd=2)
+	legend("topright", c("shuffle", "mgen"), col=c("black", "red"), lwd=c(2,2), 
+		bty="n", cex=1.5)
+	abline(v=networklevel(Safariland>0, index="weighted nestedness"))
+	}
 }
 
 \keyword{ package }

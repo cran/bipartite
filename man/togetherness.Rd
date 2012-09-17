@@ -18,15 +18,13 @@ togetherness(web, normalise=TRUE, FUN = mean, ...)
   \item{FUN}{ The function to summarise species-pair T-scores with; defaults to mean.}
   \item{\dots}{ Arguments passed on to \code{FUN}, especially \code{na.rm=T} or colours for \code{hist}. }
 }
-\details{
 
-}
 \value{
   Returns the average (default) togetherness of all species combinations.   
 }
+
 \references{ 
 Stone, L. and Roberts, A. (1992) Competitive exclusion, or species aggregation? An aid in deciding. \emph{Oecologia} \bold{91}, 419--424
-
 }
 \author{ Carsten F. Dormann}
 

@@ -23,9 +23,6 @@ Take from the NCEAS interaction web database (\url{http://www.nceas.ucsb.edu/int
 
 \usage{data(bezerra2009)}
 
-\format{
-}
-
 \references{
 Bezerra, E.L.S., Machado, I.C.S. and Mello, M.A.R. 2009. Pollination networks of oil-flowers: a tiny world within the smallest of all worlds. \emph{Journal of Animal Ecology} \bold{78}, 1096--1101.
 }

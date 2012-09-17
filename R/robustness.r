@@ -7,9 +7,14 @@ robustness<- function (object)
     if (class(object) != "bipartite")
         stop("This function cannot be meaningfully applied to objects of this class.")
     N <- colSums(object)
-    if (all(object[-nrow(object), 2] == 1)) #this IF selects the appropriate column from the data file
-        y <- -object[, 3]
-    else y <- -object[, 2]
+	# select the correct column, based on which level was subject to primary extinction:
+    if (attr(object, "exterminated") == "lower"){
+    	y <- -object[, 3]
+    } else {
+    	y <- -object[, 2]
+    }
+	# modified by CFD, 18 May 2012, on bug detection by Silvia Santamaria
+    
     y <- (sum(y) - cumsum(y))/sum(y) #calculates the proportional cumulative sum of secondary extinctions
     x <- (object[, "no"]/max(object[, "no"])) #calculates the proportional primary extinctions
     ext.curve <- splinefun(x,y) #interpolates a function for the secondary extinctions

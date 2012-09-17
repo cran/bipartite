@@ -126,7 +126,7 @@ Poisot, T., Bever, J.D., Nemri, A., Thrall, P.H., and Hochberg, M.E. (2011b) A c
 Vázquez, D. P., Melian, C. J., Williams, N. M., Blüthgen N., Krasnov B. R. and Poulin, R. (2007) Species abundance and asymmetric interaction strength in ecological networks. \emph{Oikos} \bold{116}, 1120--1127
 }
 
-\author{ Carsten F. Dormann \email{carsten.dormann@ufz.de}}
+\author{ Carsten F. Dormann \email{carsten.dormann@biom.uni-freiburg.de}}
 
 \note{
 A comparison of specialisation indices is provided in Dormann (2011); the PDI is missing (since it was published later).
@@ -142,7 +142,7 @@ The maximum value of the uncorrected d is not a trivial issue. We treat it here 
 
 \examples{
 data(Safariland)
-specieslevel(Safariland)
+\dontrun{specieslevel(Safariland)}
 specieslevel(Safariland, index="ALLBUTD")[[2]]
 }
 

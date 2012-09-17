@@ -33,7 +33,7 @@ null.t.test(web, N = 30, ...)
    \item{P}{P-value of t statistic}
 }
 
-\author{Carsten F. Dormann \email{carsten.dormann@ufz.de}}
+\author{Carsten F. Dormann \email{carsten.dormann@biom.uni-freiburg.de}}
 
 \note{This function is rather slow. Using large replications in combination with iterative indices (degree distribution, compartment diversity, extinction slope, H2) may lead to rather long runtimes!
 }

@@ -1,3 +1,30 @@
+compart <- function(web) {
+# Author: Juan M. Barreneche
+# E-mail: jumanbar@gmail.com
+# replacing the slower version below 22 May 2012
+  cweb <- web
+  rc <- which(web > 0, arr.ind=TRUE)
+  r <- rc[,1]
+  c <- rc[,2]
+  p1 <- numeric(length(r)) + 1
+  p2 <- p1
+  comp <- 1
+  while (any(p2 > 0)) {
+    p2[which(p2 == 1)[1]] <- - comp
+    while (any(p2 != p1)) {
+      p1 <- p2
+      p2[r %in% r[p2 == - comp]] <- - comp
+      p2[c %in% c[p2 == - comp]] <- - comp
+    }
+    locs <- matrix(rc[p2 == - comp,], ncol=2)
+    cweb[locs] <- - comp
+    comp <- comp + 1
+  }
+  out <- list(cweb=cweb, n.compart=max(abs(p2)))
+  out
+}
+
+
 # This (faster) version is affected by the occurrence of ties!
 #compart <- function(web){
 #    # finds compartments and assigns numbers to them:
@@ -40,36 +67,36 @@
 #compart(Safariland)
 #
 
-## Bernd's version (not affected by lots of similarly linked species):
-compart <- function(web){
-  #recursive crossing out of horizontal and vertical neighbours
-  # can be simplified using vegan's distconnected on cca output ...
-  cross = function(web, start, comp)
-  {
-    n.r=nrow(web)
-    n.c=ncol(web)
-    r=start[1]
-    c=start[2]
-    web[r,c]=-comp     #assign a negative compartment number to interaction
+# ## Bernd's version (not affected by lots of similarly linked species):
+# compart <- function(web){
+  # #recursive crossing out of horizontal and vertical neighbours
+  # # can be simplified using vegan's distconnected on cca output ...
+  # cross = function(web, start, comp)
+  # {
+    # n.r=nrow(web)
+    # n.c=ncol(web)
+    # r=start[1]
+    # c=start[2]
+    # web[r,c]=-comp     #assign a negative compartment number to interaction
 
-    for (i in 1:n.r) #schaue senkrecht
-    {
-    if (web[i,c]>0)  web<-cross(web,c(i,c),comp)
-    }
+    # for (i in 1:n.r) #schaue senkrecht
+    # {
+    # if (web[i,c]>0)  web<-cross(web,c(i,c),comp)
+    # }
 
-    for (i in 1:n.c)    #schaue waagrecht
-    {
-     if (web[r,i]>0) web<-cross(web,c(r,i),comp)
-    }
-    return (web)
-  }
+    # for (i in 1:n.c)    #schaue waagrecht
+    # {
+     # if (web[r,i]>0) web<-cross(web,c(r,i),comp)
+    # }
+    # return (web)
+  # }
 
-  comp=1     #start with the first compartment
-  while (max(web)>0)  #any interactions left?
-  {
-    start=which(web==max(web),arr.ind=TRUE)[1,]  #start at the highest number of interactions (arbitrary)
-    web <- cross(web,start,comp) #start recursion until no more neighbours in one compartment are found
-    comp <- comp+1   #go to the next compartment
-  }
-  return(list(cweb=web, n.compart=max(abs(web))))
-}
+  # comp=1     #start with the first compartment
+  # while (max(web)>0)  #any interactions left?
+  # {
+    # start=which(web==max(web),arr.ind=TRUE)[1,]  #start at the highest number of interactions (arbitrary)
+    # web <- cross(web,start,comp) #start recursion until no more neighbours in one compartment are found
+    # comp <- comp+1   #go to the next compartment
+  # }
+  # return(list(cweb=web, n.compart=max(abs(web))))
+# }

@@ -231,10 +231,10 @@ int* rbtree::returnArrayOfKeys() {
 		curr->mark = 1;
 		while (flag_go) {
 			
-			if (curr->mark == 1 and curr->left == leaf) {			// - is it time, and is left child the leaf vertex?
+			if (curr->mark == 1 && curr->left == leaf) {			// - is it time, and is left child the leaf vertex?
 				curr->mark = 2;						// 
 			}
-			if (curr->mark == 2 and curr->right == leaf) {			// - is it time, and is right child the leaf vertex?
+			if (curr->mark == 2 && curr->right == leaf) {			// - is it time, and is right child the leaf vertex?
 				curr->mark = 3;						// 
 			}
 			if (curr->mark == 1) {						// - go left
@@ -260,6 +260,7 @@ int* rbtree::returnArrayOfKeys() {
 list* rbtree::returnListOfKeys() {
 	keyValuePair *curr, *prev;
 	list         *head, *tail, *newlist;
+	head = NULL;
 
 	curr = returnTreeAsList();
 	while (curr != NULL) {
@@ -364,14 +365,14 @@ void rbtree::insertItem(int newKey, int newValue) {
 
 	current = findItem(newKey);						// find newKey in tree; return pointer to it O(log k)
 	if (current == NULL) {
-		newVertex			= new elementrb;				// elementrb for the rbtree
-		newVertex->key		= newKey;					//  store newKey
-		newVertex->value		= newValue;  				//  store newValue
-		newVertex->color		= true;					//  new vertices are always RED
+		newVertex		= new elementrb;			// elementrb for the rbtree
+		newVertex->key		= newKey;				//  store newKey
+		newVertex->value	= newValue;  				//  store newValue
+		newVertex->color	= true;					//  new vertices are always RED
 		newVertex->parent	= NULL;					//  new vertex initially has no parent
 		newVertex->left		= leaf;					//  left leaf
-		newVertex->right		= leaf;					//  right leaf
-		support++;								// increment vertex count in rbtree
+		newVertex->right	= leaf;					//  right leaf
+		support++;							// increment vertex count in rbtree
 		
 		// must now search for where to insert newVertex, i.e., find the correct parent and
 		// set the parent and child to point to each other properly
@@ -610,8 +611,8 @@ void rbtree::rotateRight(elementrb *y) {
 // ******** Display Functions *****************************************************************************
 // public
 void rbtree::printTree() {
-	cout << "\nTREE SIZE = " << support << endl;
-	cout << "# "; printSubTree(root);
+	//cout << "\nTREE SIZE = " << support << endl;
+	//cout << "# "; printSubTree(root);
 	return;
 }
 
@@ -619,9 +620,9 @@ void rbtree::printTree() {
 void rbtree::printSubTree(elementrb *z) {
 	if (z==leaf) { return; }
 	else {
-		cout << "(" << z->key << " " << z->value << " " << z->color << ")"<<endl;
-		cout << "L "; printSubTree(z->left); cout << endl;
-		cout << "R "; printSubTree(z->right); cout << endl;
+		//cout << "(" << z->key << " " << z->value << " " << z->color << ")"<<endl;
+		//cout << "L "; printSubTree(z->left); cout << endl;
+		//cout << "R "; printSubTree(z->right); cout << endl;
 	}
 	return;
 }

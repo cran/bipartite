@@ -21,17 +21,9 @@ printoutModuleInformation(moduleWebObject)
   \item{moduleWebObject}{An object of class "moduleWeb".}
 }
 
-\details{}
-
 \value{None. This function is called for its side effects of printing the content of its object in a more acceptable format.}
 
-\references{}
-
 \author{Rouven Strauss}
-
-\note{}
-
-\seealso{}
 
 \examples{
 \dontrun{

@@ -47,10 +47,12 @@ Memmott, J., Waser, N. M. and Price, M. V. 2004 Tolerance of pollination network
 
 
 \examples{
+\dontrun{
 data(Safariland)
-ex <- second.extinct(Safariland, participant="low", method="ran", nrep=100, 
+ex <- second.extinct(Safariland, participant="lower", method="random", nrep=100, 
 	details=FALSE)
 robustness(ex)
+}
 }
 
 \keyword{ package }

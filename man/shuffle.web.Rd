@@ -46,7 +46,7 @@ strength in ecological networks. Oikos 116: 1120-1127.
 
 }
 
-\author{ Carsten F. Dormann <carsten.dormann@ufz.de> }
+\author{ Carsten F. Dormann <carsten.dormann@biom.uni-freiburg.de> }
 
 \note{ \code{shuffle.web} is not an extremely intelligent nullmodel. You may want to think of a better one for your specific application!
 }

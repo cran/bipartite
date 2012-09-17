@@ -2,6 +2,7 @@
 // *** COPYRIGHT NOTICE *******************************************************************************
 // graph.h - graph data structure for hierarchical random graphs
 // Copyright (C) 2005-2008 Aaron Clauset
+// Copyright (C) 2010-2011 Rouven Strauss
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -36,7 +37,7 @@
 //		March 13, 2010:		merged graph.h files of fitHRG, consensusHRG and predictHRG into one
 //					merged graph_simp.h into this one
 //		March 18, 2010:		modified functions for usage with quantitative networks
-//		March 21, 2010:		added datastructure for margin totals likelihood
+//		March 21, 2010:		added datastructure for computation of expected value
 //
 // ****************************************************************************************************
 // 
@@ -73,18 +74,20 @@ public:
 	~edge();
 	
 	int	x;					// index of edge terminator
-	int	weight;					// weight of edge
+	double	weight;					// weight of edge
+	double	originalWeight;				//
 	edge*	next;					// pointer to next elementd
 };
 
 edge::edge()  {
 	x		= -1;
 	weight		= 1;
+	originalWeight	= 1;
 	next		= NULL;
 }
 
 edge::~edge() {
-
+    next = NULL;
 }
 
 #endif
@@ -110,121 +113,114 @@ vert::vert()  {
 vert::~vert() {}
 #endif
 
+#if !defined(block_INCLUDED)
+#define block_INCLUDED
+struct block { double x; int y; };
+#endif
+
 // ******** Graph Class with Edge Statistics *************************************************************
 
 class graph {
 public:
-	graph(const int, const int, const bool);
+	int	nrOfComponents;								// number of disjoint subgraphs
+	block*	componentNr;								// array indicating for each vertex to which disjoint subgraph it belongs
+
+	graph(const int, const int, const char*, const bool);
 	~graph();
 
-	bool	addLink(const int, const int, const int, const bool);			// add edge (i,j) with weight to graph
+	bool	addLink(const int, const int, const double, const bool);		// add edge (i,j) with weight to graph
 	bool	doesLinkExist(const int, const int);					// true if edge (i,j) is already in graph
-	int	getEdgeWeight(const int, const int);					// returns weight of edge (i,j)
-	int	getDegree(const int);							// returns degree of vertex i
-	string	getName(const int);							// returns name of vertex i
+	bool	isConnected();								// checks whether graph is connected
+	void	visit(int, int);							// breadth-first visit of vertices
+	double	getOriginalEdgeWeight(const int, const int);				// returns weight of edge (i,j)
+	double	getExpectedEdgeWeight(const int, const int);				// returns expected value of edge weight between i and j;
+	void	updateEdgeWeights();							// sets edge weights according to method "Strauss"
 	edge*	getNeighborList(const int);						// returns edge list of vertex i
 	int	getNumLinks();								// returns m
-	int	getNumAVertices();								// returns n_a
-	int	getNumBVertices();								// returns n_b
-	int	getNumVertices();								// returns n
-	int	getSumEdgeWeight();							// returns sumEdgeWeight
-	double	getExpectedEdgeWeight(const int, const int);				// returns expected value of edge weight between i and j;
-	void	computeExpectedEdgeWeight();						// computes expected edge weights for all i, j
+	int	getNumAVertices();							// returns n_a
+	int	getNumBVertices();							// returns n_b
+	int	getNumVertices();							// returns n
+	double	getSumEdgeWeight();							// returns sumEdgeWeight
+	double	getMarginTotal(const int);						// returns marginTotal[i]
 	void	printPairs();								// prints all edges in graph
-	bool	setName(const int, const string);					// set name of vertex i
 	
 private:
-	vert*		vertices;			// list of vertices
 	edge**		vertexLink;		// linked list of neighbors to vertex
 	edge**		vertexLinkTail;		// pointers to tail of neighbor list
 	int		n_a;			// number of A vertices
 	int		n_b;			// number of B vertices
 	int		n;			// number of vertices
-	int		sumEdgeWeight;		// total sum of edge weights
+	const char*	method;			// method ("Strauss" or "Newman")
+	double		sumEdgeWeight;		// total sum of edge weights
 	int		m;			// number of directed edges
-	bool		isBipartite;		// bool indicating whether graph is bipartite
-
-	// needed only for fitHRG
-	double**	expectedEdgeWeight;	// array containing expected weights of edges computed by following formula:
-						// expectedEdgeWeight[i][j] = sum(edge_weight_i_b) * sum(edge_weight_a_j) / sumEdgeWeight, 
-						// where b B vertix, a A vertix
-	int*		marginTotal;		// contains the margin totals needed for computing expectedEdgeWeight
+	double*		marginTotal;		// contains the margin totals needed for computing expectedEdgeWeight
+	bool		onlyEdgeWeights;	// flag indicating whether only edge weights should be used (no expected edge weights)
 };
 
 // ******** Constructor / Destructor **********************************************************************
 
-graph::graph(const int sizeOfA, const int sizeOfB, const bool flag_bipartite)  {
+graph::graph(const int sizeOfA, const int sizeOfB, const char* usedMethod, const bool flag_onlyEdgeWeights)  {
+	nrOfComponents		= 1;
 	n_a			= sizeOfA;
 	n_b			= sizeOfB;
 	n			= sizeOfA + sizeOfB;
+	method			= usedMethod;
 	sumEdgeWeight		= 0;
 	m			= 0;
-	isBipartite		= flag_bipartite;
-	vertices			= new vert  [n];
-	vertexLink		= new edge* [n];
-	vertexLinkTail		= new edge* [n];
+	onlyEdgeWeights		= flag_onlyEdgeWeights;
+	vertexLink		= new edge*[n];
+	vertexLinkTail		= new edge*[n];
+	marginTotal		= new double[n];
+	componentNr		= new block[n];
 
 	for(int i = 0; i < n; i++) {
-		vertexLink[i] = NULL;
-	}
-
-	// needed only for fitHRG
-	marginTotal	= new int[n];
-	for(int i = 0; i < n; i++) {
-		marginTotal[i] = 0;
-	}
-
-	expectedEdgeWeight	= new double*[n_a];
-	for(int i = 0; i < n_a; i++) {
-		if(isBipartite) {
-			expectedEdgeWeight[i] = new double[n_b];
-			for(int j = 0; j < n_b; j++) {
-				expectedEdgeWeight[i][j] = 0.0;
-			}
-		}
-		else {
-			expectedEdgeWeight[i] = new double[n_a];
-			for(int j = 0; j < n_a; j++) {
-				expectedEdgeWeight[i][j] = 0.0;
-			}
-		}
+		vertexLink[i]	    = NULL;
+		vertexLinkTail[i]   = NULL;
+		marginTotal[i]	    = 0;
+		componentNr[i].x    = -1;
+		componentNr[i].y    = i;
 	}
 }
 
 graph::~graph() {
-	edge *curr, *prev;
-	for (int i=0; i<n; i++) {
-		curr = vertexLink[i];
-		while (curr != NULL) {
-			prev = curr;
-			curr = curr->next;
-			delete prev;						// deletes edge histogram, too
-		}
+
+	edge* currentEdge;
+	edge* toDelete;
+
+	for(int i = 0; i < n; i++) {
+	    currentEdge = vertexLink[i];
+
+	    while(currentEdge != NULL) {
+		toDelete	= currentEdge;
+		currentEdge	= currentEdge->next;
+		delete toDelete;
+	    }
 	}
 
-	curr = NULL;
-	prev = NULL;
+	currentEdge = NULL;
+	toDelete    = NULL;
 
-	delete [] vertexLink;	vertexLink	= NULL;
-	delete [] vertexLinkTail;	vertexLinkTail	= NULL;
-	delete [] vertices;	vertices		= NULL;				// deletes vertex histogram, too
+	delete [] vertexLink;	    vertexLink	    = NULL;
+	delete [] vertexLinkTail;   vertexLinkTail  = NULL;
+	delete [] marginTotal;	    marginTotal	    = NULL;
+	delete [] componentNr;	    componentNr	    = NULL;
 }
 
 // ********************************************************************************************************
 
-bool graph::addLink(const int i, const int j, const int weight, const bool aToB) {	// adds the directed edge (i,j,weight) to the adjacency list for v_i
-	if (i >= 0 and i < n and j >= 0 and j < n and (!isBipartite || ((i < n_a and j >= n_a) or (j < n_a and i >= n_a)))) {
+bool graph::addLink(const int i, const int j, const double weight, const bool aToB) {	// adds the directed edge (i,j,weight) to the adjacency list for v_i
+	if (i >= 0 && i < n && j >= 0 && j < n && ((i < n_a && j >= n_a) || (j < n_a && i >= n_a))) {
 
-		edge* newedge;
-
-		newedge		= new edge;
-		newedge->x	= j;
-		newedge->weight	= weight;
+		edge* newedge	        = new edge;
+		newedge->x		= j;
+		newedge->weight		= weight;
+		newedge->originalWeight	= weight;
 
 		if(aToB) {
-			if (!isBipartite || (i < n_a and j >= n_a and j < n)) {
+			if (i < n_a && j >= n_a) {
 				sumEdgeWeight	+= weight;
 				marginTotal[i]	+= weight;
+
 				if(i != j) {
 					marginTotal[j]	+= weight;
 				}
@@ -233,35 +229,30 @@ bool graph::addLink(const int i, const int j, const int weight, const bool aToB)
 		}
 
 		if (vertexLink[i] == NULL) {				// first neighbor
-			vertexLink[i]	= newedge;
-			vertexLinkTail[i]	= newedge;
-			vertices[i].degree	= 1;
+			vertexLink[i]	    = newedge;
+			vertexLinkTail[i]   = newedge;
 		}
 		else {							// subsequent neighbor
-			vertexLinkTail[i]->next = newedge;
-			vertexLinkTail[i]       = newedge;
-			vertices[i].degree++;
+			vertexLinkTail[i]->next	= newedge;
+			vertexLinkTail[i]	= newedge;
 		}
+
 		m++;							// increment edge count
 		newedge = NULL;
 
 		return true;
 	}
-	if(isBipartite && ((i < n_a && j < n_a) || (i >= n_a and j >= n_a))) {
-		cout << "!! Error: graph is not bipartite!" << endl;
-		cout << "          Do not invoke -bipartite if graph is unipartite." << endl;
-	}
+
 	return false;
 }
 
 // ********************************************************************************************************
 
 bool graph::doesLinkExist(const int i, const int j) {	// determines if the edge (i,j) already exists in the adjacency list of v_i
-	if (i >= 0 and i < n and j >= 0 and j < n and (!isBipartite || (i < n_a and j >= n_a) or (j < n_a and i >= n_a))) {
+	if (i >= 0 && i < n && j >= 0 && j < n && ((i < n_a && j >= n_a) || (j < n_a && i >= n_a))) {
 
-		edge* curr;
+		edge* curr = vertexLink[i];
 
-		curr = vertexLink[i];
 		while (curr != NULL) {
 			if (curr->x == j) {
 				curr = NULL;
@@ -276,14 +267,50 @@ bool graph::doesLinkExist(const int i, const int j) {	// determines if the edge 
 
 // ********************************************************************************************************
 
-int graph::getEdgeWeight(const int i, const int j) {	// returns the weight of edge (i,j)
-	if (i >= 0 and i < n and j >= 0 and j < n and (!isBipartite || (i < n_a and j >= n_a) or (j < n_a and i >= n_a))) {
-		edge* curr;
-		int weight;
-		curr = vertexLink[i];
+bool graph::isConnected() {
+
+    visit(0, nrOfComponents);
+
+    for(int i = 0; i < n; i++) {
+	if(componentNr[i].x == -1) {
+	    nrOfComponents++;
+	    visit(i, nrOfComponents);
+	}
+    }
+
+    if(nrOfComponents == 1) return true;
+    else return false;
+}
+
+// ********************************************************************************************************
+
+void graph::visit(int v, int component) {
+
+    componentNr[v].x = component-1;
+
+    edge* curr = vertexLink[v];
+
+    while(curr != NULL) {
+	if(componentNr[curr->x].x == -1) {
+	    visit(curr->x, component);
+	}
+        curr = curr->next;
+    }
+
+    curr = NULL;
+}
+
+// ********************************************************************************************************
+
+double graph::getOriginalEdgeWeight(const int i, const int j) {	// returns the weight of edge (i,j)
+	if (i >= 0 && i < n && j >= 0 && j < n && ((i < n_a && j >= n_a) || (j < n_a && i >= n_a))) {
+
+		double weight;
+		edge* curr = vertexLink[i];
+
 		while (curr != NULL) {
 			if (curr->x == j) {
-				weight = curr->weight;
+				weight = curr->originalWeight;
 				curr = NULL;
 				return weight;
 			}
@@ -291,36 +318,60 @@ int graph::getEdgeWeight(const int i, const int j) {	// returns the weight of ed
 		}
 		curr = NULL;
 	}
-	return -1;
+	return 0;
 }
 
 // ********************************************************************************************************
 
-int graph::getDegree(const int i) {
-	if (i >= 0 and i < n) {
-		return vertices[i].degree;
-	} 
+double	graph::getExpectedEdgeWeight(const int i, const int j) {
+
+	if (0 <= i && i < n && 0 <= j && j < n) {
+
+		if(onlyEdgeWeights) return 0;
+
+		if ((i < n_a && j >= n_a) || (j < n_a && i >= n_a)) {
+			if(!strcmp(method, "Strauss")) return marginTotal[i] * marginTotal[j] / (double)(sumEdgeWeight) / (getMarginTotal(i) + getMarginTotal(j) - getOriginalEdgeWeight(i,j));
+			else return marginTotal[i] * marginTotal[j] / (double)(sumEdgeWeight);
+		}
+		else {
+			return 0.0;
+		}
+	}
 	else {
-		return -1;
-	} 
+		//cout << "!! ERROR: trying to get expected edge weight between vertices of which at least one does not exist" << endl;
+		return 0.0;
+	}
 }
 
 // ********************************************************************************************************
 
-string graph::getName(const int i) {
-	if (i >= 0 and i < n) {
-		return vertices[i].name;
+void graph::updateEdgeWeights() {
+    
+    for(int i = 0; i < n; i++) {
+	for(int j = 0; j < n; j++) {
+
+	    edge* curr = vertexLink[i];
+
+	    while (curr != NULL) {
+		if (curr->x == j) {
+		    if(i != j) curr->weight = curr->weight / (getMarginTotal(i) + getMarginTotal(curr->x) - curr->weight);
+		    else curr->weight = curr->weight / getMarginTotal(i);
+		    break;
+		}
+		curr = curr->next;
+	    }
+	    curr = NULL;
 	}
-	else {
-		return "";
-	}
+    }
+
+    return;
 }
 
 // ********************************************************************************************************
 
 // NOTE: The following method returns addresses; deallocation of returned object is dangerous
 edge* graph::getNeighborList(const int i) {
-	if (i >= 0 and i < n) {
+	if (i >= 0 && i < n) {
 		return vertexLink[i];
 	}
 	else {
@@ -331,46 +382,16 @@ edge* graph::getNeighborList(const int i) {
 // ********************************************************************************************************
 
 int	graph::getNumLinks()		{ return m; }
-int	graph::getNumAVertices()		{ return n_a; }
-int	graph::getNumBVertices()		{ return n_b; }
+int	graph::getNumAVertices()	{ return n_a; }
+int	graph::getNumBVertices()	{ return n_b; }
 int	graph::getNumVertices()		{ return n; }
-int	graph::getSumEdgeWeight()	{ return sumEdgeWeight; }
+double	graph::getSumEdgeWeight()	{ return sumEdgeWeight; }
 
-double	graph::getExpectedEdgeWeight(const int i, const int j) {
+// ********************************************************************************************************
 
-	if (i >= 0 and i < n and j >= 0 and j < n) {
-		if(isBipartite) {
-			if (i < n_a and j >= n_a) return expectedEdgeWeight[i][j-n_a];
-			else if (j < n_a and i >= n_a) return expectedEdgeWeight[j][i-n_a];
-			else return 0.0;
-		}
-		else {
-			return expectedEdgeWeight[i][j];
-		}
-	}
-	else {
-		cout << "Error: trying to get expected edge weight between vertices of which at least one does not exist" << endl;
-		return 0.0;
-	}
-}
-
-void	graph::computeExpectedEdgeWeight() {
-
-	for(int i = 0; i < n_a; i++) {
-		if(isBipartite) {
-			for(int j = 0; j < n_b; j++) {
-				expectedEdgeWeight[i][j] = (double)(marginTotal[i]) * (double)(marginTotal[j+n_a]) / (double)(sumEdgeWeight);
-			}
-		}
-		else {
-			for(int j = 0; j < n_a; j++) {
-				expectedEdgeWeight[i][j] = (double)(marginTotal[i]) * (double)(marginTotal[j]) / (double)(sumEdgeWeight);
-			}
-		}
-	}
-
-	delete [] marginTotal;
-	marginTotal = NULL;
+double graph::getMarginTotal(int i) {
+    if(0 <= i && i < n) return marginTotal[i];
+    else return -1.0;
 }
 
 // ********************************************************************************************************
@@ -379,29 +400,17 @@ void graph::printPairs() {
 	edge* curr;
 	int edgeCount = 0;
 	for (int i=0; i<n; i++) {
-		cout << "[" << i << "]\t";
+		//cout << "[" << i << "]\t";
 		curr = vertexLink[i];
 		while (curr != NULL) {
-			cout << curr->x << "\t";
+			//cout << curr->x << "\t";
 			edgeCount++;
 			curr = curr->next;
 		}
-		cout << "\n";
+		//cout << "\n";
 	}
-	cout << edgeCount << " edges total.\n";
+	//cout << edgeCount << " edges total.\n";
 	return;
-}
-
-// ********************************************************************************************************
-
-bool graph::setName(const int i, const string text) {
-	if (i >= 0 and i < n) {
-		vertices[i].name = text;
-		return true;
-	}
-	else {
-		return false;
-	}
 }
 
 // ********************************************************************************************************

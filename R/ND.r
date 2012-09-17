@@ -16,30 +16,30 @@ ND <- function(web, normalised=TRUE){
     list("lower"=low, "higher"=high)
 }
 
-CC <- function(web, cmode="suminvundir", rescale=TRUE, ...){
+CC <- function(web, cmode="suminvundir", rescale=TRUE, weighted=TRUE, ...){
     # closeness centrality as used in Gonzales et al. (2009)
     require(sna)
     # by Carsten F. Dormann, 14 Dec 2010
     # ... options passed on to closeness in package sna
     # uses a version to calculate centrality that allows for disconnected graphs
-    wh <- as.one.mode(web, project="higher", weighted=FALSE)
+    wh <- as.one.mode(web, project="higher", weighted=weighted)
     cch <- sna::closeness(wh, cmode=cmode, rescale=rescale, ...)
 
-    wl <- as.one.mode(web, project="lower", weighted=FALSE)
+    wl <- as.one.mode(web, project="lower", weighted=weighted)
     ccl <- sna::closeness(wl, cmode=cmode, rescale=rescale, ...)
 
     list("lower"=ccl, "higher"=cch)
 }
 
-BC <- function(web, rescale=TRUE, cmode="undirected", ...){
+BC <- function(web, rescale=TRUE, cmode="undirected", weighted=TRUE, ...){
     # betweenness centrality as used in Gonzales et al. (2009)
     require(sna)
     # by Carsten F. Dormann, 14 Dec 2010
     # ... options passed on to closeness in package sna; particularly: rescale=TRUE!
-    wh <- as.one.mode(web, project="higher", weighted=FALSE)
+    wh <- as.one.mode(web, project="higher", weighted=weighted)
     bch <- sna::betweenness(wh, rescale=rescale, ...)
 
-    wl <- as.one.mode(web, project="lower", weighted=FALSE)
+    wl <- as.one.mode(web, project="lower", weighted=weighted)
     bcl <- sna::betweenness(wl, rescale=rescale, ...)
 
     list("lower"=bcl, "higher"=bch)

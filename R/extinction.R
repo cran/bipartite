@@ -1,4 +1,4 @@
-extinction <- function(web, participant="both", method="random"){
+extinction <- function(web, participant="both", method="random", ext.row=NULL, ext.col=NULL){
   # function to simulate extinctions of pollination web participants
   # web contains a matrix (rows=plants, cols=pollinators)
   # participant selects which group is to suffer extinctions: "plant", "pollinator" or "both";
@@ -6,8 +6,9 @@ extinction <- function(web, participant="both", method="random"){
   # method is either "random" (randomly a plant species is exterminated) or
   #        "abundance" (plant species with the lowest number of interactions
   #        is exterminated first; idea is that interaction number is proportional
-  #        to true abundance); or "degree", eliminating the most highly connected
-  #        species first; partial matching of strings allowed
+  #        to true abundance); 
+  #		   "degree", eliminating the most highly connected species first; or
+  #		   "external", in which case ext.row and ext.col need to give the sequence by which species are to be eliminated (e.g. by inverse of independently measured abundance) ; partial matching of strings allowed
   # based on how I remember the idea of Jane Memmott's paper; C.F. Dormann, 6 Mar 2007
 
   # Error checking for partial matching of options:
@@ -15,7 +16,7 @@ extinction <- function(web, participant="both", method="random"){
   partis.match <- pmatch(participant, partis)
   if (is.na(partis.match)) stop("Choose participant: lower/higher/both.\n")
 
-  meths <- c("random", "abundance", "degree")
+  meths <- c("random", "abundance", "degree", "external")
   meths.match <- pmatch(method, meths)
   if (is.na(meths.match)) stop("Choose extinction method: random/abundance/degree.\n")
 
@@ -45,7 +46,7 @@ extinction <- function(web, participant="both", method="random"){
           sequ <- rowSums(web>0)   
           which.ex <- which(sequ == max(sequ))
           # if two or more species have the same degree, draw one randomly:
-          if (length(which.ex) > 1) ex <- sample(which.ex, size=1)  else ex <- which.ex
+          if (length(which.ex) > 1){ ex <- sample(which.ex, size=1)}  else {ex <- which.ex}
           web[ex, ] <- 0
       }
       if (partis.match == 2){
@@ -54,7 +55,15 @@ extinction <- function(web, participant="both", method="random"){
           if (length(which.ex) > 1) ex <- sample(which.ex, size=1)  else ex <- which.ex
           web[, ex] <- 0
       }
-      
+     
+  }
+  if (meths.match == 4)               # removal by external sequence vector
+  {
+      rseq <- ext.row
+      cseq <- ext.col
+      if (partis.match==1) web[rseq[1], ] <- 0
+      if (partis.match==2) web[, cseq[1]] <- 0
+
   }
   
 
