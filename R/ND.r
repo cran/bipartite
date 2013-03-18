@@ -8,17 +8,17 @@ ND <- function(web, normalised=TRUE){
     dhigher <- colSums(web)  
     Nlow <- Nhigh <- 2 # effectively unnormalised
     if (normalised){
-      Nlow <- length(dhigher)+1
-      Nhigh <- length(dlower)+1
+      Nlow <- length(dhigher)
+      Nhigh <- length(dlower)
     }
-    low <- dlower/(Nlow-1); names(low) <- rownames(web)
-    high <- dhigher/(Nhigh-1); names(high) <- colnames(web)
+    low <- dlower/Nlow; names(low) <- rownames(web)
+    high <- dhigher/Nhigh; names(high) <- colnames(web)
     list("lower"=low, "higher"=high)
 }
 
 CC <- function(web, cmode="suminvundir", rescale=TRUE, weighted=TRUE, ...){
     # closeness centrality as used in Gonzales et al. (2009)
-    require(sna)
+    #require(sna)
     # by Carsten F. Dormann, 14 Dec 2010
     # ... options passed on to closeness in package sna
     # uses a version to calculate centrality that allows for disconnected graphs
@@ -33,7 +33,7 @@ CC <- function(web, cmode="suminvundir", rescale=TRUE, weighted=TRUE, ...){
 
 BC <- function(web, rescale=TRUE, cmode="undirected", weighted=TRUE, ...){
     # betweenness centrality as used in Gonzales et al. (2009)
-    require(sna)
+    # require(sna)
     # by Carsten F. Dormann, 14 Dec 2010
     # ... options passed on to closeness in package sna; particularly: rescale=TRUE!
     wh <- as.one.mode(web, project="higher", weighted=weighted)

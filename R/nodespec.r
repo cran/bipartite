@@ -14,7 +14,7 @@ nodespec <- function(web, inf.replace=NA){
   # actually, nodespec is the inverse of closeness. Just apparently nobody has noticed ...
 
 
-  require(sna)
+  #require(sna)
   rr <- nrow(web)
   cc <- ncol(web)
 

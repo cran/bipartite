@@ -18,15 +18,21 @@ null.t.test <- function(web, N=30, ...){
      # Does only work for indices directly returned by the function called (e.g. NOT for
      # degree distributions).
 
+	 call.args <- list(...)
+	 #return(call.args)
      obs <- networklevel(web, ...)
-     null.list <- r2dtable(n=N, r=rowSums(web), c=colSums(web))
-     res <- sapply(null.list, networklevel, ...)
+   	 null.list <- r2dtable(n=N, r=rowSums(web), c=colSums(web))
+   	 if (length(call.args$index) == 1){ 
+   	 		res <- matrix(sapply(null.list, networklevel, ...), nrow=1)
+     } else {
+     		res <- sapply(null.list, networklevel, ...)
+     }
      # t.test the difference between observed and expected from null model:
-     t.test.mat <- matrix(nrow=nrow(res), ncol=6)
-     rownames(t.test.mat) <- rownames(res)
+     t.test.mat <- matrix(nrow=NROW(res), ncol=6)
+     rownames(t.test.mat) <- if (NROW(res) == 1) call.args$index  else rownames(res)
      colnames(t.test.mat) <- c("obs", "null mean", "lower CI", "upper CI", "t", "P")
-     for (i in 1:nrow(res)){
-         t.res <- try(t.test(unlist(res[i,]), mu=obs[[i]], na.action=na.omit, ...))
+     for (i in 1:NROW(res)){
+         t.res <- try(t.test(unlist(res[i,]), mu=obs[[i]], na.action=na.omit))#, ...
          t.test.mat[i,] <- c(obs[[i]], mean(unlist(res[i,]), na.rm=TRUE), t.res$conf.int,
                             t.res$statistic, t.res$p.value)
      }

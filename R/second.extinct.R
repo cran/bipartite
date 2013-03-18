@@ -54,7 +54,7 @@ function(web, participant="higher", method="abun", nrep=10, details=FALSE, ext.r
         if (nrow(dead)+1 != nrow(dead2)) stop("PANIC! Something went wrong with the extinct sequence! Please contact the author to fix this!!")
         if (participant == "lower") supposed.length <- NROW(web) 
         if (participant == "higher") supposed.length <- NCOL(web) 
-        if (participant == "both") supposed.length <- max(dim(web))
+        if (participant == "both") supposed.length <- NROW(dead2)#supposed.length <- sum(dim(web)) ### was max; but obviously can be the sum of both levels
 
         if (NROW(dead2) != supposed.length) { # Is dead of the right length?
         	missing <- supposed.length - NROW(dead2) 

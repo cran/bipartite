@@ -1,8 +1,8 @@
 # This function computes and returns the coordinates of the corners of the rectangles representing modules
 getModuleCoordinates = function(moduleWebObject, fromDepth=0, upToDepth=-1) {
 
-	if (!is(moduleWebObject, "moduleWeb")) { warning("Object of wrong class."); }
-	else {
+	if (!is(moduleWebObject, "moduleWeb")) { warning("Object of wrong class."); 
+  }	else {
 
 		web		= slot(moduleWebObject, "originalWeb");
 		moduleWeb	= slot(moduleWebObject, "moduleWeb");
@@ -26,12 +26,12 @@ getModuleCoordinates = function(moduleWebObject, fromDepth=0, upToDepth=-1) {
 		offset		= 2;
 
 		for(i in 1:nrow(modules)) {
-			if(fromDepth <= modules[i,1] && modules[i,1] <= upToDepth) {
+			if (fromDepth <= modules[i,1] && modules[i,1] <= upToDepth) {
 				mod = modules[i,c((offset+1):ncol(modules))];			# i.th row of "modules" without two first elements (containing information about depth and whether current module is the last submodule of its depth to plot within its nesting module)
 				mod = mod[order];
 
 				j = n_a+1;
-				while(mod[j] == 0) { j = j+1; }					# calculate x-coordinate of left lower corner of module border
+				while (mod[j] == 0) { j = j+1; }					# calculate x-coordinate of left lower corner of module border
 				x_left = which(colnames(moduleWeb) == colnames(emptyModuleWeb)[j - n_a]) - 1;
 
 				j = n_a;
@@ -48,12 +48,12 @@ getModuleCoordinates = function(moduleWebObject, fromDepth=0, upToDepth=-1) {
 
 				# Since, possibly, there are already rectangles around some of the nodes comprised by the rectangle spanned by the computed coordinates,
 				# we have to find the next empty or column, respectively
-				while(moduleWeb[(-y_top + nrow(moduleWeb)), x_left] < -modules[i,1]) {
-					x_left		= x_left - 1;
+				while (moduleWeb[(-y_top + nrow(moduleWeb)), x_left] < -modules[i,1]) {
+					x_left	= x_left - 1;
 					y_top		= y_top + 1;
 				}
 
-				while(moduleWeb[(-y_bottom + nrow(moduleWeb)), x_right] < -modules[i,1]) {
+				while (moduleWeb[(-y_bottom + nrow(moduleWeb)), x_right] < -modules[i,1]) {
 					y_bottom	= y_bottom - 1;
 					x_right		= x_right + 1;
 				}

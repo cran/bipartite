@@ -1,4 +1,4 @@
-nested <- function(web, method="binmatnest2", ..., rescale=FALSE){
+nested <- function(web, method="binmatnest2", rescale=FALSE, normalised=TRUE){
   # a wrapper function to call any of the currently implemented measures of nestedness
   
 #  \item{method}{One or more of the following: discrepancy, discrepancy2, binmatnest, binmatnest2, NODF, NODF2, C.score, checker, wine, ALL}
@@ -11,13 +11,16 @@ nested <- function(web, method="binmatnest2", ..., rescale=FALSE){
   out <- NULL
   if ("binmatnest2" %in% index) out <- c(out, "binmatnest2"=nestedtemp(web)$statistic)
 
-  if ("binmatnest" %in% index) out <- c(out, "binmatnest"=nestedness(web, ...)$temperature)
+  if ("binmatnest" %in% index) out <- c(out, "binmatnest"=nestedness(web, null.models=FALSE)$temperature)
   
-  if ("discrepancy2" %in% index) out <- c(out, "discrepancy2"=nesteddisc(web)$statistic)
+  if ("discrepancy2" %in% index) {
+  	#require(vegan) # not nice, this; it's a namespace issue; somehow permute::allPerms is not available to nesteddisc, forcing me to load all of vegan here!
+  	out <- c(out, "discrepancy2"=nesteddisc(web)$statistic)
+  	}
 
   if ("discrepancy" %in% index) out <- c(out, "discrepancy"=unname(discrepancy(web)))
      
-  if ("C.score" %in% index) out <- c(out, "C.score"=C.score(web, ...)) #normalised!
+  if ("C.score" %in% index) out <- c(out, "C.score"=C.score(web, normalised=normalised))
   
   if ("checker" %in% index) out <- c(out, "checker"=nestedchecker(web)$C.score) 
   # identical to C.score(., FALSE)
@@ -28,7 +31,7 @@ nested <- function(web, method="binmatnest2", ..., rescale=FALSE){
 
   if ("weighted NODF" %in% index) out <- c(out, "weighted NODF"=unname(nestednodf(web, order=FALSE, weighted=TRUE)$statistic[3]))
 	
-  if ("wine" %in% index) out <- c(out, "wine"=wine(web, ...)$wine)
+  if ("wine" %in% index) out <- c(out, "wine"=wine(web)$wine)
   
   if (rescale & ! "ALL" %in% method) warning("You requested rescaling, but you won't get it (unless you use method='ALL')!") 
   

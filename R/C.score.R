@@ -1,5 +1,5 @@
 C.score <- function(web, normalise=TRUE, FUN=mean, ...){
-    require(vegan)
+    #require(vegan)
     # calculates the C-score for all pollinator species; the C-score represents
     # the average number of checkerboard units for each unique specis pair.
     # (Stone & Roberts 1990; here taken from Gotelli & Rohde 2002)
@@ -11,8 +11,10 @@ C.score <- function(web, normalise=TRUE, FUN=mean, ...){
     # to any other will be 0, and maxD will also be 0. Since the division by 0 will
     # lead to NAs, use the ellipses to pass on na.rm to mean or similar functions. )
     # Carsten F. Dormann, Dec. 2007
+    
     web <- web>0 # this whole concept works only on binary data!
     D <- designdist(t(web), method="(A-J)*(B-J)", terms="minimum")
+    
     # The minimum value for Ds is 0, for the special case were all species use the
     # hosts exactly co-occurringly.
     # The maximum value for Ds in each comparison is AB, when they are exactly
@@ -28,7 +30,9 @@ C.score <- function(web, normalise=TRUE, FUN=mean, ...){
           use <- seq_along(D)[nonzeros] # if maxD is 0, then D/maxD is non-sense!
           D <- D[use]/maxD[use]
       } else { 
-          D <- D/maxD
+      	if (maxD == 0 & D ==0) {# for the rare case of so small networks that no checkerboard will fit in
+      	  	D <- 0
+      	  } else { D <- D/maxD }
       }
     }
     FUN(D, ...)

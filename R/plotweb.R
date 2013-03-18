@@ -1,10 +1,8 @@
 
 `plotweb` <-
 function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
-    y.width.low = 0.1,
-    y.width.high = 0.1,
-    low.spacing = NULL,
-    high.spacing = NULL,
+    y.width.low = 0.1, y.width.high = 0.1,
+    low.spacing = NULL, high.spacing = NULL,
     arrow="no", col.interaction="grey80",
     col.high = "grey10", col.low="grey10",
     bor.col.interaction ="black", bor.col.high="black", bor.col.low="black",
@@ -13,17 +11,13 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
     bor.low.abun.col ="black",
     high.abun=NULL, high.abun.col="red", bor.high.abun.col="black",
     text.rot=0, text.high.col="black", text.low.col="black",
-    ad.high=NULL,
-    ad.low=NULL,
+    adj.high=NULL, adj.low=NULL,
     plot.axes = FALSE,
     low.y=0.5, high.y=1.5,
     add=FALSE,
-    y.lim=NULL,
-    x.lim=NULL,
-    low.plot=TRUE,
-    high.plot=TRUE,
-    high.xoff = 0,
-    low.xoff = 0,
+    y.lim=NULL, x.lim=NULL,
+    low.plot=TRUE, high.plot=TRUE,
+    high.xoff = 0, low.xoff = 0,
     high.lab.dis = NULL,
     low.lab.dis = NULL)
 {
@@ -33,6 +27,11 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
 
   low.order <- 1:dim(web)[1]
   high.order <- 1:dim(web)[2]
+  
+  # moved by CFD because otherwise the order is not the same as in the original matrix:
+   if (length(colnames(web)) == 0) colnames(web) <- colnames(web, do.NULL = FALSE)
+   if (length(rownames(web)) == 0) rownames(web) <- rownames(web, do.NULL = FALSE)
+
   
   # CFD: 
   if (NROW(web) == 1 | NCOL(web) ==1) {
@@ -46,6 +45,7 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
   meths <- c("normal", "cca")
   meths.match <- pmatch(method, meths)
   if (is.na(meths.match)) stop("Choose plot-method: normal/cca.\n")
+  if (length(unique(as.vector(web))) == 1) {meths.match <- 1; warning("CCA-sorting does not work with same value in each cell. Uses method='normal' instead.")}
   if (meths.match==2)
   { #for the option "cca" the web is first re-arranged and then treated as "normal"; thus: there is no "else" to this "if".
 
@@ -54,7 +54,7 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
   ## So, we need to extract the compartments there and put them in sequence:
     co <- compart(web)
     if (co$n.compart>1){ #do the arrangement for each compartment separately
-      require(vegan)
+      #require(vegan)
       row.seq <- NULL
       col.seq <- NULL
       for (m in 1:co$n.compart){
@@ -112,8 +112,8 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
 	        dummy <- highfreq
 	        for (i in 1:length(high.abun) )
     	    {
-        	ind <- which(names(high.abun)[i] == names(dummy))
-	        highfreq[ind] <- highfreq[ind]+high.abun[i]
+        	  ind <- which(names(high.abun)[i] == names(dummy))
+	          highfreq[ind] <- highfreq[ind]+high.abun[i]
 	        }
     	    #websum <- sum(highfreq)
         	diffh = (highfreq-colSums(web))/websum
@@ -133,10 +133,6 @@ function(web, method = "cca", empty = TRUE, labsize = 1, ybig = 1,
         low_xold <- -1
         low_versatz <- 0
 #        low.y <- 0.5
-        if (length(colnames(web)) == 0)
-            colnames(web) <- colnames(web, do.NULL = FALSE)
-        if (length(rownames(web)) == 0)
-            rownames(web) <- rownames(web, do.NULL = FALSE)
         if (!is.null(high.lablength))
             colnames(web) <- substr(colnames(web), 1, high.lablength)
         if (!is.null(low.lablength))
@@ -206,7 +202,7 @@ if (high.plot)
                 hoffset <- 0
             }
             if (text.rot==90) {hoffset=0; ad =c(0,0.3)} else ad=c(0.5,0.4)
-            if (!is.null(ad.high)) ad=ad.high
+            if (!is.null(adj.high)) ad=adj.high
             text(high_x +high.xoff+ high_prop[i]/2, high.y + y.width.high +
                 hoehe + hoffset, colnames(web)[i], cex = 0.6 *
                 labsize, offset = 0, srt=text.rot, adj=ad,
@@ -244,7 +240,7 @@ if (low.plot)
                 hoffset <- hoehe
             }
             if (text.rot==90) {hoffset=hoehe; ad =c(1,0.3)} else ad=c(0.5,0.4)
-            if (!is.null(ad.low)) ad=ad.low
+            if (!is.null(adj.low)) ad=adj.low
             text(low_x+low.xoff + low_prop[i]/2, low.y - y.width.low -
                 hoffset, rownames(web)[i], cex = 0.6 * labsize,
                 offset = 0, srt=text.rot, adj=ad,

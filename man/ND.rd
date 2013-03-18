@@ -20,7 +20,7 @@ CC(web, cmode="suminvundir", rescale=TRUE, weighted=TRUE, ...)
 \arguments{
   \item{web}{A matrix with lower trophic level species as rows, higher trophic level species
     as columns and number of interactions as entries.}
-  \item{normalised}{Shall the degrees be normalised? If so (default), the degree for a species is divided by the number of potential partners-1 (see, e.g., Martín González et al. 2010).}
+  \item{normalised}{Shall the degrees be normalised? If so (default), the degree for a species is divided by the number of species in the other level (see, e.g., Martín González et al. 2010).}
   \item{rescale}{If TRUE (default), centrality scores are rescaled such that they sum to 1.}
   \item{cmode}{String indicating the type of betweenness/closeness centrality being computed (directed or undirected geodesics, or a variant form - see help for \code{closeness} and \code{betweenness} in \pkg{sna} for details). The default, \option{"suminvundir"} for \code{CC} and \option{"undirected"} for \code{BC}, uses a formula that can also be applied to disconnected (=compartmented) graphs. Other cmodes may not.}
   \item{weighted}{Logical; if TRUE, bipartite projection will include edge weights, i.e. number of interactions. Defaults to TRUE.}
@@ -32,7 +32,7 @@ CC(web, cmode="suminvundir", rescale=TRUE, weighted=TRUE, ...)
   
   One-mode projections of two-mode networks are carried out by assigning a link to two species that share a interaction with a member of the other set (plant in case of pollinators, or pollinators in case of plants). There are different ways to do this (see \code{\link{as.one.mode}}), and many authors do not communicate well, which approach they have taken.
   
- BE AWARE that there are two definitions of closeness centrality, one being the inverse of the other! The networkX homepage defines CC as the inverse of the average distange from the focal node to all other nodes (\url{http://networkx.lanl.gov/reference/generated/networkx.closeness_centrality.html#networkx.closeness_centrality}), while Wikipedia defines CC simply as the average distance itself (\url{http://en.wikipedia.org/wiki/Centrality}). In \pkg{sna} the first definition is implemented, and this makes also more sense to me: closeness should be higher for central nodes.
+ BE AWARE that there are two definitions of closeness centrality, one being the inverse of the other! The networkX homepage defines CC as the inverse of the average distance from the focal node to all other nodes (\url{http://networkx.lanl.gov/reference/generated/networkx.closeness_centrality.html#networkx.closeness_centrality}), while Wikipedia defines CC simply as the average distance itself (\url{http://en.wikipedia.org/wiki/Centrality}). In \pkg{sna} the first definition is implemented, and this makes also more sense to me: closeness should be higher for central nodes.
 
 Both BC and CC can be normalised so that they sum to 1 (using \option{rescale=TRUE}). This only affects the absolute values, but not the qualitative results.
 
@@ -69,7 +69,7 @@ cor.test(cci[[1]], ndi[[1]], method="spear") # 0.403
 
 cor.test(bci[[2]], ndi[[2]], method="spear") # 0.738
 cor.test(cci[[2]], ndi[[2]], method="spear") # 0.827
-
+\dontrun{
 ## PLANTS:
 bc <- bci[[1]]
 cc <- cci[[1]]
@@ -91,6 +91,7 @@ summary(nls(cc ~ c*nd^d, start=list(c=0.2,d=2))) # lower RSE
 # BC:
 summary(nls(bc ~ a*nd+b, start=list(a=1,b=1)))
 summary(nls(bc ~ c*nd^d, start=list(c=0.2,d=2))) # lower RSE
+}
 }
 
 \keyword{package}

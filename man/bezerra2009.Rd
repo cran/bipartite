@@ -3,7 +3,7 @@
 \alias{bezerra2009}
 \docType{data}
 
-\title{Individuals observed in a flower-visitation networks of oil-collecting bees in a Brazilian steppe.}
+\title{Individuals observed in a flower-visitation network of oil-collecting bees in a Brazilian steppe.}
 
 \description{
 

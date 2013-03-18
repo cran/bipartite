@@ -1,9 +1,9 @@
 plotModuleWeb <- function (moduleWebObject, plotModules=TRUE, rank=FALSE, weighted=TRUE, displayAlabels=TRUE, 
 	displayBlabels=TRUE, labsize=1, xlabel="", ylabel="", square.border="white", fromDepth=0, upToDepth=-1) {
 
-	if(isCorrectModuleWebObject(moduleWebObject)) {
+	if (isCorrectModuleWebObject(moduleWebObject)) {
 
-		if(plotModules) {
+		if (plotModules) {
 			web	<- prepareWebForPlottingModules(moduleWebObject, fromDepth, upToDepth)
 			moduleWebObject	<- new("moduleWeb", originalWeb=slot(moduleWebObject, "originalWeb"), 
 				moduleWeb=web, orderA=slot(moduleWebObject, "orderA"), orderB=slot(moduleWebObject, "orderB"), 
@@ -60,13 +60,13 @@ plotModuleWeb <- function (moduleWebObject, plotModules=TRUE, rank=FALSE, weight
 					else { squareColor = rgb(1,1,1); }			# else set to white
 				}
 				else {
-					if(rank) {
+					if (rank) {
 						red  = green = (1 - (which(lev == web[n_a - i + 1, j]) - 1)/nl);
 						blue = 1;
 					}
 					else {
 						red  = green = 1 - web[n_a - i + 1, j]/max(web);
-						blue = 1;		# set color of ij.th square to blue with colorfulness according to intensity of interaction
+						blue = 1;		# set color of ij.th square to blue with color intensity proportional to number of interaction
 					}
 
 					squareColor = rgb(red, green, blue);
@@ -75,7 +75,7 @@ plotModuleWeb <- function (moduleWebObject, plotModules=TRUE, rank=FALSE, weight
 			}
 		}
 
-		if(plotModules) {
+		if (plotModules) {
 			foundModules = getModuleCoordinates(moduleWebObject, fromDepth, upToDepth);
 			drawModules(foundModules);
 		}

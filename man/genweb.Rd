@@ -11,9 +11,9 @@ genweb(N1 = 10, N2 = 30, dens = 2)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{N1}{ Number of species in the lower trophic level; or a vector of length 2 giving number of lower and higher trophic level species. Defaults to 10.}
-  \item{N2}{ Number of species in the higher trophic level. Ignored if N1 a vector of length 2. Defaults to 30.}
-  \item{dens}{ Interaction density, i.e.~how many interactions there shall be, on average, for each species. Defaults to 2 (the median observed interaction density in the NCEAS pollination webs).}
+  \item{N1}{ Number of species in the lower trophic level; or a vector of length 2 giving number of lower and higher trophic level species. Defaults to 10. Large values (>70) will take much longer!}
+  \item{N2}{ Number of species in the higher trophic level. Ignored if N1 a vector of length 2. Defaults to 30. Large values (>70) will take much longer!}
+  \item{dens}{ Interaction density, i.e. how many interactions there shall be, on average, for each \emph{link}. Defaults to 2 (the median observed interaction density in the NCEAS pollination webs). Large values (> 10) will take much longer to find matrices for.}
 }
 \details{
   This function can be used to create simple, but not necessarily realistic, bipartite webs for given dimensionality and interaction density. Marginal distributions are  assumed to be lognormal, mean and standard deviation are calculated from \option{N1}, \option{N2} and 

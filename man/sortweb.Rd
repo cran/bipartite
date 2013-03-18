@@ -8,7 +8,7 @@
 }
 
 \usage{
-sortweb(web, sort.order="inc", sequence=NULL)
+sortweb(web, sort.order="dec", sequence=NULL)
 }
 
 \arguments{

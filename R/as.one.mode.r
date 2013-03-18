@@ -25,15 +25,20 @@ as.one.mode <- function(web, fill=0, project="full", weighted=TRUE){
       as.one.mode.web
     }
 
+	NR <- NROW(web)
 
-    # maintain full information, pretend all species could interact:
+    # maintain full information, pretend all species could interact (except if fill=NA):
     if (project == "full"){
       if (!weighted) web <- web>0
       o <- matrix(fill, nrow=sum(dim(web)), ncol=sum(dim(web)))
-      o[1:nrow(web), (nrow(web)+1):ncol(o)] <- as.matrix(web)
-      o[(nrow(web)+1):nrow(o), 1:nrow(web)] <- t(web)
+      o[1:NR, (NR+1):ncol(o)] <- as.matrix(web)
+      o[(NR+1):nrow(o), 1:nrow(web)] <- t(web)
       colnames(o) <- rownames(o) <- c(rownames(web), colnames(web))
+	  if (is.na(fill)){ # turn forbidden links (within groups) into NAs:
+		attr(o, "one.mode") <- "masked" #possibly use class instead??
+	  }
     }
+    
     
     # project to one mode for higher trophic level
     if (project == "higher"){
@@ -56,3 +61,7 @@ as.one.mode <- function(web, fill=0, project="full", weighted=TRUE){
 #
 #m.1 <- projection(m)
 
+#set.seed(1)
+#n <- matrix(rpois(30, 1), 5,6)
+#web <- n
+#as.one.mode(n, project="higher", weighted=F)

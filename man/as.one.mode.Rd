@@ -15,7 +15,7 @@ as.one.mode(web, fill = 0, project="full", weighted=TRUE)
 \arguments{
   \item{web}{A matrix with lower trophic level species as rows, higher trophic level species 
     as columns and number of interactions as entries.}
-  \item{fill}{What shall unobserved combinations be represented as in the one-mode matrix (see below)? Defaults to 0.}
+  \item{fill}{What shall unobserved combinations be represented as in the one-mode matrix (see below)? Defaults to 0. Set to NA if links not possible for bipartite networks should be masked (i.e. those within a level).}
   \item{project}{There are different ways to convert a two-mode (bipartite) network into one-mode networks. The most common is to focus on one set (e.g. the n pollinators) and compute a n x n matrix with entries between species that pollinate the same plant (``higher''). Similarly, one can compute a k x k matrix for the k plant species (``lower''). Or, finally and the default, one can compute an (n+k) x (n+k) matrix in which only the observed interactions are present (``full''). This is in fact a near-trivial, symmetric matrix with 0s between species of the same trophic level.}
   \item{weighted}{Logical; shall the strength of links be included in the one-mode output? Defaults to TRUE, but can be set to FALSE to turn a weighted two-mode into a binary one-mode network.}
 }

@@ -10,10 +10,11 @@
 \usage{
 visweb(web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1,
   plotsize=12, square="interaction", text="no", frame=NULL, textsize=1,
-  textcol="red", pred.lablength=NULL, prey.lablength, clear=TRUE,
+  textcol="red", pred.lablength=NULL, prey.lablength=NULL, clear=TRUE,
   xlabel="", ylabel="", boxes=TRUE, circles=FALSE, circle.col="black",
   circle.min=0.2, circle.max=2, outerbox.border="white", 
-  outerbox.col="white", box.border="black", box.col="black", def.col="blue")
+  outerbox.col="white", box.border="black", box.col="black", def.col="blue", 
+  max.digits=4, NA.col="red")
 }
 
 \arguments{
@@ -43,7 +44,6 @@ visweb(web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1,
   \item{textcol}{  color of text in grid cells, default =\dQuote{red}}
   \item{pred.lablength}{length of predators (upper) labels that should be displayed}
   \item{prey.lablength}{length of prey (lower) labels that should be displayed}
-  
   \item{clear}{ delete species with no interactions (compulsory done for \dQuote{nested} and \dQuote{diagonal}) }
   \item{xlabel}{label on the x-axis, make sure prey.lablength is set accordingly, default is empty}
     \item{ylabel}{label on the y-axis, make sure pred.lablength is set accordingly, default is empty}
@@ -57,6 +57,8 @@ visweb(web, type="nested",  prednames=TRUE, preynames=TRUE, labsize=1,
   \item{box.border}{Colour of border of boxes, if option square=\dQuote{b} is set}
   \item{box.col}{Colour of boxes, if option square=\dQuote{b} is set}
   \item{def.col}{A user defined color vector for all ranks (starting from low to high) of occurring values in the network}  
+  \item{max.digits}{defaults to 4.}
+  \item{NA.col}{Which colour should be used for missing data (NAs)? Defaults to red.}
 }
 
 \value{
@@ -78,24 +80,12 @@ visweb(Safariland)
 visweb(Safariland, type="diagonal", square="compartment", text="none", 
 	frame=TRUE)
 visweb(Safariland, type="nested", text="compartment")
-
-\dontrun{
 visweb(Safariland, circles=TRUE,  boxes=FALSE,  labsize=1, circle.max=3, 
 	text="no")
-visweb(Safariland, circles=TRUE,  boxes=FALSE,  labsize=1,  text="no",
-	circle.max=1.8, outerbox.border="black")
-visweb(Safariland, circles=TRUE,  boxes=TRUE, outerbox.col="orange", 
-	labsize=1, circle.max=1.8, text="no")
-
 visweb(Safariland,square="b",box.col="green",box.border="red")
 
 cols <-0:(length(table(Safariland))-1) #define your colors here,length has to be the numbers of different entries (ranks of values in increasing order) 
 visweb(Safariland, square="defined", def.col=cols) 
-
-cols <-rgb(c(0:7/20,8:14/14),0,0)     #discontinuous color ramp...
-cols[1] <- rgb(1,1,1) #set zero to white
-visweb(Safariland, square="defined", def.col=cols) 
-}
 }
 \keyword{ package }
 

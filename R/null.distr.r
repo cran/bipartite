@@ -16,7 +16,7 @@ null.distr <- function(N, web, distr="lognormal"){
         }
 
         if (distr =="negative binomial" | distr == "negbin"){
-            require(MASS)
+            #require(MASS)
             rnbpars <- fitdistr(rowSums(web), "negative binomial")$estimate
             cnbpars <- fitdistr(colSums(web), "negative binomial")$estimate
             rnew <- rnbinom(NROW(web), size=rnbpars[1], mu=rnbpars[2]) + 1

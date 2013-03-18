@@ -22,7 +22,7 @@ extinction <- function(web, participant="both", method="random", ext.row=NULL, e
 
   nr <- NROW(web); nc <- NCOL(web)
 
-  if (partis.match==3) partis.match <- sample(2,1) #randomly draw a participant
+  if (partis.match==3 & meths.match==1) partis.match <- sample(2,1) #randomly draw a participant
 
   # construct row & column indices for random/abundance removal
   if (meths.match == 1) # random removal:
@@ -35,11 +35,23 @@ extinction <- function(web, participant="both", method="random", ext.row=NULL, e
   } 
   if (meths.match == 2)               # removal by abundance:
   {
+  	# randomisation of species sequence to break ties (in function order):
+  	web <- web[sample(1:nrow(web)), sample(1:ncol(web))]
       rseq <- order(rowSums(web))
       cseq <- order(colSums(web))
       if (partis.match==1) web[rseq[1], ] <- 0
       if (partis.match==2) web[, cseq[1]] <- 0
-
+      if (partis.match==3) {# "both"; deletes the species with fewest interactions, no matter from which level; requires randomisation of species sequence to not always use the first of similar values in a trophic level (random sorting is done initially)
+      	if (min(rowSums(web)) < min(colSums(web))) {
+      		web[rseq[1], ] <- 0
+      	} else {
+      		if (min(rowSums(web)) > min(colSums(web))) {
+      			web[, cseq[1]] <- 0
+      		} else { # now both would be the same:
+      			if (sample(2, 1) == 1){ web[rseq[1], ] <- 0} else { web[, cseq[1]] <- 0}
+      		}
+      	}
+      }
   }
   if (meths.match == 3){     # removal by degree
       if (partis.match == 1){

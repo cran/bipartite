@@ -1,7 +1,7 @@
 wine <- function(web, nreps=1){
        
       # function to compute WIN
-      wincomp<- function(M, Nr, Nc,Nl, xi, yj){  
+      wincomp <- function(M, Nr, Nc,Nl, xi, yj){  
                 M.packed <- M[order(rowSums(M > 0)), order(colSums(M > 0)), drop = FALSE]
                 Pc <-   M.packed / matrix(rep(rowSums(M.packed),Nc),Nr,Nc) 
                 Pr <-    M.packed / matrix(rep(colSums(M.packed),Nr),Nr,Nc, byrow=TRUE) 
@@ -139,7 +139,7 @@ wine <- function(web, nreps=1){
 #-------------------------------------------------------------------------------
 
 plot.wine<- function(x,...){
-          require(fields)
+          #require(fields)
           w <- t(x$dij.w)
           dim1 <- dim(w)[1]
           dim2 <- dim(w)[2]

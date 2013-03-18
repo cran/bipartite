@@ -36,7 +36,8 @@ dfun <- function(web, abuns=NULL){     # abuns is external data on supply of "re
 
   # function for dmax (two cases)
   dmaxfind <- function(x, q) {
-      dmax <- ifelse(is.null(abuns), log(sum(web)/sum(x)), log(1/min(q)))
+  	  if (min(q) == 0) minq <- min(q[q > 0]) else minq <- min(q)
+      dmax <- ifelse(is.null(abuns), log(sum(web)/sum(x)), log(1/minq))
       return(dmax)
   }
   # Here is the problem:

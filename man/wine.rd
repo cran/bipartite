@@ -110,7 +110,7 @@ This is WINE version 1.1.
 }
 \examples{
 data(Safariland, package="bipartite")
-safariland.w <- wine(Safariland, 100)
+safariland.w <- wine(Safariland, 10)
 plot.wine(safariland.w)
 }
 

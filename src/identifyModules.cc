@@ -1,3 +1,15 @@
+// something is wrong in this file; on second call (from R) it returns the following error:
+/*
+!! ERROR: Malformed input file.
+Error in file(file, "rt") : cannot open the connection
+In addition: Warning message:
+In file(file, "rt") :
+cannot open file 'web-1-1.ordA': No such file or directory
+*/
+// The error message is prompted if readInputFile's fopen doesn't work. But why?
+// I think that some pipe is not closed at the end of a successful call to identifyModules
+
+
 // ****************************************************************************************************
 // *** COPYRIGHT NOTICE *******************************************************************************
 // identifyModules - detects modules in the graph (based on fitHRG of Aaron Clauset)
@@ -552,9 +564,9 @@ bool readInputFile() {
 
 	// cout << ">> starting to count edges" << endl;
 
-	fp = fopen(ioparm.f_in.c_str(), "r");  //fopen_s is windows (I think)				// check whether file exists at all
-	if (fp != NULL) fclose(fp);									//
-	else return false;										//
+	fp = fopen(ioparm.f_in.c_str(), "r");       				// check whether file exists at all
+	if (fp != NULL) fclose(fp);									// exists: fine, now close it again
+	else return false;										    // does not exist: return a "false"; does it need to be closed as well?
 
 	ifstream fscan0(ioparm.f_in.c_str(), ios::in);							// read input
 
@@ -672,6 +684,7 @@ void recordModules() {
 
 	if(!bestDendro->recordOrderAndModules(reverseNamesLUT, ioparm.f_ordA, ioparm.f_ordB, ioparm.f_modules)) {
 		// cout << "!! ERROR: failed to record order and/or module files" << endl;
+        Rprintf("!! ERROR: failed to record order and/or module files");
 		return;
 	}
 

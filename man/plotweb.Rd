@@ -8,31 +8,17 @@ A two dimensional matrix is plotted as a bipartite graph.
 }
 \usage{
 plotweb(web,
-    method = "cca", empty = TRUE, labsize = 1, ybig = 1,
-    y.width.low = 0.1,
-    y.width.high = 0.1,
-    low.spacing = NULL,
-    high.spacing = NULL,
-    arrow="no", col.interaction="grey80",
-    col.high = "grey10", col.low="grey10",
-    bor.col.interaction ="black", bor.col.high="black", bor.col.low="black",
-    high.lablength = NULL, low.lablength = NULL,
-    sequence=NULL,low.abun=NULL,low.abun.col="green",
-    bor.low.abun.col ="black",
-    high.abun=NULL, high.abun.col="red", bor.high.abun.col="black",
-    text.rot=0, text.high.col="black", text.low.col="black",
-    ad.high=NULL,
-    ad.low=NULL,
-    plot.axes = FALSE,
-    low.y=0.5, high.y=1.5,
-    add=FALSE,
-    y.lim=NULL,
-    x.lim=NULL,
-    low.plot=TRUE,
-    high.plot=TRUE,
-    high.xoff = 0,
-    low.xoff = 0,
-    high.lab.dis = NULL,
+    method = "cca", empty = TRUE, labsize = 1, ybig = 1,  y.width.low = 0.1, 
+    y.width.high = 0.1, low.spacing = NULL, high.spacing = NULL,
+    arrow="no",  col.interaction="grey80", col.high = "grey10", 
+    col.low="grey10",  bor.col.interaction ="black", bor.col.high="black", 
+    bor.col.low="black", high.lablength = NULL, low.lablength = NULL,
+    sequence=NULL, low.abun=NULL, low.abun.col="green", 
+    bor.low.abun.col ="black", high.abun=NULL, high.abun.col="red", 
+    bor.high.abun.col="black", text.rot=0, text.high.col="black", 
+    text.low.col="black", adj.high=NULL, adj.low=NULL, plot.axes = FALSE,
+    low.y=0.5, high.y=1.5, add=FALSE, y.lim=NULL, x.lim=NULL, low.plot=TRUE, 
+    high.plot=TRUE, high.xoff = 0, low.xoff = 0, high.lab.dis = NULL, 
     low.lab.dis = NULL)
 }
 
@@ -56,7 +42,7 @@ plotweb(web,
   \item{bor.col.low}{border color of lower boxes, default is black}
   \item{high.lablength}{number of characters of upper labels that should be plotted. If zero no labels are shown, default is NULL which plots the complete labels.}
   \item{low.lablength}{number of characters of lower labels that should be plotted. If zero no labels are shown, default is NULL which plots the complete labels.}
-  \item{sequence}{list of two with two names vectors: \code{seq.pred} and \code{seq.prey}, which specify the order in which species are plotted. Cannot be set for \option{method="cca"}. Defaults to \code{NULL}, where the sequence remains as given or is determined by the CCA internally.}
+  \item{sequence}{list of two with two names vectors: \code{seq.high} and \code{seq.low}, which specify the order in which species are plotted. Cannot be set for \option{method="cca"}. Defaults to \code{NULL}, where the sequence remains as given or is determined by the CCA internally.}
   \item{low.abun}{\bold{Named} vector with independent abundance estimates for the lower trophic level, NULL if none exists.}
   \item{low.abun.col}{Colour for depicting the abundance estimates for the lower trophic level; defaults to green.}
   \item{bor.low.abun.col}{border color for depicting the abundance estimates for the lower trophic level, default is black}
@@ -66,12 +52,12 @@ plotweb(web,
   \item{text.rot}{orientation of labels in the plot (to avoid overlapping of horizontal labels if dimension of the webs are high), default is 0 for horizontal labels, use text.rot=90 for vertical labels.}
   \item{text.high.col}{Colour for text labels of higher trophic level, a vector of colours can be given}
   \item{text.low.col}{Colour for text labels of lower trophic level. A vector of colours can be given}
-  \item{ad.high}{Adjust upper labels. See adj in ?text how to adjust labels }
-  \item{ad.low}{Adjust upper labels. See adj in ?text how to adjust labels }
+  \item{adj.high}{Adjust upper labels. See adj in ?text how to adjust labels }
+  \item{adj.low}{Adjust upper labels. See adj in ?text how to adjust labels }
   \item{plot.axes}{axis are plotted. Sometimes useful to place boxes in higher order plots. Defaults to FALSE}
   \item{low.y}{Position of the higher boxes on the y-axis. Defaults to 1.5 }
   \item{high.y}{Position of the higher boxes on the y-axis. Defaults to 1.5 }
-  \item{add}{if set to TRUE a new bipartite network can be added to the previous plot. So multitrophic webs can be plotted, see examples below. Defaults to FALSE}
+  \item{add}{if set to TRUE a new bipartite network is added to the previous plot. In this way multitrophic webs can be plotted, see examples below. Defaults to FALSE.}
   \item{y.lim}{To set limits for y-axis. Useful if labels are plotted outside the plotting region and for multitrophic plots, see examples below }
   \item{x.lim}{To set limits for x-axis. Useful if labels are plotted outside the plotting region and for multitrophic plots, see examples below }
   \item{low.plot}{Defines if lower boxes should be drawn. Use in multitrophic plots to avoid plotting boxes of some trophic levels - see examples below. Defaults to TRUE}
@@ -84,6 +70,9 @@ plotweb(web,
 \value{
   Returns a window with a bipartite graph of a food web.  For all colours vectors can be used (which are recycled if length differs. Now more trophic webs can be plotted by using \code{plotweb} and the \option{add} switch, which allows to add more webs and staggering them on top of each other. Preferred option is here to order webs by yourself and use \option{method="normal"} to keep your preferred order. See examples on three and four trophic networks.
 }
+
+\note{Note that in the current implementation, \option{low.abun} is actually treated as 'additional abundances' (e.g. unparasitised hosts); we are yet to find a solution to plot fully independent abundance estimates; a workaround for fully independent abundance estimates (e.g. flower densities) is to first scale \option{low.abun} such that \code{all(low.abun > rowSums(web))} and 2. then use \code{plotweb(web, low.abun= low.abun - rowSums(web))}.}
+
 \references{
 Tylianakis, J. M., Tscharntke, T. and Lewis, O. T. (2007) Habitat modification alters the structure of tropical host-parasitoid food webs. \emph{Nature} \bold{445}, 202--205
  }
@@ -125,17 +114,14 @@ plotweb(Safariland,col.low=c("orange","green"),col.high=c("white","grey","purple
 	text.rot=90, low.lablength=10, high.lablength=5)
 
 
-
-
 #example one (tritrophic)
 plotweb(Safariland,y.width.low=0.1, y.width.high=0.05,method="normal", 
-	y.lim=c(0,3), arrow="up", ad.high=c(0.5,1.5), col.high="orange",
+	y.lim=c(0,3), arrow="up", adj.high=c(0.5,1.5), col.high="orange",
 	high.lablength=3,high.lab.dis=0)
 
 plotweb(t(Safariland), y.width.low=0.05, y.width.high=0.1, method="normal",
 	add=TRUE,low.y=1.5,high.y=2.5, col.low="green", text.low.col="red", 
-	low.lab.dis=0, arrow="down", ad.low=c(0.5,1.1),low.plot=FALSE)
-
+	low.lab.dis=0, arrow="down", adj.low=c(0.5,1.1),low.plot=FALSE)
 
 #example two (4 trophic with abundance)
 low.abun = round(runif(dim(Safariland)[1],1,40)) #create
@@ -146,17 +132,12 @@ plotweb(Safariland, text.rot=90, high.abun=low.abun, col.interaction="purple",
 
 plotweb(t(Safariland), y.width.low=0.05, y.width.high=0.1, method="normal", 
 	add=TRUE, low.y=1.7,high.y=2.7, col.low="green", text.low.col="black", 
-	low.lab.dis=0, arrow="down", ad.low=c(0.5,1.1), low.lablength=4, 
+	low.lab.dis=0, arrow="down", adj.low=c(0.5,1.1), low.lablength=4, 
 	high.lablength=0)
 
 plotweb(Safariland,y.width.low=0.05, y.width.high=0.1, method="normal", 
 	add=TRUE, low.y=2.95, high.y=3.95, col.low="green", text.low.col="black", 
-	low.lab.dis=0, arrow="down", ad.low=c(0.5,1.1), low.lablength=4)
-
-
-
-
-
+	low.lab.dis=0, arrow="down", adj.low=c(0.5,1.1), low.lablength=4)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

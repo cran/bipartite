@@ -14,7 +14,7 @@ Objects from the class should only be created by using the function computeModul
 }
 \section{Slots}{
 	 \describe{
-    \item{\code{likelihood}:}{Contains a number with the likelihood-equivalent of the final proposed module structure. This value is 2Q (or M), the modularity as given by Newman or Guimerà & Amaral (2005). So divide this value by 2 to get values comparable to theirs.}	 
+    \item{\code{likelihood}:}{Contains a number with the likelihood-equivalent of the final proposed module structure. This value is the same value as Q (or M), the modularity as given by Newman or Guimerà & Amaral (2005). }	 
     \item{\code{originalWeb}:}{Object of class \code{"matrix"} representing the original bipartite graph in which modules have been computed.}
     \item{\code{moduleWeb}:}{Object of class \code{"matrix"} representing the original bipartite graph but reordered such that plotting modules is possible.}
     \item{\code{orderA}:}{Object of class \code{"vector"} representing the permutation of the rows of the original graph.}

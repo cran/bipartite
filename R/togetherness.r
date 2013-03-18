@@ -1,5 +1,5 @@
 togetherness <- function(web, normalise=TRUE, FUN=mean, ...){
-    require(vegan)
+    #require(vegan)
     # calculates the T-score="togetherness" for all pollinator species; the T-score represents
     # the average number of specis pair identical co-occurrences and co-absences.
     # (Stone & Roberts 1992)

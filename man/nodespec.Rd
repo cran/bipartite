@@ -17,8 +17,7 @@ nodespec(web, inf.replace = NA)
 
 \arguments{
   \item{web}{A matrix with lower trophic level species as rows, higher trophic level species as columns and number of interactions as entries.}
-  \item{inf.replace}{What should infinite geodesic distances (e.g. between compartments)  be represented as? Defaults to \option{NA}; only currently implemented alternative 
-is  \option{Inf}, which replaces infinite distances by the maximum path length plus 1.}
+  \item{inf.replace}{What should infinite geodesic distances (e.g. between compartments)  be represented as? Defaults to \option{NA}; only currently implemented alternative is \option{inf.replace=Inf}, which replaces infinite distances by the maximum path length plus 1.}
 }
 
 \details{

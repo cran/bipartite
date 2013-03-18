@@ -57,10 +57,13 @@ cM = function(web, depth, nrOfModule, ytop, xleft, ybottom, xright, prev_orderA,
 	argc = as.integer(length(argv));
 
 	.C("identifyModules", argc, argv, PACKAGE="bipartite");
-# because of unresolved issues, the dll needs to be unloaded/reloaded after each run.
+## because of unresolved issues, the dll needs to be unloaded/reloaded after each run.
+## this does not work under Linux (see ?dyn.unload)
 	LIBS <- .dynLibs()
 	bipLIB <- which(unlist(sapply(LIBS, function(x) x[1])) == "bipartite")
 	IMpath <- 	LIBS[[bipLIB]][[2]] # absolute path on the system to the dll!!!
+	#library.dynam.unload("bipartite", libpath=IMpath)
+	#library.dynam("bipartite", package="bipartite", lib.loc=find.package("bipartite"))
 	dyn.unload(IMpath)
 	dyn.load(IMpath)
 	
@@ -245,6 +248,8 @@ deleteModuleData = function(webName=NULL) {
 	unlink(paste(webName, ".ordB", sep=""));
 	unlink(paste(webName, ".mod", sep=""));
 	unlink(paste(webName, ".info", sep=""));
+	unlink(paste(webName, ".den", sep=""));
+	unlink(paste(webName, ".lut", sep=""));
 }
 
 # This function is ALSO in drawModules.R!!

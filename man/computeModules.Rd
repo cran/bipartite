@@ -43,7 +43,7 @@ An object of class "moduleWeb" containing information about the computed modules
 
 \author{Rouven Strauss}
 
-\note{This function is still EXPERIMENTAL!}
+\note{This function is still EXPERIMENTAL! In particular, an undetected memory leak seems to keep the connection open, so that I call dyn.unload/dyn.load, which does not have the desired effect in Linux (but in Windows and Mac OS X). }
 
 \seealso{
 See also class "moduleWeb", function "listModuleInformation", function "printoutModuleInformation".

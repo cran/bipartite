@@ -4,11 +4,7 @@
 
 \title{Calculates nestedness temperature of presence/absence matrices}
 
-\description{Calculates matrix temperature using the binmatnest programm of Miguel Rodríguez-Gironés
-by calling a tweaked version of the C++ program binmatnest. For a full description what it does please refer to the paper of Miguel. In principle nestedness 
-temperature is calculated by using a line of perfect order (using a genetic algorithm) to determine the reordering of rows and columns that leads to minimum 
-matrix temperature of given size and fills. The deviation from this minimun temperature is the matrix temperature. In addition nestedness uses there different 
-null models to check for statistical significance of the matrix temperature.}
+\description{Calculates matrix temperature using the binmatnest programm of Miguel Rodríguez-Gironés}
 
 \usage{
 nestedness(m, null.models = TRUE, n.nulls = 100, popsize = 30, 
@@ -27,11 +23,9 @@ quite time consuming and therefore we added this switch. Defaults to \code{null.
 }
 
 \details{
-There are several implementations of nestedness-calculators, most noticeably NTC (nestedness temperature calculator), BINMATNEST and aninhado 
-(check Wikipedia's entry on the subject: \url{http://en.wikipedia.org/wiki/Nestedness}). While we here use BINMATNEST, this does not disqualify any of the 
-others. Miguel was simply the first we contacted and he was readily willing to share his code (applause).
+There are several implementations of nestedness-calculators, most noticeably NTC (nestedness temperature calculator), BINMATNEST and aninhado (check Wikipedia's entry on the subject: \url{http://en.wikipedia.org/wiki/Nestedness}). While we here use BINMATNEST, this does not disqualify any of the others. Miguel was simply the first we contacted and he was readily willing to share his code. 
 
-For details on what BINMATNEST does different, and better, than the original NTC see reference below. 
+Here we use BINMATNEST by calling a tweaked version of the C++ program binmatnest. In principle nestedness temperature is calculated by using a line of perfect order (using a genetic algorithm) to determine the reordering of rows and columns that leads to minimum matrix temperature of given size and fills. The deviation from this minimun temperature is the matrix temperature. In addition nestedness uses different null models to check for statistical significance of the matrix temperature. For details on what BINMATNEST does different, and better, than the original NTC see reference below. 
 
 Notice also that the original software BINMATNEST is available as a stand-alone application, too. Check out Miguel's homepage: 
 \url{http://www.eeza.csic.es/eeza/personales/rgirones.aspx} or download directly: \url{http://www.eeza.csic.es/eeza/personales/rgirones/File/BINMATNEST3.zip}.

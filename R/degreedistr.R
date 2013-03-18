@@ -4,7 +4,7 @@ function(web, plot.it=TRUE, pure.call=TRUE, silent=TRUE){
     # calculates cumulative degree distributions and fits exponential, power law
     # and truncated power law functions to it
     # return fits
- 	web <- empty(web)
+ 	  web <- empty(web)
     web <- (web>0)*1 #turns it into a qualitative network
     k <- sum(web) # number of links in network
     S <- sum(dim(web)) # number of species in network
@@ -99,7 +99,7 @@ function(web, plot.it=TRUE, pure.call=TRUE, silent=TRUE){
 		resh.out[indexh, 1:3] <- resh1
 	}
 
-    list("lower trophic level dd fits"=resl.out, "higher trophic level dd fits"=resh.out)
+    list("lower level dd fits"=resl.out, "higher level dd fits"=resh.out)
 
 }
 

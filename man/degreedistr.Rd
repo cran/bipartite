@@ -13,7 +13,7 @@ degreedistr(web, plot.it=TRUE, pure.call=TRUE, silent=TRUE)
 
 \arguments{
   \item{web}{A bipartite network matrix.}
-  \item{plot.it}{Logical; returns graphs of fits when set to TRUE (default).}
+  \item{plot.it}{Logical; returns graphs of fits when set to TRUE (default). Dark, median and light grey lines refer to exponential, power and truncated power law, respectively.}
   \item{pure.call}{Logical; adjusts par for two panels (for TRUE) or leaves this to the wrapper function (FALSE).}
   \item{silent}{Logical; suppresses error reporting in the \code{try}-function around \code{nls}; defaults to TRUE.}
 }

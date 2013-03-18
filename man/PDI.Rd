@@ -6,11 +6,12 @@
 \description{ Computes the Paired Differences Index }
 
 \usage{
-PDI(web, log=FALSE)
+PDI(web, normalise=TRUE, log=FALSE)
 }
 
 \arguments{
   \item{web}{A bipartite interaction web, i.e.~a matrix with higher (cols) and lower (rows) trophic levels.}
+  \item{normalise}{Logical; divides for each species by the maximum of interactions. Thereby species can be compared among each other and values range between 0 and 1. Defaults to TRUE, while Poisot et al.'s papers use FALSE and compute expectations through null models. (Note that their respective R-function in the GitHub-package esm also uses the normalised computation by default.)}
   \item{log}{logical; since number of interactions is often highly skewed, the log yields a more even spread of PDI-values across species. Defaults to \code{FALSE}.}
 }
 
@@ -21,14 +22,21 @@ If P is the proportion of interactions a species engages in, then PDI for this s
 
  sum(P1 - Pi) /(H-1), 
  
-where P1 is the highest number of interactions in a link, while Pi are the remaining values. H is the number of interactors (e.g. plant species if the target species is a pollinators). 
+where P1 is the highest number of interactions in a link, while Pi are the remaining values. H is the number of potential interactors (e.g. plant species if the target species is a pollinators). 
 
-As so many other indices, also PDI is somewhat dubious for species which were observed only once (singletons). In this case P1 is 1 (all interactions are on one plant species), all Pi are 0 and hence PDI is 0, too. This is not logical. For a singleton we cannot tell its specialisation, only its discrimination (i.e.whether it happens to visit a common or rare plant species), as is done by d' (implemented in \code{\link{dfun}}).
+As so many other indices, also PDI is somewhat dubious for species which were observed only once (singletons). In this case P1 is 1 (all interactions are on one plant species), all Pi are 0 and hence PDI is 0, too. For a singleton we cannot tell its specialisation, only its discrimination (i.e.whether it happens to visit a common or rare plant species), as is done by d' (implemented in \code{\link{dfun}}).
 
 }
 
 \note{
-This index was not included in the comparison of Dormann (2011).
+\enumerate{
+	\item When a binary web is fed to this function (e.g. \code{PDI(web>0)}) this function returns Schoener's (1989) \dQuote{resource range}. Resource range is a strange name for something that has a value of 0 when all resources are used, but a value of 1 when only one resource is used. It is, in fact, an \dQuote{unused resource range}.
+% Actually, PDI builds on this idea (see Poisot et al. 2012 for further details).
+
+	\item We haven't quite understood what this index is supposed to mean. Why should you only want to compare the most-used resource to all others? Assuming that resource use follows a lognormal distribution, this approximation of skew or specialisation may not be too bad. But what if it follows a different distribution, where two (possibly highly related) resources are used heavily and others not? Is the second-most-used irrelevant? Furthermore, what do the absolute values returned by PDI mean? As such, they cannot be compared across networks. 
+
+	\item This index was not included in the comparison of Dormann (2011).
+}
 }
 
 \value{
@@ -41,6 +49,8 @@ Dormann, C.F. (2011) How to be a specialist? Quantifying specialisation in polli
 Poisot, T., Lepennetier, G., Martinez, E., Ramsayer, J., and Hochberg, M.E. (2011a) Resource availability affects the structure of a natural bacteria-bacteriophage community. \emph{Biology Letters} \bold{7}, 201--204
 
 Poisot, T., Bever, J.D., Nemri, A., Thrall, P.H., and Hochberg, M.E. (2011b) A conceptual framework for the evolution of ecological specialisation. \emph{Ecology Letters} \bold{14}, 841--851
+
+Poisot, T., E. Canard, N. Mouquet, and M. E. Hochberg. 2012. A comparative study of ecological specialization estimators. \emph{Methods in Ecology and Evolution} \bold{3}, 537-–544. doi: 10.1111/j.2041-210X.2011.00174.x.
 }
 
 \author{ Carsten F. Dormann <carsten.dormann@biom.uni-freiburg.de> }
