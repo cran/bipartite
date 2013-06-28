@@ -12,7 +12,8 @@ specifically. Various simple numbers and indices are calculated and returned.
 
 \usage{
 specieslevel(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, 
-	high.abun=NULL, PDI.normalise=TRUE, PSI.beta=c(1,0))
+	high.abun=NULL, PDI.normalise=TRUE, PSI.beta=c(1,0), nested.method="NODF", 
+	nested.normalised=TRUE, nested.weighted=TRUE)
 }
 
 \arguments{
@@ -24,21 +25,24 @@ specieslevel(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL,
        		\item \option{degree}, 
 		\item \option{ND} for normalised degrees, 
 		%\item \option{dependence}, 
-		\item \option{species strength} as sum of dependencies for each species, or 
+		\item \option{species strength} as sum of dependencies for each species, 
+		\item \option{nestedrank} as rank in a nested matrix,
 		\item \option{interaction} for interaction push/pull (our version of dependence asymmetry: see details),  
-	        \item \option{PDI} for Paired Differences Index, 
-	        \item \option{resource range} for Schoener (1989)'s index of unused resources,
-	        \item \option{species specificity} (or coefficient of variation of interactions),
-        	\item \option{PSI} for pollination service index (or pollinator support index, depending on the trophic level), 
-	        \item \option{NS} for node specialisation index, 
+	        	\item \option{PDI} for Paired Differences Index, 
+	        	\item \option{resource range} for Schoener (1989)'s index of unused resources,
+	        	\item \option{species specificity} (or coefficient of variation of interactions),
+        		\item \option{PSI} for pollination service index (or pollinator support index, depending on the trophic level), 
+	        	\item \option{NS} for node specialisation index, 
 		\item \option{betweenness} for betweenness, 
 		\item \option{closeness} (both automatically also return their weighted counterparts proposed by Tore Opsahl in package \pkg{tnet}),
-        	\item \option{Fisher} for Fisher's alpha index, 
+        		\item \option{Fisher} for Fisher's alpha index, 
 		\item \option{diversity} for Shannon diversity of interactions of that species, 
 		\item \option{effective partners} for the effective number of interacting partners,  
+		\item\option{proportional generality} a quantitative version of normalised degree,
+		\item\option{proportional similarity} specialisation measured as similarity between use and availability,
 		\item \option{d} for Blüthgen's d', 
 		\item \option{ALL} for all the aforementioned. 
-	        \item \option{ALLBUTD} (default) excludes only the dependence matrix and leads to the output being simplified to a matrix per trophic level.}
+	        	\item \option{ALLBUTD} (default) excludes only the dependence matrix and leads to the output being simplified to a matrix per trophic level.}
             }
   \item{level}{For which level(s) should the indices be computed? Options are \option{both} (default), \option{lower} and \option{higher}. Output for one trophic level will be returned as a data.frame (unless dependencies are also reported), while for two levels a list of two matrices (higher and lower) will be returned.}
   \item{logbase}{numeric; gives the base to which the various diversity indices (partner diversity, effective partners) shallb be calculated, typcially exp(1) (default) or 2. Log2 is the proposal for generality and vulnerability by Bersier et al. (2002), while Shannon typically uses the natural logarithm, ln. The choice of the base will not affect the results qualitatively, only by a scaling factor.}
@@ -46,6 +50,9 @@ specieslevel(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL,
   \item{high.abun}{Optional vector of independent abundances of the \emph{higher} trophic level to be passed on to \code{\link{dfun}} and used as `resource availability' in indices proportional similarity and proportional generality.}
   \item{PDI.normalise}{Logical; should the normalised PDI be computed? Defaults to TRUE. See function \code{\link{PDI}} for details and reasoning.}
   \item{PSI.beta}{A length 2 vector of parameter determining the effect of floral constancy and pollen mixing on the proportion of same-species pollen delivered to a plant. Defaults to \code{c(1, 0)}. See section details for details.}
+  \item{nested.method}{One of \option{NODF}, \option{binmatnest}, \option{wine} or \option{sort}. See \code{\link{nestedrank}} for details.}
+  \item{nested.normalised}{Logical; defaulting to TRUE. Divides the nestedrank-1 by the number of species -1, thereby ranging it between 0 (most generalist) and 1 (most specialised). Species sequences from different networks are now comparable.}
+  \item{nested.weighted}{Logical; should the ``nestedrank'' be computed based on weighted network (default) or binary version (FALSE)?}
 }
 
 \details{
@@ -71,7 +78,8 @@ We envisage a penalty for the fact that a pollinator has to make two (more or le
 
 For the perspective of the plant's effect on pollinators (then PSI = pollinator support index), this index makes less sense. Here we would rather use beta=0, because %any plant's pollen is as good as any others for the well-being of the pollinator. This assumption is certainly simplistic, but 
 pollen value is not related to number of visits, so we cannot compute it from the network. %(Using beta=1 and the inverse of the matrix, this would give the proportion of self-pollen from a given community. This could serve as an index to compare pollination service from different webs. Interesting!)
-Similarly, for other networks, such as host-parasitoids, beta=0 seems plausible, since for the host it does not matter, whether a parasitoid has visited another species before or not. In this case (beta=0), PSI is simply equal to species strength. Not just pollen turnover/carryover on the pollinator is important and influences beta, but all these considerations depend on the assumption how the proportion of conspecific pollen affects pollination (assuming many visits per flower visitation sequence). (a) If only presence of any conspecific pollen on bee is sufficient for pollination, carryover (how long pollen from one visits remains on bee) matters, beta is anywhere between 0 (infinite carryover) and 2 (one-step carryover).(b) If the proportion of conspecific pollen on bee determines pollination success (linear relationship), carryover does not matter, the proportion can be assumed to be in an equilibrium, and beta=1.
+Similarly, for other networks, such as host-parasitoids, beta=0 seems plausible, since for the host it does not matter, whether a parasitoid has visited another species before or not. In this case (beta=0), PSI is simply equal to species strength. Not just pollen turnover/carryover on the pollinator is important and influences beta, but all these considerations depend on the assumption how the proportion of conspecific pollen affects pollination (assuming many visits per flower visitation sequence). (a) If only presence of any conspecific pollen on bee is sufficient for pollination, carryover (how long pollen from one visits remains on bee) matters, beta is anywhere between 0 (infinite carryover) and 2 (one-step carryover).
+(b) If the proportion of conspecific pollen on bee determines pollination success (linear relationship), carryover does not matter, the proportion can be assumed to be in an equilibrium, and beta=1.
 
 Our choice of defaults (c(1,0)) will yield species strength for plants, and PSI for pollinators, assuming, for the latter, that pollen mixes perfectly.
 }
@@ -81,10 +89,10 @@ For both the \dQuote{higher trophic level} and the \dQuote{lower trophic level} 
   \item{number of species}{Sic.}
   \item{species degree}{Sum of interactions per species.}
   \item{normalised degree}{As degree, but scaled by the number of possible partners; see \code{\link{ND}}.}
-  \item{dependence}{Web entry divided by column totals (for higher trophic level) or row totals (for lower
-        trophic level). Expresses the proportion of interactions with each species, and sums to 1 for each.}
+ % \item{dependence}{Web entry divided by column totals (for higher trophic level) or row totals (for lower trophic level). Expresses the proportion of interactions with each species, and sums to 1 for each.}
   \item{species strength}{Sum of dependencies of each species (used, e.g., in Bascompte et al. 2006). It aims at quantifying a species' relevance across all its partners. The alternative version of Barrat et al. (2004; also used by Poisot et al. 2012) as the sum of interactions of a species seems too trivial a measure, reflecting abundance rather than anything else. Do not take this to be the much-discussed \dQuote{interaction strength} in food web papers, which focusses on pairwise interactions (reviewed in Berlow et al. 2004)!}
-  \item{interaction push/pull}{Direction of interaction asymmetry based on dependencies: positive values indicate that a species affects the species of the other level it interacts with stronger then they affect it (\dQuote{pusher}); negative values indicate that a species is, on average, on the receiving end of the stick (\dQuote{being pulled}); formula based on Vázquez et al. (2007), but push/pull is our own nomenclature. Values are highly correlated with species strengths (see below), but standardised to fall between -1 (being pulled) and 1 (pushing). Compared to \dQuote{strength}, this index quantifies the net balance, rather than the average effect.}
+  \item{nestedrank}{Quantifies generalism by the rank of a species in a network matrix re-arranged for maximal nestedness (Alarcon et al. 2008). A low rank (e.g. 1, 2) indicates high generality, while high ranks (up to the number of species in that level) indicate specialism or rarity.}
+  \item{interaction push pull}{Direction of interaction asymmetry based on dependencies: positive values indicate that a species affects the species of the other level it interacts with stronger then they affect it (\dQuote{pusher}); negative values indicate that a species is, on average, on the receiving end of the stick (\dQuote{being pulled}); formula based on Vázquez et al. (2007), but push/pull is our own nomenclature. Values are highly correlated with species strengths (see below), but standardised to fall between -1 (being pulled) and 1 (pushing). Compared to \dQuote{strength}, this index quantifies the net balance, rather than the average effect.}
   \item{PDI}{Paired Differences Index as proposed by Poisot et al. (2011a,b), but using our normalised version (if \option{PDI.normalise=TRUE}); values of 0 indicate generalists, while 1 indicates a perfect specialist; see \code{\link{PDI}} for details and comments.}
   \item{resource range}{Schoener’s (1989) ``resource range'' is a somewhat strange name for something that has a value of 0 when all resources are used, but a value of 1 when only one resource is used. It is, in fact, an ``unused resource range''.  The aforementioned Paired Difference Index is a generalisation of resource range, which is equal to resource range when the web is binary.}
   \item{species specificity}{Coefficient of variation of interactions, normalised to values between 0 and 1, following the idea of Julliard et al. (2006), as proposed by Poisot et al. (2012). Values of 0 indicate low, those of 1 a high variability (and hence suggesting low and high specificity). Since not corrected for number of observations, this index will yield high specificity for singletons, even though there is no information to support this conclusion.} 
@@ -107,6 +115,8 @@ number of partners, if each partner was equally common. Note that \dQuote{partne
 }
 
 \references{
+Alarcon, R., Waser, N.M. and Ollerton, J. 2008. Year-to-year variation in the topology of a plant-pollinator interaction network. \emph{Oikos} \bold{117}, 1796--1807
+
  Barrat, A., M. Barthélemy, R. Pastor-Satorras, and A. Vespignani. 2004. The architecture of complex weighted networks. \emph{Proceedings of the National Academy of Sciences of the USA} \bold{101}, 3747–-3752. doi: 10.1073/pnas.0400087101.
  
 Bascompte, J., Jordano, P. and Olesen, J. M. (2006) Asymmetric coevolutionary networks facilitate biodiversity maintenance. \emph{Science} \bold{312}, 431--433

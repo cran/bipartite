@@ -49,7 +49,7 @@ cM = function(web, depth, nrOfModule, ytop, xleft, ybottom, xright, prev_orderA,
 
 	# write web to file
 	web2edges(web[ytop:ybottom, xleft:xright], webName=webName);
-	argv = c("identifyModules", "-filename", paste(webName, ".pairs", sep=""), "-steps", as.integer(steps), "-tolerance", as.double(tolerance));
+	argv = c("identifyModules", "-filename", paste(webName, ".pairs", sep=""), "-steps", round(steps), "-tolerance", as.double(tolerance)); # round instead of "as.integer(steps)" because the latter works only up to 1E9!!
 	if(experimental) {
 		argv = append(argv, c("-method", "Strauss"));
 	}
@@ -62,8 +62,8 @@ cM = function(web, depth, nrOfModule, ytop, xleft, ybottom, xright, prev_orderA,
 	LIBS <- .dynLibs()
 	bipLIB <- which(unlist(sapply(LIBS, function(x) x[1])) == "bipartite")
 	IMpath <- 	LIBS[[bipLIB]][[2]] # absolute path on the system to the dll!!!
-	#library.dynam.unload("bipartite", libpath=IMpath)
-	#library.dynam("bipartite", package="bipartite", lib.loc=find.package("bipartite"))
+	##library.dynam.unload("bipartite", libpath=IMpath)
+	##library.dynam("bipartite", package="bipartite", lib.loc=find.package("bipartite"))
 	dyn.unload(IMpath)
 	dyn.load(IMpath)
 	

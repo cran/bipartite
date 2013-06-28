@@ -33,8 +33,8 @@ See help pages for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 2.00\cr
-Date: \tab 2013-03-18\cr
+Version: \tab 2.01\cr
+Date: \tab 2013-06-28\cr
 License: \tab GPL \cr
 }
 }
@@ -43,6 +43,17 @@ License: \tab GPL \cr
 Please see help page \code{\link{versionlog}} for all changes and updates prior to version 2.00. This page will only list most recent changes. 
 
 \itemize{
+  \item 2.01 (release date: 28-Jun-2013)
+  This release features smoothing of various glitches that were introduced when we cleaned up the code for version 2.00.
+   \describe{ % begin describe 2.01
+   	\item{New index for \code{\link{specieslevel}}:}{Computes the nestedness rank (as proposed by Alarcon et al. 2008). Can also be employed directly using the \bold{new function} \code{\link{nestedrank}} with options for weighting for number of interactions per link, normalising the rank and different method to compute the nestedness-arranged matrix.}
+  	\item{Polishing \code{\link{specieslevel}}:}{Now returns an error message if the index is not recognised, instead of an empty list.}
+	\item{Function \code{\link{plotweb}}}{received an option to plot additional individuals of a species in different ways. For a host-parasitoid network, some hosts are not parasitised. This data vector can now be interpreted in two ways, making the plotting function a bit more flexible.} %Thanks to Jochen Fründ for implementing.
+	\item{Function \code{\link{degreedistr}}}{can now be invoked for each level separately. Also arguments can be passed to the plotting options.}
+	\item{New data set \code{\link{junker2013}}:}{a nice and large pollination network. Thanks to Robert Junker for providing this data set!}
+	\item{Fixed computation of secondary extinction slopes for both levels simultaneously}{for random extinction sequences. This was so far not possible, because the function did not combine extinction sequences of different lengths. This was simply an oversight, reported by Richard Lance. (Thanks!)}
+   } % end describe 2.01
+  
   \item 2.00 (release date: 15-Mar-2013)
  A new version number usually indicates substantial changes. In this case, we have re-named and re-grouped some of the output of \code{\link{networklevel}} and \code{\link{specieslevel}} for greater consistency and transparency. Beware! Running the same functions now (2.00 and up) will yield different results to <2.00 (because the same values are now in a different sequence).
   
@@ -77,7 +88,7 @@ Furthermore, due to licensing issues, we copy-pasted several functions from the 
 	\item{New function \code{\link{endpoint}}}{computes end-point degrees following Barrat et al. (2004); one of the indices computed at \code{\link{linklevel}}.}
 	\item{New function \code{\link{frame2webs}}}{helps organising data into one or more webs.}
 	\item{New function \code{\link{webs2array}}}{helps organising webs into one array.}
-	\item{Function \code{\link{specieslevel}}}{gained two new indices (thanks to Jochen Fründ): \option{proportional similarity} and \option{proportional generality}. See help page of that function for details.}
+	\item{Function \code{\link{specieslevel}}}{gained two new indices (thanks to Jochen Fründ): \option{proportional} \option{similarity} and \option{proportional generality}. See help page of that function for details.}
 	\item{New function \code{\link{npartite}}}{Experimental function to analyse more-than-2-level networks.}
 	\item{\code{\link{visweb}}}{now obeys the label size to make sure labels are always in the plotting area. Thanks to Zachary Grinspan %(no, he's not a character from Harry Potter, but he does have a sense of humour) 
 	for drawing our attention to this issue.}
@@ -87,7 +98,7 @@ Furthermore, due to licensing issues, we copy-pasted several functions from the 
 	\item{Settings for functions called by \code{\link{nested}}}{are now enshrined in stone. The initial reason was to set only the default for one function (\code{\link{nestedness}}) to a faster setting (\option{null.models=FALSE}), but then I decided to restrict all settings to the defaults of the functions called (except for this one option).}
 	\item{Bug fix for the rarely used function \code{\link{null.t.test}}:}{Did not work if only one index was given.}
 
-} % end of describe
+} % end of describe 2.00
 } % end of versionlog's itemize
 
 } % end of section versionlog
@@ -99,6 +110,8 @@ Maintainer: Carsten Dormann \email{carsten.dormann@biom.uni-freiburg.de}
 
 }
 \references{
+Alarcon, R., Waser, N.M. and Ollerton, J. 2008. Year-to-year variation in the topology of a plant-pollinator interaction network. \emph{Oikos} \bold{117}, 1796--1807
+
 Almeida-Neto, M. and Ulrich, W. (2011) A straightforward computational approach for measuring nestedness using quantitative matrices. \emph{Environmental Modelling & Software}, \bold{26}, 173--178
 
 Bascompte, J., Jordano, P. and Olesen, J. M. (2006) Asymmetric coevolutionary networks facilitate biodiversity maintenance. \emph{Science} \bold{312}, 431--433
@@ -114,7 +127,7 @@ Corso G., de Araújo A.I.L. and de Almeida A.M. (2008) A new nestedness estimato
 Dalsgaard, B., A. M. Martín González, J. M. Olesen, A. Timmermann, L. H. Andersen, and J. Ollerton. (2008) Pollination networks and functional specialization: a test using Lesser Antillean plant-hummingbird assemblages. \emph{Oikos} \bold{117}, 789--793
 
 Devoto M., Bailey S., Craze P. & Memmott J. (2012) Understanding and planning ecological restoration of plant-pollinator networks.
-\emph{Ecology Letters}, http://dx.doi.org/10.1111/j.1461-0248.2012.01740.x
+\emph{Ecology Letters} \bold{15}, 319--328
 
 Dormann, C.F., Fründ, J., Blüthgen, N., and Gruber, B. (2009) Indices, graphs and null models: analysing bipartite ecological networks. \emph{The Open Ecology Journal} \bold{2}, 7--24
 

@@ -7,6 +7,7 @@ function(object, plot.it=TRUE, ...){
     # ...       arguments passed on to plot (not to curve!)
 
     if (class(object)!="bipartite") stop("This function cannot be meaningfully applied to objects of this class.")
+    if (is.list(object)) stop("You seem to have computed extinction slopes for 'both' trophic levels using 'random' extermination and requesting the details of the sequences. Since this leads to a list of different-length sequences, you cannot use this function. \n\nPlease use method 'random' for each level separately OR set details to FALSE. \n\nWe apologise for the inconvenience.")
     N <- colSums(object)
 
     if (all(object[-nrow(object), 2] == 1)) y <- -object[, 3] else y <- -object[, 2] #selects the correct column

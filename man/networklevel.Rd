@@ -1,4 +1,4 @@
-\encoding{UTF-8}
+ \encoding{UTF-8}
 \name{networklevel}
 \alias{networklevel}
 \alias{.networklevel}
@@ -30,7 +30,7 @@ Usually this will be number of pollinators on each species of plants or number o
       \item \option{weighted nestedness}, 
       \item \option{weighted NODF}, 
       \item \option{ISA} (or alternatively \option{interaction strength asymmetry} or 
-      	\option{dependence asymmetry}), 
+      	\cr \option{dependence asymmetry}), 
       \item \option{SA} (or alternatively \option{specialisation asymmetry}),
       \item \option{linkage density}, 
       \item \option{Fisher alpha}, 
@@ -76,16 +76,16 @@ Usually this will be number of pollinators on each species of plants or number o
 %  \item{plot.it.extinction}{logical; plot the extinction sequence graph; defaults to FALSE. }
 %  \item{plot.it.dd}{logical; plot the degree distribution fits?; defaults to FALSE. }
   \item{CCfun}{Method to use when calculating the clustering coefficient. Originally proposed as mean of cluster coefficients for each species. Defaults to \option{median}, because cluster coefficients are strongly skewed. }
-  \item{dist}{Distance metric to be used to calculate niche overlap. Any of \pkg{vegan}'s \code{vegdist}-metrics can be used; defaults to Horn's index, which is the recommendation of Krebs (1989). Binary percent niche overlap would be computed with \option{dist = "jaccard"}.}
+  \item{dist}{Distance metric to be used to calculate niche overlap. Any of \pkg{vegan}'s \code{vegdist}-metrics can be used; defaults to Horn's index, which is the recommendation of Krebs (1989). Binary percent niche overlap would be computed with \cr  \option{dist = "jaccard"}.}
   \item{normalise}{Logical; shall the C-score and togetherness metrics be normalised to a range of 0 to 1? Defaults to \code{TRUE}.}
   \item{empty.web}{Shall the empty columns and rows be deleted? Defaults to TRUE.}
   \item{logbase}{Shall the various diversity indices (linkage density, partner diversity, effective partners, generality/vulnerability) be calculated to the base of e (default) or 2? Log2 is the proposal for generality and vulnerability by Bersier et al. (2002), while Shannon uses ln. The choice of the base will not affect the results qualitatively, only by a scaling factor.}
-  \item{intereven}{Shall all cells of the matrix be used to calculate the interaction evenness 
+  \item{intereven}{Shall all cells of the matrix be used to calculate the interaction evenness \cr
   (\option{intereven = "prod"})? Or, as given by Bersier et al. (2002) and Tylianakis et al. (2007), should only the realised links be used (\option{intereven = "sum"}; default)? Prod and sum refer to using the log of the \bold{product} of matrix dimensions (i.e. all cells) or the log of the \bold{sum} of non-zero cells (i.e. number of links)  as denominator in the evenness formula. See last paragraph of the details-section for views on these two options!}
   \item{H2_integer}{Logical; indicates whether values in web are integers. Passed on to \code{\link{H2fun}}; see there for details.}
   \item{fdweighted}{Logical; when computing "functional diversity" sensu function \code{\link{fd}}, should the weights of the matrix be used. Defaults to TRUE, but original paper (Devoto et al. 2012) is based on FALSE.}
   \item{fddist}{Distance measure to be used to compute functional diversity through \code{\link{fd}}; any measure accepted by \code{\link{dist}} is acceptable.}
-  \item{legacy}{Logical; should the old (pre-2.00) version of \code{networklevel} be used? To be backward compatible, the old \code{networklevel}-function is still available (as \code{.networklevel}) and can be called by setting \option{legacy=TRUE}. This is only for the transition period until all papers in the making have been published (or binned). Index names and sometimes unclear focal level were downsides of the old implementation, which is now remedied. Thus, the use of \option{legacy=TRUE} and the direct call of \code{.networklevel} are strongly discouraged!}
+  \item{legacy}{Logical; should the old (pre-2.00) version of \code{networklevel} be used? To be backward compatible, the old \code{networklevel}-function is still available (\code{.networklevel}) and can be called by setting \option{legacy=TRUE}. This is only for the transition period until all papers in the making have been published (or binned). Index names and sometimes unclear focal level were downsides of the old implementation, which is now remedied. Thus, the use of \option{legacy=TRUE} and the direct call of \code{.networklevel} are strongly discouraged!}
 }
 
 \details{

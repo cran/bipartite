@@ -19,7 +19,7 @@ plotweb(web,
     text.low.col="black", adj.high=NULL, adj.low=NULL, plot.axes = FALSE,
     low.y=0.5, high.y=1.5, add=FALSE, y.lim=NULL, x.lim=NULL, low.plot=TRUE, 
     high.plot=TRUE, high.xoff = 0, low.xoff = 0, high.lab.dis = NULL, 
-    low.lab.dis = NULL)
+    low.lab.dis = NULL, abuns.type="additional")
 }
 
 \arguments{
@@ -43,10 +43,10 @@ plotweb(web,
   \item{high.lablength}{number of characters of upper labels that should be plotted. If zero no labels are shown, default is NULL which plots the complete labels.}
   \item{low.lablength}{number of characters of lower labels that should be plotted. If zero no labels are shown, default is NULL which plots the complete labels.}
   \item{sequence}{list of two with two names vectors: \code{seq.high} and \code{seq.low}, which specify the order in which species are plotted. Cannot be set for \option{method="cca"}. Defaults to \code{NULL}, where the sequence remains as given or is determined by the CCA internally.}
-  \item{low.abun}{\bold{Named} vector with independent abundance estimates for the lower trophic level, NULL if none exists.}
+  \item{low.abun}{\bold{Named} vector with independent abundance estimates for the lower trophic level, NULL if none exists. See Notes!}
   \item{low.abun.col}{Colour for depicting the abundance estimates for the lower trophic level; defaults to green.}
   \item{bor.low.abun.col}{border color for depicting the abundance estimates for the lower trophic level, default is black}
-  \item{high.abun}{\bold{Named} vector with independent abundance estimates for the higher trophic level, NULL if none exists.}
+  \item{high.abun}{\bold{Named} vector with independent abundance estimates for the higher trophic level, NULL if none exists. See Notes!}
   \item{high.abun.col}{Colour for depicting the abundance estimates for the lower trophic level; defaults to red.}
   \item{bor.high.abun.col}{border color for depicting the abundance estimates for the higher trophic level, default is black}
   \item{text.rot}{orientation of labels in the plot (to avoid overlapping of horizontal labels if dimension of the webs are high), default is 0 for horizontal labels, use text.rot=90 for vertical labels.}
@@ -66,12 +66,19 @@ plotweb(web,
   \item{low.xoff}{allows to set an offset to lower boxes. Useful if low.spacing is used to centre boxes manually. Use plot.axes=TRUE for easy centring}
   \item{high.lab.dis}{normally labels are staggered to avoid plotting over themselves. if set to 0, higher labels are all on one horizontal line. By using ad.low the position of the labels can be adjusted. If set to any other value labels are staggered with this distance. Defaults to NULL}
   \item{low.lab.dis}{normally labels are staggered to avoid plotting over themselves. if set to 0, lower labels are all on one horizontal line. By using ad.low the position of the labels can be adjusted. If set to any other value labels are staggered with this distance. Defaults to NULL}
+  \item{abuns.type}{How to plot abundances - are they \option{"independent"} (e.g. flower cover) measurements or are they \option{"additional"} (e.g. unparasitised hosts) measurements? Defaults to \option{"additional"}. Option \option{"none"} is interpreted in the same way as \option{"additional"}. See Notes!}
 }
 \value{
   Returns a window with a bipartite graph of a food web.  For all colours vectors can be used (which are recycled if length differs. Now more trophic webs can be plotted by using \code{plotweb} and the \option{add} switch, which allows to add more webs and staggering them on top of each other. Preferred option is here to order webs by yourself and use \option{method="normal"} to keep your preferred order. See examples on three and four trophic networks.
 }
 
-\note{Note that in the current implementation, \option{low.abun} is actually treated as 'additional abundances' (e.g. unparasitised hosts); we are yet to find a solution to plot fully independent abundance estimates; a workaround for fully independent abundance estimates (e.g. flower densities) is to first scale \option{low.abun} such that \code{all(low.abun > rowSums(web))} and 2. then use \code{plotweb(web, low.abun= low.abun - rowSums(web))}.}
+\note{
+%Note that in the current implementation, \option{low.abun} is actually treated as 'additional abundances' (e.g. unparasitised hosts); we are yet to find a solution to plot fully independent abundance estimates; a workaround for fully independent abundance estimates (e.g. flower densities) is to first scale \option{low.abun} such that \code{all(low.abun > rowSums(web))} and 2. then use \code{plotweb(web, low.abun= low.abun - rowSums(web))}.
+
+Note that in previous implementations, \option{low.abun} and \option{high.abun} was actually treated as 'additional abundances' (e.g. unparasitised hosts). We added the parameter \option{abuns.type} to switch between the classic function (values \option{"none"} and \option{"additional"}, the default for backward compatibility) and an alternative function that plots fully independent abundance estimates (\option{abuns.type="independent"}). To change box (species) colors with \option{abuns.type='independent'}, use \option{low.abun.col} and \option{high.abun.col}. The function will likely be revised again in the future, so feedback welcome.
+
+If you have total abundance measure but want to plot used and unused resources, use \option{abuns.type='additional'} and \option{low.abun= your.low.abun - rowSums(web)}.
+}
 
 \references{
 Tylianakis, J. M., Tscharntke, T. and Lewis, O. T. (2007) Habitat modification alters the structure of tropical host-parasitoid food webs. \emph{Nature} \bold{445}, 202--205
@@ -138,6 +145,11 @@ plotweb(t(Safariland), y.width.low=0.05, y.width.high=0.1, method="normal",
 plotweb(Safariland,y.width.low=0.05, y.width.high=0.1, method="normal", 
 	add=TRUE, low.y=2.95, high.y=3.95, col.low="green", text.low.col="black", 
 	low.lab.dis=0, arrow="down", adj.low=c(0.5,1.1), low.lablength=4)
+
+# now some examples with the abuns.type-option:
+plotweb(Safariland, abuns.type='independent',arrow="down.center")
+plotweb(Safariland, abuns.type='additional',arrow="down.center")
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

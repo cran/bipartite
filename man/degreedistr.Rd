@@ -8,7 +8,7 @@ This function first calculates degrees for each species, then constructs a cumul
 }
 
 \usage{
-degreedistr(web, plot.it=TRUE, pure.call=TRUE, silent=TRUE)
+degreedistr(web, plot.it=TRUE, pure.call=TRUE, silent=TRUE, level="both", ...)
 }
 
 \arguments{
@@ -16,6 +16,8 @@ degreedistr(web, plot.it=TRUE, pure.call=TRUE, silent=TRUE)
   \item{plot.it}{Logical; returns graphs of fits when set to TRUE (default). Dark, median and light grey lines refer to exponential, power and truncated power law, respectively.}
   \item{pure.call}{Logical; adjusts par for two panels (for TRUE) or leaves this to the wrapper function (FALSE).}
   \item{silent}{Logical; suppresses error reporting in the \code{try}-function around \code{nls}; defaults to TRUE.}
+  \item{level}{For which level shall the degree distributions be computed: \option{both}, \option{lower} or \option{higher}? Defaults to \option{both}.}
+  \item{...}{Arguments passed on to the plot function (e.g. \option{las=1}).}
 }
 
 \details{
@@ -31,6 +33,8 @@ Furthermore, the least-square-fit to the cumulative distribution is not ideal. W
  For both trophic levels, a table:
   \item{... trophic level dd fits}{Contains coefficient estimates, estimate's standard
       error and P-value, R2 and AIC for each of the three model fits, for the respective trophic level.}
+      
+   If plots are returned, exponential, power law and truncated power law are given in black, dark grey and light grey, respectively.
 }
 
 \references{

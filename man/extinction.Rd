@@ -9,7 +9,8 @@
 }
 
 \usage{
-extinction(web, participant = "both", method = "random", ext.row=NULL, ext.col=NULL)
+extinction(web, participant = "both", method = "random", ext.row=NULL, 
+	ext.col=NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 

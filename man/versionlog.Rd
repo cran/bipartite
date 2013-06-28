@@ -120,7 +120,7 @@ may hence have to be adapted accordingly!}
   
   \item 1.05 (release date: 05-Dec-2009)
     \describe{
-      \item{Help description for \code{\link{PAC}} was convoluted and its suggestions for the interpretation downright wrong.}{Thanks to Matthew Wainhouse for reporting and simplifying it!}
+      \item{Help description for \code{\link{PAC}} was convoluted}{ and its suggestions for the interpretation downright wrong. Thanks to Matthew Wainhouse for reporting and simplifying it!}
       \item{Resolved a long-standing issue of a warning message.}{This occurred when detaching the package (\code{detach(package:bipartite)}) and was caused by somehow wrongly using \code{.Last.lib}. Deleting it solved the problem.}
       \item{Fixed bug in \code{\link{specieslevel}}:}{Calling this function with only one index caused it to return empty lists. Simple mistake, but better without it.}		
     }

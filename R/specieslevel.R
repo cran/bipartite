@@ -1,6 +1,6 @@
 # `specieslevel` 
 specieslevel <-
-function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high.abun=NULL, PDI.normalise=TRUE, PSI.beta=c(1,0)) {
+function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high.abun=NULL, PDI.normalise=TRUE, PSI.beta=c(1,0), nested.method="NODF", nested.normalised=TRUE, nested.weighted=TRUE) {
     # function to calculate bipartite web indices at the species level
     #
     # web    interaction matrix, with higher trophic level as columns
@@ -30,7 +30,7 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
 
     web <- as.matrix(empty(web)) # delete unobserved species
 
-    allindex <- c("degree", "normalised degree", "species strength", "interaction push pull", "PDI", "resource range", "species specificity", "PSI", "NSI", "betweenness", "closeness", "Fisher alpha", "partner diversity", "effective partners", "d", "dependence", "proportional generality", "proportional similarity")
+    allindex <- c("degree", "normalised degree", "species strength", "nestedrank", "interaction push pull", "PDI", "resource range", "species specificity", "PSI", "NSI", "betweenness", "closeness", "Fisher alpha", "partner diversity", "effective partners", "d", "dependence", "proportional generality", "proportional similarity")
   #JFedit:
       # added "proportional similarity" (or PS), "proportional generality" (or "effective resource range" or "effective proportional resource use")
       # note that proportional generality can be higher than 1, (when a species selects for diversity)
@@ -38,6 +38,16 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
     if ("ALL" %in% index) index <- allindex
     if ("ALLBUTD" %in% index) index <- allindex[-which(allindex=="dependence")]
     #out <- list()
+    
+    # only if indices are not given explicitly:
+    if (length(index) == 1 & !all(index %in% allindex)){                        
+    	index <- switch(index,
+        	"ALL" = allindex,
+        	"ALLBUTDD" = allindex[-which(allindex=="degree distribution")],
+         	stop("Your index is not recognised! Typo? Check help for options!", call.=FALSE) #default for all non-matches
+          )
+    }
+    
     higher.out <- list()
     lower.out <- list()
 
@@ -155,6 +165,10 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
       nds <- ND(web)
     }
     
+    if ("nestedrank" %in% index){
+    	nested.ranks <- nestedrank(web, method=nested.method, normalise=nested.normalised, weighted=nested.weighted)
+    }
+    
     if (any(c("species strength", "dependence", "interaction push pull") %in% index)){
       depL <- web/matrix(rowSums(web), nrow=NROW(web), ncol=NCOL(web), byrow=FALSE)
       depH <- web/matrix(colSums(web), nrow=NROW(web), ncol=NCOL(web), byrow=TRUE)
@@ -206,6 +220,11 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
       higher.out$"normalised degree" <- nds[[2]]
     }
     
+    # nested ranks:
+    if ("nestedrank" %in% index){
+    	higher.out$"nestedrank" <- nested.ranks[["higher level"]]
+    }
+    
     # dependence values, following the lead by Bascompte et al. 2006 (Science) and modifications suggested by Blüthgen et al. 2007 (Current Biology)
     if (any(c("species strength", "dependence", "interaction") %in% index)){
       #if ("dependence" %in% index){ # moved to linklevel!
@@ -217,9 +236,9 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
         higher.out$"species strength" <- SH
       } 
       # Interaction asymmetry (Vazquez et al. 2007, Oikos); rather similar to dependence above, really
-      if ("interaction" %in% index) {
+      if ("interaction push pull" %in% index) {
         Aihigh <- colSums(-Dij)/colSums(web>0)
-        higher.out$"interaction push/pull" <- Aihigh
+        higher.out$"interaction push pull" <- Aihigh
       } 
     } # end strength/dependence/interaction
     
@@ -317,6 +336,11 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
     # normalised degrees:
     if ("normalised degree" %in% index){
       lower.out$"normalised degree" <- nds[[1]]
+    }
+
+    # nested ranks:
+    if ("nestedrank" %in% index){
+    	lower.out$"nestedrank" <- nested.ranks[["lower level"]]
     }
     
     # dependence values, following the lead by Bascompte et al. 2006 (Science) and modifications suggested by Blüthgen et al. 2007 (Current Biology)

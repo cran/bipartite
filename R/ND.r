@@ -37,10 +37,12 @@ BC <- function(web, rescale=TRUE, cmode="undirected", weighted=TRUE, ...){
     # by Carsten F. Dormann, 14 Dec 2010
     # ... options passed on to closeness in package sna; particularly: rescale=TRUE!
     wh <- as.one.mode(web, project="higher", weighted=weighted)
-    bch <- sna::betweenness(wh, rescale=rescale, ...)
+    bch <- sna::betweenness(wh, rescale=FALSE, cmode=cmode, ...)
+    if (rescale & sum(bch != 0)) bch <- bch/sum(bch, na.rm=TRUE)
 
     wl <- as.one.mode(web, project="lower", weighted=weighted)
-    bcl <- sna::betweenness(wl, rescale=rescale, ...)
+    bcl <- sna::betweenness(wl, rescale=FALSE, cmode=cmode, ...)
+    if (rescale & sum(bcl != 0)) bcl <- bcl/sum(bcl, na.rm=TRUE)
 
     list("lower"=bcl, "higher"=bch)
 }

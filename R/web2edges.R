@@ -11,7 +11,7 @@ web2edges <- function(web, webName=NULL, weight.column=TRUE, both.directions=FAL
 	# authors: Carsten F. Dormann & Rouven Strauss
 		
 	edges <- which(web > 0, arr.ind=TRUE) 
-	edge.weights <- web[edges, drop=FALSE]
+	edge.weights <- web[edges]#, drop=FALSE]
 		
 	if (is.null(webName)) webName <- "web"	
 	

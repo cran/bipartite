@@ -28,7 +28,7 @@ The value of fd, which is not standardised and lies anywhere between 0 and a lar
 
 \references{ 
 Devoto M., Bailey S., Craze P., and Memmott J. (2012) Understanding and planning ecological restoration of plant-pollinator networks.
-\emph{Ecology Letters}, http://dx.doi.org/10.1111/j.1461-0248.2012.01740.x
+\emph{Ecology Letters} \bold{15}, 319--328
 }
 
 \author{Mariano Devoto \email{mdevoto@agro.uba.ar}}

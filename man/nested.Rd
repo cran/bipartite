@@ -4,7 +4,7 @@
 \alias{nested}
 
 \title{
-Calculates any of several measures of nestedness 
+Calculates any of several measures of nestedness
 }
 
 \description{
@@ -12,7 +12,7 @@ Wrapper function calling one, several or all currently implemented nestedness me
 }
 
 \usage{
-nested(web, method = "binmatnest2", rescale = FALSE, normalised=TRUE)
+nested(web, method = "binmatnest2", rescale=FALSE, normalised=TRUE)
 }
 
 \arguments{

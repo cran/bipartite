@@ -7,7 +7,7 @@
 \arguments{
   \item{net}{ A weighted edgelist }
   \item{directed}{ Logical: whether the edgelist is directed or undirected. Default is NULL, then the function detects this parameter. }
-  \item{gconly}{ Logical: whether to calculate closeness only on the main component (traditional closeness). Default is TRUE. If this parameter is set to FALSE, a closeness measure for all nodes is computed. For details, see http://toreopsahl.com/2010/03/20/closeness-centrality-in-networks-with-disconnected-components/ }
+  \item{gconly}{ Logical: whether to calculate closeness only on the main component (traditional closeness). Default is TRUE. If this parameter is set to FALSE, a closeness measure for all nodes is computed. For details, see \url{http://toreopsahl.com/2010/03/20/closeness-centrality-in-networks-with-disconnected-components/}}
   \item{precomp.dist}{ If you have already computed the distance matrix using distance_w-function, you can enter the name of the matrix-object here. }
   \item{alpha}{ sets the alpha parameter in the generalised measures from Opsahl, T., Agneessens, F., Skvoretz, J., 2010. Node Centrality in Weighted Networks: Generalizing Degree and Shortest Paths. Social Networks. If this parameter is set to 1 (default), the Dijkstra shortest paths are used. The identification procedure of these paths rely simply on the tie weights and disregards the number of nodes on the paths. }
 }

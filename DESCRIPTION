@@ -2,8 +2,8 @@ Package: bipartite
 Type: Package
 Title: Visualising bipartite networks and calculating some (ecological)
         indices.
-Version: 2.00
-Date: 2013-03-18
+Version: 2.01
+Date: 2013-06-28
 Author: Carsten F. Dormann, Jochen Fruend and Bernd Gruber, with
         additional code from Mariano Devoto, Jose Iriondo, Rouven
         Strauss and Diego Vazquez, also based on C-code developed by
@@ -20,9 +20,8 @@ Description: Bipartite provides functions to visualise webs and
         Visualisation is important to get an idea of what we are
         actually looking at, while the indices summarise different
         aspects of the webs topology.
-Classification: network, plot, graph
 License: GPL
-Packaged: 2013-03-17 14:47:18 UTC; cdormann
+Packaged: 2013-06-27 07:10:50 UTC; cdormann
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2013-03-17 16:48:04
+Date/Publication: 2013-06-27 10:07:27

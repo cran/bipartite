@@ -400,6 +400,8 @@ dendro::~dendro() {
 		}
 		delete [] paths;
 	}
+    // if (g != NULL) {delete g; g = NULL;} // possibly add destructor for graph here, too (CFD)
+    // if (root != NULL) {delete root; root = NULL;} //same as above
 	paths = NULL;
 }
 
@@ -715,7 +717,7 @@ bool dendro::setValues(int d_n_a, int d_n_b, double d_sumEdgeWeight, double d_M,
 	n		= d_n_a + d_n_b;		// total number of vertices in graph
 	M		= d_M;
 	sumEdgeWeight	= d_sumEdgeWeight;		// total sum of edge weights
-	g		= toCopy->g;
+	g		= toCopy->g; //CFD: Why not copy? Now g in bestDendro will be tied/linked to g in dendro, which is constantly changing! See: deepCopy!!
 	d		= new interns(n-2);      	// allocate memory for internal edges of D, O(n)
 
 	// Note that edges do not have to be copied since no more MCMC moves will be executed
@@ -1582,7 +1584,7 @@ bool dendro::importDendrogramStructure(const string in_file) {
 // ********************************************************************************************************
 
 dendro* dendro::deepCopy() {
-	dendro* bestDendro = new dendro(method);
+	dendro* bestDendro = new dendro(method); // bestDendro is NOT a direct copy of d, because setValues does not copy g, but insteads points only to the g of the copy!!! This is NOT what a deepCopy is supposed to do (which is to copy each and every object)!!!
 	if(!bestDendro->setValues(n_a, n_b, sumEdgeWeight, M, d, this)) {
 		//cout << "!! ERROR: failed to copy current dendrogram to best dendrogram" << endl;
 		delete bestDendro;

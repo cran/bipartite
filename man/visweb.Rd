@@ -84,7 +84,8 @@ visweb(Safariland, circles=TRUE,  boxes=FALSE,  labsize=1, circle.max=3,
 	text="no")
 visweb(Safariland,square="b",box.col="green",box.border="red")
 
-cols <-0:(length(table(Safariland))-1) #define your colors here,length has to be the numbers of different entries (ranks of values in increasing order) 
+#define your colors here,length has to be the numbers of different entries
+cols <-0:(length(table(Safariland))-1) 
 visweb(Safariland, square="defined", def.col=cols) 
 }
 \keyword{ package }

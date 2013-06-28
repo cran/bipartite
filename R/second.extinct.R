@@ -7,13 +7,13 @@ function(web, participant="higher", method="abun", nrep=10, details=FALSE, ext.r
     # method        deletion following "random" or "abundance"
     # nrep          only for "random": number of repititions of random extinction sequence
 
-    if (details==TRUE & pmatch(participant, c("both", "lower", "higher"))==1)
-    {
-          warning("\nFor random extinctions of both participants extinction sequences
-            will differ in length. Simply averaging sequences can hence not be used. Thus,
-            option 'details' will be set to FALSE internally.\n")
-          details <- TRUE
-    }
+    # if (details==TRUE & pmatch(participant, c("both", "lower", "higher"))==1)
+    # {
+          # warning("\nFor random extinctions of both participants extinction sequences
+            # will differ in length. Simply averaging sequences can hence not be used. Thus,
+            # option 'details' will be set to FALSE internally.\n")
+          # details <- TRUE
+    # }
 
     one.second.extinct <- function(web=web, participant=participant, method=method, ext.row=ext.row, ext.col=ext.col){
 		dead <- matrix(nrow=0, ncol=3)
@@ -80,12 +80,19 @@ function(web, participant="higher", method="abun", nrep=10, details=FALSE, ext.r
 
     } else {
         o <- replicate(nrep, one.second.extinct(web=web, participant=participant, method=method, ext.row=ext.row, ext.col=ext.col), simplify=FALSE)
-		sapply(o, dim)
-        if (details) out <- o else
-        {
-            z <- o[[1]]
-            for (k in 2:length(o)) { z <- z + o[[k]] }
+        if (details){
+        	out <- o
+        } else {
+			lengths <- sapply(o, nrow)
+            z <- o[[which.max(lengths)]]
+            z[,2:3] <- 0
+            for (k in 1:length(o)) { 
+            	nr <- nrow(o[[k]])
+            	z[1:nr, ] <- z[1:nr, ] + o[[k]]
+            	rm(nr) 
+            }
             out <- z/length(o)
+            out[,1] <- 1:max(lengths)
         }
     }
 

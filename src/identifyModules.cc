@@ -202,7 +202,7 @@ int identifyModules(int* r_argc, char* argv[]) {
  		bestM			= d->getModularity();					// store current modularity as best modularity
  
 		temperature		= ioparm.temperature;						    // initialize temperature and 
-		dTemperature		= (temperature - minTemperature) / (double)(ioparm.maxconverge);    // size of temperature steps
+		dTemperature	= (temperature - minTemperature) / (double)(ioparm.maxconverge);    // size of temperature steps
 
 		Rprintf("identifyModules: start building legal dendrogram\n");
 
@@ -228,7 +228,8 @@ int identifyModules(int* r_argc, char* argv[]) {
 
 		delete d->g;									// delete graph (same instance for both d and bestDendro)
 		delete d;
-		delete bestDendro;
+		//delete bestDendro->g;       // CFD trial
+        delete bestDendro;
 		
 		return 1;
 	}
@@ -464,12 +465,13 @@ bool parseCommandLine(int argc, char * argv[]) {
 			else if (temp == "-steps") {
 				ioparm.flag_steps = true;
 				argct++;
-				if(atoi(argv[argct]) < 0) {
+				if(atof(argv[argct]) < 0) {          // use atof here?? atoi converts to integers, atof to double
 					Rprintf("!! ERROR: -steps argument has to be >= 0!\n");
 					return false;
 				}
 				else {									// hand over an integer representing the maximum number
-					ioparm.maxconverge = atoi(argv[argct]);				// of steps without increase of best modularity before exiting
+					ioparm.maxconverge = atof(argv[argct]);				// of steps without increase of best modularity before exiting
+                    // use atof here?? atoi converts to integers, atof to double
 				}
 			}
 			else if (temp == "-tolerance") {

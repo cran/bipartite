@@ -25,7 +25,7 @@ C.score(web, normalise = TRUE, FUN = mean, ...)
 }
 
 \value{
-Returns whatever the \option{FUN} produces as output. Default would be a single value, i.e.~the mean C-score of the web.
+Returns whatever the \option{FUN} produces as output. Default would be a single value, i.e. the mean C-score of the web.
 }
 
 \references{ 

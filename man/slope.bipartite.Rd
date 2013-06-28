@@ -29,6 +29,8 @@ parameter \sQuote{a} a measure of extinction vulnerability. The more gradual the
 
 \value{
 Returns one number, the exponent of the fitted hyperbolic model.
+
+%Will return an error if object is a list (e.g. if derived from \code{\link{second.extinct}} with setting \option{method="random"} and \option{participant="both"}. See note of that function for an explanation and solution.
 }
 
 \references{
@@ -38,9 +40,9 @@ Memmott, J., Waser, N. M. and Price, M. V. (2004) Tolerance of pollination netwo
 \author{ Carsten F. Dormann}
 
 \note{
-This function is not as vigorously tested as it should probably be. It worked fine for large networks, but small ones may behave strangely, I fathom.
+This function is not as vigorously tested as it should probably be. It worked fine for large networks, but small ones it may behave strangely, I fathom.
 
-Note also that it CANNOT fit concave curves! The most extreme is a linear decline of secondary extinctions with primary extinctions. The function can be adapted to handle this, but only at the expense of fitting another parameter.
+%Note also that it CANNOT fit concave curves! The most extreme is a linear decline of secondary extinctions with primary extinctions. The function can be adapted to handle this, but only at the expense of fitting another parameter.
 
 }
 

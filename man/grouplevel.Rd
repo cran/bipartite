@@ -9,8 +9,8 @@
 }
 \usage{
 grouplevel(web, index="ALLBUTDD", level="both", weighted=TRUE, empty.web=FALSE, 
-dist="horn", CCfun=mean, logbase="e", normalise=TRUE,  extinctmethod="r", nrep=100, 
-fddist="euclidean", fdweighted=TRUE)
+dist="horn", CCfun=mean, logbase="e", normalise=TRUE,  extinctmethod="r", 
+nrep=100, fddist="euclidean", fdweighted=TRUE)
 }
 
 \arguments{
@@ -86,8 +86,8 @@ Depending on the selected indices, some or all of the below (returned as vector 
   \item{robustness}{Calculates the area below the \dQuote{secondary extinction} curve; \code{robustness.HL} refers to the robustness of the higher level to extinctions in the lower level (and vice versa); see \code{\link{robustness}} for details. Corresponds to \dQuote{extinction slope}.}
   \item{functional diversity}{\dQuote{Functional diversity} for a given level. This measure of niche complementarity (as described by Devoto et al. 2012), is computed as the total branch length of a \dQuote{functional dendrogram} based on qualitative differences of interactions of one level with the other. Thus, the \dQuote{functional} aspect of functional diversity refers to the function of sharing interactions. Should be highly correlated with niche overlap, only binary.}
 \item{partner diversity}{(Weighted) mean Shannon diversity of the number of interactions for the species of that level. Choose \option{logbase=2} to change to a log2-based version.}
-\item{effective partners}{(Weighted) mean of exp(Shannon diversity). Simply the Jost (2006)-recommended version of diversity, which happens to be identical to generality (higher level) or vulnerability (lower level), as defined in Bersier et al. (2002). Note that they use \option{logbase=2}, while our default is \option{logbase=exp(1)}.}
- \item{generality/vulnerability}{Mean effective number of LL species per HL species (or vice versa for vulnerability), weighted by their marginal totals (row sums); see Tylianakis et al. (2007). (Bersier et al. (2002) also present an unweighted version of this index, which is returned by the previous index \dQuote{effective partners} if \option{weighted=FALSE}. Note that they use \option{logbase=2}, while our default is \option{logbase=exp(1)}.)}
+\item{effective partners}{(Weighted) mean of exp(Shannon diversity). Simply the Jost (2006)-recommended version of diversity, which happens to be identical to generality (higher level) or vulnerability (lower level), as defined in Bersier et al. (2002).}
+ \item{generality/vulnerability}{Mean effective number of LL species per HL species (or vice versa for vulnerability), weighted by their marginal totals (row sums); see Tylianakis et al. (2007). (Bersier et al. (2002) also present an unweighted version of this index, which is returned by the previous index \dQuote{effective partners} if \option{weighted=FALSE}.}
 }
 
 \note{
