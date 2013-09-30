@@ -3,26 +3,7 @@ specieslevel <-
 function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high.abun=NULL, PDI.normalise=TRUE, PSI.beta=c(1,0), nested.method="NODF", nested.normalised=TRUE, nested.weighted=TRUE) {
     # function to calculate bipartite web indices at the species level
     #
-    # web    interaction matrix, with higher trophic level as columns
-    # index  vector of indices to be calculated for each trophic level of the web;
-    #        options are: "specs" for number of species, "species degree", "dependence",
-    #        "d" for Blüthgen's d, "species strength" as sum of dependencies,
-    #        "interaction" for interaction push/pull (our version of dependence
-    #        asymmetry: see details), "PSI" for pollination service index (or pollinator
-    #        support index, depending on the trophic level), "niche overlap" or "ALL"
-    #        for all the aforementioned (default).
-    # level  for which level should indices be computed? Options are "both" (default), "higher" and "lower"
-    # dist   distance metric to be used to calculate niche overlap; defaults to
-    #        Horn's index, which is the recommendation of Krebs (Ecological Methodology);
-    #        for other options see vegdist {vegan}
-    # indices to be calculated:
-    # "specs" for number of species,
-    # "d" for Blüthgen's species-level diversity,
-    # "species degree" for the sum of interactions per species,
-    # "species strength" for Bascompte's summed dependence values per species (i.e. quantitative species degree),
-    # "PSI" for pollination service index (only for plants in pollination webs).
-    #
-    # Carsten Dormann, Jochen Fründ & Denis Lippok, April/May 2007 - 2010
+    # Carsten Dormann, Jochen Fründ & Denis Lippok, April/May 2007 - 2013
 
 
     # m <- matrix(c(4,7,0,0,9,1,2,0,5), 3, byrow=TRUE)
@@ -31,7 +12,7 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
     web <- as.matrix(empty(web)) # delete unobserved species
 
     allindex <- c("degree", "normalised degree", "species strength", "nestedrank", "interaction push pull", "PDI", "resource range", "species specificity", "PSI", "NSI", "betweenness", "closeness", "Fisher alpha", "partner diversity", "effective partners", "d", "dependence", "proportional generality", "proportional similarity")
-  #JFedit:
+  #JF edit:
       # added "proportional similarity" (or PS), "proportional generality" (or "effective resource range" or "effective proportional resource use")
       # note that proportional generality can be higher than 1, (when a species selects for diversity)
 
@@ -43,10 +24,13 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
     if (length(index) == 1 & !all(index %in% allindex)){                        
     	index <- switch(index,
         	"ALL" = allindex,
-        	"ALLBUTDD" = allindex[-which(allindex=="degree distribution")],
+        	"ALLBUTD" = allindex[-which(allindex=="dependence")],
          	stop("Your index is not recognised! Typo? Check help for options!", call.=FALSE) #default for all non-matches
           )
     }
+    
+    # catch cases where an invalid index is demanded:
+    if (length(which(!(index %in% allindex))) > 0) warning(paste0("Index '", index[which(!(index %in% allindex))], "' not recognised and hence not computed!"))
     
     higher.out <- list()
     lower.out <- list()
@@ -79,15 +63,22 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
       }
           
       el <- web2edges(web, return=TRUE)
-      proj <- projecting_tm(el, method=method) 
+      # el <- symmetrise_w(el) # needed for undirected webs
+      suppressWarnings(proj <- projecting_tm(el, method=method) )
+      if (any(dim(proj) < 2)){
+          warning("Web contains too few nodes to compute closeness or betweenness!")
+          return(rep(NA, NROW(web))) # closeness/betweenness cannot be computed with only one link!
+      } 
+      
       if (index == "betweenness") {
         b <- betweenness_w(proj)[,2]
         if (length(b) != NROW(web)){
           b <- c(b, rep(NA, (NROW(web) - length(b))))
         }
         if (!is.null(rownames(web))) names(b) <- rownames(web)
-        out <- b/sum(b, na.rm=TRUE)
+        if (sum(b, na.rm=TRUE) == 0) out <- b else out <- b/sum(b, na.rm=TRUE)
       }
+      
       if (index == "closeness") {
         ## closeness returns only the larger compartment, thus I first find the largest compartment and only compute the stuff for that;
         # the problem with closeness_w is that the names are lost!
@@ -95,11 +86,12 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
         which.is.where <- apply(CO[[1]], 1, function(x) sort(unique(x))[1] )			
         group <- names(sort(table(which.is.where), decreasing=TRUE))[1]
         keep <- which(CO[[1]] == group, arr.ind=TRUE)
-        subweb <- web[unique(keep[,1]), unique(keep[,2])]
+        subweb <- web[unique(keep[,1]), unique(keep[,2]), drop=FALSE]
         # now compute closeness_w for that:
         el2 <- web2edges(subweb, return=TRUE)
+        #if (any(dim(el2)) < 2) return(rep(NA, NROW(web))) # closeness cannot be computed with only one link!
         proj2 <- projecting_tm(el2, method=method)
-        cc <- closeness_w(proj2, directed=TRUE)[,2]
+        cc <- closeness_w(proj2, directed=TRUE, gconly=TRUE)[,2]
         # now pad these results with NAs:
         cc.full <- rep(NA, NROW(web))
         if (!is.null(rownames(web))){
@@ -137,7 +129,7 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
       #
       # web   a pollination web, with plants in rows
       # beta  a parameter accounting for the fact that two repeated landings are
-      #       required to transfer pollen: one for the source, one for the sink; a
+      #       needed to transfer pollen: one for the source, one for the sink; a
       #       value of 2 would assume no memory of plant species in the pollinator;
       #  	a value of 1 implies infinitely storing pollen from source to sink plant
       #
@@ -176,7 +168,6 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
     }
     
     if ("NSI" %in% index){
-      #      require(sna) # which brings the function geodist used in nodespec
       NS <- nodespec(web)
     }
     

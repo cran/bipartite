@@ -41,7 +41,7 @@ extinction <- function(web, participant="both", method="random", ext.row=NULL, e
       cseq <- order(colSums(web))
       if (partis.match==1) web[rseq[1], ] <- 0
       if (partis.match==2) web[, cseq[1]] <- 0
-      if (partis.match==3) {# "both"; deletes the species with fewest interactions, no matter from which level; requires randomisation of species sequence to not always use the first of similar values in a trophic level (random sorting is done initially)
+      if (partis.match==3) {# "both"; deletes the species with fewest interactions, no matter from which level; needs randomisation of species sequence to not always use the first of similar values in a trophic level (random sorting is done initially)
       	if (min(rowSums(web)) < min(colSums(web))) {
       		web[rseq[1], ] <- 0
       	} else {

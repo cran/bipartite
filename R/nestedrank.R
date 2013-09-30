@@ -8,6 +8,10 @@ nestedrank <- function(web, method="NODF", weighted=TRUE, normalise=TRUE, return
 		 method <- "NODF"
 	}
 	
+	# if the web has no names (e.g. null models), give them names:
+	if (is.null(rownames(web))) rownames(web) <- paste0("L", seq.int(nrow(web)))
+	if (is.null(colnames(web))) colnames(web) <- paste0("H", seq.int(ncol(web)))
+		
 	if (weighted == FALSE) web.for.wine <- (web>0)*1 else web.for.wine <- web
 	
 	nestedcomm <- switch(method, 
@@ -24,7 +28,10 @@ nestedrank <- function(web, method="NODF", weighted=TRUE, normalise=TRUE, return
 	names(row.seq) <- rownames(web)
 	col.seq <- match(colnames(web), colnames(nestedcomm))
 	names(col.seq) <- colnames(web)
-	if (normalise){row.seq <- (row.seq-1)/(length(row.seq)-1); col.seq <- (col.seq-1)/(length(col.seq)-1)}
+	if (normalise){
+			row.seq <- (row.seq-1)/(length(row.seq)-1)
+			col.seq <- (col.seq-1)/(length(col.seq)-1)
+	}
 	out <- list("lower level"=row.seq, "higher level"=col.seq)
 	if (return.matrix) out$"nested.matrix" <- nestedcomm
 	return(out)

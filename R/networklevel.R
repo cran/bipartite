@@ -18,8 +18,9 @@
         "ISA", "SA", "extinction slope", "robustness", "niche overlap",   
         #quantitative series:
         "weighted cluster coefficient", "weighted NODF", "partner diversity", "generality", "vulnerability", "linkage density", "Fisher alpha",  "interaction evenness", "Alatalo interaction evenness", "effective partners", "Shannon diversity", "functional diversity", "H2" )
-    
     # GONE: "mean interaction diversity", 
+    
+    index <- unique(index) # enforces that each index name is used only once
     
     wrong.name <- which(is.na(pmatch(index, c(allindex, "ALL", "ALLBUTDD", "info","quantitative", "binary", "topology", "networklevel"))))
     if (length(wrong.name) > 0) stop("You selected an index that is not available: ", paste(index[wrong.name], collapse=", "))
@@ -127,7 +128,8 @@
         }
         #-------------------
         if ("weighted NODF" %in% index){
-            out$"weighted NODF" <- unname(nestednodf(web, order=TRUE, weighted=TRUE)$statistic[3])
+			NODF <- try(unname(nestednodf(web, order=TRUE, weighted=TRUE)$statistic[3]), silent=TRUE)
+            out$"weighted NODF" <- if (inherits(NODF, "try-error")) NA else NODF
         }
         #------------------
         if (any(c("ISA", "interaction strength asymmetry", "dependence asymmetry") %in% index)){
@@ -564,7 +566,7 @@ if (any(c("extinction slope", "robustness") %in% index)){
 }
 #--------------------------
 # mean similarity of niches (niche overlap, sensu Krebs, Ecological Methodology)
-# vegdist requires "sites" to be in rows, therefore the web has to be transposed
+# vegdist demands "sites" to be in rows, therefore the web has to be transposed
 # to calculate dissimilarity between higher level species; similarity is simply
 # 1-dissimilarity:
 if ("niche overlap" %in% index) {

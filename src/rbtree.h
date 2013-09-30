@@ -151,7 +151,7 @@ rbtree::rbtree() {
 }
 
 rbtree::~rbtree() {
-	if (root != NULL && (root->left != leaf || root->right != leaf)) { deleteSubTree(root); }
+	if (root != NULL ) { deleteSubTree(root); } // && (root->left != leaf || root->right != leaf) // deleted by Florian Hartig 01.09.2013
 	support   = 0;
 	delete leaf;
 	root		= NULL;

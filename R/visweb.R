@@ -20,7 +20,6 @@ visweb <- function (web, type = "nested", prednames = TRUE, preynames = TRUE,
     if (clear == TRUE) 
         web <- empty(web)
     if (type == "diagonal") {
-        # require(vegan)
         web <- empty(web)
         ca <- cca(web)
         web <- web[order(summary(ca)$sites[, 1], decreasing = TRUE), 
@@ -196,7 +195,6 @@ visweb <- function (web, type = "nested", prednames = TRUE, preynames = TRUE,
 }
 
 
-#require(bipartite)
 #x<-matrix(c(1,0,0,1,
 #0,1,0,0,
 #1,1,1,0,

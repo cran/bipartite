@@ -1,4 +1,3 @@
-#library(bipartite)
 frame2webs <- function(dframe, varnames = c("lower", "higher", "webID", "freq"), type.out = "list", emptylist = TRUE) {
   # author: Jochen Fruend
   if (length(varnames)==4) {

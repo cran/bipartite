@@ -339,3 +339,10 @@ printoutModuleInformation = function(moduleWebObject) {
 		cat(a);
 	}
 }
+
+# web <- Safariland
+# mod <- computeModules(web, steps=1E9)
+# dir()
+# read.delim("web-1-1.pairs") # works fine
+# read.delim("web-1-1-names.lut") # works fine
+# mod <- computeModules(web, steps=1E9) # does not work (on first run)

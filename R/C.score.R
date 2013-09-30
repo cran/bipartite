@@ -1,5 +1,4 @@
 C.score <- function(web, normalise=TRUE, FUN=mean, ...){
-    #require(vegan)
     # calculates the C-score for all pollinator species; the C-score represents
     # the average number of checkerboard units for each unique specis pair.
     # (Stone & Roberts 1990; here taken from Gotelli & Rohde 2002)
@@ -32,7 +31,7 @@ C.score <- function(web, normalise=TRUE, FUN=mean, ...){
           # return to a triangular format:
 		  if (length(D) == length(nonzeros)){
 		  	Dnew <- maxD
-		  	Dnew[] <- D # [] required to keep the lower-triangular format
+		  	Dnew[] <- D # [] needed to keep the lower-triangular format
 		  	D <- Dnew
 		  } 	          
       } else { 

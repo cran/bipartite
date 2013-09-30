@@ -25,7 +25,6 @@ discrepancy <- function(mat){
 #commsimulator(A, method="quasiswap") # a null model for binary, maintaining row and column totals
 # example:
 #data(Safariland)
-#require(vegan)
 #nulls <- replicate(1000, discrepancy(commsimulator(Safariland, method="quasiswap")))
 #hist(nulls)
 #obs <- discrepancy(Safariland)

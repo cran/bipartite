@@ -16,14 +16,14 @@ grouplevel <- function(web, index="ALLBUTDD", level="both", weighted=TRUE, empty
     if (!("degree distribution" %in% index)) {
         out <- c(outh, outl)
         SEQ <- seq(1, length(out), by=2)
-        out <- out[order(c(SEQ, SEQ+1))] # that required some hard thinking, getting those bloody numbers align properly ...
+        out <- out[order(c(SEQ, SEQ+1))] # that needed some hard thinking, getting those bloody numbers align properly ...
     }
     
     if (level == "both"){
         if (!("degree distribution" %in% index)) {
             out <- c(outh, outl)
             SEQ <- seq(1, length(out), by=2)
-            out <- out[order(c(SEQ, SEQ+1))] # that required some hard thinking, getting those bloody numbers align properly ...
+            out <- out[order(c(SEQ, SEQ+1))] # that needed some hard thinking, getting those bloody numbers align properly ...
         } else {out <- list("HL"=outh, "LL"=outl)}
         return(out) # leave all the naming issues to function one.grouplevel
     }
@@ -140,7 +140,7 @@ one.grouplevel <- function(web, index="ALLBUTDD", level="higher", weighted=TRUE,
     
     # mean niche overlap
     # mean similarity of niches (niche overlap, sensu Krebs, Ecological Methodology)
-    # vegdist requires "sites" to be in rows, therefore the web has to be transposed
+    # vegdist demands "sites" to be in rows, therefore the web has to be transposed
     # to calculate dissimilarity between higher level species; similarity is simply
     # 1-dissimilarity:
     if ("niche overlap" %in% index) { # no weighting!
@@ -155,7 +155,8 @@ one.grouplevel <- function(web, index="ALLBUTDD", level="higher", weighted=TRUE,
   
   # C.score (not symmetric)
   if ("C score" %in% index){
-    out$"C score" <- C.score(web, normalise=normalise, na.rm=TRUE)
+  	CS <- try(C.score(web, normalise=normalise, na.rm=TRUE), silent=TRUE)
+    out$"C score" <- if (inherits(CS, "try-error")) NA else CS
   }
   
   # V.ratio (not symmetric)
@@ -190,8 +191,8 @@ one.grouplevel <- function(web, index="ALLBUTDD", level="higher", weighted=TRUE,
         robustH <- NA
       } else {
         robustH <- try(robustness(extL), silent=TRUE)                
-        rH <- if (inherits(robustH, "try-error")) NA else robustH          
       }
+      rH <- if (inherits(robustH, "try-error")) NA else robustH          
       out$"robustness" = as.numeric(rH)
     }
   }

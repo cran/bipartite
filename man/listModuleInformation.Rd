@@ -28,8 +28,7 @@ The value of the function is a list of lists of lists of vectors representing th
 
 \examples{
 \dontrun{
-require(bipartite);
-data(small1976);
+data(small1976)
 
 moduleWebObject = computeModules(small1976);
 moduleList = listModuleInformation(moduleWebObject);

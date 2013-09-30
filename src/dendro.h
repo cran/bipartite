@@ -2229,6 +2229,8 @@ void dendro::refreshModularity() {							// recalculates the modularity of the d
 		ect = computeEdgeCount(internal[i].L->index, internal[i].L->type, internal[i].R->index, internal[i].R->type);
 
 		ew_expect	= ect->e_w_expect;
+        
+        delete ect ; // added by Florian Hartig to fight the memory leak 01.09.2013
 
 		if(nL_nR == 0 && ei > 0) {
 			/*cout << "!! WARNING: violation of bipartite structure (" << internal[i].L->n_a << ", " << internal[i].R->n_b << ", " << internal[i].L->n_b << ", " << internal[i].R->n_a << ")" << endl;*/

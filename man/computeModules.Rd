@@ -10,7 +10,7 @@
 \title{Function "computeModules"}
 
 \description{
-This function takes a bipartite weighted graph and computes modules by applying M. E. J. Newman's modularity measure in a bipartite weighted version to it. During the computation files are written onto the hard drive disk. These files are by default deleted after the computation terminates.
+This function takes a bipartite weighted graph and computes modules by applying M. E. J. Newman's modularity measure in a bipartite weighted version to it. During the computation files are written onto the hard drive disk. These files are by default deleted after the computation terminates. Details of the modularity algorithm can be found in Dormann \& Strauß (2013).
 }
 
 \usage{
@@ -32,18 +32,22 @@ If \code{deleteOriginalFiles} is set to TRUE (default), the files mentioned abov
 \code{steps} is the number of steps after which the computation of modules stops if no better division into modules than the current one can be found.
 }
  \item{tolerance}{How small should the difference between MCMC-swap results be? At some point computer precision fluctuations make the algorithm fail to converge, which is why we choose a (very low) defaults of 1E-10.}
- \item{experimental}{Logical; using an undescribed and untested version for which no detail is available? (We suggest not yet.)}
+ \item{experimental}{Logical; using an undescribed and untested version for which no detail is available? (We suggest: not yet.)}
 }
 
 \value{
 An object of class "moduleWeb" containing information about the computed modules. For details, please refer to the corresponding documentation file.
 }
 
-\references{ Newman M.E.J. (2004) \emph{Physical Review E} \bold{70} 056131}
+\references{ 
+Dormann, C. F., and R. Strauß. 2013. Detecting modules in quantitative bipartite networks: the QuaBiMo algorithm. \bold{arXiv [q-bio.QM]} 1304.3218.
+
+Newman M.E.J. 2004. \emph{Physical Review E} \bold{70} 056131
+}
 
 \author{Rouven Strauss}
 
-\note{This function is still EXPERIMENTAL! In particular, an undetected memory leak seems to keep the connection open, so that I call dyn.unload/dyn.load, which does not have the desired effect in Linux (but in Windows and Mac OS X). }
+\note{An undetected memory leak seems to keep the connection open, so that we call \code{dyn.unload}/\code{dyn.load}, which does not have the desired effect in Linux (but only in Windows and Mac OS X). }
 
 \seealso{
 See also class "moduleWeb", function "listModuleInformation", function "printoutModuleInformation".
@@ -51,7 +55,6 @@ See also class "moduleWeb", function "listModuleInformation", function "printout
 
 \examples{
 	\dontrun{
-		require(bipartite)
 		data(small1976)
 		(res <- computeModules(small1976)) # takes several minutes!
 		plotModuleWeb(res)

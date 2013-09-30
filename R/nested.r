@@ -1,10 +1,6 @@
 nested <- function(web, method="binmatnest2", rescale=FALSE, normalised=TRUE){
   # a wrapper function to call any of the currently implemented measures of nestedness
-  
-#  \item{method}{One or more of the following: discrepancy, discrepancy2, binmatnest, binmatnest2, NODF, NODF2, C.score, checker, wine, ALL}
-# \item{rescale}{Should the methods all be transformed, so that higher values mean higher nesting? Only in combination with method "ALL". Defaults to FALSE.}
-#  \item{...}{Arguments passed on the respective method.}
-
+ 
   if (! any(method %in% c("binmatnest", "discrepancy", "binmatnest2", "discrepancy2", "NODF", "NODF2", "weighted NODF", "wine", "C.score", "checker", "ALL"))) stop("Typo? Unknown method!")
   if ("ALL" %in% method) index <- c("binmatnest", "discrepancy", "binmatnest2", "discrepancy2", "NODF", "NODF2", "weighted NODF", "wine", "C.score", "checker") else index <- method
 
@@ -14,7 +10,6 @@ nested <- function(web, method="binmatnest2", rescale=FALSE, normalised=TRUE){
   if ("binmatnest" %in% index) out <- c(out, "binmatnest"=nestedness(web, null.models=FALSE)$temperature)
   
   if ("discrepancy2" %in% index) {
-  	#require(vegan) # not nice, this; it's a namespace issue; somehow permute::allPerms is not available to nesteddisc, forcing me to load all of vegan here!
   	out <- c(out, "discrepancy2"=nesteddisc(web)$statistic)
   	}
 

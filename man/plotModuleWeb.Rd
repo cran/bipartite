@@ -72,8 +72,7 @@ See also function \code{visweb}.
 }
 \examples{
 \dontrun{
-require(bipartite);
-data(small1976);
+data(small1976)
 
 moduleWebObject = computeModules(small1976);
 plotModuleWeb(moduleWebObject);

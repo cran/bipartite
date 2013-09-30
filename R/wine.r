@@ -139,7 +139,6 @@ wine <- function(web, nreps=1){
 #-------------------------------------------------------------------------------
 
 plot.wine<- function(x,...){
-          #require(fields)
           w <- t(x$dij.w)
           dim1 <- dim(w)[1]
           dim2 <- dim(w)[2]

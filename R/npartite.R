@@ -26,7 +26,6 @@ npartite <- function(as.one.mode.web, index=c("connectance", "links per species"
 	
 }
 
-#library(bipartite)
 #image(aomw <- as.one.mode(Safariland, fill=NA))
 #npartite(aomw)
 #networklevel(Safariland, index=c("connectance", "links per species"))

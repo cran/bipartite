@@ -33,8 +33,8 @@ See help pages for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 2.01\cr
-Date: \tab 2013-06-28\cr
+Version: \tab 2.02\cr
+Date: \tab 2013-09-30\cr
 License: \tab GPL \cr
 }
 }
@@ -43,6 +43,14 @@ License: \tab GPL \cr
 Please see help page \code{\link{versionlog}} for all changes and updates prior to version 2.00. This page will only list most recent changes. 
 
 \itemize{
+  \item 2.02 (release date: 30-Sep-2013)
+   \describe{ % begin describe 2.02
+   	\item{Glitch fixed in \code{\link{grouplevel}} (thus also affecting \code{networklevel}).}{Networks with only one species in one of the two levels resulted in errors, rather than simply return NA for C-score and secondary extinction computation. Thanks to whoever it was for reporting (at the INTECOL workshop).}
+	\item{Minor bug fixes in  \code{\link{specieslevel}}:}{Gave error messages for closeness and betweenness if the network had no shortest path. Now returns a warning and NAs instead. Reported: JF.}
+	\item{Minor bux fix in  \code{\link{networklevel}}:}{Failed to work when an index was listed twice in the function call. Reported: JF.}
+	\item{New function \code{\link{r2dexternal}}:}{This function is a null model algorithm like Patefields (\code{r2dtable}, but it excepts externally measured abundances to compute the null model-expectation. Experimental.}
+	\item{Memory leak in \code{\link{computeModules}} fixed.}{Because some object was not deleted, memory consumption of this function shot through the roof (with time). Since R has a somewhat weird way of handling memory, I think that also subsequent operations were slower (because the dynamically expanded memory is not being shrunken again, which is a problem if you use the hard drive as RAM). Thanks to Florian Hartig for investing the time to fix it!}
+   } % end describe 2.02
   \item 2.01 (release date: 28-Jun-2013)
   This release features smoothing of various glitches that were introduced when we cleaned up the code for version 2.00.
    \describe{ % begin describe 2.01

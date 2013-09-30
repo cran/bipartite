@@ -42,7 +42,6 @@ data(Safariland, vazquenc, vazquec)
 allin1 <- webs2array(Safariland, vazquenc, vazquec)
 
 # now we can compute distance between two webs:
-require(vegan)
 vegdist(t(cbind(as.vector(allin1[,,1]), as.vector(allin1[,,2]), as.vector(allin1[,,3]))), 
   method="jacc")
 }

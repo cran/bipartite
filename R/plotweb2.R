@@ -20,7 +20,6 @@ function(web,  web2, method = "cca", empty = FALSE, labsize = 1, ybig = 1,
   if (is.na(meths.match)) stop("Choose plot-method: normal/cca.\n")
   if (meths.match==2)
   {
-    require(vegan)
     ca <- cca(web)
     web <- web[order(summary(ca)$sites[,1], decreasing=TRUE), order(summary(ca)$species[,1], decreasing=TRUE)]
 

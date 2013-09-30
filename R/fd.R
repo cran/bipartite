@@ -3,7 +3,6 @@ fd <- function (web, dist="euclidean", method="average", weighted=TRUE) {
  # follwing Devoto M., Bailey S., Craze P. & Memmott J. (2012) 
  # Understanding and planning ecological restoration of plant-pollinator networks
  # Ecology Letters, http://dx.doi.org/10.1111/j.1461-0248.2012.01740.x.
- # require(vegan); require(bipartite)
   web <- empty(web)
   if (!weighted) web <- (web>0)*1
   if (nrow(web)<2) {

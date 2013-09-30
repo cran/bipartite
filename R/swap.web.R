@@ -116,7 +116,7 @@ swap.web <- function(N, web, verbose=FALSE, c.crit=1e4){
     m <- sum(web>0) # counts number of non-empty cells
     first <- r2dtable(1, r=rowSums(web), c=colSums(web))[[1]] # creates a null web with same marginal totals
     n <- sum(first>0)                         
-    if (verbose) if (m > n) cat("Requires filling algorithm!\n") else cat("Requires emptying algorithm!\n")
+    if (verbose) if (m > n) cat("Demands filling algorithm!\n") else cat("Demands emptying algorithm!\n")
     if (m < n)  null <- downswap(first, m=m, n=n, c.crit=c.crit)
     if (m >= n) null <- upswap(first, m=m, n=n)  
     # sum(null>0); sum(null) # for testing purposes

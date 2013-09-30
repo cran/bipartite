@@ -66,7 +66,6 @@ if (abuns.type %in% c('additional','none')){
     ## So, we need to extract the compartments there and put them in sequence:
       co <- compart(web)
       if (co$n.compart>1){ #do the arrangement for each compartment separately
-        require(vegan)
         row.seq <- NULL
         col.seq <- NULL
         for (m in 1:co$n.compart){
@@ -372,7 +371,6 @@ if (abuns.type=='independent'){
     ## So, we need to extract the compartments there and put them in sequence:
       co <- compart(web)
       if (co$n.compart>1){ #do the arrangement for each compartment separately
-        require(vegan)
         row.seq <- NULL
         col.seq <- NULL
         for (m in 1:co$n.compart){
