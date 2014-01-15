@@ -33,8 +33,8 @@ See help pages for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 2.02\cr
-Date: \tab 2013-09-30\cr
+Version: \tab 2.03\cr
+Date: \tab 2014-01-15\cr
 License: \tab GPL \cr
 }
 }
@@ -43,6 +43,16 @@ License: \tab GPL \cr
 Please see help page \code{\link{versionlog}} for all changes and updates prior to version 2.00. This page will only list most recent changes. 
 
 \itemize{
+  \item 2.03 (release date: 15-Jan-2014)
+   \describe{ % begin describe 2.03
+  \item{Some ghost text led to conflicts with the updated package checking.}{Ghost text deleted. Thanks to Brian Ripley of the R-Team and CRAN for not only reporting the issue but also pointing to its solution!}
+  \item{Option \option{empty.web} added to \code{\link{specieslevel}}:}{Similar to the argument in \code{\link{networklevel}}; non-interacting species from the network were always excluded so far; new option \option{FALSE} not fully tested yet.}
+  \item{Minor bug fix in \code{\link{specieslevel}}:}{ ``pollination support index'' returned ``PSI''; ``PDI'' now referenced correctly as ``paired differences index''.}
+  \item{Simplification in \code{\link{grouplevel}} and correspondingly in \code{\link{networklevel}}:}{Previously, \code{index="generality"} or \code{"vulnerability"} was identical to \code{"effective partners"} with option \code{weighted=TRUE}, but different for \code{weighted=FALSE} (to which only \code{"effective partners"} responded). We reduced this to one index called "generality" or "vulnerability" (depending on the focal group), but which will now give the non-weighted mean if option \code{weighted=FALSE}. It can still be called by "effective partners" for backward compatibility.}
+  \item{Function \code{\link{grouplevel}} used \code{fd} wrongly!}{Instead of returning the value for rows, it returned the functional diversity for columns (and vice versa). We also used the opportunity to rename the index to its correct name: ``functional complementarity'' and the function to \code{\link{fc}}. Help pages for \code{\link{fc}} and \code{\link{grouplevel}} were adapted accordingly. Thanks to Mariano Devoto for pointing out this mistake!}
+	\item{New index ``weighted connectance'' in function \code{\link{networklevel}}:}{This index is simply computed as linkage density divided by number of species in the network. Note that using \option{empty.web=TRUE} will affect this value (which is intended). Thanks to Becky Morris for suggesting to add this index here.}
+	\item{Help page for function \code{\link{PDI}} corrected.}{Thanks to Timothy Poisot for reporting some issues in the help page.}
+   } % end describe 2.03
   \item 2.02 (release date: 30-Sep-2013)
    \describe{ % begin describe 2.02
    	\item{Glitch fixed in \code{\link{grouplevel}} (thus also affecting \code{networklevel}).}{Networks with only one species in one of the two levels resulted in errors, rather than simply return NA for C-score and secondary extinction computation. Thanks to whoever it was for reporting (at the INTECOL workshop).}

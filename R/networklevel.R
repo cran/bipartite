@@ -1,8 +1,9 @@
-`networklevel` <- function(web, index="ALLBUTDD", level="both", weighted=TRUE, ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctmethod="r", nrep=100, CCfun=median, dist="horn", normalise=TRUE, empty.web=TRUE, logbase="e", intereven="prod", H2_integer=TRUE, fdweighted=TRUE, fddist="euclidean", legacy=FALSE){
+`networklevel` <- function(web, index="ALLBUTDD", level="both", weighted=TRUE, ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctmethod="r", nrep=100, CCfun=median, dist="horn", normalise=TRUE, empty.web=TRUE, logbase="e", intereven="prod", H2_integer=TRUE, fcweighted=TRUE, fcdist="euclidean", legacy=FALSE){
     ##
     ## web         interaction matrix, with lower trophic level in rows, higher in columns
     ## legacy      se to TRUE allows to run networklevel in its old form
-    
+#! JFedit: fddist and fdweighted replace throughout by fcdist and fcweighted
+  
     if(empty.web) {web <- empty(web)}
     web.e <- empty(web) # emptied web for some indices 
     if (NROW(web) < 2 | NCOL(web) <2) warning("Web is really too small to calculate any reasonable index. You will get the values nonetheless, but I wouldn't put any faith in them!")
@@ -17,8 +18,8 @@
         #miscelleneous:
         "ISA", "SA", "extinction slope", "robustness", "niche overlap",   
         #quantitative series:
-        "weighted cluster coefficient", "weighted NODF", "partner diversity", "generality", "vulnerability", "linkage density", "Fisher alpha",  "interaction evenness", "Alatalo interaction evenness", "effective partners", "Shannon diversity", "functional diversity", "H2" )
-    # GONE: "mean interaction diversity", 
+        "weighted cluster coefficient", "weighted NODF", "partner diversity", "generality", "vulnerability", "linkage density", "weighted connectance", "Fisher alpha",  "interaction evenness", "Alatalo interaction evenness", "Shannon diversity", "functional diversity", "H2" )
+    # GONE: "mean interaction diversity", "effective partners", 
     
     index <- unique(index) # enforces that each index name is used only once
     
@@ -32,7 +33,7 @@
                         "ALLBUTDD" = allindex[-which(allindex=="degree distribution")],
                         "info" = c("number of species", "connectance", "web asymmetry", "links per species", "number of compartments"),
                         # logic: only rough information on the network's general structure
-                        "quantitative" = c("weighted cluster coefficient", "weighted nestedness", "weighted NODF", "functional diversity", "partner diversity", "effective partners", "H2", "diversity","linkage density", "niche overlap"), #"mean interaction diversity", 
+                        "quantitative" = c("weighted cluster coefficient", "weighted nestedness", "weighted NODF", "functional diversity", "partner diversity", "effective partners", "H2", "diversity","linkage density", "weighted connectance", "niche overlap"), #"mean interaction diversity", 
                         # logic: the "quantitative series"
                         "binary" = c("connectance", "links per species", "nestedness", "mean number of partners","cluster coefficient",  "C-score", "Fisher alpha"),
                         # logic: metrics for binary networks
@@ -221,6 +222,7 @@
             LD_q <- 0.5*(V+G)
             #------------------
             out$"linkage density"=LD_q
+            if ("weighted connectance" %in% index) out$"weighted connectance" <- LD_q/sum(dim(web))
             #LD_qs <- LD_q/(NROW(web)+NCOL(web)) # "weighted food web connectance", according to Jason's appendix
             #------------------
             # #We found no reference to this metric and saw little use for it. It is very similar to vulnerability/generality and can easily be computed from the output of \code{\link{specieslevel}} as \code{mean(specieslevel(web, index="diversity"))}        
@@ -273,10 +275,11 @@
         }
         #----------------------- now: grouplevel -------------------
         # a list of network indices (which should not be called through grouplevel):
-        netw.index <- match(c("connectance", "web asymmetry", "links per species", "number of compartments", "compartment diversity", "nestedness", "weighted nestedness", "weighted NODF", "ISA", "SA", "interaction evenness", "Alatalo interaction evenness", "Fisher alpha", "H2", "Shannon diversity", "linkage density"), index)
+#! JFedit: weighted connectance added here
+        netw.index <- match(c("connectance", "web asymmetry", "links per species", "number of compartments", "compartment diversity", "nestedness", "weighted nestedness", "weighted NODF", "ISA", "SA", "interaction evenness", "Alatalo interaction evenness", "Fisher alpha", "H2", "Shannon diversity", "linkage density", "weighted connectance"), index)
         exclude.index <- netw.index[!is.na(netw.index)]
         gindex <- if (length(exclude.index)==0) index else index[-exclude.index] # exclude NAs from this vector
-        if (length(gindex) > 0) outg <- grouplevel(web, index=gindex, level=level, weighted=weighted, extinctmethod=extinctmethod, nrep=nrep, CCfun=CCfun, dist=dist, normalise=normalise, empty.web=empty.web, logbase=logbase, fdweighted=fdweighted, fddist=fddist)
+        if (length(gindex) > 0) outg <- grouplevel(web, index=gindex, level=level, weighted=weighted, extinctmethod=extinctmethod, nrep=nrep, CCfun=CCfun, dist=dist, normalise=normalise, empty.web=empty.web, logbase=logbase, fcweighted=fcweighted, fcdist=fcdist)
         if (exists("outg")){
             # coerce potential list of HL/LL to one list:
             if (is.list(outg)){
@@ -290,7 +293,7 @@
     } # end legacy = FALSE      
     
     if (legacy == TRUE){ # for the old way of running networklevel
-        out <- .networklevel(web, index=index, ISAmethod=ISAmethod, SAmethod=SAmethod, extinctmethod=extinctmethod, nrep=nrep, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=CCfun, dist=dist, normalise=normalise, empty.web=empty.web, logbase=logbase, fdweighted=fdweighted, fddist=fddist)
+        out <- .networklevel(web, index=index, ISAmethod=ISAmethod, SAmethod=SAmethod, extinctmethod=extinctmethod, nrep=nrep, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=CCfun, dist=dist, normalise=normalise, empty.web=empty.web, logbase=logbase, fcweighted=fcweighted, fcdist=fcdist)
         
     } # end legacy condition
     
@@ -298,8 +301,8 @@
 }
 
 
-
-.networklevel <- function(web, index="ALLBUTDD", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctmethod="r", nrep=100, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn", normalise=TRUE, empty.web=TRUE, logbase="e", intereven="sum", H2_integer=TRUE, fdweighted=TRUE, fddist="euclidean"){
+#! JFedit: generality / vs. effective partners etc. NOT changed here! should it be? the changes are not really "legacy"?
+.networklevel <- function(web, index="ALLBUTDD", ISAmethod="Bluethgen", SAmethod="Bluethgen", extinctmethod="r", nrep=100, plot.it.extinction=FALSE, plot.it.dd=FALSE, CCfun=median, dist="horn", normalise=TRUE, empty.web=TRUE, logbase="e", intereven="sum", H2_integer=TRUE, fcweighted=TRUE, fcdist="euclidean"){
     
     ##
     ## web         interaction matrix, with lower trophic level in rows, higher in columns
@@ -659,9 +662,10 @@ if (any(c("interaction evenness", "Alatalo interaction evenness", "Shannon diver
 }
 #---------------
 # Devoto's fd:
+#! JFedit: changed fd to fc here (but only the function and arguments because in legacy function; this may not be the best decision)
 if (any(c("fd", "functional diversity") %in% index)){
-    out$"Functional diversity LTL" <- fd(t(web), dist=fddist, method="average", weighted=fdweighted)		
-    out$"Functional diversity HTL" <- fd(web, dist=fddist, method="average", weighted=fdweighted)
+    out$"Functional diversity LTL" <- fc(t(web), dist=fcdist, method="average", weighted=fcweighted)		
+    out$"Functional diversity HTL" <- fc(web, dist=fcdist, method="average", weighted=fcweighted)
 }
 
 #---------------

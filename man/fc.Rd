@@ -1,13 +1,14 @@
 \encoding{UTF-8}
-\name{fd}
-\alias{fd}
+\name{fc}
+\alias{fd} %its old name
+\alias{fc}
 
-\title{Calculates the functional diversity for the rows of a web}
+\title{Calculates the functional complementarity for the rows of a web}
 \description{
 A community-level measure of ecological niche complementarity measured as the total branch length of a functional dendrogram based on qualitative differences in visitor assemblages between plants.
 }
 \usage{
-fd(web, dist="euclidean", method="average", weighted=TRUE)
+fc(web, dist="euclidean", method="average", weighted=TRUE)
 }
 
 \arguments{
@@ -18,11 +19,11 @@ fd(web, dist="euclidean", method="average", weighted=TRUE)
 }
 
 \details{
-fd measures community-level ecological niche complementarity as the total branch length of a functional dendrogram based on qualitative differences in visitor assemblages between plants. For details see Devoto et al. (2012).
+fc measures community-level ecological niche complementarity as the total branch length of a functional dendrogram based on qualitative differences in visitor assemblages between plants. For details see Devoto et al. (2012).
 }
 
 \value{
-The value of fd, which is not standardised and lies anywhere between 0 and a large number.
+The value of fc, which is not standardised and lies anywhere between 0 and a large number.
 }
 
 
@@ -33,13 +34,12 @@ Devoto M., Bailey S., Craze P., and Memmott J. (2012) Understanding and planning
 
 \author{Mariano Devoto \email{mdevoto@agro.uba.ar}}
 
-\seealso{\code{\link{networklevel}}, which uses this function
-}
+\seealso{\code{\link{networklevel}}, which uses this function.}
 
 \examples{
 data(Safariland)
-fd(Safariland)    
-fd(t(Safariland), dist="canberra", method="complete")
+fc(Safariland)    
+fc(t(Safariland), dist="canberra", method="complete")
 }
 
 \keyword{ package }

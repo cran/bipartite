@@ -35,6 +35,8 @@ czvalues <- function(moduleWebObject, weighted=FALSE, level="higher"){
 			k.is <- colSums(web>0)
 		}
 		out <- (k.is - mean(k.is))/sd(k.is)
+		# if there is only one species in a module:	
+		#if (length(k.is) == 1) out <- nrow(web) 
 		out
 	}
 	

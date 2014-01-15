@@ -5,7 +5,7 @@
 
 \title{Calculates standardised specialisation index d' (d prime) for each species in the lower trophic level of a bipartite network.}
 \description{
-This function returns the specialisation index d', which expresses how specialised a given species is in relation to what resources are on offer.
+This function returns the specialisation index d' for the lower level, which expresses how specialised a given species is in relation to what partners in the higher level are on offer.
 }
 
 \usage{
@@ -13,8 +13,8 @@ dfun(web, abuns=NULL)
 }
 
 \arguments{
-  \item{web}{ Web is a matrix representing the interactions observed between higher trophic level species (columns) and lower trophic level species (rows). Usually this will be number of pollinators on each species of plants or number of parasitoids on each species of prey.}
-  \item{abuns}{A vector of abundances for the HIGHER trophic level, usually from additional information. If none is given (default) marginal sums are used. Note that if a web with rows or columns without any interaction is provided, these will not be purged when an independent abundances vector is given. As a consequence, these species will have a d' of NA (see note below).}
+  \item{web}{ Web is a matrix representing the interactions observed between higher level species (columns) and lower level species (rows). Usually this will be number of pollinators on each species of plants or number of parasitoids on each species of prey.}
+  \item{abuns}{A vector of abundances for the HIGHER level, usually from additional information. If none is given (default) marginal sums are used. Note that if a web with rows or columns without any interaction is provided, these will not be purged when an independent abundances vector is given. As a consequence, these species will have a d' of NA (see note below).}
 }
 
 \details{
@@ -26,7 +26,7 @@ The way this function is implemented, it calculates expected values for each cel
 
 Simple rounding of expected values would lead to empty columns or rows, i.e. the dmin-web would be of lower dimension than the original web.
 
-dfun returns the d' values for the lower trophic level. Use \code{fun(t(web))} to get the d'-values for the higher trophic level (as does \code{specieslevel}).
+dfun returns the d' values for the lower trophic level. Use \code{fun(t(web))} to get the d'-values for the higher trophic level (as does \code{specieslevel}). If you want to provide external abundances, you must provide those of the OTHER trophic level! (This help file is written as if you were interested in the lower trophic level.)
 
 d' is one of several species-level network indices. It's generalisation to the entire interaction web is called H2'.
 

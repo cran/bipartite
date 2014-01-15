@@ -13,7 +13,7 @@ specifically. Various simple numbers and indices are calculated and returned.
 \usage{
 specieslevel(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, 
 	high.abun=NULL, PDI.normalise=TRUE, PSI.beta=c(1,0), nested.method="NODF", 
-	nested.normalised=TRUE, nested.weighted=TRUE)
+	nested.normalised=TRUE, nested.weighted=TRUE, empty.web=TRUE)
 }
 
 \arguments{
@@ -29,7 +29,7 @@ specieslevel(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL,
 		\item \option{nestedrank} as rank in a nested matrix,
 		\item \option{interaction} for interaction push/pull (our version of dependence asymmetry: see details),  
 	        	\item \option{PDI} for Paired Differences Index, 
-	        	\item \option{resource range} for Schoener (1989)'s index of unused resources,
+	        	\item \option{resource range} for Poisot et al. (2012)'s index of unused resources,
 	        	\item \option{species specificity} (or coefficient of variation of interactions),
         		\item \option{PSI} for pollination service index (or pollinator support index, depending on the trophic level), 
 	        	\item \option{NS} for node specialisation index, 
@@ -53,6 +53,7 @@ specieslevel(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL,
   \item{nested.method}{One of \option{NODF}, \option{binmatnest}, \option{wine} or \option{sort}. See \code{\link{nestedrank}} for details.}
   \item{nested.normalised}{Logical; defaulting to TRUE. Divides the nestedrank-1 by the number of species -1, thereby ranging it between 0 (most generalist) and 1 (most specialised). Species sequences from different networks are now comparable.}
   \item{nested.weighted}{Logical; should the ``nestedrank'' be computed based on weighted network (default) or binary version (FALSE)?}
+  \item{empty.web}{Shall the empty columns and rows be deleted? Defaults to TRUE. option FALSE not yet fully tested}
 }
 
 \details{
@@ -98,8 +99,8 @@ For both the \dQuote{higher trophic level} and the \dQuote{lower trophic level} 
   \item{species strength}{Sum of dependencies of each species (used, e.g., in Bascompte et al. 2006). It aims at quantifying a species' relevance across all its partners. The alternative version of Barrat et al. (2004; also used by Poisot et al. 2012) as the sum of interactions of a species seems too trivial a measure, reflecting abundance rather than anything else. Do not take this to be the much-discussed \dQuote{interaction strength} in food web papers, which focusses on pairwise interactions (reviewed in Berlow et al. 2004)!}
   \item{nestedrank}{Quantifies generalism by the rank of a species in a network matrix re-arranged for maximal nestedness (Alarcon et al. 2008). A low rank (e.g. 1, 2) indicates high generality, while high ranks (up to the number of species in that level) indicate specialism or rarity.}
   \item{interaction push pull}{Direction of interaction asymmetry based on dependencies: positive values indicate that a species affects the species of the other level it interacts with stronger then they affect it (\dQuote{pusher}); negative values indicate that a species is, on average, on the receiving end of the stick (\dQuote{being pulled}); formula based on Vázquez et al. (2007), but push/pull is our own nomenclature. Values are highly correlated with species strengths (see below), but standardised to fall between -1 (being pulled) and 1 (pushing). Compared to \dQuote{strength}, this index quantifies the net balance, rather than the average effect.}
-  \item{PDI}{Paired Differences Index as proposed by Poisot et al. (2011a,b), but using our normalised version (if \option{PDI.normalise=TRUE}); values of 0 indicate generalists, while 1 indicates a perfect specialist; see \code{\link{PDI}} for details and comments.}
-  \item{resource range}{Schoener’s (1989) ``resource range'' is a somewhat strange name for something that has a value of 0 when all resources are used, but a value of 1 when only one resource is used. It is, in fact, an ``unused resource range''.  The aforementioned Paired Difference Index is a generalisation of resource range, which is equal to resource range when the web is binary.}
+  \item{PDI}{Paired Differences Index as proposed by Poisot et al. (2011a,b), by default using a normalised version (\option{PDI.normalise=TRUE}); ranges between 0 (generalist) and 1 (specialist); see \code{\link{PDI}} for details and comments.}
+  \item{resource range}{Poisot et al.'s (2012) ``resource range'' is a somewhat strange name for something that has a value of 0 when all resources are used, but a value of 1 when only one resource is used. It is, in fact, closer to an ``unused resource range''.  The aforementioned Paired Difference Index is a generalisation of resource range, which is equal to resource range when the web is binary.}
   \item{species specificity}{Coefficient of variation of interactions, normalised to values between 0 and 1, following the idea of Julliard et al. (2006), as proposed by Poisot et al. (2012). Values of 0 indicate low, those of 1 a high variability (and hence suggesting low and high specificity). Since not corrected for number of observations, this index will yield high specificity for singletons, even though there is no information to support this conclusion.} 
   \item{PSI}{Pollination Service Index for the higher trophic level, and the equivalent Pollinator Support Index for the lower trophic level. See Details above for more explanations.} %Expresses the value of, say, a pollinator for all plant species as the sum (across all plant species) of the proportion of pollen deposited per visit. The more specialised the pollinator and the fewer pollinators the plants it pollinates, the higher is its value for the plant community. 
 %It is a really cool measure, but it's not easy to get one's head around it. Alternatively, one can see it as the inverse of redundancy of the species for the web: the higher the value, the less redundant.}
@@ -120,6 +121,9 @@ number of partners, if each partner was equally common. Note that \dQuote{partne
 }
 
 \references{
+% JF edit: I just changed the reference for resource range to Poisot et al. 2012 and deleted the Schoener cite (who doesn't mention anything like this index); Schoener 1989 would rather be a citation for generality(generalization) and vulnerability in their classic (binary) versions (before Bersier, vulnerability was defined this way among foodwebbers, compare the help for networklevel)
+% JF edit: also changed (under "value") the description of PDI and resource range
+
 Alarcon, R., Waser, N.M. and Ollerton, J. 2008. Year-to-year variation in the topology of a plant-pollinator interaction network. \emph{Oikos} \bold{117}, 1796--1807
 
  Barrat, A., M. Barthélemy, R. Pastor-Satorras, and A. Vespignani. 2004. The architecture of complex weighted networks. \emph{Proceedings of the National Academy of Sciences of the USA} \bold{101}, 3747–-3752. doi: 10.1073/pnas.0400087101.
@@ -145,8 +149,6 @@ Poisot, T., Lepennetier, G., Martinez, E., Ramsayer, J., and Hochberg, M.E. (201
 Poisot, T., Bever, J.D., Nemri, A., Thrall, P.H., and Hochberg, M.E. (2011b) A conceptual framework for the evolution of ecological specialisation. \emph{Ecology Letters} \bold{14}, 841--851
 
 Poisot, T., E. Canard, N. Mouquet, and M. E. Hochberg (2012) A comparative study of ecological specialization estimators. \emph{Methods in Ecology and Evolution} \bold{3}, 537-–544. doi: 10.1111/j.2041-210X.2011.00174.x.
-
-Schoener, T.W. (1989) Food webs from the small to the large. \emph{Ecology} \bold{70}, 1559-–1589
 
 Vázquez, D. P., Melian, C. J., Williams, N. M., Blüthgen N., Krasnov B. R. and Poulin, R. (2007) Species abundance and asymmetric interaction strength in ecological networks. \emph{Oikos} \bold{116}, 1120--1127
 }

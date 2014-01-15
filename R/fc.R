@@ -1,4 +1,4 @@
-fd <- function (web, dist="euclidean", method="average", weighted=TRUE) {
+fc <- function (web, dist="euclidean", method="average", weighted=TRUE) {
  # function to calculate the functional diversity for the rows of a web
  # follwing Devoto M., Bailey S., Craze P. & Memmott J. (2012) 
  # Understanding and planning ecological restoration of plant-pollinator networks
@@ -17,6 +17,6 @@ fd <- function (web, dist="euclidean", method="average", weighted=TRUE) {
 }
 
 #data(Safariland)
-#fd(Safariland)    
-#fd(t(Safariland), dist="canberra", method="complete", weighted=FALSE)
+#fc(Safariland)    
+#fc(t(Safariland), dist="canberra", method="complete", weighted=FALSE)
     

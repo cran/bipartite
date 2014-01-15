@@ -10,7 +10,7 @@
 \usage{
 grouplevel(web, index="ALLBUTDD", level="both", weighted=TRUE, empty.web=FALSE, 
 dist="horn", CCfun=mean, logbase="e", normalise=TRUE,  extinctmethod="r", 
-nrep=100, fddist="euclidean", fdweighted=TRUE)
+nrep=100, fcdist="euclidean", fcweighted=TRUE)
 }
 
 \arguments{
@@ -29,33 +29,37 @@ nrep=100, fddist="euclidean", fdweighted=TRUE)
     \item \option{degree distribution}, 
     \item \option{extinction slope}, 
     \item \option{robustness},  
-     \item \option{niche overlap},  
-     \item \option{generality},
-     \item \option{vulnerability},
-     \item \option{partner diversity},
-     \item \option{effective partners}, 
-     \item \option{fd} (or alternatively \option{functional diversity}), 
-     \item \option{ALL} calculates all the above indices (returning a list (since degree distribution fits are a table within this list and cannot be simplified)), 
+    \item \option{niche overlap},  
+    \item \option{generality},
+    \item \option{vulnerability},
+    \item \option{partner diversity},
+    % \item \option{effective partners}, % but still allowed for backward compatibility, returning gen/vul
+    \item \option{fc} (or alternatively \option{functional complementarity}), 
+    \item \option{ALL} calculates all the above indices (returning a list (since degree distribution fits are a table within this list and cannot be simplified)), 
     \item \option{ALLBUTDD} (default) calculates all indices except degree distribution fits. This latter has the advantage that the output can be simplified to a vector; 
     }
     }
   \item{level}{For which of the two groups (\dQuote{levels}) should these indices be computed? Options are \option{lower}, \option{higher} and \option{both} (default). Although \code{groupwise} can be employed on its own, it typically will be called through \code{\link{networklevel}}.}
-  \item{weighted}{logical; for those indices which are simply averaged across species to yield the group-level index (e.g. \option{niche overlap}), should this averaging take into account the number of observations for a species? Defaults to \code{TRUE}. The logic behind this default is that we have more faith in an index value when it is based on many, rather than few, observations. Bersier et al. (2002) proposed this weighting and it is also used to compute vulnerability and generality (e.g. in Tylianakis et al. 2006). In fact, vulnerability/generality are only weighted mean number of effective partners for the lower/higher level, respectively. Thus, with default settings, the same value will be returned twice for these two indices.}
+%! JFedit here
+\item{weighted}{logical; for those indices which are simply averaged across species to yield the group-level index (e.g. \option{niche overlap}), should this averaging take into account the number of observations for a species? Defaults to \code{TRUE}. The logic behind this default is that we have more faith in an index value when it is based on many, rather than few, observations. Bersier et al. (2002) proposed this weighting and it is also commonly used to compute vulnerability and generality (e.g. in Tylianakis et al. 2006).}
+  % In fact, vulnerability/generality are only weighted mean number of effective partners for the lower/higher level, respectively. Thus, with default settings, the same value will be returned twice for these two indices.
   \item{empty.web}{Shall the empty columns and rows be deleted? Defaults to TRUE.}
   \item{dist}{Distance metric to be used to calculate niche overlap; defaults to Horn's index, which is the recommendation of Krebs (1989); for other options see \code{vegdist} in \pkg{vegan}.}
   \item{CCfun}{Method to use when calculating the clustering coefficient. Originally proposed as mean of cluster coefficients for each node. Defaults to \option{median}, because cluster coefficients are strongly skewed. }
-  \item{logbase}{Shall various indices (partner diversity, effective partners, generality/vulnerability) be calculated to the base of e (default) or 2? Log2 is the proposal for generality and vulnerability by Bersier et al. (2002), while Shannon uses ln. The choice of the base will not affect the results qualitatively, only by a scaling factor.}
+%! JFedit here
+\item{logbase}{Shall various indices (partner diversity, generality/vulnerability) be calculated to the base of e (default) or 2? Log2 is the proposal for generality and vulnerability by Bersier et al. (2002), while Shannon uses ln. The choice of the base will not affect the results qualitatively, at most by a scaling factor.}
   \item{normalise}{Logical; shall the C-score and togetherness metrics be normalised to a range of 0 to 1? Defaults to \code{TRUE}.}
   \item{extinctmethod}{Specifies how species are removed from matrix: \option{random} or \option{abundance} (partial matching), where abundance removes species in the order of increasing abundance (i.e. rarest first); see Memmott et al. (2004).}
   \item{nrep}{Number of replicates for the extinction sequence analysis.}
-  \item{fdweighted}{Logical; when computing "functional diversity" sensu function \code{\link{fd}}, should the weights of the matrix be used. Defaults to TRUE, but original paper (Devoto et al. 2012) is based on FALSE.}
-  \item{fddist}{Distance measure to be used to compute functional diversity through \code{\link{fd}}; any measure accepted by \code{\link{dist}} is acceptable.}
+  \item{fcweighted}{Logical; when computing "functional complementarity" sensu function \code{\link{fc}}, should the weights of the matrix be used. Defaults to TRUE, but original paper (Devoto et al. 2012) is based on FALSE.}
+  \item{fcdist}{Distance measure to be used to compute functional complementarity through \code{\link{fc}}; any measure accepted by \code{\link{dist}} is acceptable.}
 }
 
 \details{
 This function implements a variety of the many (and still procreating) indices describing network topography at the group level.
 
-Note that Bersier et al. (2002) have three levels of values for some of their indices: qualitative (i.e. based on binary networks), quantitative (based on networks with information on the number of interactions observed for each link), and weighted-quantitative (where each species is given a weight according to the number of interactions it has). At present, we implement a mixture of qualitative, quantitative and weighted-quantitative indices and offer the option \option{weighted} to compute the weighted-quantitative version of some of them (\option{mean number of links}, \option{mean number of shared partners}, \option{cluster coefficient}, \option{partner diversity}, \option{effective partners}). For all others, the mechanics behind the index do not allow a weighted mean to be computed (e.g. the distance-matrix between all species combinations used to compute \option{niche.overlap}).
+%! JFedit here
+Note that Bersier et al. (2002) have three levels of values for some of their indices: qualitative (i.e. based on binary networks), quantitative (based on networks with information on the number of interactions observed for each link), and weighted-quantitative (where each species is given a weight according to the number of interactions it has). At present, we implement a mixture of qualitative, quantitative and weighted-quantitative indices and offer the option \option{weighted} to compute the weighted-quantitative version of some of them (\option{mean number of links}, \option{mean number of shared partners}, \option{cluster coefficient}, \option{partner diversity}, \option{generality / vulnerability}). For all others, the mechanics behind the index do not allow a weighted mean to be computed (e.g. the distance-matrix between all species combinations used to compute \option{niche.overlap}).
 
 All indices in this function work with real as well as integer values. 
 
@@ -84,10 +88,11 @@ Depending on the selected indices, some or all of the below (returned as vector 
   \item{degree distribution}{Coefficients and fits for three different functions to a level's degree distributions: exponential, power law and truncated power law. See \code{\link{degreedistr}} for details and references.}
   \item{extinction slope}{Slope of the secondary extinction sequence in one level, following extermination of species in the other level; \code{extinction slope.HL} refers to the robustness of the higher level to extinctions in the lower level (and vice versa); see \code{\link{slope.bipartite}} and \code{\link{second.extinct}} for details.}
   \item{robustness}{Calculates the area below the \dQuote{secondary extinction} curve; \code{robustness.HL} refers to the robustness of the higher level to extinctions in the lower level (and vice versa); see \code{\link{robustness}} for details. Corresponds to \dQuote{extinction slope}.}
-  \item{functional diversity}{\dQuote{Functional diversity} for a given level. This measure of niche complementarity (as described by Devoto et al. 2012), is computed as the total branch length of a \dQuote{functional dendrogram} based on qualitative differences of interactions of one level with the other. Thus, the \dQuote{functional} aspect of functional diversity refers to the function of sharing interactions. Should be highly correlated with niche overlap, only binary.}
+  \item{functional complementarity}{\dQuote{Functional complementarity} for a given level. This measure of niche complementarity (as described by Devoto et al. 2012), is computed as the total branch length of a \dQuote{functional dendrogram} based on qualitative differences of interactions of one level with the other. Thus, the \dQuote{functional} aspect of functional complementarity refers to the function of sharing interactions. Should be highly correlated with niche overlap, only binary.}
 \item{partner diversity}{(Weighted) mean Shannon diversity of the number of interactions for the species of that level. Choose \option{logbase=2} to change to a log2-based version.}
-\item{effective partners}{(Weighted) mean of exp(Shannon diversity). Simply the Jost (2006)-recommended version of diversity, which happens to be identical to generality (higher level) or vulnerability (lower level), as defined in Bersier et al. (2002).}
- \item{generality/vulnerability}{Mean effective number of LL species per HL species (or vice versa for vulnerability), weighted by their marginal totals (row sums); see Tylianakis et al. (2007). (Bersier et al. (2002) also present an unweighted version of this index, which is returned by the previous index \dQuote{effective partners} if \option{weighted=FALSE}.}
+%#! JFedit: effpartners and gen/vul combined
+%\item{effective partners}{(Weighted) mean of exp(Shannon diversity). Simply the Jost (2006)-recommended version of diversity, which happens to be identical to generality (higher level) or vulnerability (lower level), as defined in Bersier et al. (2002).}
+ \item{generality/vulnerability}{(Weighted) mean effective number of LL species per HL species (generality; HL species per LL species for vulnerability), weighted by their marginal totals (row sums); see Tylianakis et al. (2007) and Bersier et al. (2002). This is identical to exp(\dQuote{partner diversity}, i.e., simply the Jost (2006)-recommended version of diversity.}
 }
 
 \note{

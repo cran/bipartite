@@ -1,4 +1,4 @@
-grouplevel <- function(web, index="ALLBUTDD", level="both", weighted=TRUE, empty.web=FALSE, dist="horn", CCfun=mean, logbase="e", normalise=TRUE,  extinctmethod="r", nrep=100, fddist="euclidean", fdweighted=TRUE){
+grouplevel <- function(web, index="ALLBUTDD", level="both", weighted=TRUE, empty.web=FALSE, dist="horn", CCfun=mean, logbase="e", normalise=TRUE,  extinctmethod="r", nrep=100, fcdist="euclidean", fcweighted=TRUE){
     if (level == "both")   for.higher <- for.lower <- TRUE
     if (level == "higher") {for.higher <- TRUE; for.lower=FALSE}
     if (level == "lower")  {for.lower  <- TRUE; for.higher=FALSE}
@@ -7,9 +7,9 @@ grouplevel <- function(web, index="ALLBUTDD", level="both", weighted=TRUE, empty
       if ("generality" %in% index & level == "lower") warning("You requested 'generality' for the lower level, although it is not a lower level index! You will get 'vulnerability' instead (same thing, really).", call.=FALSE)
     
     
-    if (for.higher) outh <- one.grouplevel(web, level="higher", index=index, weighted=weighted, empty.web=empty.web, dist=dist, CCfun=CCfun, logbase=logbase, normalise=normalise, extinctmethod=extinctmethod, nrep=nrep, fddist=fddist, fdweighted=fdweighted)
+    if (for.higher) outh <- one.grouplevel(web, level="higher", index=index, weighted=weighted, empty.web=empty.web, dist=dist, CCfun=CCfun, logbase=logbase, normalise=normalise, extinctmethod=extinctmethod, nrep=nrep, fcdist=fcdist, fcweighted=fcweighted)
 
-    if (for.lower) outl <- one.grouplevel(web, level="lower", index=index, weighted=weighted, empty.web=empty.web, dist=dist, CCfun=CCfun, logbase=logbase, normalise=normalise, extinctmethod=extinctmethod, nrep=nrep, fddist=fddist, fdweighted=fdweighted)
+    if (for.lower) outl <- one.grouplevel(web, level="lower", index=index, weighted=weighted, empty.web=empty.web, dist=dist, CCfun=CCfun, logbase=logbase, normalise=normalise, extinctmethod=extinctmethod, nrep=nrep, fcdist=fcdist, fcweighted=fcweighted)
     
     if (level == "higher") return(outh)
     if (level == "lower")  return(outl)
@@ -31,7 +31,7 @@ grouplevel <- function(web, index="ALLBUTDD", level="both", weighted=TRUE, empty
 
 
 
-one.grouplevel <- function(web, index="ALLBUTDD", level="higher", weighted=TRUE, empty.web=FALSE, dist="horn", CCfun=mean, logbase="e", normalise=TRUE, extinctmethod="r", nrep=100, fddist="euclidean", fdweighted=TRUE){
+one.grouplevel <- function(web, index="ALLBUTDD", level="higher", weighted=TRUE, empty.web=FALSE, dist="horn", CCfun=mean, logbase="e", normalise=TRUE, extinctmethod="r", nrep=100, fcdist="euclidean", fcweighted=TRUE){
   ### computes indices for one group level (i.e. higher/lower trophic level)
   
   web <- as.matrix(web)   
@@ -48,9 +48,10 @@ one.grouplevel <- function(web, index="ALLBUTDD", level="higher", weighted=TRUE,
            "cluster coefficient", "degree distribution", "niche overlap",
            "togetherness", "C score", "V ratio", "discrepancy", "extinction slope", "robustness",    
            #quantitative series:
-           "weighted cluster coefficient", "generality", "vulnerability", "partner diversity", "effective partners", "functional diversity")         
-           # GONE: "mean interaction diversity", 
-           
+#! JFedit: effective partners removed here; do we really have fd and fc?; probably needs some work throughout
+          "weighted cluster coefficient", "generality", "vulnerability", "partner diversity", "functional diversity", "functional complementarity")         
+           # GONE: "mean interaction diversity", "effective partners" [syn. with generality/vulnerability, name still allowed],
+  
        # only if indices are not given explicitly:
        if (length(index) == 1 & !all(index %in% allindex)){                        
        index <- switch(index,
@@ -59,7 +60,7 @@ one.grouplevel <- function(web, index="ALLBUTDD", level="higher", weighted=TRUE,
                stop("Your index is not recognised! Typo? Check help for options!", call.=FALSE) #default for all non-matches
                )
            }
-   
+  
            
   # compute weights: sum of observed interactions per species (i.e., a list of 2)
   if (weighted){
@@ -197,30 +198,33 @@ one.grouplevel <- function(web, index="ALLBUTDD", level="higher", weighted=TRUE,
     }
   }
   # Devoto's fd:
-  if (any(c("fd", "functional diversity") %in% index)){
-    out$"functional diversity" <- fd(web, dist=fddist, method="average", weighted=fdweighted)
+#! JFedit: fd changed to fc here (also fddist and fdweighted replaced throughout script); old: "functional diversity", 
+  if (any(c("fc", "functional complementarity") %in% index)){   
+    out$"functional complementarity" <- fc(t(web), dist=fcdist, method="average", weighted=fcweighted)
   }
       
     # diversity:
     if ("partner diversity" %in% index){
       out$"partner diversity" <- weighted.mean(H_Nk, w=Wh)
     }
-    
-    # effective number of partners:
-    if ("effective partners" %in% index){
-	    out$"effective partners" <- weighted.mean(n_Nk, w=Wh)	
-       # for weighted=T, this should be the same as G (see next step)
-    }
-    
-    if (any(c("generality", "vulnerability") %in% index)){     
-      # for weighted=T, this should be the same as G:
-      # marginal totals-weighted mean exp(Shannon diversity)
-      G <- sum(colSums(web)/sum(web)*n_Nk)
+
+#! JFedit: effective partners and generality/vulnerability now reduced to one index (before, they differed because only effective partners responded to "weighted")  
+  # effective number of partners:
+  if (any(c("generality", "vulnerability", "effective partners") %in% index)){
+    G <- weighted.mean(n_Nk, w=Wh)
+    if (level == "higher") out$generality <- G
+    if (level == "lower") out$vulnerability <- G	
+  }
       
-      if (level == "higher") out$generality <- G 
-      if (level == "lower") out$vulnerability <- G
-    }
-    
+      #  if (any(c("generality", "vulnerability") %in% index)){     
+      #    # for weighted=T, this should be the same as G:
+      #    # marginal totals-weighted mean exp(Shannon diversity)
+      #    G <- sum(colSums(web)/sum(web)*n_Nk)
+      #    
+      #    if (level == "higher") out$generality <- G 
+      #    if (level == "lower") out$vulnerability <- G
+      #  }    
+  
   
   ################ NOT included #################
   # PDI (no interpretation at group level)

@@ -1,6 +1,6 @@
 # `specieslevel` 
 specieslevel <-
-function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high.abun=NULL, PDI.normalise=TRUE, PSI.beta=c(1,0), nested.method="NODF", nested.normalised=TRUE, nested.weighted=TRUE) {
+function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high.abun=NULL, PDI.normalise=TRUE, PSI.beta=c(1,0), nested.method="NODF", nested.normalised=TRUE, nested.weighted=TRUE, empty.web=TRUE) {
     # function to calculate bipartite web indices at the species level
     #
     # Carsten Dormann, Jochen Fründ & Denis Lippok, April/May 2007 - 2013
@@ -9,12 +9,17 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
     # m <- matrix(c(4,7,0,0,9,1,2,0,5), 3, byrow=TRUE)
     if (!is.numeric(logbase)) stop("logbase must be numeric, e.g. 2 or exp(1) or 10!")
 
-    web <- as.matrix(empty(web)) # delete unobserved species
+#! JFedit: we need an option empty.web just as in networklevel
+  # must still be checked for case empty.web=FALSE (web.e not yet used anywhere)
+    if(empty.web) {web <- empty(web)}   # delete unobserved species
+    if(empty.web==FALSE) warning("empty.web=FALSE not yet supported in specieslevel")
+    web.e <- empty(web) # emptied web for some indices 
 
     allindex <- c("degree", "normalised degree", "species strength", "nestedrank", "interaction push pull", "PDI", "resource range", "species specificity", "PSI", "NSI", "betweenness", "closeness", "Fisher alpha", "partner diversity", "effective partners", "d", "dependence", "proportional generality", "proportional similarity")
-  #JF edit:
+  #JFedit:
       # added "proportional similarity" (or PS), "proportional generality" (or "effective resource range" or "effective proportional resource use")
       # note that proportional generality can be higher than 1, (when a species selects for diversity)
+#! JFedit: synonyms e.g. "paired differences index" only work if there is also an index name from the list above
 
     if ("ALL" %in% index) index <- allindex
     if ("ALLBUTD" %in% index) index <- allindex[-which(allindex=="dependence")]
@@ -232,9 +237,11 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
         higher.out$"interaction push pull" <- Aihigh
       } 
     } # end strength/dependence/interaction
-    
-    # Pollination webs only: pollination service index for each pollinator species
-    if (any(c("PDI", "pollination support index") %in% index)){
+
+#! JFedit: this is PDI not PSI; before it returned PairedDifferenceIndex when asking for pollination support index...; name changed below as well
+    # Poisot's paired differences index
+      # comments should be adjusted here and below, though
+    if (any(c("PDI", "paired differences index") %in% index)){
       higher.out$"PDI" <- PDI(web, normalise=PDI.normalise, log=FALSE)
     }
     
@@ -249,7 +256,7 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
     }
 
     
-    # Pollination service index
+    # Pollination webs only: Pollination service index
     if (any(c("PSI", "pollination service index") %in% index)){    
       if (for.lower & for.higher & length(PSI.beta) < 2) stop("You need to provide 2 values (in a vector) for PSI.beta.")
       higher.out$"PSI" <- PSI(web, beta=PSI.beta[1])
@@ -263,7 +270,7 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
     # betweenness (incl. weighted):
     if ("betweenness" %in% index){
       higher.out$"betweenness" <- bcs[[2]]
-      higher.out$"weighted betweeness" <- BCC_weighted(web, level="higher")
+      higher.out$"weighted betweenness" <- BCC_weighted(web, level="higher")
     }
     
     #closeness
@@ -352,7 +359,7 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
       }
     } # end strength/dependence/interaction
     
-    # Pollination webs only: pollination service index for each pollinator species
+    # Poisot's paired differences index
     if (any(c("PDI", "paired differences index") %in% index)){
       lower.out$"PDI" <- PDI(t(web), normalise=PDI.normalise, log=FALSE)
     }
@@ -365,7 +372,7 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
     # Pollinator support index:
     if (any(c("PSI", "pollinator support index") %in% index)){    
       if (for.lower & for.higher & length(PSI.beta) < 2) stop("You need to provide 2 values (in a vector) for PSI.beta.")
-      # need to accomodate a length-1-vector when only single level output is requested:
+      # need to accomodate a length-1-vector when only single level output is requested (not needed for PSI.higher):
       if (length(PSI.beta) == 1) PSI.beta.lower <- PSI.beta[1] else PSI.beta.lower <- PSI.beta[2]
       lower.out$"PSI"   <- PSI(t(web), beta=PSI.beta.lower)
     }
@@ -383,7 +390,7 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
     # betweenness (incl. weighted)
     if ("betweenness" %in% index){  
       lower.out$"betweenness" <- bcs[[1]]
-      lower.out$"weighted betweeness" <- BCC_weighted(web, level="lower") 
+      lower.out$"weighted betweenness" <- BCC_weighted(web, level="lower") 
     }
     
     # closeness:

@@ -11,8 +11,8 @@
 networklevel(web, index="ALLBUTDD", level="both", weighted=TRUE, 
    ISAmethod="Bluethgen",  SAmethod = "Bluethgen", extinctmethod = "r", 
    nrep = 100, CCfun=median, dist="horn", normalise=TRUE, empty.web=TRUE, 
-   logbase="e", intereven="prod", H2_integer=TRUE, fdweighted=TRUE, 
-   fddist="euclidean", legacy=FALSE)
+   logbase="e", intereven="prod", H2_integer=TRUE, fcweighted=TRUE, 
+   fcdist="euclidean", legacy=FALSE)
 }
 
 \arguments{
@@ -33,6 +33,7 @@ Usually this will be number of pollinators on each species of plants or number o
       	\cr \option{dependence asymmetry}), 
       \item \option{SA} (or alternatively \option{specialisation asymmetry}),
       \item \option{linkage density}, 
+      \item \option{weighted connectance},
       \item \option{Fisher alpha}, 
  %   \item \option{mean interaction diversity}, 
       \item \option{interaction evenness}, 
@@ -55,8 +56,8 @@ Usually this will be number of pollinators on each species of plants or number o
       \item \option{niche overlap},  
       \item \option{generality},
       \item \option{vulnerability},
-      \item \option{effective partners}, 
-      \item \option{fd} (or alternatively \option{functional diversity}).
+      %\item \option{effective partners}, 
+      \item \option{fc} (or alternatively \option{functional complementarity}).
     } Furthermore, there are some groups of indices that can be called:
     \itemize{
       \item \option{ALL} calculates all indices (returning a list (since degree distribution fits are a table within this list and cannot be simplified)), 
@@ -79,12 +80,12 @@ Usually this will be number of pollinators on each species of plants or number o
   \item{dist}{Distance metric to be used to calculate niche overlap. Any of \pkg{vegan}'s \code{vegdist}-metrics can be used; defaults to Horn's index, which is the recommendation of Krebs (1989). Binary percent niche overlap would be computed with \cr  \option{dist = "jaccard"}.}
   \item{normalise}{Logical; shall the C-score and togetherness metrics be normalised to a range of 0 to 1? Defaults to \code{TRUE}.}
   \item{empty.web}{Shall the empty columns and rows be deleted? Defaults to TRUE.}
-  \item{logbase}{Shall the various diversity indices (linkage density, partner diversity, effective partners, generality/vulnerability) be calculated to the base of e (default) or 2? Log2 is the proposal for generality and vulnerability by Bersier et al. (2002), while Shannon uses ln. The choice of the base will not affect the results qualitatively, only by a scaling factor.}
+  \item{logbase}{Shall the various diversity indices (linkage density, partner diversity, generality/vulnerability) be calculated to the base of e (default) or 2? Log2 is the proposal for generality and vulnerability by Bersier et al. (2002), while Shannon uses ln. The choice of the base will not affect the results qualitatively, at most by a scaling factor.}
   \item{intereven}{Shall all cells of the matrix be used to calculate the interaction evenness \cr
   (\option{intereven = "prod"})? Or, as given by Bersier et al. (2002) and Tylianakis et al. (2007), should only the realised links be used (\option{intereven = "sum"}; default)? Prod and sum refer to using the log of the \bold{product} of matrix dimensions (i.e. all cells) or the log of the \bold{sum} of non-zero cells (i.e. number of links)  as denominator in the evenness formula. See last paragraph of the details-section for views on these two options!}
   \item{H2_integer}{Logical; indicates whether values in web are integers. Passed on to \code{\link{H2fun}}; see there for details.}
-  \item{fdweighted}{Logical; when computing "functional diversity" sensu function \code{\link{fd}}, should the weights of the matrix be used. Defaults to TRUE, but original paper (Devoto et al. 2012) is based on FALSE.}
-  \item{fddist}{Distance measure to be used to compute functional diversity through \code{\link{fd}}; any measure accepted by \code{\link{dist}} is acceptable.}
+  \item{fcweighted}{Logical; when computing ``functional complementarity'' sensu function \code{\link{fc}}, should the weights of the matrix be used. Defaults to TRUE, but original paper (Devoto et al. 2012) is based on FALSE.}
+  \item{fcdist}{Distance measure to be used to compute functional complementarity through \code{\link{fc}}; any measure accepted by \code{\link{dist}} is acceptable.}
   \item{legacy}{Logical; should the old (pre-2.00) version of \code{networklevel} be used? To be backward compatible, the old \code{networklevel}-function is still available (\code{.networklevel}) and can be called by setting \option{legacy=TRUE}. This is only for the transition period until all papers in the making have been published (or binned). Index names and sometimes unclear focal level were downsides of the old implementation, which is now remedied. Thus, the use of \option{legacy=TRUE} and the direct call of \code{.networklevel} are strongly discouraged!}
 }
 
@@ -113,7 +114,8 @@ Depending on the selected indices, some or all of the below (returned as vector 
 	\item{weighted NODF}{Another quantitative (=weighted) index for nestedness, building on NODF (see \code{nestednodf} in \pkg{vegan}). High values indicate nestedness. According to the analysis of Almeida-Neto et al. (2008, 2010), NODF is more consistent and \dQuote{better} than usual measures of nestedness.}
 	\item{interaction strength asymmetry}{(selected using \option{index = "ISA"}) Explaining dependence asymmetry is also a measure of specialisation, across both trophic levels. Proposed by Bascompte et al. (2006) and critised and alterations proposed by Blüthgen et al. (2007). The latter also show that dependence asymmetry can be almost entirely explained by web asymmetry (see above). Positive values (only possible of \option{ISAmethod = "Bluethgen"}) indicate higher dependence in the higher trophic level. See function \code{\link{specieslevel}} and its index \option{interaction push/pull}, which quantifies the balance of affecting and being effected by other species. Similarly, index \option{strength} quantifies the average effect of each species on all its partners.}
 	\item{specialisation asymmetry}{(selected using \option{index="SA"}) Asymmetry (higher vs. lower trophic level) of specialisation now based on d' (see \code{\link{dfun}}), which is insensitive to the dimensions of the web. Again, two options of calculation are available: the one proposed by Blüthgen et al. (2007), where they weight the specialisation value for each species by its abundance (\option{SAmethod="Bluethgen"}) or where d'-values are log-transformed (arguing that d'-values are indeed log-normally distributed: \option{SAmethod="log"}). Since the mean d-value for the lower trophic level is subtracted from that of the higher, positive values indicate a higher specialisation of the higher trophic level.}
-    \item{linkage density}{Marginal totals-weighted diversity of interactions per species (quantitative). Actually, this is computed as the average of vulnerability and generality (Bersier et al. 2002).}
+    \item{linkage density}{Marginal totals-weighted diversity of interactions per species (quantitative). Actually, this is computed as the average of vulnerability and generality (Bersier et al. 2002). Does not respond to setting \code{weighted=FALSE}.}
+    \item{weighted connectance}{Linkage density divided by number of species in the network (Tylianakis et al. 2007). This will respond to whether non-interacting species (e.g. unparasitised hosts) are included or not!}
     \item{Fisher's alpha}{An alternative measure of interaction diversity (using \code{fisherfit} from \pkg{vegan}).}
 %         \item{interaction diversity LTL}{Mean diversity of predators per prey. LTL refers to Lower Trophic Level. LTL is analog to Shannon's diversity index for interactions (see below), but calculated for each species in the LTL, then averaged. Or, in other words, it is the log-version of vulnerability, but averaged without weighting.}
 %         \item{interaction diversity HTL}{Mean diversity of prey per predator. HTL refers to Higher Trophic Level.}
@@ -137,8 +139,9 @@ Depending on the selected indices, some or all of the below (returned as vector 
     \item{robustness}{Area below the \dQuote{secondary extinction} curve; see \code{\link{robustness}} for details. Corresponds to \dQuote{extinction slope}.}
     \item{functional diversity}{for a given level.}
     \item{partner diversity}{(Weighted) mean Shannon diversity of the number of interactions for the species of that level. Choose \option{logbase=2} to change to a log2-based version.}
-    \item{effective partners}{(Weighted) mean of exp(Shannon diversity). Simply the Jost (2006)-recommended version of diversity, which happens to be identical to generality (higher level) or vulnerability (lower level), as defined in Bersier et al. (2002).}
-    \item{generality/vulnerability}{Mean effective number of LL species per HL species (or vice versa for vulnerability), weighted by their marginal totals (row sums). (Bersier et al. (2002) also present an unweighted version of this index, which is returned by the previous index \dQuote{effective partners} if \option{weighted=FALSE}.)}
+    %#! JFedit: effpartners and gen/vul combined
+    %\item{effective partners}{(Weighted) mean of exp(Shannon diversity). Simply the Jost (2006)-recommended version of diversity, which happens to be identical to generality (higher level) or vulnerability (lower level), as defined in Bersier et al. (2002).}
+     \item{generality/vulnerability}{(Weighted) mean effective number of LL species per HL species (generality; HL species per LL species for vulnerability), weighted by their marginal totals (row sums); see Tylianakis et al. (2007) and Bersier et al. (2002). This is identical to exp(\dQuote{partner diversity}, i.e., simply the Jost (2006)-recommended version of diversity.}
 }
 
 \note{

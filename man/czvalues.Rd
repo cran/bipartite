@@ -21,10 +21,10 @@ c = 1 - sum( (k.it/k.i)^2)    # among-module connectivity = participation coeffi
 
 z = (k.is - ks.bar) / SD.ks  # within-module degree
 
-k.is = number of links of i to other species in its own module s
-ks.bar = average k.is of all species in module s
-SD.ks = standard deviation of k.is of all species in module s
-k.it = number of links of species i to module t
+k.is = number of links of i to other species in its own module s; 
+ks.bar = average k.is of all species in module s; 
+SD.ks = standard deviation of k.is of all species in module s; 
+k.it = number of links of species i to module t; 
 k.i = degree of species i
 
 Olesen et al. (2006) give critical c and z values of 0.62 and 2.6, respectively. Species exceeding these values are deemed connectors or hubs of a network. The justification of these thresholds remains unclear to me. They may also not apply for the quantitative version.
