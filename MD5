@@ -1,6 +1,6 @@
-0bac088725413aacaf899b3648e26571 *DESCRIPTION
+f8c2e4803a233965ef1e5f5f0450c73e *DESCRIPTION
 5edd9ed68d36ebdacca67f79a6f8aa4b *NAMESPACE
-a727130a0599e9cc1f8a0bba25d87c9e *R/C.score.R
+a9fe8709087bf6d49dee2052bfacf0cb *R/C.score.R
 b197aa0a6a27a2b1bc332d4bcb5e5bca *R/H2fun.R
 380b882094b36755305d3dd6ddab25db *R/ND.r
 52539be9715e14d2169a94d9bdcff3e8 *R/PAC.r
@@ -12,7 +12,7 @@ dfa06b1d8bda811560d8cf3527bcfd8a *R/betweenness_w.R
 4cf18fb2b1dca15a852c8fb7ef541d3b *R/closeness_w.R
 0b5ca792e14b6365aafd33ff94b2b696 *R/clustering_tm.R
 3656b68b0c8feb78b05f1c9fe667940c *R/compart.R
-1ae82d676586ab20054ba2fb0f7b1b60 *R/computeModules.R
+50b75538ca5f2928abb848910d711c70 *R/computeModules.R
 70631d972293ab007c648e59c5d08142 *R/czvalues.R
 16ff7d48a61b4237a39ce725f069925d *R/degreedistr.R
 065f4c898113d16749d138504acbbef3 *R/dfun.R
@@ -28,10 +28,10 @@ deac79c3833c3f7fd1cb8fc859fdb00c *R/fc.R
 c2c94a5766f694ab3943e3bbc6efee1b *R/getModuleCoordinates.R
 19dbdbc84b51e4768d44f2b5a081c5e9 *R/grouplevel.R
 2ea91d109a8e1f19398a5a5c23fb30f4 *R/linklevel.R
-28ec4352e4e7952f488c9d84a52ec9cd *R/nested.r
+28ec4352e4e7952f488c9d84a52ec9cd *R/nested.R
 495a9e793dbd9611e8a04f1260ddd037 *R/nestedness.r
-8ff7b4bb3defc703df8d51c456c3c166 *R/nestedrank.R
-438405f0eb3f548038e3e432ffe1d50e *R/networklevel.R
+3d782054e5f622a759fdb844f4aee7a8 *R/nestedrank.R
+2806a6c0b62119aebd1499dcbc8e7d53 *R/networklevel.R
 aebce19bedcd2b64fe029f48d99f6fd9 *R/nodespec.r
 6a68ac5dee0a72bcab39642a6cfaae48 *R/npartite.R
 2ec6f32dec56dd8665aca4d8208ad02b *R/null.distr.r
@@ -47,9 +47,9 @@ e92e6824d4e0443260e7160968f12065 *R/r2dexternal.R
 820c7f2abb0d58ea86b669b37cf58dd7 *R/robustness.r
 6288473702a1def63365646c55ab5800 *R/second.extinct.R
 96d52c7f4175f2f4a978d39144db65f1 *R/shuffle.web.R
-e881c5b574da11242348411f103cd24f *R/slope.bipartite.R
+fd535789604c40aa464bc828c38645a4 *R/slope.bipartite.R
 b1c772690640ceb8e78778d2256097cb *R/sortweb.r
-07c53c3a3ae560dfb647ca72215fcdb2 *R/specieslevel.R
+c7c68c481b107160304715800564434a *R/specieslevel.R
 0bdc0315b64153ae0755aaf23c872861 *R/strength.R
 ebdbda6d8182463c5dea9bdd185d7321 *R/swap.web.R
 65c47f555a55214757251ba81dd6701b *R/symmetrise_w.R
@@ -86,7 +86,7 @@ ba331d18d63cba879f686373f7ec0d5f *data/vazcer.rda
 547a6c95bab6c98fb5d57fcb85e84967 *data/vazquec.rda
 858f9ab3c6f6d27b76255a75da63487c *data/vazquenc.rda
 42bb4529a581ddd63b3dba59656ece61 *inst/CITATION
-3bcde18eee1316386b0df6e4af6a9420 *inst/doc/Dormann2008Rnews.pdf
+ca5126285cc22fed827e10242fb5946d *inst/doc/Dormann2008Rnews.pdf
 5d4adee33b60d43b0210ad600e6dbc79 *inst/doc/Dormann2009OpenEcolJ.pdf
 bd17cd3c3d776c41a562d6389b987576 *inst/doc/Dormann2011NetworkBiology.pdf
 4ebeac2892819b4730ac1a5e5733fd63 *man/C.score.Rd
@@ -101,7 +101,7 @@ e44c9c6f2f4ff98cc575a949d3fd607b *man/as.one.mode.Rd
 1a6c1f1659b1a7768a756618b93d19ff *man/barrett1987.Rd
 839b17ed5c59961cc80209ea0036ca7f *man/betweenness_w.Rd
 efb967f7485ee166795c985c2c0e1ec5 *man/bezerra2009.Rd
-be2b4fc9e4c77537bab7fd0a3494b13b *man/bipartite-package.Rd
+cfdb14f3d68e0880cb76262a0d02971c *man/bipartite-package.Rd
 d3f25fe8ef140e4649c4987f6b81bdf4 *man/closeness_w.Rd
 4345d536cc5ce909f86970ef2c91f94f *man/clustering_tm.Rd
 ac4907d394b3c97c561a96e99544aa66 *man/compart.Rd
@@ -155,7 +155,7 @@ e4f27ba4054f10509b0a0df7423f6cbe *man/r2dexternal.Rd
 a6e99d8b17146e2e03c7e94b8ca54111 *man/slope.bipartite.Rd
 56af276da1f1fc1699fbf20670428783 *man/small1976.Rd
 4527e882339b036f0a61516261aa3213 *man/sortweb.Rd
-a5a2784bbc753f2c08f424e322927473 *man/specieslevel.Rd
+5556556d2575e80d6839af41989cb9e9 *man/specieslevel.Rd
 d92af86013635b801dee438e08272484 *man/strength.Rd
 8a289f553a9fda8d3d43136acd5d859a *man/swap.web.Rd
 d69c6ce491beafc9e46bc75089914592 *man/symmetrise_w.Rd
@@ -179,6 +179,6 @@ e18a6bd303c166838a211da3d2d412da *src/MersenneTwister.h
 7bab2c0e468acd5c90a0ef3442a78ebe *src/bmn5.cc
 4f2db52edf6a131e27fb71ebcce6e4f2 *src/dendro.h
 5438d6bc1aa3881b903f78ab11d6e73b *src/graph.h
-68a5dc414986bba4018426e5e28da1b0 *src/identifyModules.cc
+1a0f60495114d67589103accbd4df5d7 *src/identifyModules.cc
 107f1d3f19c1b0d4b3e9ac6b727d3855 *src/rbtree.h
 20f5607d7c92aebe033cc983f3b23d65 *src/splittree.h

@@ -28,12 +28,14 @@ The third step is to \bold{compare results to null models}. Many interaction mat
 
 Finally, bipartite comes with 22 quantitative pollination network data sets taken from the NCEAS interaction webs data base (use \code{data(package="bipartite")} to show their names) and it has a few miscellaneous functions looking at some special features of bipartite networks (such as modularity: \code{\link{computeModules}} or apparent competition: \code{\link{PAC}}).
 
+\bold{Speed}: The code of bipartite is almost exclusively written in R. You can increase the speed a bit (by 30 to 50 \%, depending on the functions you use) by compiling functions on-the-fly. To do so, you need to load the \pkg{compiler} package and type: \code{enableJIT(3)}. The first time you call a function, it will be compiled to bytecode (just-in-time: jit), which takes a few seconds, but the second call will be substantially faster than without compilation. In the few tests we have run, this improvement was NOT substantial (i.e. a few tens of percent), indicating, I guess, that our R code wasn't too bad. See \pkg{compiler}-help files or \url{http://www.r-statistics.com/2012/04/speed-up-your-r-code-using-a-just-in-time-jit-compiler/} for details.
+
 See help pages for details and examples.
 
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 2.03\cr
+Version: \tab 2.04\cr
 Date: \tab 2014-01-15\cr
 License: \tab GPL \cr
 }
@@ -43,6 +45,14 @@ License: \tab GPL \cr
 Please see help page \code{\link{versionlog}} for all changes and updates prior to version 2.00. This page will only list most recent changes. 
 
 \itemize{
+  \item 2.04 (release date: 25-Mar-2014)
+   \describe{ % begin describe 2.04
+  \item{R-C++-communication bug fixed in \code{\link{computeModules}}:}{This bug has been a constant thorn in my side. Somehow the C-code behind \code{computeModules} could only be called once. On second call, it returned an error because somehow it kept some old files in memory. So far, I used a work-around (unloading and re-loading the dynamic library), which only worked on Windows and Mac. I still don't fully understand it, but thanks to Tobias Hegemann (whom I paid for being more competent than myself) we now have a function running bug-free on all platforms. (Deep sigh of relief.)}
+  \item{The call of index ``functional complementarity'' through \code{\link{networklevel}} did not work.}{Fixed this legacy issue, which was due to a confusion created by the index' earlier name of ``functional diversity''.}
+  \item{Help page to \code{\link{specieslevel}} gave incomplete name for one index:}{Should be \option{interaction push pull}; also the function itself had the ``push pull''-bit messed up. Thanks to Natacha Chacoff for reporting!}
+  \item{Sequence of indices differed between lower and higher level. (Fixed.)}{Both should be the same and should fit the description in the help file. Thanks to Jimmy O'Donnell for reporting!}
+   } % end describe 2.04
+
   \item 2.03 (release date: 15-Jan-2014)
    \describe{ % begin describe 2.03
   \item{Some ghost text led to conflicts with the updated package checking.}{Ghost text deleted. Thanks to Brian Ripley of the R-Team and CRAN for not only reporting the issue but also pointing to its solution!}

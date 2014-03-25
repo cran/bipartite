@@ -17,8 +17,8 @@ function(object, plot.it=TRUE, ...){
     x <- (object[,"no"] / max(object[,"no"]))  #ranges x between 0 and 1
 
 #    fit<- nls( y ~ 1 - b*x^a, start=list(a=2, b=1), lower=c(-1, 0.001), upper=c(500, 500), algorithm="port")
-    fit <- try(nls(y ~ 1 - x^a, start=list(a=1)))
-    if (class(fit)=="try-error") fit <- nls( (y+rnorm(length(y), s=0.01)) ~ 1 - x^a, start=list(a=1))
+    fit <- try(nls(y ~ 1 - x^a, start=list(a=1)), silent=TRUE)
+        if (class(fit)=="try-error") fit <- nls( (y+rnorm(length(y), s=0.01)) ~ 1 - x^a, start=list(a=1))
 
     if(plot.it)
     {

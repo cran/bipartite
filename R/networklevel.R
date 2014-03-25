@@ -18,7 +18,7 @@
         #miscelleneous:
         "ISA", "SA", "extinction slope", "robustness", "niche overlap",   
         #quantitative series:
-        "weighted cluster coefficient", "weighted NODF", "partner diversity", "generality", "vulnerability", "linkage density", "weighted connectance", "Fisher alpha",  "interaction evenness", "Alatalo interaction evenness", "Shannon diversity", "functional diversity", "H2" )
+        "weighted cluster coefficient", "weighted NODF", "partner diversity", "generality", "vulnerability", "linkage density", "weighted connectance", "Fisher alpha",  "interaction evenness", "Alatalo interaction evenness", "Shannon diversity", "functional complementarity", "H2" )
     # GONE: "mean interaction diversity", "effective partners", 
     
     index <- unique(index) # enforces that each index name is used only once
@@ -33,7 +33,7 @@
                         "ALLBUTDD" = allindex[-which(allindex=="degree distribution")],
                         "info" = c("number of species", "connectance", "web asymmetry", "links per species", "number of compartments"),
                         # logic: only rough information on the network's general structure
-                        "quantitative" = c("weighted cluster coefficient", "weighted nestedness", "weighted NODF", "functional diversity", "partner diversity", "effective partners", "H2", "diversity","linkage density", "weighted connectance", "niche overlap"), #"mean interaction diversity", 
+                        "quantitative" = c("weighted cluster coefficient", "weighted nestedness", "weighted NODF", "functional complementarity", "partner diversity", "effective partners", "H2", "diversity","linkage density", "weighted connectance", "niche overlap"), #"mean interaction diversity", 
                         # logic: the "quantitative series"
                         "binary" = c("connectance", "links per species", "nestedness", "mean number of partners","cluster coefficient",  "C-score", "Fisher alpha"),
                         # logic: metrics for binary networks
@@ -322,7 +322,7 @@
         #miscelleneous:
         "ISA", "SA", "extinction slope", "robustness", "niche overlap",   
         #quantitative series:
-        "weighted cluster coefficient", "weighted NODF", "generality", "vulnerability", "linkage density", "Fisher alpha",  "interaction evenness", "Alatalo interaction evenness", "diversity", "effective partners", "functional diversity", "H2" )
+        "weighted cluster coefficient", "weighted NODF", "generality", "vulnerability", "linkage density", "Fisher alpha",  "interaction evenness", "Alatalo interaction evenness", "diversity", "effective partners", "functional complementarity", "H2" )
     
     # GONE: "mean interaction diversity", 
     
@@ -333,7 +333,7 @@
                         "ALLBUTDD" = allindex[-which(allindex=="degree distribution")],
                         "info" = c("number of species", "connectance", "web asymmetry", "links per species", "number of compartments"),
                         # logic: only rough information on the network's general structure
-                        "quantitative" = c("weighted cluster coefficient", "weighted nestedness", "weighted NODF", "functional diversity", "H2", "diversity", "effective partners", "mean interaction diversity", "linkage density"),
+                        "quantitative" = c("weighted cluster coefficient", "weighted nestedness", "weighted NODF", "functional complementarity", "H2", "diversity", "effective partners", "mean interaction diversity", "linkage density"),
                         # logic: the "quantitative series"
                         "binary" = c("connectance", "links per species", "nestedness", "cluster coefficient",  "C-score"),
                         # logic: metrics for binary networks
@@ -663,9 +663,9 @@ if (any(c("interaction evenness", "Alatalo interaction evenness", "Shannon diver
 #---------------
 # Devoto's fd:
 #! JFedit: changed fd to fc here (but only the function and arguments because in legacy function; this may not be the best decision)
-if (any(c("fd", "functional diversity") %in% index)){
-    out$"Functional diversity LTL" <- fc(t(web), dist=fcdist, method="average", weighted=fcweighted)		
-    out$"Functional diversity HTL" <- fc(web, dist=fcdist, method="average", weighted=fcweighted)
+if (any(c("fc", "functional complementarity") %in% index)){
+    out$"Functional complementarity LTL" <- fc(t(web), dist=fcdist, method="average", weighted=fcweighted)		
+    out$"Functional complementarity HTL" <- fc(web, dist=fcdist, method="average", weighted=fcweighted)
 }
 
 #---------------

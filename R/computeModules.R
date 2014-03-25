@@ -2,11 +2,10 @@ setClass("moduleWeb", representation(originalWeb="matrix", moduleWeb="matrix", o
 
 computeModules = function(web, deep=FALSE, deleteOriginalFiles=TRUE, steps=1000000, tolerance=1e-10, experimental=FALSE) {
 
-	if(deep && experimental) {
+	if (deep && experimental) {
 		print("ERROR: Flag deep has to be FALSE if flag experimental is set to TRUE.");
 		NULL;
-	}
-	else {
+	} else {
 
 		web <- as.matrix(empty(web, count=TRUE)) # to get rid of empty columns and rows
 		if (any(attr(web, "empty")) > 0) warning("Some empty columns or rows were deleted.")
@@ -24,7 +23,7 @@ computeModules = function(web, deep=FALSE, deleteOriginalFiles=TRUE, steps=10000
 		result[[4]]	= result[[4]][order(result[[4]][,1]),];
 
 		# Make sure the modularity is non-negative
-		if(result[[5]] >= 0) {
+		if (result[[5]] >= 0) {
 			new("moduleWeb", originalWeb=web, moduleWeb=as.matrix(result[[1]]), orderA=result[[2]], orderB=result[[3]], modules=result[[4]], likelihood=result[[5]]);
 		}
 		else {
@@ -59,14 +58,15 @@ cM = function(web, depth, nrOfModule, ytop, xleft, ybottom, xright, prev_orderA,
 	.C("identifyModules", argc, argv, PACKAGE="bipartite");
 ## because of unresolved issues, the dll needs to be unloaded/reloaded after each run.
 ## this does not work under Linux (see ?dyn.unload)
-	LIBS <- .dynLibs()
-	bipLIB <- which(unlist(sapply(LIBS, function(x) x[1])) == "bipartite")
-	IMpath <- 	LIBS[[bipLIB]][[2]] # absolute path on the system to the dll!!!
+
+#	LIBS <- .dynLibs()
+#	bipLIB <- which(unlist(sapply(LIBS, function(x) x[1])) == "bipartite")
+#	IMpath <- 	LIBS[[bipLIB]][[2]] # absolute path on the system to the dll!!!
 	##library.dynam.unload("bipartite", libpath=IMpath)
 	##library.dynam("bipartite", package="bipartite", lib.loc=find.package("bipartite"))
-	dyn.unload(IMpath)
-	dyn.load(IMpath)
-	
+#	dyn.unload(IMpath)
+#	dyn.load(IMpath)
+
 	# read in data from result files
 	data = readModuleData(webName, deleteOriginalFiles=delete); #delete.edgesOriginalFiles=delete);
 

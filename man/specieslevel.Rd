@@ -27,7 +27,7 @@ specieslevel(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL,
 		%\item \option{dependence}, 
 		\item \option{species strength} as sum of dependencies for each species, 
 		\item \option{nestedrank} as rank in a nested matrix,
-		\item \option{interaction} for interaction push/pull (our version of dependence asymmetry: see details),  
+		\item \option{interaction push pull} for interaction push/pull (our version of dependence asymmetry: see details),  
 	        	\item \option{PDI} for Paired Differences Index, 
 	        	\item \option{resource range} for Poisot et al. (2012)'s index of unused resources,
 	        	\item \option{species specificity} (or coefficient of variation of interactions),
@@ -92,13 +92,13 @@ Our choice of defaults (c(1,0)) will yield species strength for plants, and PSI 
 \value{
 For both the \dQuote{higher trophic level} and the \dQuote{lower trophic level} a list with the following components:
 
-  \item{number of species}{Sic.}
+%  \item{number of species}{Sic.}
   \item{species degree}{Sum of interactions per species.}
   \item{normalised degree}{As degree, but scaled by the number of possible partners; see \code{\link{ND}}.}
  % \item{dependence}{Web entry divided by column totals (for higher trophic level) or row totals (for lower trophic level). Expresses the proportion of interactions with each species, and sums to 1 for each.}
   \item{species strength}{Sum of dependencies of each species (used, e.g., in Bascompte et al. 2006). It aims at quantifying a species' relevance across all its partners. The alternative version of Barrat et al. (2004; also used by Poisot et al. 2012) as the sum of interactions of a species seems too trivial a measure, reflecting abundance rather than anything else. Do not take this to be the much-discussed \dQuote{interaction strength} in food web papers, which focusses on pairwise interactions (reviewed in Berlow et al. 2004)!}
-  \item{nestedrank}{Quantifies generalism by the rank of a species in a network matrix re-arranged for maximal nestedness (Alarcon et al. 2008). A low rank (e.g. 1, 2) indicates high generality, while high ranks (up to the number of species in that level) indicate specialism or rarity.}
   \item{interaction push pull}{Direction of interaction asymmetry based on dependencies: positive values indicate that a species affects the species of the other level it interacts with stronger then they affect it (\dQuote{pusher}); negative values indicate that a species is, on average, on the receiving end of the stick (\dQuote{being pulled}); formula based on Vázquez et al. (2007), but push/pull is our own nomenclature. Values are highly correlated with species strengths (see below), but standardised to fall between -1 (being pulled) and 1 (pushing). Compared to \dQuote{strength}, this index quantifies the net balance, rather than the average effect.}
+  \item{nestedrank}{Quantifies generalism by the rank of a species in a network matrix re-arranged for maximal nestedness (Alarcon et al. 2008). A low rank (e.g. 1, 2) indicates high generality, while high ranks (up to the number of species in that level) indicate specialism or rarity.}
   \item{PDI}{Paired Differences Index as proposed by Poisot et al. (2011a,b), by default using a normalised version (\option{PDI.normalise=TRUE}); ranges between 0 (generalist) and 1 (specialist); see \code{\link{PDI}} for details and comments.}
   \item{resource range}{Poisot et al.'s (2012) ``resource range'' is a somewhat strange name for something that has a value of 0 when all resources are used, but a value of 1 when only one resource is used. It is, in fact, closer to an ``unused resource range''.  The aforementioned Paired Difference Index is a generalisation of resource range, which is equal to resource range when the web is binary.}
   \item{species specificity}{Coefficient of variation of interactions, normalised to values between 0 and 1, following the idea of Julliard et al. (2006), as proposed by Poisot et al. (2012). Values of 0 indicate low, those of 1 a high variability (and hence suggesting low and high specificity). Since not corrected for number of observations, this index will yield high specificity for singletons, even though there is no information to support this conclusion.} 

@@ -88,6 +88,7 @@ cannot open file 'web-1-1.ordA': No such file or directory
 #include <string>
 #include "stdlib.h"
 #include "time.h"
+#include "string.h"
 
 #include "dendro.h"
 #include "graph.h"
@@ -99,12 +100,12 @@ extern "C" { // wrapper for R
 
 // ******** Function Prototypes ***************************************************************************
 
-bool	markovChainMonteCarlo();
-string	num2str(const unsigned int);
-bool	parseCommandLine(int argc, char * argv[]);
-bool	readInputFile();
-void	recordModules();
-void	recordNamesLUT();
+bool		markovChainMonteCarlo();
+const char*	num2str(const unsigned int);
+bool		parseCommandLine(int argc, char * argv[]);
+bool		readInputFile();
+void		recordModules();
+void		recordNamesLUT();
 
 // ******** Structures and Constants **********************************************************************
 
@@ -140,8 +141,8 @@ struct ioparameters {
 // ******** Global Variables ******************************************************************************
 
 ioparameters	ioparm;				// program parameters
-rbtree		namesLUT;			// look-up table; translates input file vertex names to graph indices
-rbtree		reverseNamesLUT;		// reverse look-up table; translates graph indices to input file vertex names
+rbtree*		namesLUT;			// look-up table; translates input file vertex names to graph indices
+rbtree*		reverseNamesLUT;		// reverse look-up table; translates graph indices to input file vertex names
 dendro*		d;				// hrg data structure
 dendro*		bestDendro;			// dendrogram with best modularity found so far
 unsigned int	t;				// number of time steps
@@ -165,6 +166,8 @@ bool		graphIsConnected;		// indicates whether the graph is connected
 
 int identifyModules(int* r_argc, char* argv[]) {
 	
+	namesLUT = new rbtree();
+	reverseNamesLUT = new rbtree();
 	ioparm.n_a			= 0;
 	ioparm.n_b			= 0;
 	ioparm.temperature		= 1e-5;
@@ -230,6 +233,10 @@ int identifyModules(int* r_argc, char* argv[]) {
 		delete d;
 		//delete bestDendro->g;       // CFD trial
         delete bestDendro;
+        namesLUT = 0;
+        delete namesLUT;
+        reverseNamesLUT = 0;
+        delete reverseNamesLUT;
 		
 		return 1;
 	}
@@ -376,10 +383,10 @@ bool markovChainMonteCarlo() {
 
 // ********************************************************************************************************
 
-string num2str(const unsigned int input) {
+const char* num2str(const unsigned int input) {
 	// input must be a positive integer
 	unsigned int temp = input;
-	string str  = "";
+	const char* str  = "";
 	if (input == 0) {
 		str = "0";
 	}
@@ -581,8 +588,8 @@ bool readInputFile() {
 			else {
 				m++;									// count number of edges
 				sumEdgeWeight += edgeWeight;						// compute total sum of edge weights
-				if (namesLUT.findItem(vertex_i) == NULL) {
-					namesLUT.insertItem(vertex_i, n_a);
+				if (namesLUT->findItem(vertex_i) == NULL) {
+					namesLUT->insertItem(vertex_i, n_a);
 					n_a++;								// increment number of A vertices
 				}
 			}
@@ -605,8 +612,8 @@ bool readInputFile() {
 
 		while (fscan1 >> vertex_i >> vertex_j >> edgeWeight) {
 			if (vertex_i != vertex_j) {
-				if (namesLUT.findItem(vertex_j) == NULL) {
-					    namesLUT.insertItem(vertex_j, countBVertices);
+				if (namesLUT->findItem(vertex_j) == NULL) {
+					    namesLUT->insertItem(vertex_j, countBVertices);
 					    countBVertices++;
 					    n_b++;
 				    }
@@ -632,8 +639,8 @@ bool readInputFile() {
 
 	    while (fin >> vertex_i >> vertex_j >> edgeWeight) {
 		    m++;
-		    item = namesLUT.findItem(vertex_i); virtualVertex_i = item->value;
-		    item = namesLUT.findItem(vertex_j); virtualVertex_j = item->value;
+		    item = namesLUT->findItem(vertex_i); virtualVertex_i = item->value;
+		    item = namesLUT->findItem(vertex_j); virtualVertex_j = item->value;
 		    if (!(d->g->doesLinkExist(virtualVertex_i, virtualVertex_j))) {
 			    if (!(d->g->addLink(virtualVertex_i, virtualVertex_j, edgeWeight, aToB))) {
 				    // cout << "!! ERROR: couldn't insert edge (" << vertex_i << " " << vertex_j << " " << edgeWeight <<")" << endl;
@@ -684,7 +691,7 @@ void recordModules() {
 	ioparm.f_ordB = ioparm.d_dir + ioparm.s_scratch + ".ordB";
 	ioparm.f_modules = ioparm.d_dir + ioparm.s_scratch + ".mod";
 
-	if(!bestDendro->recordOrderAndModules(reverseNamesLUT, ioparm.f_ordA, ioparm.f_ordB, ioparm.f_modules)) {
+	if(!bestDendro->recordOrderAndModules(*reverseNamesLUT, ioparm.f_ordA, ioparm.f_ordB, ioparm.f_modules)) {
 		// cout << "!! ERROR: failed to record order and/or module files" << endl;
         Rprintf("!! ERROR: failed to record order and/or module files");
 		return;
@@ -747,9 +754,9 @@ void recordNamesLUT() {
 	
 	keyValuePair *head, *prev;
 	
-	head = namesLUT.returnTreeAsList();
+	head = namesLUT->returnTreeAsList();
 	while (head != NULL) {
-		reverseNamesLUT.insertItem(head->y, head->x);
+		reverseNamesLUT->insertItem(head->y, head->x);
 		prev = head;
 		head = head->next;
 		delete prev;
@@ -762,7 +769,7 @@ void recordNamesLUT() {
 	
 	fprintf(lutFile, "virtual\treal\n");
 	for (int i=0; i<ioparm.n; i++) {
-		item = reverseNamesLUT.findItem(i);
+		item = reverseNamesLUT->findItem(i);
 		fprintf(lutFile, "%d\t%d\n", i, item->value);
 	}
 	

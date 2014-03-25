@@ -215,14 +215,9 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
     if ("normalised degree" %in% index){
       higher.out$"normalised degree" <- nds[[2]]
     }
-    
-    # nested ranks:
-    if ("nestedrank" %in% index){
-    	higher.out$"nestedrank" <- nested.ranks[["higher level"]]
-    }
-    
+       
     # dependence values, following the lead by Bascompte et al. 2006 (Science) and modifications suggested by Blüthgen et al. 2007 (Current Biology)
-    if (any(c("species strength", "dependence", "interaction") %in% index)){
+    if (any(c("species strength", "interaction push pull") %in% index)){ #"dependence", 
       #if ("dependence" %in% index){ # moved to linklevel!
       #  higher.out$"dependence" <- depH
       #}
@@ -237,6 +232,11 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
         higher.out$"interaction push pull" <- Aihigh
       } 
     } # end strength/dependence/interaction
+
+    # nested ranks:
+    if ("nestedrank" %in% index){
+    	higher.out$"nestedrank" <- nested.ranks[["higher level"]]
+    }
 
 #! JFedit: this is PDI not PSI; before it returned PairedDifferenceIndex when asking for pollination support index...; name changed below as well
     # Poisot's paired differences index
@@ -294,14 +294,6 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
     if ("effective partners" %in% index){
       higher.out$"effective partners" <- n_Nk
     }
-
-    # proportional similarity (Jochen Fründ 2013)
-    if ("proportional similarity" %in% index){
-   	  # Feinsinger P, Spears EE, Poole RW: A simple measure of niche breadth. Ecology 1981, 61:27-32.
-      mylow.abun <- if (is.null(low.abun)) mylow.abun <- rowSums(web) else mylow.abun <- low.abun
-      psH <- apply(web, 2, PropSimilarity, abuns=mylow.abun) # uses the same abuns as dprime!
-      higher.out$"proportional similarity" <- psH
-    }
     
     # proportional generality
     # by Jochen Fründ March 2013
@@ -309,6 +301,14 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
       mylow.abun <- if (is.null(low.abun)) mylow.abun <- rowSums(web) else mylow.abun <- low.abun
       pgenH <- n_Nk / logbase^(shannon(mylow.abun, base=logbase))      # uses the same abuns as dprime!
       higher.out$"proportional generality" <- pgenH
+    }
+
+    # proportional similarity (Jochen Fründ 2013)
+    if ("proportional similarity" %in% index){
+   	  # Feinsinger P, Spears EE, Poole RW: A simple measure of niche breadth. Ecology 1981, 61:27-32.
+      mylow.abun <- if (is.null(low.abun)) mylow.abun <- rowSums(web) else mylow.abun <- low.abun
+      psH <- apply(web, 2, PropSimilarity, abuns=mylow.abun) # uses the same abuns as dprime!
+      higher.out$"proportional similarity" <- psH
     }
     
     # species-level standardised diversity index d
@@ -335,14 +335,9 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
     if ("normalised degree" %in% index){
       lower.out$"normalised degree" <- nds[[1]]
     }
-
-    # nested ranks:
-    if ("nestedrank" %in% index){
-    	lower.out$"nestedrank" <- nested.ranks[["lower level"]]
-    }
     
     # dependence values, following the lead by Bascompte et al. 2006 (Science) and modifications suggested by Blüthgen et al. 2007 (Current Biology)
-    if (any(c("species strength", "dependence", "interaction") %in% index)){
+    if (any(c("species strength", "dependence", "interaction push pull") %in% index)){
       if ("dependence" %in% index){
         lower.out$"dependence" <- depL
       }
@@ -355,13 +350,23 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
       # Interaction asymmetry (Vazquez et al. 2007, Oikos); rather similar to dependence above, really
       if ("interaction push pull" %in% index) {
         Ailow <- rowSums(Dij)/rowSums(web>0)
-        lower.out$"interaction push/pull" <- Ailow
+        lower.out$"interaction push pull" <- Ailow
       }
     } # end strength/dependence/interaction
+
+    # nested ranks:
+    if ("nestedrank" %in% index){
+    	lower.out$"nestedrank" <- nested.ranks[["lower level"]]
+    }
     
     # Poisot's paired differences index
     if (any(c("PDI", "paired differences index") %in% index)){
       lower.out$"PDI" <- PDI(t(web), normalise=PDI.normalise, log=FALSE)
+    }
+    
+    # species specificity (Juillard) = Coefficient of Variation (Poisot)
+    if ("species specificity" %in% index){
+    	lower.out$"species specificity index" <- CoV(t(web))
     }
 
     # resource range
@@ -380,11 +385,6 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
     # node specialisation:
     if ("NSI" %in% index){
       lower.out$"node specialisation index NSI" <- NS$lower
-    }
-    
-    # species specificity (Juillard) = Coefficient of Variation (Poisot)
-    if ("species specificity" %in% index){
-    	lower.out$"species specificity index" <- CoV(t(web))
     }
     
     # betweenness (incl. weighted)

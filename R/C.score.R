@@ -27,7 +27,7 @@ C.score <- function(web, normalise=TRUE, FUN=mean, ...){
       nonzeros <- which(maxD != 0)                                
       if (length(nonzeros) > 0){
           use <- seq_along(D)[nonzeros] # if maxD is 0, then D/maxD is non-sense!
-          D <- D[use]/maxD[use]
+          D[use] <- D[use]/maxD[use]
           # return to a triangular format:
 		  if (length(D) == length(nonzeros)){
 		  	Dnew <- maxD
@@ -35,7 +35,7 @@ C.score <- function(web, normalise=TRUE, FUN=mean, ...){
 		  	D <- Dnew
 		  } 	          
       } else { 
-      	if (maxD == 0 & D ==0) {# for the rare case of so small networks that no checkerboard will fit in
+      	if (any(maxD == 0) & any(D == 0)) {# for the rare case of so small networks that no checkerboard will fit in
       	  	D <- 0
       	  } else { D <- D/maxD }
       }
