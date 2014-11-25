@@ -4,7 +4,7 @@
 \title{ Calculates the (normalised) mean number of checkerboard combinations (C-score) in a matrix }
 
 \description{
-Calculates the C-score for all pollinator species; the C-score represents the average number of checkerboard units for each unique species pair.
+Calculates the C-score for all higher-level species; the C-score represents the average number of checkerboard units for each unique species pair.
 }
 
 \usage{

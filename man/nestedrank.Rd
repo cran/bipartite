@@ -17,7 +17,7 @@ nestedrank(web, method = "NODF", weighted=TRUE, normalise=TRUE, return.matrix=FA
 
 \arguments{
   \item{web}{A matrix with elements of a set (e.g., plants) as rows, elements of a second set (e.g., pollinators) as columns and number of interactions as entries.}
-  \item{method}{One or more of the following: \option{NODF}, \option{nodf}, \option{binmatnest}, \option{wine}, \option{NODF}, \option{sort}. See details for details on each method.}
+  \item{method}{One or more of the following: \option{NODF}, \option{nodf}, \option{binmatnest}, \option{wine}, \option{sort}. See details for details on each method.}
   \item{weighted}{For NODF and wine only: should the number of interactions per link be used as weights? See help of \code{nestednodf} in \pkg{vegan} for details.}
   \item{normalise}{Logical; defaulting to TRUE. Divides the rank-1 by the number of species -1, thereby ranging it between 0 (most generalist) and 1 (most specialised).}
   \item{return.matrix}{Logical, defaulting to FALSE. Should the matrix resulting from the nestedness-sorting be returned as well?}

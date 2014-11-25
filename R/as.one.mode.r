@@ -15,8 +15,8 @@ as.one.mode <- function(web, fill=0, project="full", weighted=TRUE){
           if (j >= i) next;
           set <- web[,c(i,j)]
           Ints <- pmin(set[,1], set[,2])
-          Links <- sum(Ints > 0)
-          Weight <- sum(Ints)
+          Links <- sum(Ints > 0, na.rm=TRUE)
+          Weight <- sum(Ints, na.rm=TRUE)
           if (weighted) W <- Weight else W <- 1
           if (Links > 0) as.one.mode.web[i,j] <- W
         }

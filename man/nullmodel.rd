@@ -4,22 +4,23 @@
 
 \title{Generates null models for network analysis}
 \description{
-A function for convenient generation of null models for quantitative and binary networks
+A wrapper function for convenient generation of null models for quantitative and binary networks
 }
 \usage{
 nullmodel(web, N=1000, method="r2d", ...)
 }
 
 \arguments{
-  \item{web}{Web is a matrix representing the interactions observed between higher trophic level species (columns) and lower trophic level species (rows). 
-Usually this will be number of pollinators on each species of plants or number of parasitoids on each species of prey.}
+  \item{web}{Web is a matrix representing the interactions observed between higher trophic level species (columns) and lower trophic level species (rows). Usually this will be number of pollinators on each species of plants or number of parasitoids on each species of prey.}
   \item{N}{number of null models to be generated; defaults to 1000 (more might be better, less probably not).}
   \item{method}{Null model type. Can be given as an integer or name: 1/"r2dtable", 2/"swap.web", 3/"vaznull", 4/"shuffle.web", 5/"mgen"; allows for partial match of names; methods 1 to 4 works for quantitative webs, 4 and 5 for binary.}
   \item{...}{arguments to be passed to the function generating the specific null models, see there for options.}
 }
 
 \details{
-  This is only a wrapper function to facilitate and standardise the generation of null models.
+ ADVICE: Look at the same-named function in \pkg{vegan}, as well as the long list of potential null models described in \code{commsim} in that package. It offers a richer and more standardised implementation of null models than this (earlier) function.
+ 
+ This is only a wrapper function to facilitate and standardise the generation of null models.
   
 These null models assume that integers represent frequencies that are 'individually' counted, not decimal numbers. Multiplication by 1000 (say) and rounding does NOT necessarily make your value frequencies satisfy this assumption. Null models for 'continuously quantitative' webs still have to be developed!
 
@@ -32,15 +33,13 @@ A warning is returned when all entries in a quantitative network are 0 or 1 (whi
 }
 
 \note{
-When a quantitative network contains only 1s (as may happen when sampling intensity is low), the quantitative null model will be extremely similar (often 
-identical) to the observed network. This is no error. It is reflecting the fact that this network contains little (no) information beyond the abundances.
+When a quantitative network contains only 1s (as may happen when sampling intensity is low), the quantitative null model will be extremely similar (often identical) to the observed network. This is no error. It is reflecting the fact that this network contains little (no) information beyond the abundances.
 }
 
 
 \author{ Carsten F. Dormann \email{carsten.dormann@biom.uni-freiburg.de}}
 
-\seealso{ For the functions generating the null model network: \code{\link{shuffle.web}}, \code{\link{swap.web}}, \code{\link{vaznull}}, \code{\link{mgen}}, 
-\code{commsimulator} and \code{r2dtable}
+\seealso{ For the functions generating the null model network: \code{\link{shuffle.web}}, \code{\link{swap.web}}, \code{\link{vaznull}}, \code{\link{mgen}}, \code{vegan::simulate} and \code{r2dtable}
 }
 
 \examples{

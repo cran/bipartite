@@ -80,7 +80,7 @@ Usually this will be number of pollinators on each species of plants or number o
   \item{dist}{Distance metric to be used to calculate niche overlap. Any of \pkg{vegan}'s \code{vegdist}-metrics can be used; defaults to Horn's index, which is the recommendation of Krebs (1989). Binary percent niche overlap would be computed with \cr  \option{dist = "jaccard"}.}
   \item{normalise}{Logical; shall the C-score and togetherness metrics be normalised to a range of 0 to 1? Defaults to \code{TRUE}.}
   \item{empty.web}{Shall the empty columns and rows be deleted? Defaults to TRUE.}
-  \item{logbase}{Shall the various diversity indices (linkage density, partner diversity, generality/vulnerability) be calculated to the base of e (default) or 2? Log2 is the proposal for generality and vulnerability by Bersier et al. (2002), while Shannon uses ln. The choice of the base will not affect the results qualitatively, at most by a scaling factor.}
+  \item{logbase}{Shall the various diversity indices (linkage density, partner diversity, generality/vulnerability, interaction evenness) be calculated to the base of e (default) or 2? Log2 is the proposal for generality and vulnerability by Bersier et al. (2002), while Shannon uses ln. The choice of the base will not affect the results qualitatively, at most by a scaling factor. Note that for all these indices, we follow common practice and define 0 * log(0) = 0.}
   \item{intereven}{Shall all cells of the matrix be used to calculate the interaction evenness \cr
   (\option{intereven = "prod"})? Or, as given by Bersier et al. (2002) and Tylianakis et al. (2007), should only the realised links be used (\option{intereven = "sum"}; default)? Prod and sum refer to using the log of the \bold{product} of matrix dimensions (i.e. all cells) or the log of the \bold{sum} of non-zero cells (i.e. number of links)  as denominator in the evenness formula. See last paragraph of the details-section for views on these two options!}
   \item{H2_integer}{Logical; indicates whether values in web are integers. Passed on to \code{\link{H2fun}}; see there for details.}
@@ -119,14 +119,15 @@ Depending on the selected indices, some or all of the below (returned as vector 
     \item{Fisher's alpha}{An alternative measure of interaction diversity (using \code{fisherfit} from \pkg{vegan}).}
 %         \item{interaction diversity LTL}{Mean diversity of predators per prey. LTL refers to Lower Trophic Level. LTL is analog to Shannon's diversity index for interactions (see below), but calculated for each species in the LTL, then averaged. Or, in other words, it is the log-version of vulnerability, but averaged without weighting.}
 %         \item{interaction diversity HTL}{Mean diversity of prey per predator. HTL refers to Higher Trophic Level.}
-    \item{interaction evenness}{Shannon's evenness for the web entries, treating zeros as no data. Note that the two options are rather different. By definition, IE = H/Hmax; H = -sum(p.i.mat*log(p.i.mat)), where p.i.mat = matrix/sum(entries in matrix). This means, when calculating H, do we treat all possible links as species, and the interactions (cell values) as measure of their abundance? By definition, Hmax = ln(N). The key question is: What is the right value for N? Since we treat the matrix cells as species, it is (clearly?) the number of matrix cells, i.e. number of higher trophic level species x number of lower trophic level species. We think this logic justifies our default \code{"prod"}. However, others argue in favour of N=number of links. Please see note for our discussion on this point.}
+    \item{interaction evenness}{Shannon's evenness for the web entries. Note that the two options are rather different. By definition, IE = H/Hmax; H = -sum(p.i.mat*log(p.i.mat)), where p.i.mat = matrix/sum(entries in matrix). This means, when calculating H, do we treat all possible links as species, and the interactions (cell values) as measure of their abundance? By definition, Hmax = ln(N). The key question is: What is the right value for N? Since we treat the matrix cells as species, it is (clearly?) the number of matrix cells, i.e. number of higher trophic level species x number of lower trophic level species. We think this logic justifies our default \code{"prod"}. However, others argue in favour of N=number of links. Please see note for our discussion on this point.}
 %What else?  Were we to use the interpretation of Tylianakis et al. (2007), then Hmax = ln(sum of entries in matrix). This means, we equate ``number of links'' = ``number of species''. That means, each link is a potential species. What should that mean? Why should that measure ``interactions evenness''? Why should we move from a view of ``cells are species'' when calculating H to a view of ``interactions are species'' when calculating N? To say the least, it doesn't seem consistent. 
     \item{Alatalo interaction evenness}{A different measure for web entry evenness, as proposed by Müller et al. (1999). }
     \item{Shannon diversity}{Shannon's diversity of interactions (i.e. network entries).}
     \item{H2}{H2' is a network-level measure of specialisation. It ranges between 0 (no specialisation) and 1 (complete specialisation). H2' is a measure of discrimination, i.e. calculated in comparison of no specialisation (see \code{\link{H2fun}} for details. To avoid confusion of keys (apostrophe vs. accent), we call the H2' only H2 here.}
-    \item{others now to come}{all other indices are returned as output from \code{\link{grouplevel}}. Please see there for details, we here only provide minimal listing.}
+    \item{}{}
+    \item{}{others now to come: all other indices are returned as output from \code{\link{grouplevel}}. Please see there for details, we here only provide minimal listing.}
     \item{number of species}{}
-    \item{mean number of partners shared in}{this level}
+    \item{mean number of shared partners}{in this level}
     \item{cluster coefficient}{for this level (same for both levels if \option{weighted=FALSE}).}
     \item{weighted cluster coefficient}{}
     \item{niche overlap}{Mean similarity in interaction pattern between species of the same level, calculated by default as Horn's index (\option{dist="horn"}).}
@@ -137,7 +138,8 @@ Depending on the selected indices, some or all of the below (returned as vector 
     \item{degree distribution}{See \code{\link{degreedistr}} for details and references.}
     \item{extinction slope}{Slope of the secondary extinction sequence in that level, following extermination of species in the other level.}
     \item{robustness}{Area below the \dQuote{secondary extinction} curve; see \code{\link{robustness}} for details. Corresponds to \dQuote{extinction slope}.}
-    \item{functional diversity}{for a given level.}
+    \item{functional complementarity}{for a given level.}
+    %#! JFedit: changed from functional diversity
     \item{partner diversity}{(Weighted) mean Shannon diversity of the number of interactions for the species of that level. Choose \option{logbase=2} to change to a log2-based version.}
     %#! JFedit: effpartners and gen/vul combined
     %\item{effective partners}{(Weighted) mean of exp(Shannon diversity). Simply the Jost (2006)-recommended version of diversity, which happens to be identical to generality (higher level) or vulnerability (lower level), as defined in Bersier et al. (2002).}

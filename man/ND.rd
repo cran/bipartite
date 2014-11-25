@@ -33,8 +33,9 @@ CC(web, cmode="suminvundir", rescale=TRUE, weighted=TRUE, ...)
  One-mode projections of two-mode networks are carried out by assigning a link to two species that share a interaction with a member of the other set (plant in case of pollinators, or pollinators in case of plants). There are different ways to do this (see \code{\link{as.one.mode}}), and many authors do not communicate well, which approach they have taken.
  
  If the network is fully connected, all species of the same level will be linked to each other through only one step and hence have the same betweenness. This leads to values of 0.
-  
- BE AWARE that there are two definitions of closeness centrality, one being the inverse of the other! The networkX homepage defines CC as the inverse of the average distance from the focal node to all other nodes (\url{http://networkx.lanl.gov/reference/generated/networkx.closeness_centrality.html#networkx.closeness_centrality}), while Wikipedia defines CC simply as the average distance itself (\url{http://en.wikipedia.org/wiki/Centrality}). In \pkg{sna} the first definition is implemented, and this makes also more sense to me: closeness should be higher for central nodes.
+
+BC reflects the number of shortest paths going through the focal node. CC is the inverse of the average distance from the focal node to all other nodes.
+% BE AWARE that there are two definitions of closeness centrality, one being the inverse of the other! The networkX homepage defines CC as the inverse of the average distance from the focal node to all other nodes (\url{http://networkx.lanl.gov/reference/generated/networkx.closeness_centrality.html#networkx.closeness_centrality}), while Wikipedia defines CC simply as the average distance itself (\url{http://en.wikipedia.org/wiki/Centrality}). In \pkg{sna} the first definition is implemented, and this makes also more sense to me: closeness should be higher for central nodes.
 
 Both BC and CC can be normalised so that they sum to 1 (using \option{rescale=TRUE}). This only affects the absolute values, but not the qualitative results.
 

@@ -45,9 +45,9 @@ Dormann, C. F., and R. Strauß. 2013. Detecting modules in quantitative bipartit
 Newman M.E.J. 2004. \emph{Physical Review E} \bold{70} 056131
 }
 
-\author{Rouven Strauss}
+\author{Rouven Strauss, with fixes by Carsten Dormann and Tobias Hegemann}
 
-\note{An undetected memory leak seems to keep the connection open, so that we call \code{dyn.unload}/\code{dyn.load}, which does not have the desired effect in Linux (but only in Windows and Mac OS X). }
+\note{For perfectly compartmentalised networks the algorithm may throw an error message. Please add a little bit of noise (e.g. uniform between 0 and 1 or so) and it will work again. }
 
 \seealso{
 See also class "moduleWeb", function "listModuleInformation", function "printoutModuleInformation".

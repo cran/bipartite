@@ -188,7 +188,7 @@
             out$"specialisation asymmetry" <- SA 
         }
         #------------------
-        if ("linkage density" %in% index){
+        if (any(c("linkage density","weighted connectance") %in% index)){
             # for formula see Tylianakis et al. (2006), supplement.
             # N refers to prey, P to predators
             
@@ -221,7 +221,7 @@
             # linkage density
             LD_q <- 0.5*(V+G)
             #------------------
-            out$"linkage density"=LD_q
+            if ("linkage density" %in% index) out$"linkage density" <- LD_q
             if ("weighted connectance" %in% index) out$"weighted connectance" <- LD_q/sum(dim(web))
             #LD_qs <- LD_q/(NROW(web)+NCOL(web)) # "weighted food web connectance", according to Jason's appendix
             #------------------
