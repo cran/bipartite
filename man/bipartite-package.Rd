@@ -35,8 +35,8 @@ See help pages for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 2.04\cr
-Date: \tab 2014-11-25\cr
+Version: \tab 2.06\cr
+Date: \tab 2016-04-18\cr
 License: \tab GPL \cr
 }
 }
@@ -45,6 +45,21 @@ License: \tab GPL \cr
 Please see help page \code{\link{versionlog}} for all changes and updates prior to version 2.00. This page will only list most recent changes. 
 
 \itemize{
+  \item 2.07 (release date: 18-Apr-2016)
+   \describe{ % begin describe 2.07
+   \item{Some explanation addded to \code{\link{czvalues}},}{ where a z-value of NA is returned if a species is alone (in its trophic level) in a module. This is due to the way z-values are computed, and not a bug.}
+   \item{Function \code{\link{nestedcontribution}}}{was not exported in the namespace. Fixed. Thanks to various people reporting this.}	
+   } % end describe 2.07
+
+  \item 2.06 (release date: 29-Sep-2015)
+   \describe{ % begin describe 2.06
+   \item{Bug fix in \code{\link{C.score}},}{ which did not compute the maximum number of possible checkerboards correctly, and hence let the normalised C-score to be incorrect. Now it uses a brute-force approach, which works fine but takes its time.}	
+   \item{Function \code{\link{nestedcontribution}}}{was not exported (i.e. not listed in the namespace file). Fixed. Thanks to Wesley Dátillo for reporting.}
+   \item{Help page of \code{\link{specieslevel}}}{now correctly described a species' degree as sum of its links. Thanks to Bernhard Hoiß for the correction!}
+   \item{C++-warnings addressed:}{outcommented some unused variables in dendro.h and removed some fprintf-warnings in bmn5.cc}
+   \item{Little bug fix in \code{\link{vaznull}}:}{Threw an error when matrix was without 0s. Thanks to Thais Zanata for reporting.}
+   } % end describe 2.06
+   
   \item 2.05 (release date: 24-Nov-2014)
    \describe{ % begin describe 2.05
    \item{New function \code{\link{nestedcontribution}}}{which computes the contribution of each species to the overall nestedness, based on Bascompte et al. 2003 and as used by Saavedra et al. 2011. Many thanks to Daniel Stouffer for contributing this function!}	

@@ -20,13 +20,13 @@ visweb <- function (web, type = "nested", prednames = TRUE, preynames = TRUE,
     if (clear == TRUE) 
         web <- empty(web)
     if (type == "diagonal") {
-        web <- empty(web)
+        #web <- empty(web)
         ca <- cca(web)
         web <- web[order(summary(ca)$sites[, 1], decreasing = TRUE), 
             order(summary(ca)$species[, 1], decreasing = TRUE)]
     }
     if (type == "nested") {
-        web <- empty(web)
+        #web <- empty(web)
         web <- web[order(rowSums(web), decreasing = TRUE), order(colSums(web), 
             decreasing = TRUE)]
     }
@@ -52,7 +52,7 @@ visweb <- function (web, type = "nested", prednames = TRUE, preynames = TRUE,
     #mm.pred <- max(m.predsize, m.preysize)
   
     #pin = c(wx, wy),
-    par( omi = c(0, 0, 0, 0), mai = c(m.predsize*0.4 * labsize *                 clratio+0.2, m.preysize*0.4 * labsize * clratio+0.2, 0, 0))
+    par(mai = c(m.predsize*0.4 * labsize * clratio+0.2, m.preysize*0.4 * labsize * clratio+0.2, 0, 0))
       
     plot(1, type = "n", axes = FALSE, xlim = c(0, n.pred), ylim = c(0, 
         n.prey), asp = 1, xlab = xlabel, ylab = ylabel)
