@@ -1,4 +1,4 @@
-a82580b64f12f5f61c0fec4940b9e106 *DESCRIPTION
+54f157fb7f6c25df144fba84941f715f *DESCRIPTION
 175d151fb176d1ca862e17035f38b70a *NAMESPACE
 dabe2888c8e65471495941e53eb714cf *R/C.score.R
 6377baba76f5e1cf77ea27a65dbd3ecd *R/H2fun.R
@@ -180,7 +180,7 @@ bb075db5d6885513df1075c27c585d42 *man/versionlog.Rd
 6b5b35584fd6253fc9b86470bd7bb6bc *man/webs2array.Rd
 da34004b2989f9071c02baf0887d489b *man/wine.rd
 e18a6bd303c166838a211da3d2d412da *src/MersenneTwister.h
-c870315051834e3087b985e2d9c43f34 *src/bmn5.cc
+05db1090202b130f6fc394de3b1175b2 *src/bmn5.cc
 c45e7202330ead38195c085e85674216 *src/dendro.h
 5438d6bc1aa3881b903f78ab11d6e73b *src/graph.h
 1a0f60495114d67589103accbd4df5d7 *src/identifyModules.cc
