@@ -35,8 +35,8 @@ See help pages for details and examples.
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 2.06\cr
-Date: \tab 2016-04-18\cr
+Version: \tab 2.07\cr
+Date: \tab 2016-07-11\cr
 License: \tab GPL \cr
 }
 }
@@ -45,11 +45,18 @@ License: \tab GPL \cr
 Please see help page \code{\link{versionlog}} for all changes and updates prior to version 2.00. This page will only list most recent changes. 
 
 \itemize{
-  \item 2.07 (release date: 18-Apr-2016)
-   \describe{ % begin describe 2.07
+  \item 2.07 (release date: 08-Nov-2016)
+   \describe{ % begin describe
+   \item{Bug fixed in \code{\link{vaznull}},}{ filled the matrix with 1s instead of 0s (although it was a `sophisticated' logical mistake I made, not a simple typo). Thanks to Sandra Bibiana Corea for reporting! }
+   \item{Small patch in C++-code of binmatnest}{ for compatibility with clang. Thanks to Brian Ripley for fixing one of these C++-things that I never will understand! (In this case, the original code (by Miguel Rodríguez-Gironés) defined a pointer to "vector", which caused ambiguities in which "vector" should be used during compilation: the such defined pointer, or the std::vector.)}
+   \item{Smaller typographic}{ and referencing corrections/additions (e.g. in plotPAC).} 
+   } % end describe 
+
+  \item 2.06b (release date: 10-May-2016)
+   \describe{ % begin describe 2.06
    \item{Some explanation addded to \code{\link{czvalues}},}{ where a z-value of NA is returned if a species is alone (in its trophic level) in a module. This is due to the way z-values are computed, and not a bug.}
    \item{Function \code{\link{nestedcontribution}}}{was not exported in the namespace. Fixed. Thanks to various people reporting this.}	
-   } % end describe 2.07
+   } % end describe 2.06
 
   \item 2.06 (release date: 29-Sep-2015)
    \describe{ % begin describe 2.06

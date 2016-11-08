@@ -1,4 +1,4 @@
-54f157fb7f6c25df144fba84941f715f *DESCRIPTION
+f2204b9f61a4ba16b7a5a3b200c5ee26 *DESCRIPTION
 175d151fb176d1ca862e17035f38b70a *NAMESPACE
 dabe2888c8e65471495941e53eb714cf *R/C.score.R
 6377baba76f5e1cf77ea27a65dbd3ecd *R/H2fun.R
@@ -34,11 +34,11 @@ c2c94a5766f694ab3943e3bbc6efee1b *R/getModuleCoordinates.R
 5005d85b15c481e6b54336c01b0730a0 *R/nestedness.r
 3d782054e5f622a759fdb844f4aee7a8 *R/nestedrank.R
 73b100b865fa4b1661d9871126f7251f *R/networklevel.R
-aebce19bedcd2b64fe029f48d99f6fd9 *R/nodespec.r
+356f4713f19c28b343887d5a1326103d *R/nodespec.r
 6a68ac5dee0a72bcab39642a6cfaae48 *R/npartite.R
 2ec6f32dec56dd8665aca4d8208ad02b *R/null.distr.r
 208de8e2111781d67d5eaf094fd5aeee *R/null.t.test.r
-53991caae3d0720388bfce9c7bd18f7c *R/nullmodel.r
+10fc89251b54f667dad29f055a574416 *R/nullmodel.r
 0bfa7825751c079a41b24420787d5347 *R/plotModuleWeb.R
 d200a56605f0c18d16cfbc7aabe99c33 *R/plotPAC.R
 c70f7686da56cfa12acb648b465362b1 *R/plotweb.R
@@ -57,7 +57,7 @@ ebdbda6d8182463c5dea9bdd185d7321 *R/swap.web.R
 65c47f555a55214757251ba81dd6701b *R/symmetrise_w.R
 9ff97509ba449b7152e436d5142336c8 *R/tnet_igraph.R
 216bc524161a42884044684423cb5433 *R/togetherness.r
-a9e685e9fe61e6f677a6c9a7ef6f13b5 *R/vaznull.r
+135163721e36c78fd26ae7538781f0e2 *R/vaznull.r
 bb130d24286801faa5c7e124c36121ca *R/versionlog.R
 a4232a3a6990d263f8cdec1d9708c34b *R/visweb.R
 de0a4beb64e5706138950d6b04acad99 *R/web2edges.R
@@ -88,13 +88,13 @@ ba331d18d63cba879f686373f7ec0d5f *data/vazcer.rda
 547a6c95bab6c98fb5d57fcb85e84967 *data/vazquec.rda
 858f9ab3c6f6d27b76255a75da63487c *data/vazquenc.rda
 42bb4529a581ddd63b3dba59656ece61 *inst/CITATION
-e3d5cd9fca06a7fdb86149daafa7f617 *inst/doc/Dormann2008Rnews.pdf
+cebb907408b8abfca07cd5e1cc08df5f *inst/doc/Dormann2008Rnews.pdf
 5d4adee33b60d43b0210ad600e6dbc79 *inst/doc/Dormann2009OpenEcolJ.pdf
 bd17cd3c3d776c41a562d6389b987576 *inst/doc/Dormann2011NetworkBiology.pdf
 1f93f5cf10fa746a933458bf87b24ed8 *man/C.score.Rd
 fb45a803356d698804d1025717b12ceb *man/H2fun.Rd
 9b839234a8826c4987e47749a293c97e *man/ND.rd
-e6d3496a13ba0230ee31d86b91eddd18 *man/PAC.rd
+80a2563c215a2eb8c36b5fa7451e20ac *man/PAC.rd
 04a22d16ba348b04f6372ff45c6bc2b9 *man/PDI.Rd
 488b05750ea6047d84c9a2d36fa1fa0a *man/Safariland.Rd
 a3c0900cc83e297c5fe4642c9d159405 *man/V.ratio.Rd
@@ -103,7 +103,7 @@ e44c9c6f2f4ff98cc575a949d3fd607b *man/as.one.mode.Rd
 1a6c1f1659b1a7768a756618b93d19ff *man/barrett1987.Rd
 839b17ed5c59961cc80209ea0036ca7f *man/betweenness_w.Rd
 efb967f7485ee166795c985c2c0e1ec5 *man/bezerra2009.Rd
-a8c608aebc7e8c413d2e5db41e4eb25c *man/bipartite-package.Rd
+cb1bc252c2d894eb8870f8fab0f388e0 *man/bipartite-package.Rd
 d3f25fe8ef140e4649c4987f6b81bdf4 *man/closeness_w.Rd
 4345d536cc5ce909f86970ef2c91f94f *man/clustering_tm.Rd
 ac4907d394b3c97c561a96e99544aa66 *man/compart.Rd
@@ -120,7 +120,7 @@ adbe54305a02d6890aa6d5394bd32ac5 *man/degreedistr.Rd
 ceaf1d566317ac4da8c8653dc910aca7 *man/fc.Rd
 fa03aa631d9de6f11e36c29119964c75 *man/frame2webs.Rd
 e2af328cf0c2c31ecb417b639b6bd1a8 *man/genweb.Rd
-42895f357f8c59c67391d79a1c442ac1 *man/grouplevel.Rd
+07e66a864440b6dd801df7474e36d4a2 *man/grouplevel.Rd
 dec2c6ff70a6801b4bf20a21188472cb *man/inouye1988.Rd
 56a40b7cffd1f032507482e4965d3deb *man/junker2013.Rd
 609ae6fa08104d4027cfbef56ac39699 *man/kato1990.Rd
@@ -180,7 +180,7 @@ bb075db5d6885513df1075c27c585d42 *man/versionlog.Rd
 6b5b35584fd6253fc9b86470bd7bb6bc *man/webs2array.Rd
 da34004b2989f9071c02baf0887d489b *man/wine.rd
 e18a6bd303c166838a211da3d2d412da *src/MersenneTwister.h
-05db1090202b130f6fc394de3b1175b2 *src/bmn5.cc
+50d6d2d798b8ad1733f787eb16a37b40 *src/bmn5.cc
 c45e7202330ead38195c085e85674216 *src/dendro.h
 5438d6bc1aa3881b903f78ab11d6e73b *src/graph.h
 1a0f60495114d67589103accbd4df5d7 *src/identifyModules.cc
