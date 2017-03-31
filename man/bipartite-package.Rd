@@ -32,11 +32,13 @@ Finally, bipartite comes with 23 quantitative pollination network data sets take
 
 See help pages for details and examples.
 
+For an overview of other computing resources, data, books, journals etc. check out this page: \url{https://github.com/briatte/awesome-network-analysis}.
+
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 2.07\cr
-Date: \tab 2016-07-11\cr
+Version: \tab 2.08\cr
+Date: \tab 2017-03-30\cr
 License: \tab GPL \cr
 }
 }
@@ -45,6 +47,12 @@ License: \tab GPL \cr
 Please see help page \code{\link{versionlog}} for all changes and updates prior to version 2.00. This page will only list most recent changes. 
 
 \itemize{
+  \item 2.08 (release date: 30-Mar-2017)	
+  \describe{
+    \item{New modularity algorithm called by \code{\link{computeModules}}.}{Although the excellent algorithm \code{\link{DIRT_LPA_wb_plus}} by Stephen Beckett has been around for a year, I never managed to find the time to put it into bipartite. By now, Stephen has even written a wrapper code so that the output is fully compatible with existing code for plotting (\code{\link{plotModuleWeb}}) there was really no argument left to postpone it. Stephen's DIRT_LPA_wb_plus will be the new default, replacing 'QuanBiMo', which remains available under \option{method='DormannStrauss'}. While DIRT could be called recursively, thereby making modules-within-modules computable, this is not packaged yet. So currently the much slower DormannStrauss-option is the only way to get recursive modules. Many thanks to Stephen for making this code available!}
+    \item{\code{\link{networklevel}} and \code{\link{grouplevel}} inconsistently}{returned different values for secondary extinction, because the former by default purged empty columns/rows, while the latter didn't. It does now. Thanks to Gianalberto Losapio for bringing this to my attention.}
+  }
+	
   \item 2.07 (release date: 08-Nov-2016)
    \describe{ % begin describe
    \item{Bug fixed in \code{\link{vaznull}},}{ filled the matrix with 1s instead of 0s (although it was a `sophisticated' logical mistake I made, not a simple typo). Thanks to Sandra Bibiana Corea for reporting! }
@@ -176,6 +184,8 @@ Alarcon, R., Waser, N.M. and Ollerton, J. 2008. Year-to-year variation in the to
 Almeida-Neto, M. and Ulrich, W. (2011) A straightforward computational approach for measuring nestedness using quantitative matrices. \emph{Environmental Modelling & Software}, \bold{26}, 173--178
 
 Bascompte, J., Jordano, P. and Olesen, J. M. (2006) Asymmetric coevolutionary networks facilitate biodiversity maintenance. \emph{Science} \bold{312}, 431--433
+
+Beckett, S.J. 2016. Improved community detection in weighted bipartite networks. \emph{Royal Society open science} \bold{3}, 140536
 
 Bersier, L. F., Banasek-Richter, C. and Cattin, M. F. (2002) Quantitative descriptors of food-web matrices. \emph{Ecology} \bold{83}, 2394--2407
 

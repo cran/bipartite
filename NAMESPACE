@@ -1,9 +1,11 @@
-# Export all names
-#exportPattern(".")
+## Package has dynamic library
+
+useDynLib("bipartite", .registration = TRUE)
+
 export(as.one.mode, as.tnet, BC, betweenness_w, CC, C.score, closeness_w, compart, computeModules, 
-clustering_tm, czvalues, degreedistr, dfun, discrepancy, empty, endpoint, extinction, fc, frame2webs, genweb, 
-grouplevel, H2fun, linklevel, listModuleInformation, mgen, ND, nested, nestedcontribution, nestedness, nestedrank, 
-networklevel, nodespec, npartite, null.distr, null.t.test, nullmodel, PAC, PDI, plotModuleWeb, plotPAC, plotweb, plotweb2, 
+clustering_tm, convert2moduleWeb, czvalues, degreedistr, dfun, DIRT_LPA_wb_plus, discrepancy, empty, endpoint, extinction, fc, frame2webs, genweb, 
+grouplevel, H2fun, linklevel, listModuleInformation, LPA_wb_plus, metaComputeModules, mgen, ND, nested, nestedcontribution, nestedness, nestedrank, 
+networklevel, nodespec, NOS, npartite, null.distr, null.t.test, nullmodel, PAC, PDI, plotModuleWeb, plotPAC, plotweb, plotweb2, 
 plot.wine, printoutModuleInformation, projecting_tm, r2dexternal, robustness, second.extinct, shuffle.web, 
 slope.bipartite, sortweb, specieslevel, strength, swap.web, symmetrise_w, togetherness, tnet_igraph, V.ratio, 
 vaznull, versionlog, visweb, web2edges, webs2array, wine)
@@ -21,4 +23,3 @@ importFrom(vegan, cca, commsimulator, designdist, fisher.alpha, fisherfit, neste
 importFrom(permute, allPerms) # for use in vegan::nesteddisc
 importFrom(sna, betweenness, closeness, geodist, gplot)
 importFrom(fields, image.plot)
-
