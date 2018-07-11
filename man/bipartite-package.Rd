@@ -28,7 +28,7 @@ The third step is to \bold{compare results to null models}. Many interaction mat
 
 Finally, bipartite comes with 23 quantitative pollination network data sets taken from the NCEAS interaction webs data base (use \code{data(package="bipartite")} to show their names) and it has a few miscellaneous functions looking at some special features of bipartite networks (such as modularity: \code{\link{computeModules}} or apparent competition: \code{\link{PAC}}).
 
-\bold{Speed}: The code of bipartite is almost exclusively written in R. You can increase the speed a bit (by 30 to 50 \%, depending on the functions you use) by compiling functions on-the-fly. To do so, you need to load the \pkg{compiler} package and type: \code{enableJIT(3)}. The first time you call a function, it will be compiled to bytecode (just-in-time: jit), which takes a few seconds, but the second call will be substantially faster than without compilation. In the few tests we have run, this improvement was NOT substantial (i.e. a few tens of percent), indicating, I guess, that our R code wasn't too bad. See \pkg{compiler}-help files or \url{http://www.r-statistics.com/2012/04/speed-up-your-r-code-using-a-just-in-time-jit-compiler/} for details.
+%\bold{Speed}: The code of bipartite is almost exclusively written in R. You can increase the speed a bit (by 30 to 50 \%, depending on the functions you use) by compiling functions on-the-fly. To do so, you need to load the \pkg{compiler} package and type: \code{enableJIT(3)}. The first time you call a function, it will be compiled to bytecode (just-in-time: jit), which takes a few seconds, but the second call will be substantially faster than without compilation. In the few tests we have run, this improvement was NOT substantial (i.e. a few tens of percent), indicating, I guess, that our R code wasn't too bad. See \pkg{compiler}-help files or \url{http://www.r-statistics.com/2012/04/speed-up-your-r-code-using-a-just-in-time-jit-compiler/} for details.
 
 See help pages for details and examples.
 
@@ -37,8 +37,8 @@ For an overview of other computing resources, data, books, journals etc. check o
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 2.08\cr
-Date: \tab 2017-03-30\cr
+Version: \tab 2.11\cr
+Date: \tab 2018-3-17\cr
 License: \tab GPL \cr
 }
 }
@@ -47,6 +47,25 @@ License: \tab GPL \cr
 Please see help page \code{\link{versionlog}} for all changes and updates prior to version 2.00. This page will only list most recent changes. 
 
 \itemize{
+  \item 2.11 (relase date: 12-Jul-2018)
+  \describe{
+    \item{Change of defaults in \code{\link{metaComputeModules}}}{, from \option{DormannStrauss} to \option{Beckett}. Beckett's algorithm is far less variable in its performance, thus I assumed that one would not actually need \code{\link{metaComputeModules}} for it at all. However, also \option{Beckett} is not foolproof and benefits from a few re-runs with different starting configurations. Now defaults are consistent with \code{\link{computeModules}}. Thanks to Laura Burkle for raising the issue.}
+    \item{Bug fix in \code{\link{nested}}}{, which didn't correctly pass through the \option{normalised}-argument for index "C score". Also the naming of "C score" (rather than previously "C.score") was changed for consistency with \code{\link{networklevel}}. Many thanks to Carlos Zamora-Manzur for reporting!}
+    \item{Deprecation of the command \code{register} in C++17}{required attention in the \code{MersenneTwister.h}-code used in \code{computeModules}. Thanks to Brian Ripley, for the R Core Team, for notifying all maintainers using this command in advance of future CRAN-submission problems!}
+  }
+  \item 2.10 (release date: 20-Dec-2017)
+  \describe{
+  	\item{Removed option \option{weighted}}{from \code{\link{CC}}, which had no effect on the way \code{sna::closeness} computes the value. Thanks to Thais Zanata for making me aware of this!}
+  	\item{Fixed bug in option \option{rescaled}}{of \code{\link{CC}}, which did not properly rescale values so that they sum to 1. Thanks to Thais Zanata for making me aware of this!}
+    \item{Added NODF}{to the indices available in \code{\link{networklevel}}.}
+    \item{Added network of Olito & Fox (2015)}{as \code{olito2015}; data from dryad (URL given in help page).}
+  }
+  \item 2.09 (release date: 30-Jun-2017)	
+  \describe{
+    \item{Fixed type of object returned by \code{\link{computeModules}},}{when using \option{method="DormannStrauss"}, which I had broken after changing the default. Many thanks to Abdul Shakoor for reporting. Also added an error catcher to exclude, from binary webs, species that interact with every other species (i.e. are all 1; all-0 were already excluded).}
+    \item{Fixed imprecise explanation in \code{\link{plotweb}}'s}{\option{low/high.spacing}, which now correctly describes its effect on the horizontal space within a level. (Thanks to Jeff Ollerton for reporting.)}
+  }
+
   \item 2.08 (release date: 30-Mar-2017)	
   \describe{
     \item{New modularity algorithm called by \code{\link{computeModules}}.}{Although the excellent algorithm \code{\link{DIRT_LPA_wb_plus}} by Stephen Beckett has been around for a year, I never managed to find the time to put it into bipartite. By now, Stephen has even written a wrapper code so that the output is fully compatible with existing code for plotting (\code{\link{plotModuleWeb}}) there was really no argument left to postpone it. Stephen's DIRT_LPA_wb_plus will be the new default, replacing 'QuanBiMo', which remains available under \option{method='DormannStrauss'}. While DIRT could be called recursively, thereby making modules-within-modules computable, this is not packaged yet. So currently the much slower DormannStrauss-option is the only way to get recursive modules. Many thanks to Stephen for making this code available!}
