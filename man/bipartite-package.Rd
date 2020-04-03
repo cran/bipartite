@@ -37,8 +37,8 @@ For an overview of other computing resources, data, books, journals etc. check o
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 2.14\cr
-Date: \tab 2020-01-07\cr
+Version: \tab 2.15\cr
+Date: \tab 2020-04-04\cr
 License: \tab GPL \cr
 }
 }
@@ -47,6 +47,15 @@ License: \tab GPL \cr
 Please see help page \code{\link{versionlog}} for all changes and updates prior to version 2.00. This page will only list most recent changes. 
 
 \itemize{
+	
+  \item 2.15 (release date: 04-Apr-2020)
+  \describe{
+  	\item{A pair of new functions for plotting: \code{\link{sortmatrix}} and \code{\link{plotmatrix}},}{both provided by Rafael Pinheiro and Gabriel Felix from the University of Campinas in Brazil. The functions' scope is to plot interaction networks of nested, modular and mixed topology (Pinheiro et al. 2019). As plotting is not the forte of bipartite so far, and these two functions help to add a bit of plotting facilities. Many thanks for contributing!}
+  	\item{Bug fix in \code{\link{robustness}}:}{in my previous updates of the discontinued \code{class}-issues I managed to omit a crucial "!" in the code. Thanks to Hanlun Liu and Felix Neff for reporting!}
+  	\item{Bug fix in \code{\link{extinction}}:}{for sparse networks, the function sometimes returned a vector rather than a matrix, due to incorrectly dropping a dimension. Thanks to Felix Neff for reporting and providing the solution!}
+    \item{Expanded help of \code{\link{as.one.mode}}:}{in particular the way the weights were computed was not documented at all, as pointed out by Lennart Dittmer. This is now rectified and also the R-code now features in-line comments as to what is happening at each step.}
+  }	
+	
   \item 2.14 (release date: 07-Jan-2020)
   \describe{
     \item{Updates}{of \code{\link{betalinkr}}-options.}
@@ -258,6 +267,8 @@ Morris, R. J., Lewis, O. T. and Godfray, H. C. J. (2004) Experimental evidence f
 Morris, R. J., Lewis, O. T. and Godfray, H. C. J. (2005) Apparent competition and insect community structure: towards a spatial perspective. \emph{Annales Zoologica Fennici} \bold{42}, 449--462.
 
 Müller, C. B., Adriaanse, I. C. T., Belshaw, R. and Godfray, H. C. J. (1999) The structure of an aphid-parasitoid community. \emph{Journal of Animal Ecology} \bold{68}, 346--370
+
+Pinheiro, R.B.P. et al. 2019. A new model explaining the origin of different topologies in interaction networks. \emph{Ecology} \bold{100}, 1--30
 
 Poisot, T., Lepennetier, G., Martinez, E., Ramsayer, J., and Hochberg, M.E. (2011a) Resource availability affects the structure of a natural bacteria-bacteriophage community. \emph{Biology Letters} \bold{7}, 201--204
 
