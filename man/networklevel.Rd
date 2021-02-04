@@ -109,7 +109,7 @@ Depending on the selected indices, some or all of the below (returned as vector 
 	\item{links per species}{Mean number of links per species (qualitative): sum of links divided by number of species.}
 	\item{number of compartments}{Compartments are sub-sets of the web which are not connected (through either higher or lower trophic level) to another compartment. Mathematically, they are Jordan blocks, but this implementation is rule-based (and fast). They are also nicely visualised in the \code{\link{visweb}} function.}
 	\item{compartment diversity}{Shannon's diversity of compartment sizes (size = number of species from both levels); see Tylianakis et al. (2007).}
-	\item{cluster coefficient}{The cluster coefficient for a network is the average cluster coefficients of its members, i.e. simply the number of realised links devided by the number of possible links. Introduced by Watts & Strogatz (1998) and described in Wikipedia under \url{http://en.wikipedia.org/w/index.php?title=Clustering_coefficient}. The cluster coefficient can be computed both for the entire network, as well as for each level (for the latter indicated by suffix HL or LL).}
+	\item{cluster coefficient}{The cluster coefficient for a network is the average cluster coefficients of its members, i.e. simply the number of realised links devided by the number of possible links. Introduced by Watts & Strogatz (1998) and described in Wikipedia under \url{https://en.wikipedia.org/w/index.php?title=Clustering_coefficient}. The cluster coefficient can be computed both for the entire network, as well as for each level (for the latter indicated by suffix HL or LL).}
 	\item{nestedness}{Nestedness temperature of the matrix (0 means cold, i.e. high nestedness, 100 means hot, i.e. chaos). For details see \code{\link{nestedness}} and Rodriguez-Girones & Santamaría (2002). Notice that the function \code{\link{nestedness}} does not calculate any null model, simply because it is too computer-intensive. \code{networklevel} calls \code{nestedtemp}! If you are interested in the different null models, please use the function \code{\link{nestedness}} or \code{nestedtemp} in \pkg{vegan} directly.}
 	\item{NODF}{Another index for nestedness, calling \code{nestednodf} in \pkg{vegan}. High values indicate nestedness. According to the analysis of Almeida-Neto et al. (2008, 2010), NODF is more consistent and \dQuote{better} than usual measures of nestedness.}
 	\item{weighted nestedness}{A nestedness version that considers interaction frequencies (and is hence weighted), proposed by Galeano et al. (2007) and implemented in \code{\link{wine}}. It ranges between 1 (perfect nestedness) and 0 (perfect chaos). Note that this is the OPPOSITE interpretation of nestedness temperature!}
@@ -209,15 +209,15 @@ Roberts, A. and Stone, L. 1990 Island-sharing by archipelago species. \emph{Oeco
 
 Rodríguez-Girónes M.A., and Santamaría L. 2006. A new algorithm to calculate the nestedness temperature of presence-absence matrices. \emph{Journal of Biogeography} \bold{33}, 924--935
 
-Schluter, D. (1984) A variance test for detecting species associations, with some example applications. \emph{Ecology} \bold{65}, 998-1005.
+Schluter, D. 1984. A variance test for detecting species associations, with some example applications. \emph{Ecology} \bold{65}, 998-1005.
 
-Stone, L. and Roberts, A. (1990) The checkerboard score and species distributions. \emph{Oecologia} \bold{85}, 74--79.
+Stone, L. and Roberts, A. 1990. The checkerboard score and species distributions. \emph{Oecologia} \bold{85}, 74--79.
 
-Stone, L. and Roberts, A. (1992) Competitive exclusion, or species aggregation? An aid in deciding. \emph{Oecologia} \bold{91}, 419--424
+Stone, L. and Roberts, A. 1992. Competitive exclusion, or species aggregation? An aid in deciding. \emph{Oecologia} \bold{91}, 419--424
 
-Tylianakis, J. M., Tscharntke, T. and Lewis, O.T. (2007) Habitat modification alters the structure of tropical host-parasitoid food webs. \emph{Nature} \bold{445}, 202--205
+Tylianakis, J. M., Tscharntke, T. and Lewis, O.T. 2007. Habitat modification alters the structure of tropical host-parasitoid food webs. \emph{Nature} \bold{445}, 202--205
 
-Watts, D. J. and Strogatz, S. (1998) Collective dynamics of \sQuote{small-world} networks. \emph{Nature} \bold{393}, 440--442
+Watts, D. J. and Strogatz, S. 1998. Collective dynamics of \sQuote{small-world} networks. \emph{Nature} \bold{393}, 440--442
 }
 
 \author{ Carsten F. Dormann \email{carsten.dormann@biom.uni-freiburg.de}}

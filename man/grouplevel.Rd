@@ -77,7 +77,7 @@ Depending on the selected indices, some or all of the below (returned as vector 
   \item{mean number of species}{\emph{sic}, possibly weighted (if \option{weighted=TRUE}; the weighted mean is not something typically reported, but it seems a very plausible way to embrace the uncertainty introduced by species with very few interactions).}
   \item{mean number of links}{\emph{sic} (sum of links for each species, averaged over all species in that level), possibly weighted (if \option{weighted=TRUE}).}
   \item{mean number of shared partners}{Based on the distance matrix between species, counting the number of species in the other level that both interact with; based on Roberts & Stone (1990) and Stone & Roberts (1992), i.e. for pollinators will yield mean number of plants shared by any two pollinators (Cannot be weighted.)}
-  \item{cluster coefficient}{The cluster coefficient for a level is the (weighted) average cluster coefficients of its members. The cluster coefficient for each species, in turn, is simply the number of realised links divided by the number of possible links. Introduced by Watts & Strogatz (1998) and described in Wikipedia under \url{http://en.wikipedia.org/w/index.php?title=Clustering_coefficient}. If you want to use Tore Opsahl's adaptation to two-modes, please see the next index, based on his function \code{clustering_tm} in \pkg{tnet}. To my knowledge, so far every study has used the \dQuote{wrong} one, i.e. the one presented here as \option{cluster coefficient}.}
+  \item{cluster coefficient}{The cluster coefficient for a level is the (weighted) average cluster coefficients of its members. The cluster coefficient for each species, in turn, is simply the number of realised links divided by the number of possible links. Introduced by Watts & Strogatz (1998) and described in Wikipedia under \url{https://en.wikipedia.org/w/index.php?title=Clustering_coefficient}. If you want to use Tore Opsahl's adaptation to two-modes, please see the next index, based on his function \code{clustering_tm} in \pkg{tnet}. To my knowledge, so far every study has used the \dQuote{wrong} one, i.e. the one presented here as \option{cluster coefficient}.}
   \item{weighted cluster coefficient}{When asking for \dQuote{weighted cluster coefficient}, this version will automatically use interactions as weights unless the data are binary. The computation is based on \code{clustering_tm} in \pkg{tnet}. See there (and more on Tore Opsahl's webpages) for help.}
   \item{niche overlap}{Mean similarity in interaction pattern between species of that level, calculated by default as Horn's index (use \option{dist} to change this.). Values near 0 indicate no common use of niches, 1 indicates perfect niche overlap.}
   %(In how far it makes sense for hosts of predators to call their commonness in enemies \dQuote{niche overlap} is a different issue. There are people calling predators \dQuote{negative resources} (couldn't be asked to look up the reference). I would probably rather call it similarity in predators in this case.)
@@ -116,7 +116,7 @@ Blüthgen, N. 2010. Why network analysis is often disconnected from community ec
 
 Blüthgen, N., Menzel, F., Hovestadt, T., Fiala, B. and Blüthgen N. 2007 Specialization, constraints and conflicting interests in mutualistic networks. \emph{Current Biology} \bold{17}, 1--6
 
-Devoto M., Bailey S., Craze P., and Memmott J. (2012) Understanding and planning ecological restoration of plant-pollinator networks. \emph{Ecology Letters} \bold{15}, 319--328. http://dx.doi.org/10.1111/j.1461-0248.2012.01740.x
+Devoto M., Bailey S., Craze P., and Memmott J. (2012) Understanding and planning ecological restoration of plant-pollinator networks. \emph{Ecology Letters} \bold{15}, 319--328. \doi{10.1111/j.1461-0248.2012.01740.x}
 
 Dormann, C.F., Fründ, J., Blüthgen, N., and Gruber, B. (2009) Indices, graphs and null models: analysing bipartite ecological networks. \emph{The Open Ecology Journal} \bold{2}, 7--24.
 
@@ -124,7 +124,7 @@ Dunne, J. A., R. J. Williams, and N. D. Martinez. 2002 Food-web structure and ne
 
 Gotelli, N. J., and G. R. Graves. 1996 Null Models in Ecology. Smithsonian Institution Press, Washington D.C.
 
-Jost, L. 2006. Entropy and diversity. \emph{Oikos} \bold{113}, 363-–375. doi: 10.1111/j.2006.0030-1299.14714.x
+Jost, L. 2006. Entropy and diversity. \emph{Oikos} \bold{113}, 363-–375. \doi{10.1111/j.2006.0030-1299.14714.x}
 
 Krebs, C. J. 1989 \emph{Ecological Methodology}. Harper Collins, New York.
 

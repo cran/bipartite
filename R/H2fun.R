@@ -30,6 +30,7 @@ function(web, H2_integer=TRUE){
     exexpec <- outer(rs, cs/tot) # non-integer optimal web
     if (!H2_integer) {
     	newweb <- exexpec
+    	H2_max <- -sum(newweb/tot*log(newweb/tot), na.rm=TRUE)    # first attempt of finding H2_max
     } else {
     	expec <- matrix(0, nrow(web), ncol(web)) # empty web
     	difexp <- exexpec-expec # where are differences between non-integer and 0-web greatest?
@@ -99,7 +100,7 @@ function(web, H2_integer=TRUE){
 		#  Hmax=H2(newmx)    
 	} # end else-part of initial exexpec
     H2_max.improved <- -sum(newweb/tot*log(newweb/tot), na.rm=TRUE)
-    H2_max <- ifelse(H2_max >= H2_max.improved, H2_max, H2_max.improved) # JF: changed September 2019, as the improvement made things worse for certain small webs
+    H2_max <- ifelse(H2_integer && H2_max >= H2_max.improved, H2_max, H2_max.improved) # JF: changed September 2019, as the improvement made things worse for certain small webs
    
     
 

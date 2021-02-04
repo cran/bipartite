@@ -24,7 +24,7 @@ metaComputeModules(moduleObject, N=5, method="Beckett", ...)
 
 \arguments{
   \item{web}{
-\code{web} is the matrix representing the weighted bipartite graph (as an example, see e.g. web "small1976" in this package). This matrix can be binary (i.e. consist only of 0s and 1s), in which case the output will be Newman's (2006) modularity.
+\code{web} is the matrix representing the weighted bipartite graph (as an example, see e.g. web \code{\link{small1976}} in this package). This matrix can be binary (i.e. consist only of 0s and 1s), in which case the output will be Newman's (2006) modularity.
 }
  \item{method}{Choice between the algorithm(s) provided by Stephen Beckett (2016) or Dormann & Strauss (2016) (\option{method="DormannStrauss"}). Defaults to the much faster and in the majority of cases better algorithm of Beckett. (Note the optional argument \option{forceLPA} to use his slightly inferior but even faster pure LPA algorithm.)}
   \item{deep}{
@@ -51,7 +51,7 @@ An object of class "moduleWeb" containing information about the computed modules
 \references{ 
 Beckett, S.J. 2016 Improved community detection in weighted bipartite networks. \emph{Royal Society open science} \bold{3}, 140536.
 
-Dormann, C. F., and R. Strauß. 2014. Detecting modules in quantitative bipartite networks: the QuanBiMo algorithm. \emph{Methods in Ecology & Evolution} \bold{5} 90--98 (or \bold{arXiv [q-bio.QM]} 1304.3218.)
+Dormann, C. F., and R. Strauß. 2014. Detecting modules in quantitative bipartite networks: the QuanBiMo algorithm. \emph{Methods in Ecology & Evolution} \bold{5} 90--98 (and \bold{arXiv [q-bio.QM]} 1304.3218.)
 
 Liu X. & Murata T. 2010. An Efficient Algorithm for Optimizing Bipartite Modularity in Bipartite Networks. \emph{Journal of Advanced Computational Intelligence and Intelligent Informatics (JACIII)} \bold{14} 408--415.
 
