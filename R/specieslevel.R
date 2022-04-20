@@ -68,20 +68,26 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
       }
           
       el <- web2edges(web, return=TRUE)
-      # el <- symmetrise_w(el) # needed for undirected webs
+      #suppressWarnings(el <- symmetrise_w(el) )# needed for undirected webs
       suppressWarnings(proj <- projecting_tm(el, method=method) )
+      #proj <- symmetrise_w(proj, method="MAX")
       if (any(dim(proj) < 2)){
           warning("Web contains too few nodes to compute closeness or betweenness!", call.=FALSE)
           return(rep(NA, NROW(web))) # closeness/betweenness cannot be computed with only one link!
       } 
       
       if (index == "betweenness") {
-        b <- betweenness_w(proj)[,2]
-        if (length(b) != NROW(web)){
-          b <- c(b, rep(NA, (NROW(web) - length(b))))
-        }
-        if (!is.null(rownames(web))) names(b) <- rownames(web)
-        if (sum(b, na.rm=TRUE) == 0) out <- b else out <- b/sum(b, na.rm=TRUE)
+        #b <- betweenness_w(proj)[,2] # sequence stays the same as in original web!
+        # new:
+        b <- betweenness_w(proj) # sequence stays the same as in original web!
+        if (NROW(b) != NROW(web)){
+          present <- which(1:NROW(web) %in% b[,1])
+          b.out <- rep(0, NROW(web))
+          b.out[present] <- b[,2] # die richtigen Werte an die Stellen schieben die durch which angezeigt werden!
+          #b.out <- c(b, rep(NA, (NROW(web) - length(b)))) 
+        }  else { b.out <- b[,2] }
+        if (!is.null(rownames(web))) names(b.out) <- rownames(web)
+        if (sum(b.out, na.rm=TRUE) == 0) out <- b.out else out <- b.out/sum(b.out, na.rm=TRUE)
       }
       
       if (index == "closeness") {
@@ -98,7 +104,7 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
         proj2 <- projecting_tm(el2, method=method)
         cc <- closeness_w(proj2, directed=TRUE, gconly=TRUE)[,2]
         # now pad these results with NAs:
-        cc.full <- rep(NA, NROW(web))
+        cc.full <- rep(0, NROW(web))
         if (!is.null(rownames(web))){
           names(cc.full) <- rownames(web)
           cc.full[match(rownames(subweb), names(cc.full)) ] <- cc
@@ -127,7 +133,7 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
         sum(pmin(p_i, q_i))  
     }
 
-   PSI <- function(web, beta=c(1,0)){
+   PSI <- function(web, beta=1){
       # calculates the average contribution per visit for each pollinator species
       # (which in itself depends on the specialisation and abundance of the bees,
       # as well as the abundance of the plant species)
@@ -136,7 +142,7 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
       # beta  a parameter accounting for the fact that two repeated landings are
       #       needed to transfer pollen: one for the source, one for the sink; a
       #       value of 2 would assume no memory of plant species in the pollinator;
-      #  	a value of 1 implies infinitely storing pollen from source to sink plant
+      #  	    a value of 1 implies infinitely storing pollen from source to sink plant
       #
       # developed by Dormann, Bluethgen & Gruber, 3 May 2007
       #
@@ -147,8 +153,10 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
       Wi. <- matrix(rep(colSums(web), NROW(web)), nrow=NROW(web), byrow=TRUE)
       W.j <- matrix(rep(rowSums(web), NCOL(web)), ncol=NCOL(web), byrow=FALSE)
       
-      PSImat <- (web/W.j)^beta * web/Wi.
-      (PSI <- colSums(PSImat))
+      # PSImat <- (web/W.j)^beta * web/Wi. # old and wrong
+      PSImat <- (web/Wi.)^beta * web/W.j # new and, well, right?
+      PSI <- colSums(PSImat)
+      return(PSI)
     }
    
    shannon <- function(x, base=exp(1)) {# shannon's diversity index
@@ -238,7 +246,6 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
     	higher.out$"nestedrank" <- nested.ranks[["higher level"]]
     }
 
-#! JFedit: this is PDI not PSI; before it returned PairedDifferenceIndex when asking for pollination support index...; name changed below as well
     # Poisot's paired differences index
       # comments should be adjusted here and below, though
     if (any(c("PDI", "paired differences index") %in% index)){
@@ -254,7 +261,6 @@ function(web, index="ALLBUTD", level="both", logbase=exp(1), low.abun=NULL, high
     if ("species specificity" %in% index){
     	higher.out$"species specificity index" <- CoV(web)
     }
-
     
     # Pollination webs only: Pollination service index
     if (any(c("PSI", "pollination service index") %in% index)){    

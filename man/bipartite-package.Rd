@@ -16,6 +16,8 @@ Bipartite provides functions to visualise webs and calculate a series of indices
 \details{
 Note: We only had three types of bipartite webs in mind when starting this package: seed-disperser, plant-pollinator and host-parasitoid systems. In how far it makes sense to use these functionalities for other systems (or indeed even for these systems) lies in the hands of the user. Please refer to the literature cited for details on the theory behind the indices.
 
+Networks can be either binary (0/1 or FALSE/TRUE matrices) or quantitative (matrices containing estimates of pairwise interaction strength, usually assumed here to be interaction frequency).
+
 Input for most analyses is an interaction matrix of m nodes (= species) from one group (\dQuote{higher}) with n nodes (= species) from another group (\dQuote{lower}), i.e. a n x m matrix, where higher level nodes are in columns, lower level nodes in rows. Column and row names can be provided. This is fundamentally different from \dQuote{one-mode} networks, which are organised as k x k matrix, i.e. one group of nodes only, in which each node can link (= interact) with each other. Such a format is incompatible with the functions we provide here. (Note, however, that functions \code{\link{as.one.mode}} and \code{\link{web2edges}} are convenience functions to morph bipartite networks into one-mode webs. Furthermore, some indices build on one-mode networks and \emph{are} called from bipartite.)
 
 Before you start with the network, you have to get the data into the right shape. The function \code{\link{frame2webs}} aims to facilitate this process. Arranging a web, e.g. by size, is supported by \code{\link{sortweb}}.
@@ -37,8 +39,8 @@ For an overview of other computing resources, data, books, journals etc. check o
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 2.16\cr
-Date: \tab 2021-02-08\cr
+Version: \tab 2.17\cr
+Date: \tab 2022-04-12\cr
 License: \tab GPL \cr
 }
 }
@@ -47,6 +49,22 @@ License: \tab GPL \cr
 Please see help page \code{\link{versionlog}} for all changes and updates prior to version 2.00. This page will only list most recent changes. 
 
 \itemize{
+	\item 2.17 (release date: 12-Apr-2022)
+	\describe{
+  	\item{New null model for "compound network structure" using \code{\link{restrictednull}}:}{This function, contributed by Gabriel Felix, Rafael Pinheiro, and Marco Mello from the Ecological Synthesis Lab (SintECO) in São Paulo, constructs null model expectations for networks with modules. So far, nestedness could not be properly tested for \emph{within} null model modules, only at the level of the entire network. This function uses information from previously identified modules (typically using \code{\link{computeModules}}) to generate expectations based on marginal totals and observed connectivity. It builds on \code{\link{vaznull}} in that respect, but adds the modular structure.}
+  	\item{Major rehaul of \code{\link{mgen}}:}{1. the biggest change is that \option{keep.species=TRUE} now respects the probabilities of the input web (before it had used marginal totals) already for the first interaction of each species, and tries to minimize the number of interactions assigned in this first part of the function. 2. the main part of the function has been changed, not using a while-loop anymore and thus dropping the argument \option{trials}. 3. handling of \option{autotransfrom} has been slightly changed, avoiding unnecessary warnings. 4. the output web now keeps dimnames of input web.}
+  	\item{Slight changes to \code{\link{specieslevel}},}{where the weighted betweenness values could be wrongly placed if the web contained compartments without indirect links. Thanks to Marco Mello for drawing our attention to this!}
+  	\item{\code{\link{computeModules}} used to remove}{all-1 rows and columns in a binary network, as they contain no information on modules. However, this affects the modularity value. Now the function always keeps the full network. Note that all-0-values are still removed. Thanks to Elvira D'Bastiani for reporting this problem!}
+  	\item{Substantial speed boost to \code{\link{vaznull}},}{thanks to an improvement suggested by Rafael Pinheiro!}
+  	\item{Bug fix in \code{\link{webs2array}},}{which caused problems when called within another function.}
+  	\item{Added index modularity (= Newman's Q) to \code{\link{networklevel}}.}{No options are available, hence this value is the likelihood of the default setting of \code{\link{computeModules}}.}
+  	\item{Bug fix in index PSI in \code{\link{specieslevel}},}{where the beta-exponent was on the wrong matrix, and hence it did not yield species strength for beta=0.}
+  	\item{Retired binmatnest as called by \code{nestedness}.}{Binmatnest was one of the first nice nestedness algorithms, implemented in C++. It has been kept merely for historical reasons, as \pkg{vegan}'s \code{\link[vegan]{nestedtemp}} is more reliable. We finally decided to kick binmatnest out, using this function as legacy-call to \code{\link[vegan]{nestedtemp}} and leaving the legacy help page. (Also makes package maintenance a bit easier: one C++ function less to think about.)}
+  	\item{Added text-option to \code{\link{plotPAC}}.}{Species names have a tendency to always be in the way, and too long. Therefore the original function only plotted numbers. Now we added the option to plot (and scale and move) labels for each species. Not nice, but practical.}
+  	\item{Function \code{\link{networklevel}} now}{calls \pkg{vegan}'s \code{\link[vegan]{nesteddisc}} when computing the index "discrepancy". That function tries to handle ties in the data consistently, although for webs with many columns (or rows) with the same number of links this will still lead to slightly different values. Thanks to Valentin Stefan for drawing our attention to this! Also, we added an explicit note of this behaviour in \code{networklevel}.}
+	  	\item{Bug fix in \code{\link{r2dexternal}} and \code{\link{vaznullexternal}}:}{Sometimes did not yield the correct row/column sums, when margins were extremely skewed.}
+	  	\item{Addressed long-standing confusion in \code{\link{nested}},}{ which reports some indices in [0,1], others in [0, 100] (i.e. as percent). Thanks to Jari Oksanen for reminding me of this point. All but one now report in the 0-100\% range. While fixing this, also added WNODA (based on \code{\link{nest.smdm}}) to the fray.}
+}
 	
   \item 2.16 (release date: 08-Jan-2021)
 	\describe{

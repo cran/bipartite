@@ -7,11 +7,15 @@ computeModules = function(web, method="Beckett", deep=FALSE, deleteOriginalFiles
     method <- "Beckett"
   }
   # check if, for binary data, any species is present everywhere ("empty" takes care of the "nowhere"):
-  if (length(table(unlist(web))) == 2  & ( any(colSums(web) == nrow(web)) | any(rowSums(web) == ncol(web)))){
-    warning("Your binary data set contains one (or more) species present everywhere. These will be ignored, as they contain no information for the modularity algorithm.")
-    nonWeb <- (!web) * 1
-    web <- (! empty(nonWeb)) * 1
-  }
+#  if (empty.web & length(table(unlist(web))) == 2  & ( any(colSums(web) == nrow(web)) | any(rowSums(web) == ncol(web)))){
+#    warning("Your binary data set contains one (or more) species present everywhere. These will be ignored, as they contain no information for the modularity algorithm.")
+    # remove all-full or all-empty columns and rows:
+    #rm.cols <- which(colSums(web) == nrow(web))
+    #rm.rows <- which(rowSums(web) == ncol(web))
+    #web <- web[-rm.rows, -rm.cols]
+#    nonWeb <- (!web) * 1
+#    web <- (! empty(nonWeb)) * 1
+#  }
   
   
   # the fast and nice algorithm of Beckett:
@@ -47,6 +51,13 @@ computeModules = function(web, method="Beckett", deep=FALSE, deleteOriginalFiles
       
       cat("This function is SLOW! \nMonitor your system's activity; depending on steps-setting this may take minutes to hours!\n\n")
       
+      ### TEST TEST
+      # provide a web presorted by Beckett as input to this option!
+      # does it make a difference in where the algorithm starts?
+      # web <- computeModules(web)@moduleWeb
+      # No, apparently somewhere the C++-code makes its own random version, and providing the network in a sorted way makes no difference ....
+      ### End TEST TEST
+      
       result		<-  cM(web, depth=1, nrOfModule=1, ytop=1, xleft=1, ybottom=dim(web)[1], 
                      xright=dim(web)[2], prev_orderA=c(1:dim(web)[1]), prev_orderB=c(1:dim(web)[2]), 
                      modules=matrix(c(0, 1, c(1:sum(dim(web)))), 1), 
@@ -74,7 +85,6 @@ computeModules = function(web, method="Beckett", deep=FALSE, deleteOriginalFiles
     return(out)
   } # end if DormannStrauss
 
-  
 }
 
   
@@ -86,9 +96,9 @@ cM = function(web, depth, nrOfModule, ytop, xleft, ybottom, xright, prev_orderA,
     webName = paste("web-", depth, "-", nrOfModule, sep="");
     
     # write web to file
-    web2edges(web[ytop:ybottom, xleft:xright], webName=webName);
+    web2edges(web[ytop:ybottom, xleft:xright], webName=webName, return=FALSE);
     argv = c("identifyModules", "-filename", paste(webName, ".pairs", sep=""), "-steps", round(steps), "-tolerance", as.double(tolerance)); # round instead of "as.integer(steps)" because the latter works only up to 1E9!!
-    if(experimental) {
+    if (experimental) {
       argv = append(argv, c("-method", "Strauss"));
     }
     argv = as.character(argv);
@@ -145,17 +155,17 @@ cM = function(web, depth, nrOfModule, ytop, xleft, ybottom, xright, prev_orderA,
       nrOfModules			= nrow(modulesFile);
       M					= matrix(0, nrOfModules, (sum(dim(web))+offset_M));
       
-      if(experimental) {
+      if (experimental) {
         
         M[,1]	= modulesFile[,1];
         M[1,2]	= 1;
         
-        for(i in nrOfModules:1) {
+        for (i in nrOfModules:1) {
           
-          if(i > 1) {
+          if (i > 1) {
             indicesOfNextRowsWithSameDepth = rev(which(M[1:(i - 1),1] == M[i,1]));
             
-            if(	length(indicesOfNextRowsWithSameDepth) == 0
+            if (length(indicesOfNextRowsWithSameDepth) == 0
                 ||
                 (indicesOfNextRowsWithSameDepth[1] + 1 < i && length(which(M[(indicesOfNextRowsWithSameDepth[1] + 1):(i - 1),1] < M[i,1])) > 0)) {
               M[i,2] = 1;
@@ -169,7 +179,7 @@ cM = function(web, depth, nrOfModule, ytop, xleft, ybottom, xright, prev_orderA,
         maxDepth	= max(M[,1]);
         rowCounter	= 1;
         
-        for(i in 0:maxDepth) {
+        for (i in 0:maxDepth) {
           indicesOfRowsWithSameDepth		= rev(which(M[,1] == i));
           nrOfIndicesOfRowsWithSameDepth	= length(indicesOfRowsWithSameDepth);
           M_temp[rowCounter:(rowCounter + nrOfIndicesOfRowsWithSameDepth - 1),] = M[indicesOfRowsWithSameDepth,];
@@ -195,7 +205,7 @@ cM = function(web, depth, nrOfModule, ytop, xleft, ybottom, xright, prev_orderA,
       
       modulesFile = M;
       
-      if(experimental) {
+      if (experimental) {
         result[[4]]	= M;
       }
       else {
@@ -203,11 +213,11 @@ cM = function(web, depth, nrOfModule, ytop, xleft, ybottom, xright, prev_orderA,
       }
       
       # Computation of potential modules nested within the ones found until now
-      if(deepCompute) {
+      if (deepCompute) {
         order = append(orderAFile, (orderBFile+n_a));
         
         # Apply the recursive function cM(...) to each module
-        for(i in 1:nrow(modulesFile)) {
+        for (i in 1:nrow(modulesFile)) {
           mod = modulesFile[i, (offset_M+1):ncol(modulesFile)];
           mod = mod[order];
           
@@ -229,7 +239,7 @@ cM = function(web, depth, nrOfModule, ytop, xleft, ybottom, xright, prev_orderA,
           ytop_new = j;
           
           # An invocation of cM(...) is necessary only if there is the possibility to find more than one submodule the current module consists of
-          if((ybottom_new - ytop_new)+1 > 1 && (xright_new - xleft_new)+1 > 1) {
+          if ((ybottom_new - ytop_new)+1 > 1 && (xright_new - xleft_new)+1 > 1) {
             
             print(paste("Recursive invocation (depth: ", depth+1, ", module nr. ", i, ")", sep=""));
             
@@ -238,7 +248,7 @@ cM = function(web, depth, nrOfModule, ytop, xleft, ybottom, xright, prev_orderA,
                         modules=result[[4]], deepCompute, delete, steps, tolerance, experimental);
             
             # Make sure that all computed modules have modularity >= 0
-            if(result[[5]] < 0) {
+            if (result[[5]] < 0) {
               likelihood = result[[5]];
             }
           }
