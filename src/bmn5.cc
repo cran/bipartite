@@ -45,7 +45,7 @@ extern "C" {
 #define EPSB 3.0e-8
 #define SIGN(a,b) ((b) >= 0.0 ? fabs(a) : -fabs(a))
 
-//	El valor más alto de U econtrado es:
+//	El valor mas alto de U econtrado es:
 const double UMAX = 0.04145;
 
 //	para el algoritmo genetico:

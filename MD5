@@ -1,4 +1,4 @@
-c2920bec02526f43d707ba3993f62808 *DESCRIPTION
+915becb7ccdd854a0d054b5ede9fb265 *DESCRIPTION
 1825d5ae23cfb24cee062887064bf554 *NAMESPACE
 605501e82f556cdcf67eab53e0807c5c *R/C.score.R
 0ec88f1b673f1cf30f68bed2ce662168 *R/H2fun.R
@@ -39,7 +39,7 @@ da23e51e5a0e47af543f295e5b7c87ca *R/modulesLPA.R
 3498949f79c29ba2de03d7cd9e9b8319 *R/nest.smdm.R
 31422bf68eee8e910efbbd5d13501169 *R/nested.r
 11b4b110984ad85eaf4c6d56f6d5b0df *R/nestedcontribution.R
-880a80829f2d279192514a1b73c02da9 *R/nestedness.r
+880a80829f2d279192514a1b73c02da9 *R/nestedness.R
 3d782054e5f622a759fdb844f4aee7a8 *R/nestedrank.R
 a43e66b4a1a63b7e0481d26a5ff95331 *R/networklevel.R
 356f4713f19c28b343887d5a1326103d *R/nodespec.r
@@ -56,7 +56,7 @@ eebe04a2511d88849f3773efd4afea0b *R/prepareWebForPlottingModules.R
 e5f4d8762328353771f2e9c2a7e3a669 *R/projecting_tm.R
 ac472272e1a2535fbb8e779a1e7f1733 *R/r2dexternal.R
 3bcd4dcf24c28ed8d6555c18ab9fb2cb *R/restrictednull.R
-7666caf9a8c1b9e0a2f2d9d63f655adb *R/robustness.r
+a618925b06d1f23df1682cd56110b935 *R/robustness.r
 b6b72d8711fd9ac0a79148056d6d20ec *R/second.extinct.R
 96d52c7f4175f2f4a978d39144db65f1 *R/shuffle.web.R
 ea94219ed5a1491b637be7f4e727eb04 *R/slope.bipartite.R
@@ -76,8 +76,8 @@ a4232a3a6990d263f8cdec1d9708c34b *R/visweb.R
 00a85b5069e124b18d1db38dfe539b34 *R/webs2array.R
 c8f5613540481c18c8bcb070fe2a797f *R/wine.r
 3d703269e5f261f4b7a2929841a8201a *R/zzz.R
-479d66c206506e76918b87b2bd9b611e *build/partial.rdb
-ea833cc47f26b347588651b384fd5ce7 *build/vignette.rds
+1961639f6f4f7f9efffa91b624b3d060 *build/partial.rdb
+b3c08616d6f6aef7fa6aa79b879a5f37 *build/vignette.rds
 e26e9950fc78d302ca2767434a42e26e *data/Safariland.rda
 1c5f162cd34771d9a60d7d7979ad0e1d *data/barrett1987.rda
 8ca04c36c2ebe14fb0a76d922cb263b7 *data/bezerra2009.rda
@@ -105,11 +105,11 @@ ba331d18d63cba879f686373f7ec0d5f *data/vazcer.rda
 42bb4529a581ddd63b3dba59656ece61 *inst/CITATION
 3a65ff09aca05f3d1e567acb976e5907 *inst/doc/Intro2bipartite.R
 75a535a3b10533e58b72504cbd3c6cf8 *inst/doc/Intro2bipartite.Rnw
-20d29761197efccb795c0336caf8c6db *inst/doc/Intro2bipartite.pdf
+53b84ae8bde1f7b5dcd0a9200cd86df5 *inst/doc/Intro2bipartite.pdf
 1f93f5cf10fa746a933458bf87b24ed8 *man/C.score.Rd
 767f17ffea74ae8ad5bc007355d0dd95 *man/H2fun.Rd
 d5ec20c0e5e9be413cb7899d8f250012 *man/ND.rd
-c7026dbcd516091ddeb2126022708403 *man/NOS.Rd
+c9ca4b1b74c82387eb511bbb56e341a3 *man/NOS.Rd
 6b976fc7310bf4f72539faf3af7acab5 *man/PAC.rd
 a31db234477ab3e596a10a56b25187e3 *man/PDI.Rd
 dea5053be7a450fd2f017b339a28e913 *man/Safariland.Rd
@@ -121,7 +121,7 @@ e1054263371fc5c9afbd11f065263cbb *man/barrett1987.Rd
 fd86b9c5bb3f51039a2db50802ee68b3 *man/betalinkr.Rd
 36a2409f06d37353115fa74063c1f660 *man/betweenness_w.Rd
 5fd518170cfe86c6d29de2b122fb01e3 *man/bezerra2009.Rd
-0da2ca79778f5b849900d1ff64540aa0 *man/bipartite-package.Rd
+baf8c88a576394b61fb692d3fe1f06e7 *man/bipartite-package.Rd
 5fe087fc0553b43a9503361431657df2 *man/closeness_w.Rd
 bd367f92b0fae07319d38d5936e5abbe *man/clustering_tm.Rd
 ac4907d394b3c97c561a96e99544aa66 *man/compart.Rd
@@ -155,7 +155,7 @@ c33f66d9de9105e368084b6352325c2b *man/motten1982.Rd
 7c5f2326e4abb68e04422ca6da4a223c *man/nest.smdm.Rd
 5a21e9c79233f9defe8c2236470e8d36 *man/nested.Rd
 bc861ec0aed13fd129c5f59b01b41218 *man/nestedcontribution.Rd
-e2cdb0297002992de6332b229a50a8ef *man/nestedness.Rd
+f1b79393694dd620f4ee632dfc2ce828 *man/nestedness.Rd
 46b0da4e21e941b1d74aa8fd4f48e820 *man/nestedrank.Rd
 73191836a650240208694d40ca731d21 *man/networklevel.Rd
 5158222ed5b468b9db15ddf17c36ae1e *man/nodespec.Rd
@@ -184,7 +184,7 @@ a6e99d8b17146e2e03c7e94b8ca54111 *man/slope.bipartite.Rd
 b29e5f8083ef549e381f01a669160ebd *man/small1976.Rd
 1812068ecf5cb0e43ba7aaa6dd487067 *man/sortmatrix.Rd
 75c63d266b8b5f5eea19fdcb6db0acb1 *man/sortweb.Rd
-ceb6af8d9a121bb4d7d89bb042fe7b82 *man/specieslevel.Rd
+6d90357d046449a2087b5df329bfc20a *man/specieslevel.Rd
 d92af86013635b801dee438e08272484 *man/strength.Rd
 c6442222516f8cf31f7e8620ac650734 *man/swap.web.Rd
 50ad1d9e5b5ab093c7f2580646baf015 *man/symmetrise_w.Rd
@@ -205,11 +205,11 @@ bb029a1e38d69db1fad73bdd3f188271 *man/web2edges.Rd
 341974239fd9c299d3375993e6b6efc4 *man/webs2array.Rd
 b38c9e8fb21ab82a87cdd5588cf74935 *man/wine.rd
 21f586c9ede2d8d09ce440d2d5b0f449 *src/MersenneTwister.h
-5260c1b0c7f58b3507c276fc8ee4965c *src/bmn5.cc
+6acb82de9ad9446813e9ec6ea30e6a38 *src/bmn5.cc
 c45e7202330ead38195c085e85674216 *src/dendro.h
 5438d6bc1aa3881b903f78ab11d6e73b *src/graph.h
 a3261306cf305a9440328ef9dfc87e6a *src/identifyModules.cc
-e421734f14e2d4cd84ab7e12c5d719f6 *src/init.c
+ee4342e8b9819324195ed4f70ee5fe4b *src/init.c
 107f1d3f19c1b0d4b3e9ac6b727d3855 *src/rbtree.h
 20f5607d7c92aebe033cc983f3b23d65 *src/splittree.h
 75a535a3b10533e58b72504cbd3c6cf8 *vignettes/Intro2bipartite.Rnw
