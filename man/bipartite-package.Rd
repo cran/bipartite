@@ -39,8 +39,8 @@ For an overview of other computing resources, data, books, journals etc. check o
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 2.18\cr
-Date: \tab 2022-06-23\cr
+Version: \tab 2.19\cr
+Date: \tab 2023-11-29\cr
 License: \tab GPL \cr
 }
 }
@@ -49,9 +49,16 @@ License: \tab GPL \cr
 Please see help page \code{\link{versionlog}} for all changes and updates prior to version 2.00. This page will only list most recent changes. 
 
 \itemize{
+  \item 2.19 (29-Nov-2023)
+  \describe{
+    \item{Fixed missing \code{any} causing a problem when plotting modules,}{reported by rubenroos and Celia Ferriol Gonzalez: many thanks!}
+    \item{When a matrix has more columns/rows than the sum of entries, \code{\link{r2dexternal}}}{will not work without external abundances. The fix is incomplete, as it is only applied to columns in the moment, and not to \code{\link{vaznullexternal}} either. Thanks to Emilie Ellis for reporting!}
+    \item{Warning fix in internal function \code{\link{isCorrectModuleWebObject}}:}{Incorrect testing of dimensions of modularity object. Thanks to Frazer Moore for reporting.}
+  }
+
   \item 2.18 (22-Oct-2022)
   \describe{
-    \item{Bug fix in \code{\link{robustness}}:}{For large matrices, the (too short) subdivision length and the possible non-zero starting values caused an error. Thanks to Rafael Pinheir for reporting.}
+    \item{Bug fix in \code{\link{robustness}}:}{For large matrices, the (too short) subdivision length and the possible non-zero starting values caused an error. Thanks to Rafael Pinheiro for reporting.}
     \item{Small semantic}{fixes newly picked up by sterner CRAN checks (e.g. non-UTF in comment; escaped ampersand in title).}
   }
   

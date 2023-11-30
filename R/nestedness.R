@@ -1,4 +1,3 @@
-
 nestedness <-function(m, null.models=TRUE,
                       n.nulls=100, popsize=30, n.ind=7,n.gen=2000,
                       binmatnestout=FALSE
