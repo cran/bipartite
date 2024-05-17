@@ -2,8 +2,8 @@ Package: bipartite
 Type: Package
 Title: Visualising Bipartite Networks and Calculating Some (Ecological)
         Indices
-Version: 2.19
-Date: 2023-11-29
+Version: 2.20
+Date: 2024-05-19
 Authors@R: c(person(given = "Carsten F.",
                     family = "Dormann",
                     role = c("aut", "cre"),
@@ -71,7 +71,7 @@ VignetteBuilder: knitr, utils
 URL: https://github.com/biometry/bipartite
 Description: Functions to visualise webs and calculate a series of indices commonly used to describe pattern in (ecological) webs. It focuses on webs consisting of only two levels (bipartite), e.g. pollination webs or predator-prey-webs. Visualisation is important to get an idea of what we are actually looking at, while the indices summarise different aspects of the web's topology. 
 License: GPL
-Packaged: 2023-11-30 15:40:49 UTC; carsten
+Packaged: 2024-05-16 13:34:13 UTC; carsten
 RoxygenNote: 7.1.1
 Repository: CRAN
-Date/Publication: 2023-11-30 16:40:02 UTC
+Date/Publication: 2024-05-17 12:10:09 UTC
