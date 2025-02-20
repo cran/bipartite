@@ -39,8 +39,8 @@ For an overview of other computing resources, data, books, journals etc. check o
 \tabular{ll}{
 Package: \tab bipartite\cr
 Type: \tab Package\cr
-Version: \tab 2.20\cr
-Date: \tab 2024-05-10\cr
+Version: \tab 2.21\cr
+Date: \tab 2025-02-20\cr
 License: \tab GPL \cr
 }
 }
@@ -49,7 +49,14 @@ License: \tab GPL \cr
 Please see help page \code{\link{versionlog}} for all changes and updates prior to version 2.00. This page will only list most recent changes. 
 
 \itemize{
-  \item 2.20 (10-May-2024)
+  \item 2.21 (20-Feb-2025)
+  \describe{
+    \item{Added new index "spectral radius"}{to \code{\link{networklevel}}, as well as its own function (\code{\link{spectral.radius}}). It is just another way to compute nestedness of sorts. This function was contributed by Tobias Bauer!}
+    \item{Updated (i.e. speed-improved) \code{\link{frame2webs}}}{to faster (or indeed at all) process all webs in a table. This code improvement was contributed by Tobias Bauer.}
+    \item{Code changes to \code{\link{as.one.mode}}.}{Until version 2.21, projections to higher and lower level were based on reasoning what the correct weights should be from the perspective of an ecologist: If, say, species A and B interact with species a-z, then the link weight would be the sum of the minima of the two vectors A with a-z and B with a-z. In other words, the minimal overlap. In network science, the projection is defined differently, however, namely as the maximum! Thus, bringing \pkg{bipartite}'s \code{as.one.mode} closer to common mathematical practice, we now use the proper definition as default. The old definition remains available by setting \option{legacy=TRUE}. The new definition is: \eqn{AA^T}, with diagonal set to 0. (Taken from both Thurner et al.'s 2018 and Wikipedia's entry on the Laplacian matrix).}
+  }
+  
+  \item 2.20 (19-May-2024)
   \describe{
     \item{Code changes to}{\code{\link{plotweb}},  \code{\link{plotweb2}}, \code{\link{visweb}} and  \code{\link{compart}} as well as the namespace, due to changes in the  \code{cca}-function in \pkg{vegan}. Many thanks to Jari Oksanen (maintainer of vegan) to provide these patches!}
     \item{Added new option \option{effective} to \code{\link{networklevel}}:}{With this option, diversity, H2' and evenness indices are turned into ``effective'' diversity and evenness indices, by exponentiating them. It has been repeatedly argued that Shannon's H is ecologically difficult to interpret and should instead be exponentiated to yield the ``effective number of species, if all were equally abundant'' (e.g. Jost 2006). The same logic goes for evenness (Jost 2010) and, by extension, for H2'. Since H2' then becomes an index with data-dependent upper bound, rather than one on [0,1], this version may not fly. For diversity, exponentiating will yield the same values as indices ``vulnerability'' and ``generality'', which is why we had removed that option from an earlier version (and now it's back). So largely this option is useful for ``interaction evenness'' and for experimenting.} 
@@ -321,6 +328,8 @@ Pinheiro, R.B.P. et al. 2019. A new model explaining the origin of different top
 Poisot, T., Lepennetier, G., Martinez, E., Ramsayer, J., and Hochberg, M.E. (2011a) Resource availability affects the structure of a natural bacteria-bacteriophage community. \emph{Biology Letters} \bold{7}, 201--204
 
 Poisot, T., Bever, J.D., Nemri, A., Thrall, P.H., and Hochberg, M.E. (2011b) A conceptual framework for the evolution of ecological specialisation. \emph{Ecology Letters} \bold{14}, 841--851
+
+Thurner, S., Hanel, R. and Klimek, P. (2018) Introduction to the Theory of Complex Systems. Oxford University Press, Oxford
 
 Tylianakis, J. M., Tscharntke, T. and Lewis, O. T. (2007) Habitat modification alters the structure of tropical host-parasitoid food webs. \emph{Nature} \bold{445}, 202--205
 
