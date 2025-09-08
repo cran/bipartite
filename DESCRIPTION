@@ -2,8 +2,8 @@ Package: bipartite
 Type: Package
 Title: Visualising Bipartite Networks and Calculating Some (Ecological)
         Indices
-Version: 2.21
-Date: 2025-02-20
+Version: 2.22
+Date: 2025-08-18
 Authors@R: c(person(given = "Carsten F.",
                     family = "Dormann",
                     role = c("aut", "cre"),
@@ -51,19 +51,22 @@ Authors@R: c(person(given = "Carsten F.",
              person(given = "Diego P.",
                     family = "Vazquez",
                     role = c("ctb"),
-                    comment = c(ORCID = "0000-0002-3449-5748")) )
-Author: Carsten F. Dormann [aut, cre] (<https://orcid.org/0000-0002-9835-1794>),
-  Jochen Fruend [aut] (<https://orcid.org/0000-0002-7079-3478>),
-  Bernd Gruber [aut] (<https://orcid.org/0000-0003-0078-8179>),
-  Tobias Bauer [ctb] (<https://orcid.org/0009-0008-0026-722X>),
-  Stephen Beckett [ctb] (<https://orcid.org/0000-0002-4410-2960>),
-  Mariano Devoto [ctb] (<https://orcid.org/0000-0003-3098-236X>),
-  Gabriel M.F. Felix [ctb] (<https://orcid.org/0000-0002-3901-4333>),
-  Jose M. Iriondo [ctb] (<https://orcid.org/0000-0003-2710-3889>),
-  Tore Opsahl [ctb] (<https://orcid.org/0000-0003-0346-8082>),
-  Rafael B.P. Pinheiro [ctb] (<https://orcid.org/0000-0003-2342-8483>),
+                    comment = c(ORCID = "0000-0002-3449-5748")))
+Author: Carsten F. Dormann [aut, cre] (ORCID:
+    <https://orcid.org/0000-0002-9835-1794>),
+  Jochen Fruend [aut] (ORCID: <https://orcid.org/0000-0002-7079-3478>),
+  Bernd Gruber [aut] (ORCID: <https://orcid.org/0000-0003-0078-8179>),
+  Tobias Bauer [ctb] (ORCID: <https://orcid.org/0009-0008-0026-722X>),
+  Stephen Beckett [ctb] (ORCID: <https://orcid.org/0000-0002-4410-2960>),
+  Mariano Devoto [ctb] (ORCID: <https://orcid.org/0000-0003-3098-236X>),
+  Gabriel M.F. Felix [ctb] (ORCID:
+    <https://orcid.org/0000-0002-3901-4333>),
+  Jose M. Iriondo [ctb] (ORCID: <https://orcid.org/0000-0003-2710-3889>),
+  Tore Opsahl [ctb] (ORCID: <https://orcid.org/0000-0003-0346-8082>),
+  Rafael B.P. Pinheiro [ctb] (ORCID:
+    <https://orcid.org/0000-0003-2342-8483>),
   Rouven Strauss [ctb],
-  Diego P. Vazquez [ctb] (<https://orcid.org/0000-0002-3449-5748>)
+  Diego P. Vazquez [ctb] (ORCID: <https://orcid.org/0000-0002-3449-5748>)
 Maintainer: Carsten F. Dormann <carsten.dormann@biom.uni-freiburg.de>
 Depends: R(>= 3.5.0), sna, vegan
 Imports: corpcor, fields, igraph, MASS, methods, permute
@@ -76,7 +79,7 @@ VignetteBuilder: knitr, utils
 URL: https://github.com/biometry/bipartite
 Description: Functions to visualise webs and calculate a series of indices commonly used to describe pattern in (ecological) webs. It focuses on webs consisting of only two levels (bipartite), e.g. pollination webs or predator-prey-webs. Visualisation is important to get an idea of what we are actually looking at, while the indices summarise different aspects of the web's topology. 
 License: GPL
-Packaged: 2025-02-20 15:22:11 UTC; carsten
+Packaged: 2025-08-21 06:22:34 UTC; carsten
 RoxygenNote: 7.1.1
 Repository: CRAN
-Date/Publication: 2025-02-20 16:40:02 UTC
+Date/Publication: 2025-09-08 14:30:09 UTC
