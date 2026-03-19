@@ -33,17 +33,8 @@ str(Safariland)
 plotweb_deprecated(web)
 plotweb_deprecated(Safariland)
 
-## -----------------------------------------------------------------------------
-plotweb_deprecated(Safariland, text.rot = 90)
-
-## ----first_plot, cache = FALSE------------------------------------------------
-plotweb(web)
-
 ## ----new_safariland-----------------------------------------------------------
 plotweb(Safariland)
-
-## ----safariland_90------------------------------------------------------------
-plotweb(Safariland, srt = 90)
 
 ## -----------------------------------------------------------------------------
 web2 <- matrix(c(50, 50), ncol = 2)
@@ -56,7 +47,7 @@ plotweb(web2, spacing = 0.1, plot_axes = TRUE)
 plotweb(web2, spacing = 0.1, text_size = 2)
 
 ## ----fig.height=6, fig.width=6------------------------------------------------
-plotweb(Safariland, spacing = "auto", srt = 90, text_size = 0.75)
+plotweb(Safariland, spacing = "auto", text_size = 0.75)
 
 ## ----web_horizontal-----------------------------------------------------------
 plotweb(web, horizontal = TRUE)
@@ -97,7 +88,7 @@ plotweb(Safariland, sorting = "ca", horizontal = TRUE,
         add_lower_abundances = lower_abundances, scaling = "absolute")
 
 ## -----------------------------------------------------------------------------
-plotweb(Safariland, srt = 90, curved_links = TRUE)
+plotweb(Safariland, curved_links = TRUE)
 
 ## -----------------------------------------------------------------------------
 plotweb(Safariland, horizontal = TRUE, curved_links = TRUE)

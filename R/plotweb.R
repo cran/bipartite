@@ -42,6 +42,7 @@ draw_link <- function(x1, x2, y1, y2, y3, y4, col,
 }
 
 plotweb <- function(web,
+                    main = NULL,
                     sorting = "normal",
                     empty = FALSE,
                     higher_abundances = NULL,
@@ -86,6 +87,11 @@ plotweb <- function(web,
             "This leads to mai overriding mar.")
   }
 
+  if (!is.matrix(web)) {
+    web <- as.matrix(web)
+        # stop("The argument web must be a matrix.")
+  }
+
   stopifnot(is.logical(higher_italic),
             is.logical(lower_italic),
             is.logical(horizontal),
@@ -98,6 +104,9 @@ plotweb <- function(web,
 
   # Update the user defined margin in either rows or inches
   if (!is.null(mar)) {
+    if (!is.null(main)) {
+      mar <- mar + c(0, 0, 1, 0)
+    }
     par(mar = mar)
   }
   if (!is.null(mai)) {
@@ -228,6 +237,9 @@ plotweb <- function(web,
   }
 
   # Clean up text rotation inputs
+  if (!horizontal) {
+    srt <- srt + 90
+  }
   srt <- srt %% 360
 
   if (horizontal) {
@@ -345,6 +357,12 @@ plotweb <- function(web,
          ylim = y_lim,
          xlim = x_lim,
          axes = plot_axes, xlab = "", ylab = "", xaxs = "i", yaxs = "i")
+    if (!is.null(main)) {
+      extra_space <- ifelse(horizontal, max_height_n, c_t_width + u_lab_distance)
+      title(main,
+            line = 1 + grconvertY(extra_space,
+                                  from = "inches", to = "lines"))
+    }
   }
 
   # Here the space of the plot along the x- or y-axis is calculated.
@@ -712,4 +730,3 @@ plotweb <- function(web,
 
   ## TODO: Implement legend plotting
 }
-
